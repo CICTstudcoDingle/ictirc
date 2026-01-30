@@ -225,6 +225,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      gsap:
+        specifier: ^3.14.2
+        version: 3.14.2
       tailwind-merge:
         specifier: ^2.6.0
         version: 2.6.0

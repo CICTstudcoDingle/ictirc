@@ -1,17 +1,18 @@
 import Link from "next/link";
 import { ArrowLeft, Mail, MapPin, Phone, ExternalLink } from "lucide-react";
-import { Button } from "@ictirc/ui";
+import { Button, CircuitBackground } from "@ictirc/ui";
 
 export default function AboutPage() {
   return (
     <div className="pt-14 md:pt-16 min-h-screen">
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-maroon to-maroon/90 text-white py-16 md:py-24">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+      {/* Hero - Dark with Circuit Texture */}
+      <section className="relative bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 text-white py-16 md:py-24 overflow-hidden">
+        <CircuitBackground variant="subtle" animated />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
             About ICTIRC
           </h1>
-          <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
             The Information and Communication Technology International Research
             Conference is a premier venue for ICT research publication.
           </p>

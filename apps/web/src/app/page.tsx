@@ -1,14 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, BookOpen, Users, Award } from "lucide-react";
-import { Button } from "@ictirc/ui";
+import { Button, CircuitBackground } from "@ictirc/ui";
 
 export default function HomePage() {
   return (
     <div className="pt-14 md:pt-16">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-white via-gray-50 to-maroon/5 py-16 md:py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section - Dark with Circuit Texture */}
+      <section className="relative bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 py-16 md:py-24 lg:py-32 overflow-hidden">
+        <CircuitBackground variant="default" animated />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             {/* Logos Badge */}
             <div className="flex items-center gap-3 mb-6">
@@ -27,16 +29,16 @@ export default function HomePage() {
                 className="w-10 h-10 md:w-12 md:h-12"
               />
               <div className="hidden sm:block">
-                <p className="text-sm font-medium text-maroon">ISUFST - CICT</p>
-                <p className="text-xs text-gray-500">Dingle Campus</p>
+                <p className="text-sm font-medium text-gold">ISUFST - CICT</p>
+                <p className="text-xs text-gray-400">Dingle Campus</p>
               </div>
             </div>
             
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight mb-4 md:mb-6">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-4 md:mb-6">
               Information & Communication Technology{" "}
-              <span className="text-maroon">International Research Conference</span>
+              <span className="text-gold">International Research Conference</span>
             </h1>
-            <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8 max-w-2xl">
+            <p className="text-base md:text-lg text-gray-300 mb-6 md:mb-8 max-w-2xl">
               A scholarly publication platform dedicated to advancing ICT research
               and innovation. Browse peer-reviewed papers, submit your research,
               and join our academic community.
@@ -44,13 +46,13 @@ export default function HomePage() {
             {/* Desktop buttons */}
             <div className="hidden sm:flex flex-wrap gap-4">
               <Link href="/archive">
-                <Button size="lg">
+                <Button variant="gold" size="lg">
                   Browse Archive
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
               <Link href="/submit">
-                <Button variant="secondary" size="lg">
+                <Button variant="secondary" size="lg" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
                   Submit Paper
                 </Button>
               </Link>
@@ -58,7 +60,7 @@ export default function HomePage() {
             {/* Mobile single button */}
             <div className="sm:hidden">
               <Link href="/archive">
-                <Button size="lg" className="w-full">
+                <Button variant="gold" size="lg" className="w-full">
                   Browse Archive
                   <ArrowRight className="w-5 h-5" />
                 </Button>
@@ -66,12 +68,10 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        {/* Decorative element - hidden on mobile */}
-        <div className="hidden md:block absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-maroon/5 to-transparent pointer-events-none" />
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 md:py-16 border-y border-gray-100">
+      <section className="py-12 md:py-16 border-y border-gray-100 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             <div className="text-center">
@@ -141,13 +141,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 md:py-20 bg-maroon">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* CTA Section - Dark with Circuit Texture */}
+      <section className="relative py-16 md:py-20 bg-gradient-to-r from-gray-900 via-[#4a0000] to-gray-900 overflow-hidden">
+        <CircuitBackground variant="subtle" animated />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 md:mb-4">
             Ready to Submit Your Research?
           </h2>
-          <p className="text-sm md:text-base text-white/80 mb-6 md:mb-8 max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto">
             Join hundreds of researchers who have published their ICT innovations
             with ICTIRC. Start your submission today.
           </p>

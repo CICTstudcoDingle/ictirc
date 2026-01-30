@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Search, Filter, ChevronDown } from "lucide-react";
 import { PaperCard } from "@/components/papers/paper-card";
-import { Button, Input } from "@ictirc/ui";
+import { Button, Input, CircuitBackground } from "@ictirc/ui";
 
 export const metadata: Metadata = {
   title: "Research Archive",
@@ -67,13 +67,14 @@ const categories = [
 export default function ArchivePage() {
   return (
     <div className="pt-14 md:pt-16 min-h-screen bg-gray-50">
-      {/* Page Header */}
-      <section className="bg-white border-b border-gray-200 py-8 md:py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+      {/* Page Header - Dark with Circuit Texture */}
+      <section className="relative bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 py-10 md:py-16 overflow-hidden">
+        <CircuitBackground variant="subtle" animated />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-2xl md:text-4xl font-bold text-white mb-2">
             Research Archive
           </h1>
-          <p className="text-sm md:text-base text-gray-600">
+          <p className="text-sm md:text-base text-gray-300">
             Browse peer-reviewed papers from ICTIRC researchers
           </p>
         </div>

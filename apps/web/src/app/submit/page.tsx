@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Upload, FileText, X, ChevronRight } from "lucide-react";
-import { Button, Input, Card, CardContent, CardHeader, CardTitle } from "@ictirc/ui";
+import { Button, Input, Card, CardContent, CardHeader, CardTitle, CircuitBackground } from "@ictirc/ui";
 
 const categories = [
   "Artificial Intelligence & Machine Learning",
@@ -45,16 +45,20 @@ export default function SubmitPage() {
 
   return (
     <div className="pt-14 md:pt-16 min-h-screen bg-gray-50">
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+      {/* Header - Dark with Circuit Texture */}
+      <section className="relative bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 py-10 md:py-16 overflow-hidden">
+        <CircuitBackground variant="subtle" animated />
+        <div className="relative z-10 max-w-3xl mx-auto px-4">
+          <h1 className="text-2xl md:text-4xl font-bold text-white mb-2">
             Submit Your Research
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-300">
             Share your ICT research with the ISUFST academic community.
           </p>
         </div>
+      </section>
+
+      <div className="max-w-3xl mx-auto px-4 py-8">
 
         {/* Progress Steps */}
         <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2">

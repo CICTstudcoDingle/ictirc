@@ -14,6 +14,7 @@ export {
 export { Badge, badgeVariants, type BadgeProps } from "./components/badge";
 export { BottomNav } from "./components/bottom-nav";
 export { FloatingActionButton } from "./components/fab";
+export { CircuitBackground } from "./components/circuit-background";
 
 // Utilities
 export { cn } from "./lib/utils";
