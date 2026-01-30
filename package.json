@@ -8,13 +8,14 @@
     "typecheck": "turbo typecheck",
     "clean": "turbo clean",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "turbo run db:generate"
+    "postinstall": "pnpm --filter @ictirc/database run db:generate"
   },
   "devDependencies": {
     "@ictirc/config": "workspace:*",
-    "prettier": "^3.4.2",
-    "turbo": "^2.3.3",
-    "typescript": "^5.7.3"
+    "prettier": "3.4.2",
+    "syncpack": "13.0.4",
+    "turbo": "2.8.0",
+    "typescript": "5.7.3"
   },
   "packageManager": "pnpm@9.1.0",
   "engines": {

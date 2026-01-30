@@ -1,0 +1,40 @@
+{
+  "dependencyTypes": ["dev", "prod", "peer", "overrides"],
+  "source": ["package.json", "apps/*/package.json", "packages/*/package.json"],
+  "indent": "  ",
+  "versionGroups": [
+    {
+      "label": "Internal Workspace Packages",
+      "packages": ["**"],
+      "dependencies": ["@ictirc/**"],
+      "dependencyTypes": ["dev", "prod"],
+      "pinVersion": "workspace:*"
+    },
+    {
+      "label": "React Core (Enforce v19)",
+      "packages": ["**"],
+      "dependencies": ["react", "react-dom"],
+      "pinVersion": "19.0.0"
+    },
+    {
+      "label": "Next.js (Enforce v16 Canary)",
+      "packages": ["**"],
+      "dependencies": ["next"],
+      "pinVersion": "16.2.0-canary.17"
+    },
+    {
+      "label": "Global External Consistency",
+      "dependencies": ["**"],
+      "packages": ["**"],
+      "dependencyTypes": ["dev", "prod"],
+      "isIgnored": false
+    }
+  ],
+  "semverGroups": [
+    {
+      "range": "",
+      "dependencies": ["**"],
+      "packages": ["**"]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+Scope: all 8 workspace projects
+Progress: resolved 1, reused 0, downloaded 0, added 0
+apps/web                                 | ΓÇëWARNΓÇë deprecated @studio-freight/lenis@1.0.42
+C:\dev\Monorepo\ICTIRC\packages\email:
+ΓÇëERR_PNPM_NO_MATCHING_VERSIONΓÇë No matching version found for resend@4.1.0
+
+This error happened while installing a direct dependency of C:\dev\Monorepo\ICTIRC\packages\email
+
+The latest release of resend is "6.9.1".
+
+Other releases are:
+  * preview-topics: 4.7.0-preview-topics.2
+  * preview-templates: 6.1.2-preview-templates.1
+  * preview-batch: 6.5.2-batch.0
+  * canary: 6.7.0-canary.0
+
+If you need the full list of all 130 published versions run "$ pnpm view resend versions".

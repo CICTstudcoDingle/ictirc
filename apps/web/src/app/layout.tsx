@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
+import { ToastProvider } from "@/lib/use-toast";
 import { BottomNav, FloatingActionButton } from "@ictirc/ui";
 import "./globals.css";
 
@@ -55,15 +56,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="min-h-screen bg-white font-sans">
-        <SmoothScrollProvider>
-          <Header />
-          <main className="pb-nav">{children}</main>
-          <Footer />
+        <ToastProvider>
+          <SmoothScrollProvider>
+            <Header />
+            <main className="pb-nav">{children}</main>
+            <Footer />
 
-          {/* Mobile-only components */}
-          <FloatingActionButton />
-          <BottomNav />
-        </SmoothScrollProvider>
+            {/* Mobile-only components */}
+            <FloatingActionButton />
+            <BottomNav />
+          </SmoothScrollProvider>
+        </ToastProvider>
       </body>
     </html>
   );
