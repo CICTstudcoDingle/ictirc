@@ -13,6 +13,7 @@
     "@ictirc/database": "workspace:*",
     "@ictirc/email": "workspace:*",
     "@ictirc/seo": "workspace:*",
+    "@ictirc/storage": "workspace:*",
     "@ictirc/ui": "workspace:*",
     "@studio-freight/lenis": "1.0.42",
     "@supabase/ssr": "0.5.2",

@@ -304,10 +304,11 @@ export default function SubmitPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="category-select" className="block text-sm font-medium text-gray-700 mb-2">
                   Category
                 </label>
                 <select
+                  id="category-select"
                   className={`w-full px-4 py-3 rounded-lg bg-gray-50 border-b-2 ${errors.category ? "border-red-500" : "border-gray-300"
                     } focus:border-maroon focus:outline-none`}
                   value={formData.category}
@@ -350,8 +351,10 @@ export default function SubmitPage() {
                 >
                   {formData.authors.length > 1 && (
                     <button
+                      type="button"
                       onClick={() => removeAuthor(index)}
                       className="absolute top-2 right-2 p-1 text-gray-400 hover:text-red-500"
+                      aria-label={`Remove author ${index + 1}`}
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -461,6 +464,7 @@ export default function SubmitPage() {
                     type="file"
                     accept=".pdf,.docx,.doc,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                     className="hidden"
+                    aria-label="Upload manuscript file"
                     id="file-upload"
                     onChange={handleFileUpload}
                   />
@@ -481,9 +485,10 @@ export default function SubmitPage() {
                       </div>
                     </div>
                     <button
+                        type="button"
                       onClick={removeFile}
                       className="p-2 text-gray-400 hover:text-red-500 transition-colors"
-                      type="button"
+                        aria-label="Remove uploaded file"
                     >
                       <X className="w-5 h-5" />
                     </button>

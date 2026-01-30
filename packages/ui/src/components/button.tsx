@@ -13,6 +13,8 @@ const buttonVariants = cva(
           "bg-maroon text-white hover:shadow-[4px_4px_0px_0px_rgba(212,175,55,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
         secondary:
           "bg-transparent border-2 border-maroon text-maroon hover:bg-maroon/5",
+        outline:
+          "bg-transparent border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300",
         ghost: "bg-transparent text-maroon hover:bg-maroon/10",
         gold: "bg-gold text-maroon hover:bg-gold/90",
       },

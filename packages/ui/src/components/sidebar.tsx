@@ -11,6 +11,7 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  ScrollText,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./button";
@@ -36,6 +37,11 @@ const navItems = [
     icon: Users,
   },
   {
+    title: "Audit Logs",
+    href: "/dashboard/audit-logs",
+    icon: ScrollText,
+  },
+  {
     title: "Settings",
     href: "/dashboard/settings",
     icon: Settings,
@@ -49,33 +55,44 @@ export function Sidebar({ className, onLogout, ...props }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "relative flex flex-col border-r border-gray-200 bg-white transition-all duration-300",
+        "group relative flex flex-col border-r border-gray-200 bg-white transition-all duration-300",
         collapsed ? "w-16" : "w-64",
         className
       )}
       {...props}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 h-16 border-b border-gray-100">
+      <div className={cn(
+        "flex items-center h-16 border-b border-gray-100",
+        collapsed ? "justify-center px-2" : "justify-between px-4"
+      )}>
         {!collapsed && (
           <div className="flex items-center gap-2 font-bold text-lg text-maroon">
-            <div className="w-8 h-8 rounded-lg bg-maroon text-white flex items-center justify-center text-sm">
-              IC
-            </div>
+            <img
+              src="/images/CICT_LOGO.png"
+              alt="CICT Logo"
+              className="w-8 h-8 object-contain"
+            />
             <span>ICTIRC</span>
           </div>
         )}
         {collapsed && (
-           <div className="w-8 h-8 mx-auto rounded-lg bg-maroon text-white flex items-center justify-center text-sm font-bold">
-              IC
-            </div>
+          <img
+            src="/images/CICT_LOGO.png"
+            alt="CICT Logo"
+            className="w-8 h-8 object-contain"
+          />
         )}
         
         <Button
           variant="ghost"
           size="icon"
-          className={cn("text-gray-400 hover:text-gray-600", collapsed && "hidden group-hover:block")}
+          className={cn(
+            "text-gray-400 hover:text-gray-600 hover:bg-gray-100 flex-shrink-0",
+            collapsed && "mx-auto"
+          )}
           onClick={() => setCollapsed(!collapsed)}
+          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </Button>

@@ -18,6 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://ictirc.isufst.edu.ph"),
   title: {
     default: "ICTIRC - Information and Communication Technology International Research Conference",
     template: "%s | ICTIRC",
@@ -32,13 +33,60 @@ export const metadata: Metadata = {
     "ISUFST",
     "conference",
     "academic papers",
+    "peer review",
+    "scholarly articles",
+    "CICT",
   ],
-  authors: [{ name: "ISUFST - CICT" }],
+  authors: [{ name: "ISUFST - CICT", url: "https://isufst.edu.ph" }],
+  creator: "ISUFST College of Information and Computing Technology",
+  publisher: "ISUFST CICT",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/images/CICT_LOGO.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: [
+      { url: "/images/CICT_LOGO.png", sizes: "180x180" },
+    ],
+    shortcut: "/images/CICT_LOGO.png",
+  },
+  manifest: "/manifest.json",
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "ICTIRC",
+    siteName: "ICTIRC Research Repository",
+    title: "ICTIRC - ICT International Research Conference",
+    description: "A scholarly publication platform for ICT research from ISUFST CICT.",
+    images: [
+      {
+        url: "/images/CICT_LOGO.png",
+        width: 512,
+        height: 512,
+        alt: "ICTIRC Logo",
+      },
+    ],
   },
+  twitter: {
+    card: "summary",
+    title: "ICTIRC Research Repository",
+    description: "A scholarly publication platform for ICT research from ISUFST CICT.",
+    images: ["/images/CICT_LOGO.png"],
+  },
+  alternates: {
+    canonical: "/",
+  },
+  category: "education",
 };
 
 export const viewport: Viewport = {

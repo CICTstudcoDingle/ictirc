@@ -1,0 +1,21 @@
+{
+  "name": "ICTIRC Admin Portal",
+  "short_name": "ICTIRC Admin",
+  "description": "Admin dashboard for ICTIRC Research Repository",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#800000",
+  "icons": [
+    {
+      "src": "/images/CICT_LOGO.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/CICT_LOGO.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, BookOpen, Users, Award } from "lucide-react";
 import { Button, CircuitBackground } from "@ictirc/ui";
+import { UpcomingEventCard } from "@/components/events/upcoming-event-card";
 
 export default function HomePage() {
   return (
@@ -13,7 +14,7 @@ export default function HomePage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             {/* Logos Badge */}
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-3 mb-6 flex-wrap">
               <Image
                 src="/images/CICT_LOGO.png"
                 alt="CICT Logo"
@@ -24,13 +25,26 @@ export default function HomePage() {
               <Image
                 src="/images/ISUFST_LOGO.png"
                 alt="ISUFST Logo"
-                width={48}
-                height={48}
-                className="w-10 h-10 md:w-12 md:h-12"
+                width={64}
+                height={64}
+                className="w-14 h-14 md:w-16 md:h-16"
               />
               <div className="hidden sm:block">
                 <p className="text-sm font-medium text-gold">ISUFST - CICT</p>
                 <p className="text-xs text-gray-400">Dingle Campus</p>
+              </div>
+              <div className="hidden sm:flex items-center gap-2 ml-auto">
+                <Image
+                  src="/images/UB LOGO (1).png"
+                  alt="Universitas Brawijaya Logo"
+                  width={48}
+                  height={48}
+                  className="w-10 h-10 md:w-12 md:h-12"
+                />
+                <div>
+                  <p className="text-xs font-medium text-gold">Partner University</p>
+                  <p className="text-xs text-gray-400">Universitas Brawijaya</p>
+                </div>
               </div>
             </div>
             
@@ -66,7 +80,15 @@ export default function HomePage() {
                 </Button>
               </Link>
             </div>
+            
+            {/* Mobile Upcoming Event Banner - only shows on mobile */}
+            <div className="lg:hidden">
+              <UpcomingEventCard />
+            </div>
           </div>
+          
+          {/* Desktop Floating Event Card - positioned absolutely within hero */}
+          <UpcomingEventCard />
         </div>
       </section>
 

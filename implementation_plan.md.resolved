@@ -1,0 +1,181 @@
+# Phase 1: Conferences Feature - Implementation Plan
+
+## Overview
+Add a Conferences section displaying events from the admin portal, with a floating "upcoming event" card on the hero section.
+
+---
+
+## Requirements Summary
+
+| Feature | Specification |
+|---------|--------------|
+| Hero Card Position | Right side of hero content |
+| Countdown | Show "X days remaining" when event is ≤30 days away |
+| URL Structure | `/conferences` (list) + `/conferences/[id]` (detail) |
+| Mobile Hero Card | Small banner below hero |
+| Mobile Nav | Replace "Profile" with "Conferences" in bottom nav |
+
+---
+
+## Proposed Changes
+
+### 1. API Route
+
+#### [NEW] [route.ts](file:///c:/dev/Monorepo/ICTIRC/apps/web/src/app/api/events/route.ts)
+
+Fetch published events from database:
+
+```typescript
+// GET /api/events
+// Returns: { upcoming: Event[], past: Event[] }
+// - Filter: isPublished = true
+// - Sort: startDate DESC for upcoming, startDate DESC for past
+// - Include isUpcoming flag based on startDate > now
+```
+
+---
+
+### 2. Hero Section Integration
+
+#### [MODIFY] [hero-section.tsx](file:///c:/dev/Monorepo/ICTIRC/apps/web/src/components/sections/hero-section.tsx)
+
+Add floating event card on **right side**:
+
+**Desktop Layout:**
+- Card positioned to the right of main hero content
+- Shows: Event title, date, location, countdown badge
+- "View Details" button links to `/conferences`
+- Only render if there's an upcoming event within 30 days
+
+**Mobile Layout:**
+- Small banner below hero content
+- Compact: Title + date + "View →" link
+
+**Countdown Logic:**
+```typescript
+const daysUntil = Math.ceil((eventDate - now) / (1000 * 60 * 60 * 24));
+if (daysUntil <= 30 && daysUntil > 0) {
+  return `${daysUntil} days remaining`;
+}
+```
+
+---
+
+### 3. Conferences List Page
+
+#### [NEW] [page.tsx](file:///c:/dev/Monorepo/ICTIRC/apps/web/src/app/conferences/page.tsx)
+
+**Layout: Timeline/Chronological**
+
+```
+┌─────────────────────────────────────┐
+│ Header: "Conferences & Events"      │
+│ Subtitle: "Academic events..."      │
+├─────────────────────────────────────┤
+│ ● Upcoming Events                   │
+│   │                                 │
+│   ├── Event Card (next event)       │
+│   │   [Image] Title, Date, Location │
+│   │   Description preview...        │
+│   │   [View Details →]              │
+│   │                                 │
+│   └── Event Card ...                │
+├─────────────────────────────────────┤
+│ ○ Past Events                       │
+│   │                                 │
+│   ├── Event Card (grayed out)       │
+│   └── ...                           │
+└─────────────────────────────────────┘
+```
+
+**Features:**
+- Vertical timeline with dot connectors
+- Upcoming events: Full color, prominent
+- Past events: Muted/grayed styling
+- Each card clickable → `/conferences/[id]`
+
+---
+
+### 4. Conference Detail Page
+
+#### [NEW] [page.tsx](file:///c:/dev/Monorepo/ICTIRC/apps/web/src/app/conferences/[id]/page.tsx)
+
+**Layout:**
+- Hero image (if exists)
+- Title, date range, location
+- Full description (rich text)
+- Back button to `/conferences`
+
+**Metadata:** Generate dynamic OG tags for sharing.
+
+---
+
+### 5. Navigation Updates
+
+#### [MODIFY] [header.tsx](file:///c:/dev/Monorepo/ICTIRC/apps/web/src/components/layout/header.tsx)
+
+Add "Conferences" to desktop nav links:
+```typescript
+const navLinks = [
+  { href: "/archive", label: "Archive" },
+  { href: "/conferences", label: "Conferences" }, // NEW
+  { href: "/submit", label: "Submit" },
+];
+```
+
+#### [MODIFY] [bottom-nav.tsx](file:///c:/dev/Monorepo/ICTIRC/packages/ui/src/components/bottom-nav.tsx)
+
+Replace "Profile" with "Conferences":
+```typescript
+// Change:
+{ href: "/profile", label: "Profile", icon: User }
+// To:
+{ href: "/conferences", label: "Events", icon: Calendar }
+```
+
+---
+
+## Database Reference
+
+The [Event](file:///c:/dev/Monorepo/ICTIRC/apps/admin/src/app/dashboard/settings/page.tsx#28-38) model already exists in schema:
+
+```prisma
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  description String    @db.Text
+  imageUrl    String?
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  isPublished Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+```
+
+---
+
+## Files to Create/Modify
+
+| Action | File Path |
+|--------|-----------|
+| NEW | `apps/web/src/app/api/events/route.ts` |
+| NEW | `apps/web/src/app/conferences/page.tsx` |
+| NEW | `apps/web/src/app/conferences/[id]/page.tsx` |
+| MODIFY | `apps/web/src/components/sections/hero-section.tsx` |
+| MODIFY | [apps/web/src/components/layout/header.tsx](file:///c:/dev/Monorepo/ICTIRC/apps/web/src/components/layout/header.tsx) |
+| MODIFY | [packages/ui/src/components/bottom-nav.tsx](file:///c:/dev/Monorepo/ICTIRC/packages/ui/src/components/bottom-nav.tsx) |
+
+---
+
+## Verification Checklist
+
+- [ ] API returns upcoming/past events correctly
+- [ ] Hero card appears only when event is ≤30 days away
+- [ ] Countdown displays correctly
+- [ ] `/conferences` shows timeline with proper styling
+- [ ] `/conferences/[id]` shows full event details
+- [ ] Desktop header has "Conferences" link
+- [ ] Mobile bottom nav shows "Events" instead of "Profile"
+- [ ] Mobile hero shows compact banner

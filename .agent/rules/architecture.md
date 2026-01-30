@@ -12,15 +12,15 @@ Architecture: Turborepo (Monorepo).
 
 Database: PostgreSQL (hosted on Supabase/Neon) + Prisma ORM.
 
-Authentication: Firebase Auth (Client SDK + Admin SDK for server verification).
+Authentication: Supabase Auth (@supabase/ssr for Next.js 16).
 
-Storage (Hot & Cold): Cloudflare R2 (S3-Compatible API).
+Storage (Hot & Cold): 
+- Supabase Storage (Hot): manuscripts bucket for active papers.
+- Cloudflare R2 (Cold): S3-Compatible API for backup/archival.
 
-Bucket A: cict-submissions-raw (Private, original files).
+Bucket A (Hot): manuscripts (Supabase Storage - Public/Private based on status).
 
-Bucket B: cict-public-archive (Public, branded PDFs).
-
-Bucket C: cict-cold-backup (Daily snapshots).
+Bucket B (Cold): cict-cold-storage (R2 - Daily snapshots & long-term archive).
 
 Styling: Tailwind CSS + Headless UI (Custom Design System).
 

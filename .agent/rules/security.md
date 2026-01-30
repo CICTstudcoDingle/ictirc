@@ -21,11 +21,11 @@ Reviewers never access the raw source file. They are served a dynamically genera
 
 The "ISUFST-CICT" Overlay: Every page of a manuscript under review must be stamped diagonally with ISUFST - CICT [REVIEW ONLY] in 15% opacity Grey.
 
-Storage Segmentation (S3 Buckets):
+Storage Segmentation:
 
-bucket-raw: Private. Contains original files. Accessible ONLY by Authors (read) and the System (read/write).
+manuscripts (Supabase Hot Storage): Contains original files. Access control via Supabase RLS policies based on user role.
 
-bucket-public: Public-read. Contains the final, branded, published PDFs.
+cict-cold-storage (R2): Private. Contains backups and archival copies. Accessible ONLY by System.
 
 Signed URL Strategy:
 
@@ -36,11 +36,15 @@ Role-Based Access Control (RBAC):
 
 We use Next.js Middleware (middleware.ts) to intercept every request.
 
+User roles stored in PostgreSQL database (User model with UserRole enum: AUTHOR, REVIEWER, EDITOR, DEAN).
+
 Logic:
 
 TypeScript
-// Pseudo-code for Next.js 16 Middleware
-if (route.startsWith('/admin') && user.claims.role !== 'dean') {
+// Next.js 16 Middleware with Supabase Auth
+const { data: { user } } = await supabase.auth.getUser();
+const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+if (route.startsWith('/admin/system') && dbUser.role !== 'DEAN') {
    return NextResponse.redirect(new URL('/unauthorized', req.url));
 }
 Data Sanitation:

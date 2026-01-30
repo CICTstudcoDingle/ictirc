@@ -22,6 +22,19 @@ enum PaperStatus {
   REJECTED
 }
 
+enum UserRole {
+  AUTHOR
+  REVIEWER
+  EDITOR
+  DEAN
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+}
+
 // ============================================
 // MODELS
 // ============================================
@@ -88,6 +101,91 @@ model Category {
   papers Paper[]
 }
 
+// ============================================
+// USER MANAGEMENT
+// ============================================
+
+model User {
+  id        String   @id // Supabase Auth UID
+  email     String   @unique
+  name      String?
+  role      UserRole @default(AUTHOR)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  invites InviteToken[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model InviteToken {
+  id        String       @id @default(cuid())
+  email     String
+  role      UserRole     @default(AUTHOR)
+  token     String       @unique @default(cuid())
+  status    InviteStatus @default(PENDING)
+  expiresAt DateTime
+  createdAt DateTime     @default(now())
+
+  // Relations
+  invitedBy   User?   @relation(fields: [invitedById], references: [id])
+  invitedById String?
+
+  @@index([token])
+  @@index([email])
+  @@index([status])
+}
+
+// ============================================
+// EVENTS & RESEARCH GUIDES
+// ============================================
+
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  description String    @db.Text
+  imageUrl    String?
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  isPublished Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([isPublished])
+  @@index([startDate])
+}
+
+model ResearchGuide {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  category    String   // thesis, journal, capstone
+  fileUrl     String
+  order       Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([isPublished])
+}
+
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String @db.Text
+
+  @@index([key])
+}
+
+// ============================================
+// AUDIT & TRACKING
+// ============================================
+
 model AuditLog {
   id         String   @id @default(cuid())
   actorId    String
@@ -111,3 +209,4 @@ model DoiSequence {
 
   @@unique([year])
 }
+

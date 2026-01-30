@@ -37,10 +37,22 @@ export function Header() {
               Archive
             </Link>
             <Link
+              href="/conferences"
+              className="text-gray-700 hover:text-maroon transition-colors font-medium"
+            >
+              Conferences
+            </Link>
+            <Link
               href="/submit"
               className="text-gray-700 hover:text-maroon transition-colors font-medium"
             >
               Submit Paper
+            </Link>
+            <Link
+              href="/guides"
+              className="text-gray-700 hover:text-maroon transition-colors font-medium"
+            >
+              Guides
             </Link>
             <Link
               href="/about"
@@ -64,10 +76,19 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Mobile: Just show ICTIRC text next to logo */}
-          <span className="sm:hidden text-maroon font-bold text-lg">
+          {/* Mobile: ICTIRC text centered */}
+          <h1 className="sm:hidden text-maroon font-bold text-base absolute left-1/2 -translate-x-1/2">
             ICTIRC
-          </span>
+          </h1>
+
+          {/* Mobile: Search icon on far right */}
+          <Link
+            href="/search"
+            className="sm:hidden p-2 text-gray-500 hover:text-maroon transition-colors"
+            aria-label="Search"
+          >
+            <Search className="w-5 h-5" />
+          </Link>
         </div>
       </div>
     </header>

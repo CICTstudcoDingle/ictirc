@@ -22,6 +22,16 @@ export const metadata: Metadata = {
     index: false,
     follow: false,
   },
+  icons: {
+    icon: [
+      { url: "/images/CICT_LOGO.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: [
+      { url: "/images/CICT_LOGO.png", sizes: "180x180" },
+    ],
+    shortcut: "/images/CICT_LOGO.png",
+  },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
