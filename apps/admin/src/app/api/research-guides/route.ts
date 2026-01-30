@@ -34,6 +34,7 @@ export async function POST(request: Request) {
         description,
         category,
         fileUrl,
+        isPublished: true,
       },
     });
 
@@ -42,6 +43,65 @@ export async function POST(request: Request) {
     console.error("Failed to create research guide:", error);
     return NextResponse.json(
       { error: "Failed to create research guide" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, title, description, category, fileUrl, isPublished } = body;
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Guide ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const guide = await prisma.researchGuide.update({
+      where: { id },
+      data: {
+        ...(title && { title }),
+        ...(description !== undefined && { description }),
+        ...(category && { category }),
+        ...(fileUrl && { fileUrl }),
+        ...(isPublished !== undefined && { isPublished }),
+      },
+    });
+
+    return NextResponse.json({ guide });
+  } catch (error) {
+    console.error("Failed to update research guide:", error);
+    return NextResponse.json(
+      { error: "Failed to update research guide" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Guide ID is required" },
+        { status: 400 }
+      );
+    }
+
+    await prisma.researchGuide.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Failed to delete research guide:", error);
+    return NextResponse.json(
+      { error: "Failed to delete research guide" },
       { status: 500 }
     );
   }

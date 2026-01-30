@@ -313,10 +313,11 @@ export default function UsersPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="invite-role" className="block text-sm font-medium text-gray-700 mb-1">
                     Role
                   </label>
                   <select
+                    id="invite-role"
                     value={inviteRole}
                     onChange={(e) => setInviteRole(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon"
@@ -352,6 +353,7 @@ export default function UsersPage() {
                       type="text"
                       readOnly
                       value={`${window.location.origin}/register?token=${generatedToken}`}
+                      aria-label="Generated invite link"
                       className="flex-1 px-3 py-2 bg-white border border-green-200 rounded-lg font-mono text-xs"
                     />
                     <Button onClick={copyToken} variant="outline" size="icon">

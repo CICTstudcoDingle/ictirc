@@ -32,11 +32,11 @@ export async function POST(request: Request) {
       data: {
         title,
         description,
-        imageUrl,
+        imageUrl: imageUrl || null,
         startDate: new Date(startDate),
         endDate: endDate ? new Date(endDate) : null,
-        location,
-        isPublished: isPublished ?? false,
+        location: location || null,
+        isPublished: isPublished ?? true,
       },
     });
 
@@ -45,6 +45,67 @@ export async function POST(request: Request) {
     console.error("Failed to create event:", error);
     return NextResponse.json(
       { error: "Failed to create event" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, title, description, imageUrl, startDate, endDate, location, isPublished } = body;
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Event ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const event = await prisma.event.update({
+      where: { id },
+      data: {
+        ...(title && { title }),
+        ...(description && { description }),
+        ...(imageUrl !== undefined && { imageUrl: imageUrl || null }),
+        ...(startDate && { startDate: new Date(startDate) }),
+        ...(endDate !== undefined && { endDate: endDate ? new Date(endDate) : null }),
+        ...(location !== undefined && { location: location || null }),
+        ...(isPublished !== undefined && { isPublished }),
+      },
+    });
+
+    return NextResponse.json({ event });
+  } catch (error) {
+    console.error("Failed to update event:", error);
+    return NextResponse.json(
+      { error: "Failed to update event" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Event ID is required" },
+        { status: 400 }
+      );
+    }
+
+    await prisma.event.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Failed to delete event:", error);
+    return NextResponse.json(
+      { error: "Failed to delete event" },
       { status: 500 }
     );
   }

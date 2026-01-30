@@ -1,5 +1,5 @@
 import { createStorageClient, getSupabaseStorageConfig } from "./client";
-import type { UploadResult, SignedUrlResult, FileMetadata } from "../types";
+import type { UploadResult, SignedUrlResult } from "../types";
 
 /**
  * Upload a file to Supabase Hot Storage (manuscripts bucket)

@@ -140,6 +140,7 @@ export default function AuditLogsPage() {
                 setActionFilter(e.target.value);
                 setPage(1);
               }}
+              aria-label="Filter by action type"
               className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon text-sm"
             >
               {actionTypes.map((action) => (

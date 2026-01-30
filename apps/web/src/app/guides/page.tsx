@@ -95,6 +95,7 @@ export default function GuidesPage() {
             <span>{error}</span>
             <button
               onClick={fetchGuides}
+              aria-label="Retry loading guides"
               className="p-2 hover:bg-red-100 rounded-lg transition-colors"
             >
               <RefreshCw className="w-4 h-4" />
