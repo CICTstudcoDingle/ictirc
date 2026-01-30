@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     // Enable Partial Prerendering when stable
     // ppr: true,
   },
+  output: "standalone",
   transpilePackages: [
     "@ictirc/ui",
     "@ictirc/database",
