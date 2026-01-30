@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum PaperStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  ACCEPTED
+  PUBLISHED
+  REJECTED
+}
+
+// ============================================
+// MODELS
+// ============================================
+
+model Paper {
+  id          String      @id @default(cuid())
+  title       String
+  abstract    String      @db.Text
+  keywords    String[]
+  doi         String?     @unique
+  status      PaperStatus @default(SUBMITTED)
+  pdfUrl      String?
+  rawFileUrl  String?
+  publishedAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Relations
+  authors    PaperAuthor[]
+  category   Category      @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  @@index([status])
+  @@index([categoryId])
+  @@index([publishedAt])
+}
+
+model Author {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  affiliation String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  papers PaperAuthor[]
+
+  @@index([email])
+}
+
+model PaperAuthor {
+  id       String  @id @default(cuid())
+  order    Int     @default(0)
+  paper    Paper   @relation(fields: [paperId], references: [id], onDelete: Cascade)
+  paperId  String
+  author   Author  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+
+  @@unique([paperId, authorId])
+  @@index([paperId])
+  @@index([authorId])
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  papers Paper[]
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String
+  actorEmail String?
+  action     String
+  targetId   String
+  targetType String
+  metadata   Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  @@index([actorId])
+  @@index([targetId])
+  @@index([createdAt])
+}
+
+model DoiSequence {
+  id    String @id @default("doi_counter")
+  year  Int
+  count Int    @default(0)
+
+  @@unique([year])
+}
