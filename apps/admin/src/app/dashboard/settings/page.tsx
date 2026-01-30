@@ -445,6 +445,7 @@ function GuidesSettings({
                         type="button"
                         onClick={() => setFormData({ ...formData, fileUrl: "" })}
                         className="text-green-600 hover:text-green-800"
+                        aria-label="Remove uploaded file"
                       >
                         <X className="w-4 h-4" />
                       </button>
