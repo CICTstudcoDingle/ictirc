@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Card, Button } from "@ictirc/ui";
 import { useToastActions } from "@/lib/toast";
+import { FileUpload } from "@/components/file-upload";
 import {
   Settings as SettingsIcon,
   FileText,
@@ -11,10 +12,10 @@ import {
   Save,
   Plus,
   Trash2,
-  Upload,
   ExternalLink,
   X,
   Edit,
+  CheckCircle,
 } from "lucide-react";
 
 type TabType = "general" | "guides" | "events" | "email";
@@ -428,21 +429,39 @@ function GuidesSettings({
                   ))}
                 </select>
               </div>
+              {/* File Upload - Drag & Drop */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  File URL *
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  PDF File *
                 </label>
-                <input
-                  type="url"
-                  value={formData.fileUrl}
-                  onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
-                  placeholder="https://storage.example.com/guide.pdf"
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon font-mono text-sm"
-                  required
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Upload the PDF to Supabase Storage and paste the public URL here
-                </p>
+                {formData.fileUrl ? (
+                  <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <span className="text-sm text-green-800 flex-1 truncate">
+                      {editingGuide ? "File attached" : "File uploaded"}
+                    </span>
+                    {!editingGuide && (
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, fileUrl: "" })}
+                        className="text-green-600 hover:text-green-800"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <FileUpload
+                    onUploadComplete={(url, fileName) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        fileUrl: url,
+                        title: prev.title || fileName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
+                      }));
+                    }}
+                  />
+                )}
+                <p className="text-xs text-gray-400 mt-1">PDF files only, max 10MB</p>
               </div>
               <div className="flex justify-end gap-3 pt-4">
                 <Button
