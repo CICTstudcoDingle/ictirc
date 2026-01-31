@@ -107,6 +107,7 @@ export function Footer() {
               <li>ISUFST - CICT Department</li>
               <li>Dingle Campus, Iloilo</li>
               <li className="font-mono text-xs">ictirc@isufst.edu.ph</li>
+              <li className="font-mono text-xs">cictstudentcouncil@isufst.edu.ph</li>
             </ul>
 
             {/* Facebook Pages */}
