@@ -17,12 +17,17 @@ interface Category {
   name: string;
   slug: string;
   description: string | null;
+  parentId: string | null;
 }
 
 export default function SubmitPage() {
   const [step, setStep] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
+
+  // New state for parent category selection
+  const [selectedParentId, setSelectedParentId] = useState("");
+
   const [formData, setFormData] = useState({
     title: "",
     abstract: "",
@@ -334,23 +339,48 @@ export default function SubmitPage() {
               </div>
 
               <div>
-                <label htmlFor="category-select" className="block text-sm font-medium text-gray-700 mb-2">
-                  Category
+                <label htmlFor="topic-select" className="block text-sm font-medium text-gray-700 mb-2">
+                  Research Topic (Category)
                 </label>
                 <select
-                  id="category-select"
-                  className={`w-full px-4 py-3 rounded-lg bg-gray-50 border-b-2 ${errors.categoryId ? "border-red-500" : "border-gray-300"
-                    } focus:border-maroon focus:outline-none`}
-                  value={formData.categoryId}
-                  onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+                  id="topic-select"
+                  className="w-full bg-gray-50 border-b-2 border-gray-300 rounded-t-md px-4 py-3 font-mono text-sm focus:outline-none focus:border-maroon focus:bg-white transition-colors duration-200"
+                  value={selectedParentId}
+                  onChange={(e) => {
+                    setSelectedParentId(e.target.value);
+                    setFormData({ ...formData, categoryId: "" }); // Reset child on parent change
+                  }}
                   disabled={categoriesLoading}
                 >
-                  <option value="">{categoriesLoading ? "Loading categories..." : "Select a category"}</option>
-                  {categories.map((cat) => (
+                  <option value="">{categoriesLoading ? "Loading..." : "Select a research topic"}</option>
+                  {categories.filter(c => !c.parentId).map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name}
                     </option>
                   ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="subtopic-select" className="block text-sm font-medium text-gray-700 mb-2">
+                  Specific Sub-Topic
+                </label>
+                <select
+                  id="subtopic-select"
+                  className={`w-full bg-gray-50 border-b-2 rounded-t-md px-4 py-3 font-mono text-sm focus:outline-none transition-colors duration-200 ${errors.categoryId ? "border-red-500 focus:border-red-500" : "border-gray-300 focus:border-maroon focus:bg-white"
+                    } ${!selectedParentId ? "opacity-50 cursor-not-allowed" : ""}`}
+                  value={formData.categoryId}
+                  onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+                  disabled={!selectedParentId || categoriesLoading}
+                >
+                  <option value="">Select a sub-topic</option>
+                  {selectedParentId && categories
+                    .filter(c => c.parentId === selectedParentId)
+                    .map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
                 </select>
                 <ErrorMessage message={errors.categoryId} />
               </div>

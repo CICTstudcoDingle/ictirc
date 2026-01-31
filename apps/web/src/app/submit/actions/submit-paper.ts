@@ -207,6 +207,7 @@ export async function getCategories() {
         name: true,
         slug: true,
         description: true,
+        parentId: true,
       },
     });
     return { success: true, categories };

@@ -172,49 +172,57 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Powered by Prism */}
-          <a
-            href="https://prism.jeffdev.studio/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white rounded-full text-xs transition-all hover:shadow-lg"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="w-4 h-4"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          {/* Powered by & Built with */}
+          <div className="flex flex-col items-end gap-2">
+            {/* Main attribution */}
+            <div className="px-3 py-1.5 bg-gradient-to-r from-maroon to-red-800 text-white rounded-full text-xs font-medium">
+              Powered by CICT-ISUFST Dingle Campus
+            </div>
+            
+            {/* Secondary tech credit */}
+            <a
+              href="https://prism.jeffdev.studio/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-1.5 px-2 py-1 bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white rounded-full text-xs transition-all hover:shadow-md opacity-80 hover:opacity-100"
             >
-              <path
-                d="M12 2L2 7L12 12L22 7L12 2Z"
-                fill="url(#prism-gradient)"
-                className="opacity-80"
-              />
-              <path
-                d="M2 17L12 22L22 17"
-                stroke="url(#prism-gradient)"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M2 12L12 17L22 12"
-                stroke="url(#prism-gradient)"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <defs>
-                <linearGradient id="prism-gradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#a855f7" />
-                  <stop offset="0.5" stopColor="#ec4899" />
-                  <stop offset="1" stopColor="#f97316" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <span className="font-medium">Powered by Prism Context Engine</span>
-            <ExternalLink className="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity" />
-          </a>
+              <svg
+                viewBox="0 0 24 24"
+                className="w-3 h-3"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 2L2 7L12 12L22 7L12 2Z"
+                  fill="url(#prism-gradient)"
+                  className="opacity-80"
+                />
+                <path
+                  d="M2 17L12 22L22 17"
+                  stroke="url(#prism-gradient)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M2 12L12 17L22 12"
+                  stroke="url(#prism-gradient)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <defs>
+                  <linearGradient id="prism-gradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#a855f7" />
+                    <stop offset="0.5" stopColor="#ec4899" />
+                    <stop offset="1" stopColor="#f97316" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <span>Built with Prism Context Engine</span>
+              <ExternalLink className="w-2.5 h-2.5 opacity-50 group-hover:opacity-100 transition-opacity" />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
