@@ -75,10 +75,26 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/conferences"
+                  className="text-sm text-gray-600 hover:text-maroon transition-colors"
+                >
+                  Conferences
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/submit"
                   className="text-sm text-gray-600 hover:text-maroon transition-colors"
                 >
                   Submit Paper
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/guides"
+                  className="text-sm text-gray-600 hover:text-maroon transition-colors"
+                >
+                  Research Guides
                 </Link>
               </li>
               <li>
@@ -91,10 +107,10 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/guides"
+                  href="/search"
                   className="text-sm text-gray-600 hover:text-maroon transition-colors"
                 >
-                  Research Guides
+                  Search Repository
                 </Link>
               </li>
             </ul>
