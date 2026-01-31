@@ -171,7 +171,6 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
                 All Events
               </Button>
             </Link>
-            <ShareButton title={event.title} />
           </div>
         </div>
       </div>

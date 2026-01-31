@@ -2,8 +2,8 @@ import { createStorageClient, getSupabaseStorageConfig } from "./client";
 import type { UploadResult, SignedUrlResult } from "../types";
 
 /**
- * Upload a file to Supabase Hot Storage (manuscripts bucket)
- * This is the primary storage for active manuscripts
+ * Upload a file to Supabase Hot Storage (archive bucket)
+ * This is the primary storage for submitted research papers
  */
 export async function uploadToHotStorage(
   file: File | Buffer,

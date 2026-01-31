@@ -73,12 +73,12 @@ export function ShareButton({ url, title, description }: ShareButtonProps) {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 z-[9998]"
+            className="fixed inset-0 z-[9998] bg-black/20 backdrop-blur-sm"
             onClick={() => setShowMenu(false)}
           />
 
-          {/* Share Menu */}
-          <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 py-2 z-[9999]">
+          {/* Share Menu - Top Centered */}
+          <div className="fixed top-24 left-1/2 -translate-x-1/2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 py-2 z-[9999]">
             {/* URL Display */}
             <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
               <p className="text-xs font-medium text-gray-500 mb-1">Share this event</p>
