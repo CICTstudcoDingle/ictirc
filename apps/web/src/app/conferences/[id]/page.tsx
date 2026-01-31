@@ -2,9 +2,10 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Calendar, MapPin, ArrowLeft, Clock, Share2 } from "lucide-react";
+import { Calendar, MapPin, ArrowLeft, Clock } from "lucide-react";
 import { prisma } from "@ictirc/database";
 import { Button, CircuitBackground } from "@ictirc/ui";
+import { ShareButton } from "@/components/events/share-button";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -171,20 +172,7 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
                 All Events
               </Button>
             </Link>
-            <Button
-              variant="ghost"
-              onClick={() => {
-                if (typeof navigator !== "undefined" && navigator.share) {
-                  navigator.share({
-                    title: event.title,
-                    url: window.location.href,
-                  });
-                }
-              }}
-            >
-              <Share2 className="w-4 h-4" />
-              Share
-            </Button>
+            <ShareButton title={event.title} />
           </div>
         </div>
       </div>

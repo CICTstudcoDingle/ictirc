@@ -22,7 +22,7 @@ export function FileUpload({
   onUploadComplete,
   accept = ".pdf",
   maxSizeMB = DEFAULT_MAX_SIZE_MB,
-  bucket = "research-guides",
+  bucket = process.env.NEXT_PUBLIC_SUPABASE_BUCKET_GUIDES || "research guides",
   folder = "guides",
   className,
 }: FileUploadProps) {

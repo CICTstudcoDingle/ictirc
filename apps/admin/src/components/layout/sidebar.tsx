@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createBrowserClient } from "@supabase/ssr";
@@ -14,6 +14,8 @@ import {
   LogOut,
   Menu,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { cn } from "@ictirc/ui";
 
@@ -28,7 +30,24 @@ const navItems = [
 
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
+
+  // Persist collapsed state in localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("sidebar-collapsed");
+    if (saved === "true") {
+      setIsCollapsed(true);
+    }
+  }, []);
+
+  const toggleCollapse = () => {
+    const newState = !isCollapsed;
+    setIsCollapsed(newState);
+    localStorage.setItem("sidebar-collapsed", String(newState));
+    // Dispatch event for layout to respond
+    window.dispatchEvent(new CustomEvent("sidebar-toggle", { detail: { collapsed: newState } }));
+  };
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -52,9 +71,13 @@ export function Sidebar() {
           <Menu className="w-6 h-6" />
         </button>
         <div className="flex items-center gap-2 ml-2">
-          <div className="w-8 h-8 bg-maroon rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">IC</span>
-          </div>
+          <img
+            src="/images/CICT_LOGO.png"
+            alt="CICT Logo"
+            width={32}
+            height={32}
+            className="rounded-lg"
+          />
           <span className="font-bold text-maroon">Admin</span>
         </div>
       </header>
@@ -70,20 +93,30 @@ export function Sidebar() {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col transition-transform duration-200 md:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 flex flex-col transition-all duration-200 md:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
+        style={{ width: isOpen ? 256 : isCollapsed ? 64 : 256 }}
       >
         {/* Logo */}
-        <div className="h-16 flex items-center justify-between gap-3 px-6 border-b border-gray-100">
-          <Link href="/dashboard" className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-maroon rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">IC</span>
-            </div>
-            <div>
-              <h1 className="font-bold text-maroon text-sm">ICTIRC</h1>
-              <p className="text-xs text-gray-400">Admin Panel</p>
-            </div>
+        <div className={cn(
+          "h-16 flex items-center gap-3 border-b border-gray-100",
+          isCollapsed ? "justify-center px-2" : "justify-between px-4"
+        )}>
+          <Link href="/dashboard" className="flex items-center gap-3 overflow-hidden">
+            <img
+              src="/images/CICT_LOGO.png"
+              alt="CICT Logo"
+              width={36}
+              height={36}
+              className="rounded-lg flex-shrink-0"
+            />
+            {!isCollapsed && (
+              <div className="overflow-hidden">
+                <h1 className="font-bold text-maroon text-sm whitespace-nowrap">ICTIRC</h1>
+                <p className="text-xs text-gray-400 whitespace-nowrap">Admin Panel</p>
+              </div>
+            )}
           </Link>
           {/* Mobile close button */}
           <button
@@ -96,7 +129,7 @@ export function Sidebar() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 p-2 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const isActive =
               pathname === item.href ||
@@ -107,23 +140,55 @@ export function Sidebar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className={cn("sidebar-link", isActive && "active")}
+                title={isCollapsed ? item.label : undefined}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-maroon/5 text-maroon"
+                    : "text-gray-600 hover:bg-gray-100",
+                  isCollapsed && "justify-center px-2"
+                )}
               >
-                <item.icon className="w-5 h-5" />
-                {item.label}
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                {!isCollapsed && <span>{item.label}</span>}
               </Link>
             );
           })}
         </nav>
 
+        {/* Collapse Toggle (Desktop only) */}
+        <div className="hidden md:block p-2 border-t border-gray-100">
+          <button
+            onClick={toggleCollapse}
+            className={cn(
+              "flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100 transition-colors",
+              isCollapsed && "justify-center px-2"
+            )}
+            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {isCollapsed ? (
+              <ChevronRight className="w-5 h-5" />
+            ) : (
+              <>
+                <ChevronLeft className="w-5 h-5" />
+                <span>Collapse</span>
+              </>
+            )}
+          </button>
+        </div>
+
         {/* Sign Out */}
-        <div className="p-4 border-t border-gray-100">
+        <div className="p-2 border-t border-gray-100">
           <button
             onClick={handleSignOut}
-            className="sidebar-link w-full text-red-600 hover:bg-red-50 hover:text-red-700"
+            title={isCollapsed ? "Sign Out" : undefined}
+            className={cn(
+              "flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors",
+              isCollapsed && "justify-center px-2"
+            )}
           >
-            <LogOut className="w-5 h-5" />
-            Sign Out
+            <LogOut className="w-5 h-5 flex-shrink-0" />
+            {!isCollapsed && <span>Sign Out</span>}
           </button>
         </div>
       </aside>
