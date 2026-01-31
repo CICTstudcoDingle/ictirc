@@ -568,7 +568,7 @@ export default function SubmitPage() {
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <p className="text-sm text-gray-500 mb-1">Category</p>
                   <p className="font-medium text-gray-900">
-                    {formData.category || "Not selected"}
+                    {categories.find((c) => c.id === formData.categoryId)?.name || "Not selected"}
                   </p>
                 </div>
 
