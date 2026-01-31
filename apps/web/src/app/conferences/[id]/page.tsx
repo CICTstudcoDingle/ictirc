@@ -75,21 +75,8 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
   return (
     <div className="pt-14 md:pt-16 min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#800000] via-[#4a0000] to-[#800000] overflow-hidden">
         <CircuitBackground variant="default" />
-
-        {/* Hero Image */}
-        {event.imageUrl && (
-          <div className="absolute inset-0 z-0">
-            <Image
-              src={event.imageUrl}
-              alt={event.title}
-              fill
-              className="object-cover opacity-30"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent" />
-          </div>
-        )}
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
           {/* Back Button */}
@@ -126,7 +113,7 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
           </h1>
 
           {/* Meta Info */}
-          <div className="flex flex-wrap gap-6 text-gray-300">
+          <div className="flex flex-wrap gap-6 text-gray-300 mb-6">
             <div className="flex items-center gap-2">
               <Calendar className="w-5 h-5 text-gold" />
               <span>{formatDateRange(event.startDate, event.endDate)}</span>
@@ -137,6 +124,15 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
                 <span>{event.location}</span>
               </div>
             )}
+          </div>
+
+          {/* Share Button */}
+          <div className="mb-8">
+            <ShareButton
+              url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://ictirc.com'}/conferences/${event.id}`}
+              title={event.title}
+              description={event.description.length > 160 ? event.description.slice(0, 160) + '...' : event.description}
+            />
           </div>
         </div>
       </section>

@@ -17,6 +17,15 @@ const nextConfig: NextConfig = {
     "@ictirc/seo",
     "@ictirc/email",
   ],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lydwljxqxjucpixkyjzp.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

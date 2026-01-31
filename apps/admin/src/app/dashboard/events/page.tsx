@@ -10,6 +10,7 @@ import {
   X,
   Edit,
 } from "lucide-react";
+import { ImageUpload } from "@/components/upload/image-upload";
 
 interface Event {
   id: string;
@@ -304,14 +305,12 @@ export default function EventsPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Image URL
+                  Event Image
                 </label>
-                <input
-                  type="url"
+                <ImageUpload
                   value={formData.imageUrl}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                  placeholder="https://..."
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon"
+                  onUpload={(url) => setFormData({ ...formData, imageUrl: url })}
+                  onRemove={() => setFormData({ ...formData, imageUrl: "" })}
                 />
               </div>
               <div className="flex items-center gap-2">

@@ -15,7 +15,7 @@ export interface SupabaseStorageConfig {
 export function getSupabaseStorageConfig(): SupabaseStorageConfig {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const bucketName = process.env.NEXT_PUBLIC_SUPABASE_BUCKET_HOT || "manuscripts";
+  const bucketName = process.env.NEXT_PUBLIC_SUPABASE_BUCKET_HOT || "archive";
 
   if (!url || !anonKey) {
     throw new Error(
