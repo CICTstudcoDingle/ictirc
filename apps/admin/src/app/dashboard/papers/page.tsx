@@ -1,56 +1,113 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Plus, Search, Filter, MoreHorizontal } from "lucide-react";
+import { Plus, Search, Filter, MoreHorizontal, Eye, Edit, Trash2, ExternalLink } from "lucide-react";
 import { Button, Input, Badge } from "@ictirc/ui";
+import { useToastActions } from "@/lib/toast";
 
-// Mock data - will be fetched from database
-const papers = [
-  {
-    id: "1",
-    title: "Machine Learning Approaches for Network Intrusion Detection",
-    authors: "Juan Dela Cruz, Maria Santos",
-    category: "Cybersecurity",
-    status: "PUBLISHED",
-    doi: "10.ISUFST.CICT/2024.00001",
-    createdAt: "2024-01-15",
-  },
-  {
-    id: "2",
-    title: "Blockchain-based Academic Credential Verification",
-    authors: "Pedro Garcia",
-    category: "Blockchain",
-    status: "PUBLISHED",
-    doi: "10.ISUFST.CICT/2024.00002",
-    createdAt: "2024-01-20",
-  },
-  {
-    id: "3",
-    title: "Natural Language Processing for Filipino Sentiment Analysis",
-    authors: "Ana Reyes, Carlos Bautista, Lisa Mendoza",
-    category: "NLP",
-    status: "UNDER_REVIEW",
-    doi: null,
-    createdAt: "2024-01-25",
-  },
-  {
-    id: "4",
-    title: "Smart Agriculture: IoT-based Crop Monitoring System",
-    authors: "Ricardo Villanueva",
-    category: "IoT",
-    status: "ACCEPTED",
-    doi: null,
-    createdAt: "2024-01-28",
-  },
-];
+interface Author {
+  id: string;
+  name: string;
+  email: string;
+}
 
-const statusMap = {
-  SUBMITTED: "submitted",
-  UNDER_REVIEW: "under_review",
-  ACCEPTED: "accepted",
-  PUBLISHED: "published",
-  REJECTED: "rejected",
+interface Paper {
+  id: string;
+  title: string;
+  abstract: string;
+  status: string;
+  doi: string | null;
+  rawFileUrl: string | null;
+  createdAt: string;
+  publishedAt: string | null;
+  category: {
+    id: string;
+    name: string;
+  } | null;
+  authors: Array<{
+    author: Author;
+    order: number;
+  }>;
+}
+
+const statusColors = {
+  SUBMITTED: "bg-blue-100 text-blue-700",
+  UNDER_REVIEW: "bg-yellow-100 text-yellow-700",
+  ACCEPTED: "bg-green-100 text-green-700",
+  PUBLISHED: "bg-purple-100 text-purple-700",
+  REJECTED: "bg-red-100 text-red-700",
 } as const;
 
 export default function PapersPage() {
+  const toast = useToastActions();
+  const [papers, setPapers] = useState<Paper[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    fetchPapers();
+  }, []);
+
+  async function fetchPapers() {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/papers");
+      if (response.ok) {
+        const data = await response.json();
+        setPapers(data.papers || []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch papers:", error);
+      toast.error("Error", "Failed to load papers");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleStatusChange(paperId: string, newStatus: string) {
+    try {
+      const response = await fetch("/api/papers", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: paperId, status: newStatus }),
+      });
+
+      if (response.ok) {
+        toast.success("Status Updated", "Paper status has been changed");
+        fetchPapers();
+      } else {
+        toast.error("Error", "Failed to update status");
+      }
+    } catch (error) {
+      toast.error("Error", "An unexpected error occurred");
+    }
+  }
+
+  async function handleDelete(paper: Paper) {
+    if (!confirm(`Are you sure you want to delete "${paper.title}"?`)) return;
+
+    try {
+      const response = await fetch(`/api/papers?id=${paper.id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        toast.success("Paper Deleted", `"${paper.title}" has been removed`);
+        fetchPapers();
+      } else {
+        toast.error("Error", "Failed to delete paper");
+      }
+    } catch (error) {
+      toast.error("Error", "An unexpected error occurred");
+    }
+  }
+
+  const filteredPapers = papers.filter((paper) =>
+    paper.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    paper.abstract.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       {/* Header */}
@@ -73,82 +130,125 @@ export default function PapersPage() {
             type="search"
             placeholder="Search papers..."
             className="pl-10"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <Button variant="secondary">
-          <Filter className="w-4 h-4" />
-          Filters
-        </Button>
       </div>
 
       {/* Table */}
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
-            <tr>
-              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Paper
-              </th>
-              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Category
-              </th>
-              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                DOI
-              </th>
+        {loading ? (
+          <div className="p-8 text-center text-gray-500">Loading papers...</div>
+        ) : filteredPapers.length === 0 ? (
+          <div className="p-8 text-center text-gray-500">
+            {searchTerm ? "No papers found matching your search" : "No papers submitted yet"}
+          </div>
+        ) : (
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Paper
+                </th>
+                <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Category
+                </th>
+                <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  DOI
+                </th>
               <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Date
               </th>
-              <th className="w-12"></th>
+              <th className="w-32 text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {papers.map((paper) => (
-              <tr key={paper.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4">
-                  <Link
-                    href={`/dashboard/papers/${paper.id}`}
-                    className="block"
-                  >
-                    <p className="font-medium text-gray-900 hover:text-maroon transition-colors line-clamp-1">
-                      {paper.title}
-                    </p>
-                    <p className="text-sm text-gray-500 mt-0.5 line-clamp-1">
-                      {paper.authors}
-                    </p>
-                  </Link>
-                </td>
-                <td className="px-6 py-4">
-                  <span className="text-sm text-gray-600">{paper.category}</span>
-                </td>
-                <td className="px-6 py-4">
-                  <Badge status={statusMap[paper.status as keyof typeof statusMap]}>
-                    {paper.status.replace("_", " ")}
-                  </Badge>
-                </td>
-                <td className="px-6 py-4">
-                  {paper.doi ? (
-                    <span className="font-mono text-xs text-gray-600">
-                      {paper.doi}
+            {filteredPapers.map((paper) => {
+              const authorNames = paper.authors.map(a => a.author.name).join(", ");
+              return (
+                <tr key={paper.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    <div>
+                      <p className="font-medium text-gray-900 line-clamp-1">
+                        {paper.title}
+                      </p>
+                      <p className="text-sm text-gray-500 mt-0.5 line-clamp-1">
+                        {authorNames}
+                      </p>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="text-sm text-gray-600">
+                      {paper.category?.name || "—"}
                     </span>
-                  ) : (
-                    <span className="text-xs text-gray-400">—</span>
-                  )}
-                </td>
-                <td className="px-6 py-4">
-                  <span className="text-sm text-gray-500">{paper.createdAt}</span>
-                </td>
-                <td className="px-6 py-4">
-                  <button className="p-1 hover:bg-gray-100 rounded">
-                    <MoreHorizontal className="w-4 h-4 text-gray-400" />
-                  </button>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="px-6 py-4">
+                    <select
+                      value={paper.status}
+                      onChange={(e) => handleStatusChange(paper.id, e.target.value)}
+                      className={`text-xs px-2 py-1 rounded-full border-0 font-medium ${statusColors[paper.status as keyof typeof statusColors]}`}
+                    >
+                      <option value="SUBMITTED">SUBMITTED</option>
+                      <option value="UNDER_REVIEW">UNDER REVIEW</option>
+                      <option value="ACCEPTED">ACCEPTED</option>
+                      <option value="PUBLISHED">PUBLISHED</option>
+                      <option value="REJECTED">REJECTED</option>
+                    </select>
+                  </td>
+                  <td className="px-6 py-4">
+                    {paper.doi ? (
+                      <a
+                        href={`https://doi.org/${paper.doi}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-mono text-xs text-blue-600 hover:underline flex items-center gap-1"
+                      >
+                        {paper.doi}
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    ) : (
+                      <span className="text-xs text-gray-400">—</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="text-sm text-gray-500">
+                      {new Date(paper.createdAt).toLocaleDateString()}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      {paper.rawFileUrl && (
+                        <a
+                          href={paper.rawFileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 hover:bg-blue-50 text-blue-600 rounded transition-colors"
+                          title="View paper"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </a>
+                      )}
+                      <button
+                        onClick={() => handleDelete(paper)}
+                        className="p-1.5 hover:bg-red-50 text-red-600 rounded transition-colors"
+                        title="Delete paper"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
+        )}
       </div>
     </div>
   );

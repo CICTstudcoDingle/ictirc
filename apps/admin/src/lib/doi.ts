@@ -1,3 +1,5 @@
+import { prisma } from "@ictirc/database";
+
 /**
  * Generates a DOI in the format: 10.ISUFST.CICT/[YEAR].[SERIAL]
  * Example: 10.ISUFST.CICT/2024.00001
@@ -5,6 +7,27 @@
 export function generateDOI(year: number, serialNumber: number): string {
   const paddedSerial = serialNumber.toString().padStart(5, "0");
   return `10.ISUFST.CICT/${year}.${paddedSerial}`;
+}
+
+/**
+ * Generates a new DOI by incrementing the database counter
+ */
+export async function generateDoi(): Promise<string> {
+  const currentYear = new Date().getFullYear();
+
+  // Upsert the counter for current year
+  const sequence = await prisma.doiSequence.upsert({
+    where: { year: currentYear },
+    update: {
+      count: { increment: 1 },
+    },
+    create: {
+      year: currentYear,
+      count: 1,
+    },
+  });
+
+  return generateDOI(currentYear, sequence.count);
 }
 
 /**
