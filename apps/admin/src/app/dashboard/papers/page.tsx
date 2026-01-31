@@ -223,17 +223,13 @@ export default function PapersPage() {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      {paper.rawFileUrl && (
-                        <a
-                          href={paper.rawFileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1.5 hover:bg-blue-50 text-blue-600 rounded transition-colors"
-                          title="View paper"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </a>
-                      )}
+                      <Link
+                        href={`/dashboard/papers/${paper.id}`}
+                        className="p-1.5 hover:bg-blue-50 text-blue-600 rounded transition-colors"
+                        title="Review paper"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Link>
                       <button
                         onClick={() => handleDelete(paper)}
                         className="p-1.5 hover:bg-red-50 text-red-600 rounded transition-colors"
