@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, BookOpen, Users, Award } from "lucide-react";
+import { ArrowRight, BookOpen, Users, Award, FileCheck, Zap } from "lucide-react";
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { UpcomingEventCard } from "@/components/events/upcoming-event-card";
 
@@ -92,31 +92,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 md:py-16 border-y border-gray-100 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            <div className="text-center">
-              <p className="text-2xl md:text-4xl font-bold text-maroon">500+</p>
-              <p className="text-xs md:text-sm text-gray-600 mt-1">Published Papers</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl md:text-4xl font-bold text-maroon">200+</p>
-              <p className="text-xs md:text-sm text-gray-600 mt-1">Researchers</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl md:text-4xl font-bold text-maroon">15+</p>
-              <p className="text-xs md:text-sm text-gray-600 mt-1">Categories</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl md:text-4xl font-bold text-gold">2024</p>
-              <p className="text-xs md:text-sm text-gray-600 mt-1">Established</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
+      {/* Why Publish With Us - Merged Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 md:mb-12">
@@ -124,41 +100,61 @@ export default function HomePage() {
               Why Publish With Us?
             </h2>
             <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
-              ICTIRC provides a rigorous peer-review process and global visibility
-              for your ICT research.
+              Advancing ICT research in the Philippines through rigorous standards and global reach
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-4 md:gap-8">
-            <Link href="/about" className="paper-card p-4 md:p-6 hover:border-maroon/30 transition-colors">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-maroon/10 rounded-lg flex items-center justify-center mb-3 md:mb-4">
-                <BookOpen className="w-5 h-5 md:w-6 md:h-6 text-maroon" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {/* Rigorous Peer Review */}
+            <div className="paper-card p-5 md:p-6 text-center hover:shadow-lg transition-all hover:border-maroon/30">
+              <div className="w-12 h-12 md:w-14 md:h-14 bg-maroon/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="w-6 h-6 md:w-7 md:h-7 text-maroon" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Peer-Reviewed</h3>
+              <h3 className="font-semibold text-gray-900 mb-2 text-base md:text-lg">
+                Rigorous Peer Review
+              </h3>
               <p className="text-sm text-gray-600">
-                All submissions undergo rigorous double-blind peer review by
-                experts in the field.
+                Double-blind review by field experts ensuring the highest quality standards
               </p>
-            </Link>
-            <Link href="/about" className="paper-card p-4 md:p-6 hover:border-maroon/30 transition-colors">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-gold/20 rounded-lg flex items-center justify-center mb-3 md:mb-4">
-                <Award className="w-5 h-5 md:w-6 md:h-6 text-amber-700" />
+            </div>
+
+            {/* DOI Assignment */}
+            <div className="paper-card p-5 md:p-6 text-center hover:shadow-lg transition-all hover:border-gold/40">
+              <div className="w-12 h-12 md:w-14 md:h-14 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Award className="w-6 h-6 md:w-7 md:h-7 text-amber-700" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">DOI Assigned</h3>
+              <h3 className="font-semibold text-gray-900 mb-2 text-base md:text-lg">
+                DOI Assignment
+              </h3>
               <p className="text-sm text-gray-600">
-                Every published paper receives a unique Digital Object Identifier
-                for permanent citation.
+                Permanent digital identifier for citations and academic credibility
               </p>
-            </Link>
-            <Link href="/about" className="paper-card p-4 md:p-6 hover:border-maroon/30 transition-colors">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-maroon/10 rounded-lg flex items-center justify-center mb-3 md:mb-4">
-                <Users className="w-5 h-5 md:w-6 md:h-6 text-maroon" />
+            </div>
+
+            {/* Global Indexing */}
+            <div className="paper-card p-5 md:p-6 text-center hover:shadow-lg transition-all hover:border-maroon/30">
+              <div className="w-12 h-12 md:w-14 md:h-14 bg-maroon/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-6 h-6 md:w-7 md:h-7 text-maroon" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Global Visibility</h3>
+              <h3 className="font-semibold text-gray-900 mb-2 text-base md:text-lg">
+                Global Indexing
+              </h3>
               <p className="text-sm text-gray-600">
-                Papers are indexed on Google Scholar and major academic databases
-                for maximum reach.
+                Listed on Google Scholar and major academic databases for maximum reach
               </p>
-            </Link>
+            </div>
+
+            {/* Fast Publication */}
+            <div className="paper-card p-5 md:p-6 text-center hover:shadow-lg transition-all hover:border-gold/40">
+              <div className="w-12 h-12 md:w-14 md:h-14 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Zap className="w-6 h-6 md:w-7 md:h-7 text-amber-700" />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2 text-base md:text-lg">
+                Fast Publication
+              </h3>
+              <p className="text-sm text-gray-600">
+                Average 30-day review cycle from submission to decision
+              </p>
+            </div>
           </div>
         </div>
       </section>

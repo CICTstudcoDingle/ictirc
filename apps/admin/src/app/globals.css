@@ -21,5 +21,9 @@
 
   .sidebar-link.active {
     @apply bg-maroon/10 text-maroon font-medium;
-  }  
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }

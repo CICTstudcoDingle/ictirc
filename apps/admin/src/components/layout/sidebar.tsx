@@ -8,7 +8,7 @@ import {
   LayoutDashboard,
   FileText,
   Users,
-  FolderOpen,
+  Calendar,
   ScrollText,
   Settings,
   LogOut,
@@ -20,8 +20,8 @@ import { cn } from "@ictirc/ui";
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/papers", label: "Papers", icon: FileText },
-  { href: "/dashboard/authors", label: "Authors", icon: Users },
-  { href: "/dashboard/categories", label: "Categories", icon: FolderOpen },
+  { href: "/dashboard/users", label: "Users", icon: Users },
+  { href: "/dashboard/events", label: "Events", icon: Calendar },
   { href: "/dashboard/audit-logs", label: "Audit Logs", icon: ScrollText },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];

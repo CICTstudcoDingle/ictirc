@@ -1,41 +1,28 @@
 "use client";
 
-import { Sidebar } from "@ictirc/ui";
-import { createBrowserClient } from "@supabase/ssr";
-import { useRouter } from "next/navigation";
+import { Sidebar } from "../../components/layout/sidebar";
+import { AdminBottomNav } from "../../components/layout/bottom-nav";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push("/login");
-  };
-
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
-      {/* Sidebar - Desktop */}
-      <div className="hidden md:block h-full shadow-lg z-10">
-        <Sidebar className="h-full border-r border-gray-200" onLogout={handleLogout} />
-      </div>
+      {/* Sidebar - Desktop & Mobile Drawer */}
+      <Sidebar />
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto relative">
-        {/* Mobile Header / Toggle would go here or be part of a mobile sidebar implementation 
-             For now, relying on Sidebar's desktop nature as per request "sidebar on left"
-         */}
-        <div className="p-4 md:p-8 min-h-full">
+        {/* Mobile spacing for fixed header */}
+        <div className="p-4 md:p-8 min-h-full pt-16 md:pt-4 pb-20 md:pb-8">
           {children}
         </div>
       </main>
+
+      {/* Bottom Navigation - Mobile Only */}
+      <AdminBottomNav />
     </div>
   );
 }
