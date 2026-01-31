@@ -149,6 +149,8 @@ export function ReviewerAssignment({ paperId, currentReviewers }: ReviewerAssign
               <button
                 onClick={() => setShowAddModal(false)}
                 className="p-1 hover:bg-gray-100 rounded transition-colors"
+                title="Close"
+                aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
               </button>

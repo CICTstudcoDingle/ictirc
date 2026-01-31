@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ReviewComments } from '@/components/papers/review-comments';
 import { ReviewerAssignment } from '@/components/papers/reviewer-assignment';
 import { StatusControl } from '@/components/papers/status-control';
+import { PublishButton } from '@/components/papers/publish-button';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -64,7 +65,16 @@ export default async function PaperDetailPage({ params }: PageProps) {
               <ArrowLeft className="w-5 h-5" />
               Back to Papers
             </Link>
-            <StatusControl paperId={paper.id} currentStatus={paper.status} />
+            <div className="flex items-center gap-3">
+              {paper.status !== 'PUBLISHED' && (
+                <PublishButton
+                  paperId={paper.id}
+                  hasFile={!!paper.rawFileUrl}
+                  isDocx={!!paper.rawFileUrl?.toLowerCase().match(/\.docx?$/)}
+                />
+              )}
+              <StatusControl paperId={paper.id} currentStatus={paper.status} />
+            </div>
           </div>
         </div>
       </div>

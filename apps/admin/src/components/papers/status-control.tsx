@@ -94,6 +94,7 @@ export function StatusControl({ paperId, currentStatus }: StatusControlProps) {
           value={status}
           onChange={(e) => handleStatusSelect(e.target.value as PaperStatus)}
           disabled={isUpdating}
+          aria-label="Change paper status"
           className={`px-3 py-1.5 rounded-lg text-sm font-medium border-0 cursor-pointer transition-colors ${
             currentOption?.color || 'bg-gray-100 text-gray-800'
           } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -166,6 +167,8 @@ export function StatusControl({ paperId, currentStatus }: StatusControlProps) {
               <button
                 onClick={() => setShowToast(false)}
                 className="p-1 hover:bg-gray-100 rounded transition-colors"
+                title="Close"
+                aria-label="Close notification"
               >
                 <X className="w-4 h-4 text-gray-500" />
               </button>

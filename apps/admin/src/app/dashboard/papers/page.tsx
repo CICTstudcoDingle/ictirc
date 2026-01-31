@@ -192,6 +192,7 @@ export default function PapersPage() {
                     <select
                       value={paper.status}
                       onChange={(e) => handleStatusChange(paper.id, e.target.value)}
+                      aria-label="Change paper status"
                       className={`text-xs px-2 py-1 rounded-full border-0 font-medium ${statusColors[paper.status as keyof typeof statusColors]}`}
                     >
                       <option value="SUBMITTED">SUBMITTED</option>

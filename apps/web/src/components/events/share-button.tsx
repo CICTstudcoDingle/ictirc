@@ -56,7 +56,7 @@ export function ShareButton({ url, title, description }: ShareButtonProps) {
       <button
         onClick={() => {
           // Try native share on mobile first
-          if (typeof navigator !== "undefined" && navigator.share) {
+          if (typeof navigator !== 'undefined' && 'share' in navigator) {
             handleNativeShare();
           } else {
             setShowMenu(!showMenu);

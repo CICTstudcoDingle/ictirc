@@ -4,27 +4,8 @@ import { ArrowLeft, Calendar, Users, FileText } from "lucide-react";
 import { Badge } from "@ictirc/ui";
 import { generatePaperMetadata, generatePaperJsonLd } from "@ictirc/seo";
 import { PaperActions } from "@/components/papers/paper-actions";
-
-// Mock data - will be fetched from database
-const mockPaper = {
-  id: "1",
-  title: "Machine Learning Approaches for Network Intrusion Detection in IoT Environments",
-  abstract: `This paper presents a comprehensive study of machine learning techniques for detecting network intrusions in Internet of Things environments. We evaluate multiple algorithms including Random Forest, XGBoost, and deep learning models on benchmark datasets.
-
-Our experimental results demonstrate that ensemble methods achieve superior performance with an F1-score of 0.94, while maintaining computational efficiency suitable for resource-constrained IoT devices. We also propose a novel feature selection technique that reduces dimensionality by 60% without significant loss in detection accuracy.
-
-The findings contribute to the growing body of knowledge in IoT security and provide practical guidelines for implementing ML-based intrusion detection systems in real-world scenarios.`,
-  keywords: ["Machine Learning", "IoT Security", "Intrusion Detection", "Network Security", "Deep Learning"],
-  authors: [
-    { name: "Juan Dela Cruz", affiliation: "ISUFST - CICT" },
-    { name: "Maria Santos", affiliation: "ISUFST - CICT" },
-  ],
-  category: "Cybersecurity",
-  publishedAt: new Date("2024-06-15"),
-  doi: "10.ISUFST.CICT/2024.00001",
-  status: "PUBLISHED" as const,
-  pdfUrl: "/papers/sample.pdf",
-};
+import { prisma } from "@ictirc/database";
+import { notFound } from "next/navigation";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -32,18 +13,39 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const paper = mockPaper;
+  
+  const paper = await prisma.paper.findUnique({
+    where: { id, status: "PUBLISHED" },
+    include: {
+      category: true,
+      authors: {
+        include: { author: true },
+        orderBy: { order: "asc" },
+      },
+    },
+  });
+
+  if (!paper) {
+    return {
+      title: "Paper Not Found",
+    };
+  }
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ictirc.org";
+
+  const authors = paper.authors.map(pa => ({
+    name: pa.author.name,
+    affiliation: pa.author.affiliation || undefined,
+  }));
 
   return generatePaperMetadata(
     {
       title: paper.title,
       abstract: paper.abstract,
-      authors: paper.authors,
+      authors,
       keywords: paper.keywords,
-      doi: paper.doi,
-      publishedAt: paper.publishedAt,
-      pdfUrl: paper.pdfUrl ? `${baseUrl}${paper.pdfUrl}` : undefined,
+      doi: paper.doi || undefined,
+      publishedAt: paper.publishedAt || undefined,
+      pdfUrl: paper.pdfUrl ? paper.pdfUrl : undefined,
     },
     baseUrl
   );
@@ -51,17 +53,36 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function PaperDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const paper = mockPaper;
+  
+  const paper = await prisma.paper.findUnique({
+    where: { id, status: "PUBLISHED" },
+    include: {
+      category: true,
+      authors: {
+        include: { author: true },
+        orderBy: { order: "asc" },
+      },
+    },
+  });
+
+  if (!paper) {
+    notFound();
+  }
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ictirc.org";
+
+  const authors = paper.authors.map(pa => ({
+    name: pa.author.name,
+    affiliation: pa.author.affiliation || undefined,
+  }));
 
   const jsonLd = generatePaperJsonLd(
     {
       title: paper.title,
       abstract: paper.abstract,
-      authors: paper.authors,
+      authors,
       keywords: paper.keywords,
-      doi: paper.doi,
-      publishedAt: paper.publishedAt,
+      doi: paper.doi || undefined,
+      publishedAt: paper.publishedAt || undefined,
     },
     `${baseUrl}/archive/${id}`
   );
@@ -94,9 +115,9 @@ export default async function PaperDetailPage({ params }: PageProps) {
           <div className="p-4 sm:p-8 border-b border-gray-100">
             <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-4">
               <span className="text-xs md:text-sm font-medium text-maroon uppercase tracking-wide">
-                {paper.category}
+                {paper.category.name}
               </span>
-              <Badge status="published">{paper.status}</Badge>
+              <Badge status="published">PUBLISHED</Badge>
             </div>
 
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-4">
@@ -106,12 +127,12 @@ export default async function PaperDetailPage({ params }: PageProps) {
             {/* Authors */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
               <Users className="w-4 h-4 text-gray-400" />
-              {paper.authors.map((author, i) => (
-                <span key={author.name} className="text-gray-700 text-sm md:text-base">
-                  {author.name}
-                  {author.affiliation && (
+              {paper.authors.map((pa, i) => (
+                <span key={pa.id} className="text-gray-700 text-sm md:text-base">
+                  {pa.author.name}
+                  {pa.author.affiliation && (
                     <span className="text-gray-400 text-xs md:text-sm">
-                      {" "}({author.affiliation})
+                      {" "}({pa.author.affiliation})
                     </span>
                   )}
                   {i < paper.authors.length - 1 && ", "}
@@ -144,8 +165,8 @@ export default async function PaperDetailPage({ params }: PageProps) {
 
           {/* Actions */}
           <PaperActions
-            pdfUrl={paper.pdfUrl}
-            citation={`${paper.authors.map(a => a.name).join(", ")} (${paper.publishedAt?.getFullYear()}). ${paper.title}. ICTIRC. DOI: ${paper.doi}`}
+            pdfUrl={paper.pdfUrl || undefined}
+            citation={`${paper.authors.map(pa => pa.author.name).join(", ")} (${paper.publishedAt?.getFullYear() || new Date().getFullYear()}). ${paper.title}. ICTIRC. DOI: ${paper.doi || "pending"}`}
           />
 
           {/* Abstract */}

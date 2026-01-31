@@ -13,7 +13,7 @@ export default function AboutPage() {
             About ICTIRC
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-            The Information and Communication Technology International Research
+            The Information and Communications Technology International Research
             Conference is a premier venue for ICT research publication.
           </p>
         </div>
@@ -29,7 +29,7 @@ export default function AboutPage() {
             <p>
               ICTIRC aims to provide a high-quality, peer-reviewed platform for
               researchers, academics, and practitioners to share their innovations
-              in information and communication technology.
+              in information and communications technology.
             </p>
             <p>
               Hosted by the Iloilo State University of Fisheries Science and Technology 

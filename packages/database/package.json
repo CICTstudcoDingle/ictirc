@@ -24,7 +24,8 @@
     }
   },
   "dependencies": {
-    "@prisma/client": "6.3.0"
+    "@prisma/client": "6.3.0",
+    "cloudconvert": "^3.0.0"
   },
   "devDependencies": {
     "prisma": "6.3.0",
