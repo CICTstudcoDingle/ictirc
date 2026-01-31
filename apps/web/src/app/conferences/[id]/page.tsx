@@ -34,11 +34,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 function formatDate(date: Date): string {
-  return new Date(date).toLocaleDateString("en-US", {
+  // Use UTC methods to avoid timezone shifts
+  const d = new Date(date);
+  return d.toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
+    timeZone: "UTC", // Force UTC to match database storage
   });
 }
 
