@@ -35,7 +35,7 @@ export default function HomePage() {
                 <p className="text-sm font-medium text-gold">ISUFST - CICT</p>
                 <p className="text-xs text-gray-400">Dingle Campus</p>
               </div>
-              <div className="hidden sm:flex items-center gap-2 ml-auto">
+              <div className="flex items-center gap-2 ml-auto">
                 <Image
                   src="/images/UB LOGO (1).png"
                   alt="Universitas Brawijaya Logo"
@@ -43,7 +43,7 @@ export default function HomePage() {
                   height={48}
                   className="w-10 h-10 md:w-12 md:h-12"
                 />
-                <div>
+                <div className="hidden sm:block">
                   <p className="text-xs font-medium text-gold">Partner University</p>
                   <p className="text-xs text-gray-400">Universitas Brawijaya</p>
                 </div>
@@ -89,8 +89,10 @@ export default function HomePage() {
             </div>
           </div>
           
-          {/* Desktop Floating Event Card - positioned absolutely within hero */}
-          <UpcomingEventCard />
+          {/* Desktop Floating Event Card - positioned absolutely within hero, hidden on mobile */}
+          <div className="hidden lg:block">
+            <UpcomingEventCard />
+          </div>
         </div>
       </section>
 

@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@ictirc/database";
+import { prisma } from "@ictirc/database/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";

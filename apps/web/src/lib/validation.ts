@@ -41,7 +41,7 @@ export const paperDetailsSchema = z.object({
       { message: "Please provide at least 3 keywords (comma-separated)" }
     ),
   
-  category: z
+  categoryId: z
     .string()
     .min(1, "Please select a category"),
 });

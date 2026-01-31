@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { Upload, FileText, X, ChevronRight, AlertCircle, CheckCircle2 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Upload, FileText, X, ChevronRight, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import { Button, Input, Card, CardContent, CardHeader, CardTitle, CircuitBackground } from "@ictirc/ui";
 import {
   paperDetailsSchema,
@@ -10,27 +10,24 @@ import {
   type AuthorFormData,
 } from "@/lib/validation";
 import { useToast } from "@/lib/use-toast";
+import { submitPaper, getCategories } from "./actions/submit-paper";
 
-const categories = [
-  "Artificial Intelligence & Machine Learning",
-  "Cybersecurity",
-  "Data Science & Analytics",
-  "Internet of Things (IoT)",
-  "Blockchain Technology",
-  "Natural Language Processing",
-  "Computer Vision",
-  "Software Engineering",
-  "Network & Communications",
-  "Human-Computer Interaction",
-];
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+}
 
 export default function SubmitPage() {
   const [step, setStep] = useState(1);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
     abstract: "",
     keywords: "",
-    category: "",
+    categoryId: "",
     authors: [{ name: "", email: "", affiliation: "" }] as AuthorFormData[],
   });
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -39,6 +36,25 @@ export default function SubmitPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { showToast } = useToast();
+
+  // Fetch categories from database on mount
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const result = await getCategories();
+        if (result.success && result.categories) {
+          setCategories(result.categories);
+        } else {
+          console.error("Failed to load categories:", result.error);
+        }
+      } catch (error) {
+        console.error("Error loading categories:", error);
+      } finally {
+        setCategoriesLoading(false);
+      }
+    }
+    loadCategories();
+  }, []);
 
   const addAuthor = () => {
     setFormData({
@@ -138,15 +154,29 @@ export default function SubmitPage() {
         return;
       }
 
-      // TODO: Implement actual submission to backend
-      // This is a placeholder for the actual API call
-      // await fetch('/api/submit-paper', {
-      //   method: 'POST',
-      //   body: formData with file upload
-      // });
+      if (!uploadedFile) {
+        showToast("Please upload your manuscript file", "error");
+        setIsSubmitting(false);
+        return;
+      }
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Build FormData for server action
+      const submitFormData = new FormData();
+      submitFormData.append("title", formData.title);
+      submitFormData.append("abstract", formData.abstract);
+      submitFormData.append("keywords", formData.keywords);
+      submitFormData.append("categoryId", formData.categoryId);
+      submitFormData.append("authors", JSON.stringify(formData.authors));
+      submitFormData.append("file", uploadedFile);
+
+      // Call the server action
+      const result = await submitPaper(submitFormData);
+
+      if (!result.success) {
+        showToast(result.error || "Submission failed. Please try again.", "error");
+        setIsSubmitting(false);
+        return;
+      }
 
       // Success
       showToast("Paper submitted successfully! You will receive a confirmation email shortly.", "success");
@@ -157,7 +187,7 @@ export default function SubmitPage() {
           title: "",
           abstract: "",
           keywords: "",
-          category: "",
+          categoryId: "",
           authors: [{ name: "", email: "", affiliation: "" }],
         });
         setUploadedFile(null);
@@ -309,19 +339,20 @@ export default function SubmitPage() {
                 </label>
                 <select
                   id="category-select"
-                  className={`w-full px-4 py-3 rounded-lg bg-gray-50 border-b-2 ${errors.category ? "border-red-500" : "border-gray-300"
+                  className={`w-full px-4 py-3 rounded-lg bg-gray-50 border-b-2 ${errors.categoryId ? "border-red-500" : "border-gray-300"
                     } focus:border-maroon focus:outline-none`}
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  value={formData.categoryId}
+                  onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+                  disabled={categoriesLoading}
                 >
-                  <option value="">Select a category</option>
+                  <option value="">{categoriesLoading ? "Loading categories..." : "Select a category"}</option>
                   {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
                     </option>
                   ))}
                 </select>
-                <ErrorMessage message={errors.category} />
+                <ErrorMessage message={errors.categoryId} />
               </div>
 
               <div className="pt-4">
