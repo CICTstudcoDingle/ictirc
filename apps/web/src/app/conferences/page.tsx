@@ -5,6 +5,8 @@ import { Calendar, MapPin, ArrowRight, Clock } from "lucide-react";
 import { prisma } from "@ictirc/database";
 import { Button, CircuitBackground } from "@ictirc/ui";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Conferences & Events | ICTIRC",
   description: "Academic conferences and events hosted by the ISUFST College of Information and Computing Technology.",

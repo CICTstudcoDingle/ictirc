@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@ictirc/database/client";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const guides = await prisma.researchGuide.findMany({

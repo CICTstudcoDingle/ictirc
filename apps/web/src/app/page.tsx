@@ -4,6 +4,8 @@ import { ArrowRight, BookOpen, Users, Award, FileCheck, Zap } from "lucide-react
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { UpcomingEventCard } from "@/components/events/upcoming-event-card";
 
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
   return (
     <div className="pt-14 md:pt-16">
