@@ -79,7 +79,7 @@ export default function GuidesPage() {
         <CircuitBackground variant="subtle" animated />
         <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Research Guides
+            Research <span className="text-gold">Guides</span>
           </h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
             Download official templates and guidelines to ensure your research paper 

@@ -139,7 +139,7 @@ export default async function ConferencesPage() {
             Conferences & <span className="text-gold">Events</span>
           </h1>
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Join us at academic conferences and events hosted by the ISUFST College of Information and Computing Technology.
+            Join us at academic conferences and events hosted by the ISUFST College of Information and Communications Technology.
           </p>
         </div>
       </section>

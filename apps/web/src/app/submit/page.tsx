@@ -251,7 +251,7 @@ export default function SubmitPage() {
         <CircuitBackground variant="subtle" animated />
         <div className="relative z-10 max-w-3xl mx-auto px-4">
           <h1 className="text-2xl md:text-4xl font-bold text-white mb-2">
-            Submit Your Research
+            Submit Your <span className="text-gold">Research</span>
           </h1>
           <p className="text-gray-300">
             Share your ICT research with the ISUFST academic community.

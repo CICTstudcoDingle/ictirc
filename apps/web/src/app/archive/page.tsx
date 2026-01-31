@@ -93,7 +93,7 @@ export default async function ArchivePage({ searchParams }: PageProps) {
         <CircuitBackground variant="subtle" animated />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-2xl md:text-4xl font-bold text-white mb-2">
-            Research Archive
+            Research <span className="text-gold">Archive</span>
           </h1>
           <p className="text-sm md:text-base text-gray-300">
             Browse peer-reviewed papers from ICTIRC researchers

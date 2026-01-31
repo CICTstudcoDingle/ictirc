@@ -64,7 +64,7 @@ export default function LoginPage() {
           </h1>
 
           <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-            Review submissions, manage publications, and generate reports for the College of Information and Computing Technology.
+            Reviews submissions and manage reports for the College of Information and Communications Technology (CICT).
           </p>
 
           <div className="flex gap-4 text-sm font-mono text-gray-400">

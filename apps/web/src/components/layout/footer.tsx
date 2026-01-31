@@ -13,8 +13,8 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <Image
-                src="/images/CICT_LOGO.png"
-                alt="CICT Logo"
+                src="/images/irjict-logo.png"
+                alt="IRJICT Logo"
                 width={48}
                 height={48}
                 className="w-12 h-12"
@@ -27,15 +27,17 @@ export function Footer() {
                 className="w-12 h-12"
               />
               <div>
-                <h3 className="font-bold text-maroon">ICTIRC</h3>
+                <h3 className="font-bold text-maroon">IRJICT</h3>
                 <p className="text-xs text-gray-500">
-                  ICT International Research Conference
+                  Intl. Research Journal on ICT
                 </p>
               </div>
             </div>
-            <p className="text-sm text-gray-600 max-w-sm mb-4">
-              A scholarly publication platform by Iloilo State University of Fisheries 
-              Science and Technology - College of Information and Communications Technology.
+            <p className="text-sm text-gray-600 max-w-sm mb-2">
+              International Research Journal on Information and Communications Technology (IRJICT) - A scholarly publication platform by ISUFST-CICT.
+            </p>
+            <p className="text-xs font-mono text-gray-500 mb-4">
+              ISSN No.: 2960-3773
             </p>
 
             {/* Social Links */}
@@ -102,7 +104,15 @@ export function Footer() {
                   href="/about"
                   className="text-sm text-gray-600 hover:text-maroon transition-colors"
                 >
-                  About ICTIRC
+                  About IRJICT
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/faq"
+                  className="text-sm text-gray-600 hover:text-maroon transition-colors"
+                >
+                  FAQ
                 </Link>
               </li>
               <li>
@@ -155,7 +165,7 @@ export function Footer() {
         <div className="mt-8 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
             <p className="text-sm text-gray-500">
-              © {currentYear} ICTIRC. All rights reserved.
+              © {currentYear} IRJICT. All rights reserved.
             </p>
             <p className="text-xs text-gray-400 font-mono">
               CC BY-ND 4.0 Licensed

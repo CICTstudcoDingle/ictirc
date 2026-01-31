@@ -18,20 +18,21 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://ictirc.isufst.edu.ph"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufst.edu.ph"),
   title: {
-    default: "ICTIRC - Information and Communication Technology International Research Conference",
-    template: "%s | ICTIRC",
+    default: "IRJICT - International Research Journal on Information and Communications Technology",
+    template: "%s | IRJICT",
   },
   description:
-    "Iloilo State University of Fisheries Science and Technology - College of Information and Communications Technology International Research Conference - A scholarly publication platform for ICT research.",
+    "International Research Journal on Information and Communications Technology (IRJICT) - A scholarly publication platform for ICT research. ISSN: 2960-3773.",
   keywords: [
-    "research",
+    "research journal",
+    "IRJICT",
+    "ISSN 2960-3773",
     "ICT",
     "information technology",
     "computing",
     "ISUFST",
-    "conference",
     "academic papers",
     "peer review",
     "scholarly articles",
@@ -54,34 +55,34 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/images/CICT_LOGO.png", type: "image/png", sizes: "192x192" },
+      { url: "/images/irjict-logo.png", type: "image/png", sizes: "192x192" },
     ],
     apple: [
-      { url: "/images/CICT_LOGO.png", sizes: "180x180" },
+      { url: "/images/irjict-logo.png", sizes: "180x180" },
     ],
-    shortcut: "/images/CICT_LOGO.png",
+    shortcut: "/images/irjict-logo.png",
   },
   manifest: "/manifest.json",
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "ICTIRC Research Repository",
-    title: "ICTIRC - ICT International Research Conference",
+    siteName: "IRJICT Research Journal",
+    title: "IRJICT - International Research Journal on ICT",
     description: "A scholarly publication platform for ICT research from ISUFST CICT.",
     images: [
       {
-        url: "/images/CICT_LOGO.png",
+        url: "/images/irjict-logo.png",
         width: 512,
         height: 512,
-        alt: "ICTIRC Logo",
+        alt: "IRJICT Logo",
       },
     ],
   },
   twitter: {
     card: "summary",
-    title: "ICTIRC Research Repository",
+    title: "IRJICT Research Journal",
     description: "A scholarly publication platform for ICT research from ISUFST CICT.",
-    images: ["/images/CICT_LOGO.png"],
+    images: ["/images/irjict-logo.png"],
   },
   alternates: {
     canonical: "/",

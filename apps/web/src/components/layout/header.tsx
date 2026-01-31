@@ -11,8 +11,8 @@ export function Header() {
           {/* Logo - Always visible */}
           <Link href="/" className="flex items-center gap-2 md:gap-3">
             <Image
-              src="/images/CICT_LOGO.png"
-              alt="CICT Logo"
+              src="/images/irjict-logo.png"
+              alt="IRJICT Logo"
               width={40}
               height={40}
               className="w-8 h-8 md:w-10 md:h-10"
@@ -20,7 +20,7 @@ export function Header() {
             {/* Text - Hidden on mobile for minimal look */}
             <div className="hidden sm:block">
               <h1 className="text-base md:text-lg font-bold text-maroon tracking-tight">
-                ICTIRC
+                IRJICT
               </h1>
               <p className="text-xs text-gray-500 -mt-0.5">
                 ISUFST Dingle Campus
@@ -55,6 +55,12 @@ export function Header() {
               Guides
             </Link>
             <Link
+              href="/faq"
+              className="text-gray-700 hover:text-maroon transition-colors font-medium"
+            >
+              FAQ
+            </Link>
+            <Link
               href="/about"
               className="text-gray-700 hover:text-maroon transition-colors font-medium"
             >
@@ -76,9 +82,9 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Mobile: ICTIRC text centered */}
+          {/* Mobile: IRJICT text centered */}
           <h1 className="sm:hidden text-maroon font-bold text-base absolute left-1/2 -translate-x-1/2">
-            ICTIRC
+            IRJICT
           </h1>
 
           {/* Mobile: Search icon on far right */}

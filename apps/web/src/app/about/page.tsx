@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Mail, MapPin, Phone, ExternalLink } from "lucide-react";
+import { ArrowLeft, Mail, MapPin, Phone, Smartphone, ExternalLink, BookOpen, ShieldCheck, Globe } from "lucide-react";
 import { Button, CircuitBackground } from "@ictirc/ui";
 
 export default function AboutPage() {
@@ -10,79 +10,105 @@ export default function AboutPage() {
         <CircuitBackground variant="subtle" animated />
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
-            About ICTIRC
+            About <span className="text-gold">IRJICT</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-            The Information and Communications Technology International Research
-            Conference is a premier venue for ICT research publication.
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-4">
+            International Research Journal on Information and Communications Technology
           </p>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-sm font-mono text-gold">
+            <span>ISSN No.: 2960-3773</span>
+          </div>
         </div>
       </section>
 
-      {/* Mission */}
+      {/* Main Content */}
       <section className="py-16 md:py-20">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-            Our Mission
-          </h2>
-          <div className="prose prose-lg text-gray-600">
-            <p>
-              ICTIRC aims to provide a high-quality, peer-reviewed platform for
-              researchers, academics, and practitioners to share their innovations
-              in information and communications technology.
-            </p>
-            <p>
-              Hosted by the Iloilo State University of Fisheries Science and Technology 
-              College of Information and Communications Technology (ISUFST-CICT), we
-              are committed to advancing ICT research in the Philippines and beyond.
-            </p>
-          </div>
-        </div>
-      </section>
+        <div className="max-w-5xl mx-auto px-4 space-y-8">
 
-      {/* Peer Review Process */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">
-            Peer Review Process
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                step: 1,
-                title: "Submission",
-                description: "Authors submit manuscripts through our online portal.",
-              },
-              {
-                step: 2,
-                title: "Double-Blind Review",
-                description: "Expert reviewers evaluate papers without knowing author identities.",
-              },
-              {
-                step: 3,
-                title: "Publication",
-                description: "Accepted papers receive DOIs and are indexed globally.",
-              },
-            ].map((item) => (
-              <div key={item.step} className="bg-white p-6 rounded-lg shadow-sm">
-                <div className="w-10 h-10 bg-maroon text-white rounded-full flex items-center justify-center font-bold mb-4">
-                  {item.step}
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.description}</p>
+          {/* Introduction Card */}
+          <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 border-l-4 border-l-maroon hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
+                <BookOpen className="w-6 h-6 text-maroon" />
               </div>
-            ))}
+              <h2 className="text-2xl font-bold text-gray-900">
+                Advancing Digital Innovation
+              </h2>
+            </div>
+            <div className="prose prose-lg text-gray-600 max-w-none">
+              <p>
+                Advancing the frontiers of digital innovation, the International Research Journal for Information and Communications Technology (IRJICT) facilitates the open-access publication of peer-reviewed research. Our scope encompasses diverse fields, including Computer Science, Engineering, and Industrial Technology, ensuring global visibility for scholarly excellence.
+              </p>
+              <p>
+                Since its inception in 2023, IRJICT has bridged the gap between innovation and publication. Our dual-layer review process—involving both specialized peer reviewers and our editorial team—guarantees the highest caliber of content. To maximize research impact, every article is published with unrestricted free access for readers worldwide.
+              </p>
+              <div className="bg-gray-50 p-4 rounded-md border-l-4 border-gold text-sm italic mt-4">
+                Join a community of innovators. IRJICT follows a streamlined editorial process designed to uphold the highest academic standards. We are currently accepting online submissions from experts in Computer Science, Engineering, ICT, and Industrial Technology.
+              </div>
+            </div>
           </div>
+
+          {/* Academic Integrity Card */}
+          <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 border-l-4 border-l-maroon hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
+                <ShieldCheck className="w-6 h-6 text-maroon" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Academic Integrity Plagiarism Policy
+              </h2>
+            </div>
+            <div className="prose prose-lg text-gray-600 max-w-none">
+              <p>
+                IRJICT maintains the highest standards of academic integrity. We implement rigorous plagiarism screening for all submissions during the initial review stage.
+              </p>
+              <p>
+                We recognize plagiarism not only as a violation of intellectual property and potential copyright infringement but also as a breach of ethical publishing agreements. By systematically vetting all manuscripts, we ensure compliance with institutional restrictions and uphold the originality of the scholarly record.
+              </p>
+            </div>
+          </div>
+
+          {/* Aim & Scope and Open Access Grid */}
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 border-l-4 border-l-maroon hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
+                  <Globe className="w-6 h-6 text-maroon" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Our Aim & Scope
+                </h2>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                IRJICT empowers researchers in ICT and Engineering by providing an open-access platform for original, peer-reviewed contributions. We are committed to academic integrity and the pursuit of making cutting-edge research intuitive and accessible to the modern world.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 border-l-4 border-l-maroon hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
+                  <ExternalLink className="w-6 h-6 text-maroon" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Open Access Journal
+                </h2>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                Knowledge shouldn't be locked behind a paywall. By making research freely available online, we empower individuals and accelerate societal progress. Today, even the world’s top-tier journals are making this possible by lowering the financial barriers for both readers and contributing authors.
+              </p>
+            </div>
+          </div>
+
         </div>
       </section>
 
       {/* Contact */}
-      <section className="py-16 md:py-20">
-        <div className="max-w-4xl mx-auto px-4">
+      <section className="py-16 md:py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">
             Contact Us
           </h2>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-maroon/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -114,16 +140,25 @@ export default function AboutPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">Phone</h3>
-                  <p className="text-gray-600">+63 (078) 123-4567</p>
+                  <p className="text-gray-600">(033) 337 – 1544</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-maroon/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Smartphone className="w-5 h-5 text-maroon" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Mobile No.</h3>
+                  <p className="text-gray-600">+639634638274</p>
                 </div>
               </div>
             </div>
-            <div className="bg-gray-100 rounded-lg overflow-hidden h-64 md:h-full md:min-h-[280px]">
+            <div className="bg-white rounded-xl overflow-hidden h-64 md:h-80 lg:h-[320px] shadow-sm border border-gray-200">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4156.179439375485!2d122.66068721081648!3d11.00121875496157!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33af1776ffd9b7f1%3A0x2c4663ccaaf49fa8!2sIloilo%20State%20University%20of%20Fisheries%20Science%20and%20Technology%E2%80%93%20Dingle%20Campus!5e1!3m2!1sen!2sph!4v1769815322971!5m2!1sen!2sph"
                 width="100%"
                 height="100%"
-                className="border-0 min-h-[280px]"
+                className="border-0"
                 allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"
                 title="ISUFST Dingle Campus Location"

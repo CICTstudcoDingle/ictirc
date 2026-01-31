@@ -18,6 +18,13 @@ export default function HomePage() {
             {/* Logos Badge */}
             <div className="flex items-center gap-3 mb-6 flex-wrap">
               <Image
+                src="/images/irjict-logo.png"
+                alt="IRJICT Logo"
+                width={48}
+                height={48}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-white/10 p-1 backdrop-blur-sm"
+              />
+              <Image
                 src="/images/CICT_LOGO.png"
                 alt="CICT Logo"
                 width={48}
@@ -51,8 +58,7 @@ export default function HomePage() {
             </div>
             
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-4 md:mb-6">
-              Information & Communication Technology{" "}
-              <span className="text-gold">International Research Conference</span>
+              International Research Journal on <span className="text-gold">Information and Communications Technology</span>
             </h1>
             <p className="text-base md:text-lg text-gray-300 mb-6 md:mb-8 max-w-2xl">
               A scholarly publication platform dedicated to advancing ICT research
@@ -173,7 +179,7 @@ export default function HomePage() {
           </h2>
           <p className="text-sm md:text-base text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto">
             Join hundreds of researchers who have published their ICT innovations
-            with ICTIRC. Start your submission today.
+            with IRJICT. Start your submission today.
           </p>
           <Link href="/submit">
             <Button variant="gold" size="lg">

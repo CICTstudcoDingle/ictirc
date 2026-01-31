@@ -1,7 +1,7 @@
 {
-  "name": "ICTIRC Research Repository",
-  "short_name": "ICTIRC",
-  "description": "A scholarly publication platform for ICT research from ISUFST CICT",
+  "name": "IRJICT Research Journal",
+  "short_name": "IRJICT",
+  "description": "International Research Journal on Information and Communications Technology from ISUFST CICT",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -9,13 +9,13 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/images/CICT_LOGO.png",
+      "src": "/images/irjict-logo.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/images/CICT_LOGO.png",
+      "src": "/images/irjict-logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
