@@ -102,9 +102,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Contact - Split Layout */}
-      <section className="min-h-[60vh] flex">
-        {/* CONTACT INFO SIDE (Left - 50%) */}
+      {/* Contact - Split Layout (Stackable on mobile) */}
+      <section className="min-h-[60vh] flex flex-col md:flex-row">
+        {/* CONTACT INFO SIDE (Left - 100% on mobile, 50% on desktop) */}
         <div className="flex-1 bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 relative overflow-hidden flex items-center justify-center p-8 lg:p-16">
           <CircuitBackground variant="subtle" animated className="opacity-30" />
           
@@ -168,8 +168,8 @@ export default function AboutPage() {
           </div>
         </div>
         
-        {/* MAP SIDE (Right - 50%) */}
-        <div className="flex-1 relative">
+        {/* MAP SIDE (Right - 100% on mobile, 50% on desktop) */}
+        <div className="flex-1 relative h-[450px] md:h-auto">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4156.179439375485!2d122.66068721081648!3d11.00121875496157!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33af1776ffd9b7f1%3A0x2c4663ccaaf49fa8!2sIloilo%20State%20University%20of%20Fisheries%20Science%20and%20Technology%E2%80%93%20Dingle%20Campus!5e1!3m2!1sen!2sph!4v1769815322971!5m2!1sen!2sph"
             width="100%"

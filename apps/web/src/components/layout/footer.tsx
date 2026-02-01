@@ -6,57 +6,57 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-gray-50 border-t border-gray-200 mt-auto">
-      {/* Noise overlay (repeating SVG) - visible on all screen sizes */}
+    <footer className="relative bg-[#5c0202] border-t border-white/10 mt-auto overflow-hidden text-white">
+      {/* Subtle texture overlay using CSS patterns */}
       <div
         aria-hidden
-        className="absolute inset-0 pointer-events-none opacity-30"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' fill='%23A33B3B' /></svg>\")",
-          backgroundRepeat: 'repeat',
-          backgroundSize: '200px 200px',
-          mixBlendMode: 'soft-light',
-        }}
+        className="absolute inset-0 pointer-events-none opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,rgba(255,255,255,0.05)_2px,rgba(255,255,255,0.05)_4px)]"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Radial Spotlight & Sheen */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08)_0%,transparent_70%)]" />
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/20 to-black/40" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <Image
-                src="/images/irjict-logo.png"
-                alt="IRJICT Logo"
-                width={48}
-                height={48}
-                className="w-12 h-12"
-              />
+              <div className="bg-white rounded-lg p-1.5 shadow-sm">
+                <Image
+                  src="/images/irjict-logo.png"
+                  alt="IRJICT Logo"
+                  width={48}
+                  height={48}
+                  className="w-10 h-10"
+                />
+              </div>
               <Image
                 src="/images/CICT_LOGO.png"
                 alt="CICT Logo"
                 width={48}
                 height={48}
-                className="w-12 h-12"
+                className="w-10 h-10 md:w-11 md:h-11"
               />
               <Image
                 src="/images/ISUFST_LOGO.png"
                 alt="ISUFST Logo"
                 width={64}
                 height={64}
-                className="w-14 h-14 md:w-16 md:h-16"
+                className="w-12 h-12 md:w-14 md:h-14"
               />
               <div>
-                <h3 className="font-bold text-maroon">IRJICT</h3>
-                <p className="text-xs text-gray-500">
+                <h3 className="font-bold text-white text-lg leading-tight">IRJICT</h3>
+                <p className="text-xs text-white/70">
                   Intl. Research Journal on ICT
                 </p>
               </div>
             </div>
-            <p className="text-sm text-gray-600 max-w-sm mb-2">
+            <p className="text-sm text-gray-100 max-w-sm mb-2">
               International Research Journal on Information and Communications Technology (IRJICT) - A scholarly publication platform by ISUFST-CICT.
             </p>
-            <p className="text-xs font-mono text-gray-500 mb-4">
+            <p className="text-xs font-mono text-white/60 mb-4">
               ISSN No.: 2960-3773
             </p>
 
@@ -66,7 +66,7 @@ export function Footer() {
                 href="https://isufst.edu.ph/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-maroon/5 hover:bg-maroon/10 text-maroon rounded-full text-xs font-medium transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-full text-xs font-medium transition-colors"
               >
                 <GraduationCap className="w-3.5 h-3.5" />
                 ISUFST Website
@@ -75,7 +75,7 @@ export function Footer() {
                 href="https://cictstore.me/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-gold/10 hover:bg-gold/20 text-amber-700 rounded-full text-xs font-medium transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-gold/20 hover:bg-gold/30 text-gold rounded-full text-xs font-medium transition-colors border border-gold/20"
               >
                 <Store className="w-3.5 h-3.5" />
                 CICT Store
@@ -85,85 +85,47 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-gray-900 mb-4">Quick Links</h4>
+            <h4 className="font-semibold text-white mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/archive"
-                  className="text-sm text-gray-600 hover:text-maroon transition-colors"
-                >
-                  Browse Archive
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/conferences"
-                  className="text-sm text-gray-600 hover:text-maroon transition-colors"
-                >
-                  Conferences
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/submit"
-                  className="text-sm text-gray-600 hover:text-maroon transition-colors"
-                >
-                  Submit Paper
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/guides"
-                  className="text-sm text-gray-600 hover:text-maroon transition-colors"
-                >
-                  Research Guides
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-sm text-gray-600 hover:text-maroon transition-colors"
-                >
-                  About IRJICT
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faq"
-                  className="text-sm text-gray-600 hover:text-maroon transition-colors"
-                >
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/search"
-                  className="text-sm text-gray-600 hover:text-maroon transition-colors"
-                >
-                  Search Repository
-                </Link>
-              </li>
+              {[
+                { label: "Browse Archive", href: "/archive" },
+                { label: "Conferences", href: "/conferences" },
+                { label: "Submit Paper", href: "/submit" },
+                { label: "Research Guides", href: "/guides" },
+                { label: "About IRJICT", href: "/about" },
+                { label: "FAQ", href: "/faq" },
+                { label: "Search Repository", href: "/search" },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-gray-200 hover:text-white hover:translate-x-1 inline-block transition-all"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact & Socials */}
           <div>
-            <h4 className="font-semibold text-gray-900 mb-4">Contact</h4>
-            <ul className="space-y-2 text-sm text-gray-600 mb-4">
+            <h4 className="font-semibold text-white mb-4">Contact</h4>
+            <ul className="space-y-2 text-sm text-gray-200 mb-4">
               <li>ISUFST - CICT Department</li>
               <li>Dingle Campus, Iloilo</li>
-              <li className="font-mono text-xs">ictirc@isufst.edu.ph</li>
-              <li className="font-mono text-xs">cictstudentcouncil@isufst.edu.ph</li>
+              <li className="font-mono text-xs text-white/70">ictirc@isufst.edu.ph</li>
+              <li className="font-mono text-xs text-white/70">cictstudentcouncil@isufst.edu.ph</li>
             </ul>
 
             {/* Facebook Pages */}
-            <h4 className="font-semibold text-gray-900 mb-2 text-sm">Follow Us</h4>
+            <h4 className="font-semibold text-white mb-2 text-sm">Follow Us</h4>
             <div className="space-y-2">
               <a
                 href="https://www.facebook.com/profile.php?id=100068849010766"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                className="flex items-center gap-2 text-sm text-gray-200 hover:text-white transition-colors"
               >
                 <Facebook className="w-4 h-4" />
                 CICT Official Page
@@ -172,7 +134,7 @@ export function Footer() {
                 href="https://www.facebook.com/profile.php?id=61587106231483"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                className="flex items-center gap-2 text-sm text-gray-200 hover:text-white transition-colors"
               >
                 <Facebook className="w-4 h-4" />
                 Student Council
@@ -182,9 +144,9 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-8 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="mt-8 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-300">
               © {currentYear} IRJICT. All rights reserved.
             </p>
             <p className="text-xs text-gray-400 font-mono">
@@ -195,7 +157,7 @@ export function Footer() {
           {/* Powered by & Built with */}
           <div className="flex items-center gap-3">
             {/* Main attribution */}
-            <div className="px-3 py-1.5 bg-gradient-to-r from-maroon to-red-800 text-white rounded-full text-xs font-medium">
+            <div className="px-3 py-1.5 bg-white/10 text-white rounded-full text-xs font-medium border border-white/10">
               Powered by CICT-ISUFST Dingle Campus
             </div>
             
