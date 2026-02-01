@@ -3,7 +3,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import { Upload, FileText, X, Loader2, CheckCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { cn } from "@/lib/utils";
+import { cn } from "@ictirc/ui";
 
 interface FileUploadProps {
   onUploadComplete: (url: string, fileName: string) => void;

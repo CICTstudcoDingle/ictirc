@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Check, ChevronRight, Clock, FileText, Settings, ShieldCheck, UserCheck, AlertCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@ictirc/ui";
 import { updatePublicationStep } from "@/app/dashboard/papers/[id]/actions";
 import { useToast } from "@/lib/toast";
 
