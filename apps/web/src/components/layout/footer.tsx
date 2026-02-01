@@ -173,7 +173,7 @@ export function Footer() {
           </div>
 
           {/* Powered by & Built with */}
-          <div className="flex flex-col items-end gap-2">
+          <div className="flex items-center gap-3">
             {/* Main attribution */}
             <div className="px-3 py-1.5 bg-gradient-to-r from-maroon to-red-800 text-white rounded-full text-xs font-medium">
               Powered by CICT-ISUFST Dingle Campus
@@ -184,7 +184,7 @@ export function Footer() {
               href="https://prism.jeffdev.studio/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-1.5 px-2 py-1 bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white rounded-full text-xs transition-all hover:shadow-md opacity-80 hover:opacity-100"
+              className="group flex items-center gap-1.5 px-2 py-1 bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white rounded-full text-xs transition-all hover:shadow-md"
             >
               <svg
                 viewBox="0 0 24 24"
