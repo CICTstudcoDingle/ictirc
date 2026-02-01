@@ -6,7 +6,20 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-50 border-t border-gray-200 mt-auto hidden md:block">
+    <footer className="relative bg-gray-50 border-t border-gray-200 mt-auto">
+      {/* Noise overlay (repeating SVG) - visible on all screen sizes */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none opacity-30"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' fill='%23A33B3B' /></svg>\")",
+          backgroundRepeat: 'repeat',
+          backgroundSize: '200px 200px',
+          mixBlendMode: 'soft-light',
+        }}
+      />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -20,11 +33,18 @@ export function Footer() {
                 className="w-12 h-12"
               />
               <Image
-                src="/images/ISUFST_LOGO.png"
-                alt="ISUFST Logo"
+                src="/images/CICT_LOGO.png"
+                alt="CICT Logo"
                 width={48}
                 height={48}
                 className="w-12 h-12"
+              />
+              <Image
+                src="/images/ISUFST_LOGO.png"
+                alt="ISUFST Logo"
+                width={64}
+                height={64}
+                className="w-14 h-14 md:w-16 md:h-16"
               />
               <div>
                 <h3 className="font-bold text-maroon">IRJICT</h3>

@@ -4,7 +4,8 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { ToastProvider } from "@/lib/use-toast";
-import { BottomNav, FloatingActionButton } from "@ictirc/ui";
+import { FloatingActionButton } from "@ictirc/ui";
+import { WebBottomNav } from "@/components/layout/bottom-nav";
 import "./globals.css";
 
 const inter = Inter({
@@ -113,7 +114,7 @@ export default function RootLayout({
 
             {/* Mobile-only components */}
             <FloatingActionButton />
-            <BottomNav />
+            <WebBottomNav />
           </SmoothScrollProvider>
         </ToastProvider>
       </body>

@@ -59,6 +59,10 @@ model Paper {
   comments   PaperComment[]
   reviewers  PaperReviewer[]
 
+  // Publication Tracking (1-7)
+  publicationStep Int     @default(1)
+  publicationNote String?
+
   @@index([status])
   @@index([categoryId])
   @@index([publishedAt])
@@ -207,15 +211,34 @@ model ResearchGuide {
   id          String   @id @default(cuid())
   title       String
   description String?
-  category    String   // thesis, journal, capstone
+  category    String   // Legacy field, migrate to guideCategory
   fileUrl     String
   order       Int      @default(0)
   isPublished Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  // New Relation
+  guideCategoryId String?
+  guideCategory   ResearchGuideCategory? @relation(fields: [guideCategoryId], references: [id])
+
   @@index([category])
   @@index([isPublished])
+  @@index([guideCategoryId])
+}
+
+model ResearchGuideCategory {
+  id          String          @id @default(cuid())
+  name        String          @unique
+  slug        String          @unique
+  description String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  // Relations
+  guides      ResearchGuide[]
+
+  @@index([slug])
 }
 
 model Setting {

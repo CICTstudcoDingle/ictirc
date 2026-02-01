@@ -25,8 +25,8 @@ export default function AboutPage() {
       <section className="py-16 md:py-20">
         <div className="max-w-5xl mx-auto px-4 space-y-8">
 
-          {/* Introduction Card */}
-          <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 border-l-4 border-l-maroon hover:shadow-md transition-shadow">
+          {/* Introduction Section */}
+          <div className="mb-12">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
                 <BookOpen className="w-6 h-6 text-maroon" />
@@ -48,8 +48,8 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Academic Integrity Card */}
-          <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 border-l-4 border-l-maroon hover:shadow-md transition-shadow">
+          {/* Academic Integrity Section */}
+          <div className="mb-12">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
                 <ShieldCheck className="w-6 h-6 text-maroon" />
@@ -102,69 +102,83 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Contact */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">
-            Contact Us
-          </h2>
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+      {/* Contact - Split Layout */}
+      <section className="min-h-[60vh] flex">
+        {/* CONTACT INFO SIDE (Left - 50%) */}
+        <div className="flex-1 bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 relative overflow-hidden flex items-center justify-center p-8 lg:p-16">
+          <CircuitBackground variant="subtle" animated className="opacity-30" />
+          
+          <div className="relative z-10 max-w-lg text-white">
+            <div className="mb-8">
+              <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+                Contact <span className="text-gold">Us</span>
+              </h2>
+              <p className="text-gray-300 leading-relaxed">
+                Get in touch with our editorial team for submissions, inquiries, or collaboration opportunities.
+              </p>
+            </div>
+            
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-maroon/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-5 h-5 text-maroon" />
+                <div className="w-10 h-10 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Address</h3>
-                  <p className="text-gray-600">
+                  <h3 className="font-semibold text-gold mb-1">Address</h3>
+                  <p className="text-gray-300 text-sm leading-relaxed">
                     ISUFST - College of ICT<br />
                     Dingle Campus<br />
                     Dingle, Iloilo, Philippines
                   </p>
                 </div>
               </div>
+              
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-maroon/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-5 h-5 text-maroon" />
+                <div className="w-10 h-10 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Mail className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Email</h3>
-                  <a href="mailto:ictirc@isufst.edu.ph" className="text-maroon hover:underline">
+                  <h3 className="font-semibold text-gold mb-1">Email</h3>
+                  <a href="mailto:ictirc@isufst.edu.ph" className="text-gray-300 hover:text-gold transition-colors text-sm">
                     ictirc@isufst.edu.ph
                   </a>
                 </div>
               </div>
+              
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-maroon/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-5 h-5 text-maroon" />
+                <div className="w-10 h-10 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Phone</h3>
-                  <p className="text-gray-600">(033) 337 – 1544</p>
+                  <h3 className="font-semibold text-gold mb-1">Phone</h3>
+                  <p className="text-gray-300 text-sm">(033) 337 – 1544</p>
                 </div>
               </div>
+              
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-maroon/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Smartphone className="w-5 h-5 text-maroon" />
+                <div className="w-10 h-10 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Smartphone className="w-5 h-5 text-gold" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Mobile No.</h3>
-                  <p className="text-gray-600">+639634638274</p>
+                  <h3 className="font-semibold text-gold mb-1">Mobile</h3>
+                  <p className="text-gray-300 text-sm">+639634638274</p>
                 </div>
               </div>
-            </div>
-            <div className="bg-white rounded-xl overflow-hidden h-64 md:h-80 lg:h-[320px] shadow-sm border border-gray-200">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4156.179439375485!2d122.66068721081648!3d11.00121875496157!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33af1776ffd9b7f1%3A0x2c4663ccaaf49fa8!2sIloilo%20State%20University%20of%20Fisheries%20Science%20and%20Technology%E2%80%93%20Dingle%20Campus!5e1!3m2!1sen!2sph!4v1769815322971!5m2!1sen!2sph"
-                width="100%"
-                height="100%"
-                className="border-0"
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
-                title="ISUFST Dingle Campus Location"
-              />
             </div>
           </div>
+        </div>
+        
+        {/* MAP SIDE (Right - 50%) */}
+        <div className="flex-1 relative">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4156.179439375485!2d122.66068721081648!3d11.00121875496157!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33af1776ffd9b7f1%3A0x2c4663ccaaf49fa8!2sIloilo%20State%20University%20of%20Fisheries%20Science%20and%20Technology%E2%80%93%20Dingle%20Campus!5e1!3m2!1sen!2sph!4v1769815322971!5m2!1sen!2sph"
+            width="100%"
+            height="100%"
+            className="border-0"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            title="ISUFST Dingle Campus Location"
+          />
         </div>
       </section>
 

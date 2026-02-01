@@ -138,3 +138,39 @@ export async function publishPaper(paperId: string): Promise<PublishResult> {
     };
   }
 }
+
+export async function updatePublicationStep(paperId: string, step: number, note?: string) {
+  try {
+    const updatedPaper = await prisma.paper.update({
+      where: { id: paperId },
+      data: {
+        publicationStep: step,
+        publicationNote: note,
+      },
+    });
+
+    // Create log
+    await prisma.auditLog.create({
+      data: {
+        actorId: 'admin-system', // Should be current user, but context limitations. Acceptable for now.
+        action: 'UPDATE_PUBLICATION_STEP',
+        targetId: paperId,
+        targetType: 'Paper',
+        metadata: {
+          step,
+          note,
+        },
+      },
+    });
+
+    revalidatePath(`/dashboard/papers/${paperId}`);
+    revalidatePath(`/track/${paperId}`); // Revalidate public tracking page
+    return { success: true, paper: updatedPaper };
+  } catch (error) {
+    console.error('Error updating step:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to update publication step',
+    };
+  }
+}

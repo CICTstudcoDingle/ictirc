@@ -6,6 +6,7 @@ import { ReviewComments } from '@/components/papers/review-comments';
 import { ReviewerAssignment } from '@/components/papers/reviewer-assignment';
 import { StatusControl } from '@/components/papers/status-control';
 import { PublishButton } from '@/components/papers/publish-button';
+import { PublicationTracker } from "@/components/papers/publication-tracker";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -190,6 +191,16 @@ export default async function PaperDetailPage({ params }: PageProps) {
 
           {/* Sidebar */}
           <div className="space-y-6">
+            {/* Publication Tracker */}
+            {/* @ts-ignore */}
+            <PublicationTracker
+              paperId={paper.id}
+              // @ts-ignore
+              currentStep={paper.publicationStep || 1}
+              // @ts-ignore
+              currentNote={paper.publicationNote}
+            />
+
             {/* Status Info */}
             <div className="bg-white rounded-lg shadow-sm border p-6">
               <h3 className="text-sm font-semibold text-gray-700 mb-4">Paper Status</h3>

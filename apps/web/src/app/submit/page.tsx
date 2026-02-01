@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Upload, FileText, X, ChevronRight, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { Upload, FileText, X, ChevronRight, AlertCircle, CheckCircle2, Loader2, ExternalLink } from "lucide-react";
 import { Button, Input, Card, CardContent, CardHeader, CardTitle, CircuitBackground } from "@ictirc/ui";
+import Link from "next/link";
 import {
   paperDetailsSchema,
   authorsStepSchema,
@@ -250,49 +251,68 @@ export default function SubmitPage() {
   };
 
   return (
-    <div className="pt-14 md:pt-16 min-h-screen bg-gray-50">
-      {/* Header - Dark with Circuit Texture */}
-      <section className="relative bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 py-10 md:py-16 overflow-hidden">
-        <CircuitBackground variant="subtle" animated />
-        <div className="relative z-10 max-w-3xl mx-auto px-4">
-          <h1 className="text-2xl md:text-4xl font-bold text-white mb-2">
-            Submit Your <span className="text-gold">Research</span>
-          </h1>
-          <p className="text-gray-300">
-            Share your ICT research with the ISUFST academic community.
-          </p>
+    <div className="pt-14 md:pt-16 min-h-screen flex flex-col lg:flex-row">
+      {/* LEFT SIDE - Instructions and Guidelines */}
+      <div className="lg:w-2/5 bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 relative overflow-hidden flex items-center justify-center p-6 lg:p-12">
+        <CircuitBackground variant="subtle" animated className="opacity-30" />
+        
+        <div className="relative z-10 max-w-md text-white">
+          <div className="mb-6">
+            <h1 className="text-3xl lg:text-5xl font-bold mb-3">
+              Submit Your <span className="text-gold">Research</span>
+            </h1>
+            <p className="text-gray-300 leading-relaxed mb-4 text-sm lg:text-base">
+              Share your ICT research with the ISUFST academic community.
+            </p>
+          </div>
+          
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-gold mb-3">Submission Guidelines</h2>
+            <p className="text-gray-300 leading-relaxed mb-4 text-sm">
+              Ensure your manuscript is submission-ready by applying the standard format provided in the download link. Because professional editors work almost exclusively within established style guides, aligning your draft with these standards—alongside our specific publisher requirements—is a crucial step in the publication process.
+            </p>
+            
+            <Link href="/guides" target="_blank" rel="noopener noreferrer">
+              <Button variant="gold" className="flex items-center gap-2 text-sm">
+                <FileText className="w-4 h-4" />
+                View Guidelines
+                <ExternalLink className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
         </div>
-      </section>
-
-      <div className="max-w-3xl mx-auto px-4 py-8">
-
-        {/* Progress Steps */}
-        <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2">
-          {["Paper Details", "Authors", "Upload", "Review"].map((label, i) => (
-            <div key={label} className="flex items-center gap-2">
-              <button
-                onClick={() => handleStepChange(i + 1)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                  step === i + 1
-                    ? "bg-maroon text-white"
-                    : step > i + 1
-                    ? "bg-green-100 text-green-700"
-                    : "bg-gray-100 text-gray-500"
-                }`}
-              >
-                <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs">
-                  {step > i + 1 ? (
-                    <CheckCircle2 className="w-4 h-4" />
-                  ) : (
-                    i + 1
-                  )}
-                </span>
-                <span className="hidden sm:inline">{label}</span>
-              </button>
-              {i < 3 && <ChevronRight className="w-4 h-4 text-gray-300 flex-shrink-0" />}
-            </div>
-          ))}
-        </div>
+      </div>
+      
+      {/* RIGHT SIDE - Submission Form */}
+      <div className="lg:w-3/5 bg-gray-50 p-4 lg:p-6">
+        <div className="w-full max-w-4xl mx-auto">
+          {/* Progress Steps */}
+          <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2">
+            {["Paper Details", "Authors", "Upload", "Review"].map((label, i) => (
+              <div key={label} className="flex items-center gap-2">
+                <button
+                  onClick={() => handleStepChange(i + 1)}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+                    step === i + 1
+                      ? "bg-maroon text-white"
+                      : step > i + 1
+                      ? "bg-green-100 text-green-700"
+                      : "bg-gray-100 text-gray-500"
+                  }`}
+                >
+                  <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs">
+                    {step > i + 1 ? (
+                      <CheckCircle2 className="w-4 h-4" />
+                    ) : (
+                      i + 1
+                    )}
+                  </span>
+                  <span className="hidden sm:inline">{label}</span>
+                </button>
+                {i < 3 && <ChevronRight className="w-4 h-4 text-gray-300 flex-shrink-0" />}
+              </div>
+            ))}
+          </div>
 
         {/* Step 1: Paper Details */}
         {step === 1 && (
@@ -338,8 +358,10 @@ export default function SubmitPage() {
                 <ErrorMessage message={errors.keywords} />
               </div>
 
-              <div>
-                <label htmlFor="topic-select" className="block text-sm font-medium text-gray-700 mb-2">
+              {/* Two Column Layout for Categories */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="topic-select" className="block text-sm font-medium text-gray-700 mb-2">
                   Research Topic (Category)
                 </label>
                 <select
@@ -359,10 +381,10 @@ export default function SubmitPage() {
                     </option>
                   ))}
                 </select>
-              </div>
+                </div>
 
-              <div>
-                <label htmlFor="subtopic-select" className="block text-sm font-medium text-gray-700 mb-2">
+                <div>
+                  <label htmlFor="subtopic-select" className="block text-sm font-medium text-gray-700 mb-2">
                   Specific Sub-Topic
                 </label>
                 <select
@@ -383,6 +405,7 @@ export default function SubmitPage() {
                     ))}
                 </select>
                 <ErrorMessage message={errors.categoryId} />
+                </div>
               </div>
 
               <div className="pt-4">
@@ -661,6 +684,7 @@ export default function SubmitPage() {
             </CardContent>
           </Card>
         )}
+        </div>
       </div>
     </div>
   );
