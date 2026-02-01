@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Check, Clock, FileText, Settings, ShieldCheck, UserCheck, AlertCircle, FileSearch, Send, Sparkles } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@ictirc/ui";
 
 interface PublicTrackerProps {
   currentStep: number;

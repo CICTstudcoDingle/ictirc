@@ -172,8 +172,8 @@ export default async function GuidesPage() {
               <p className="text-sm text-gray-600">
                 If you have questions about formatting or the submission process, 
                 please contact the CICT Research Office at{" "}
-                <a href="mailto:cict@isufst.edu.ph" className="text-maroon hover:underline">
-                  cict@isufst.edu.ph
+                <a href="mailto:cict_dingle@isufst.edu.ph" className="text-maroon hover:underline">
+                  cict_dingle@isufst.edu.ph
                 </a>
               </p>
             </div>
