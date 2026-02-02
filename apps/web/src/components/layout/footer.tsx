@@ -143,6 +143,16 @@ export function Footer() {
           </div>
         </div>
 
+        {/* Disclaimer Section */}
+        <div className="mt-12 pt-8 border-t border-white/5">
+          <h5 className="font-mono text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">
+            Disclaimer
+          </h5>
+          <p className="text-[11px] leading-relaxed text-white/50 font-light italic max-w-5xl">
+            The information presented on this website is intended for educational and informational purposes. While we strive for accuracy, the organizers reserve the right to modify the conference program, dates, venue, or other details as required. We encourage attendees to monitor the website for updates. The organizers assume no liability for any expenses incurred due to cancellations or modifications beyond our reasonable control.
+          </p>
+        </div>
+
         {/* Bottom bar */}
         <div className="mt-8 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
