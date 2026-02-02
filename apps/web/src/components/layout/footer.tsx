@@ -6,7 +6,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-[#5c0202] border-t border-white/10 mt-auto overflow-hidden text-white">
+    <footer className="relative bg-[#5c0202] border-t border-white/10 mt-auto overflow-hidden text-white pb-24 md:pb-0">
       {/* Subtle texture overlay using CSS patterns */}
       <div
         aria-hidden
@@ -165,7 +165,7 @@ export function Footer() {
           </div>
 
           {/* Powered by & Built with */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center gap-3">
             {/* Main attribution */}
             <div className="px-3 py-1.5 bg-white/10 text-white rounded-full text-xs font-medium border border-white/10">
               Powered by CICT-ISUFST Dingle Campus
