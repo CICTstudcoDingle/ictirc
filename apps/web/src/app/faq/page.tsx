@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { CircuitBackground } from "@ictirc/ui";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
 
 export const metadata: Metadata = {

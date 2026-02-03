@@ -48,6 +48,7 @@ const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
   abstract: z.string().min(1, "Abstract is required"),
   keywords: z.string().min(1, "Keywords are required"),
+  doi: z.string().optional().or(z.literal("")),
   categoryId: z.string().min(1, "Category is required"),
   pageStart: z.coerce.number().optional(),
   pageEnd: z.coerce.number().optional(),
@@ -87,6 +88,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
       title: "",
       abstract: "",
       keywords: "",
+      doi: "",
       publishedDate: new Date().toISOString().split('T')[0],
       authors: [{ name: "", email: "", affiliation: "" }],
     },
@@ -186,6 +188,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
         title: data.title,
         abstract: data.abstract,
         keywords: data.keywords.split(/[;,]/).map(k => k.trim()).filter(Boolean),
+        doi: data.doi || undefined,
         pageStart: data.pageStart,
         pageEnd: data.pageEnd,
         publishedDate: new Date(data.publishedDate),
@@ -356,6 +359,23 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                     <Input placeholder="AI; Machine Learning; Education" {...field} value={field.value || ""} />
                   </FormControl>
                   <FormDescription>Semi-colon separated</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="doi"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>DOI (Optional)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="10.xxxxx/xxxxx" {...field} value={field.value || ""} />
+                  </FormControl>
+                  <FormDescription>
+                    Digital Object Identifier - Leave empty if not yet registered
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

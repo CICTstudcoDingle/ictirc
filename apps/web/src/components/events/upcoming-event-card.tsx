@@ -52,6 +52,7 @@ export async function UpcomingEventCard() {
     description: upcomingEvent.description || "",
     startDate: upcomingEvent.startDate.toISOString(),
     location: upcomingEvent.location,
+    venue: upcomingEvent.venue,
   };
 
   return (

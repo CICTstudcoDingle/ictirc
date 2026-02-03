@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, MapPin, Clock, ArrowRight } from "lucide-react";
+import { Calendar, MapPin, Clock, ArrowRight, Building2 } from "lucide-react";
 
 import { ScrollAnimation } from "../ui/scroll-animation";
 
@@ -12,6 +12,7 @@ interface EventCardClientProps {
     description: string;
     startDate: string; // Changed from Date to string for serialization
     location: string | null;
+    venue: string | null;
   };
   isUpcoming: boolean;
   daysUntil: number;
@@ -55,13 +56,19 @@ export function EventCardClient({ event, isUpcoming, daysUntil, daysSince }: Eve
               {/* Event Meta */}
               <div className="space-y-2 text-sm text-gray-300 mb-4">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-gold" />
+                  <Calendar className="w-4 h-4 text-gold flex-shrink-0" />
                   {formatDate(event.startDate)}
                 </div>
                 {event.location && (
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-gold" />
+                    <MapPin className="w-4 h-4 text-gold flex-shrink-0" />
                     {event.location}
+                  </div>
+                )}
+                {event.venue && (
+                  <div className="flex items-center gap-2">
+                    <Building2 className="w-4 h-4 text-gold flex-shrink-0" />
+                    {event.venue}
                   </div>
                 )}
               </div>
@@ -112,6 +119,7 @@ export function EventCardClient({ event, isUpcoming, daysUntil, daysSince }: Eve
                 <p className="text-xs text-gray-400">
                   {formatDate(event.startDate)}
                   {event.location && ` • ${event.location}`}
+                  {event.venue && ` • ${event.venue}`}
                 </p>
               </div>
               <ArrowRight className="w-5 h-5 text-gold flex-shrink-0 group-hover:translate-x-1 transition-transform" />

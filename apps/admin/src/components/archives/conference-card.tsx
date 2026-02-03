@@ -35,7 +35,7 @@ export function ConferenceCard({ conference }: ConferenceCardProps) {
               <FileText className="h-5 w-5 shrink-0" />
               <span className="line-clamp-1">{conference.name}</span>
             </CardTitle>
-            <Badge variant={isUpcoming ? "default" : "secondary"} className="shrink-0">
+            <Badge variant={isUpcoming ? "success" : undefined} className="shrink-0">
               {isUpcoming ? "Upcoming" : "Past"}
             </Badge>
           </div>
