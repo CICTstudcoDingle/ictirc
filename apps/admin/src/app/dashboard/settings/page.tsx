@@ -96,7 +96,7 @@ export default function SettingsPage() {
         // Map to local Event interface
         const mappedEvents = (result.data || []).map((c: any) => ({
           id: c.id,
-          title: c.title,
+          title: c.name,
           description: c.description || "",
           imageUrl: c.imageUrl,
           startDate: new Date(c.startDate).toISOString().slice(0, 16),
@@ -572,13 +572,16 @@ function EventsSettings({
     setSubmitting(true);
     try {
       const cleanData = {
-        title: formData.title,
+        name: formData.title,
+        fullName: formData.title, // Use title as fullName fallback
         description: formData.description,
         startDate: new Date(formData.startDate),
         endDate: formData.endDate ? new Date(formData.endDate) : undefined,
         location: formData.location || undefined,
         imageUrl: formData.imageUrl || undefined,
         isPublished: formData.isPublished,
+        organizers: [],
+        partners: [],
       };
 
       const result = editingEvent
