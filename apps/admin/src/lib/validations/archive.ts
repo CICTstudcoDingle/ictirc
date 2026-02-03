@@ -74,7 +74,8 @@ export type UpdateConferenceInput = z.infer<typeof updateConferenceSchema>;
 
 export const archivedPaperAuthorSchema = z.object({
   name: z.string().min(1),
-  email: z.string().email().optional(),
+  // Allow empty string or valid email
+  email: z.string().email().optional().or(z.literal("")),
   affiliation: z.string().optional(),
   order: z.number().int().nonnegative().default(0),
   isCorresponding: z.boolean().default(false),

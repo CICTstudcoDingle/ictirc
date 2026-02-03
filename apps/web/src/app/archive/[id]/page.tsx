@@ -14,12 +14,11 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   
-  const paper = await prisma.paper.findUnique({
-    where: { id, status: "PUBLISHED" },
+  const paper = await prisma.archivedPaper.findUnique({
+    where: { id },
     include: {
       category: true,
       authors: {
-        include: { author: true },
         orderBy: { order: "asc" },
       },
     },
@@ -33,8 +32,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ictirc.org";
 
   const authors = paper.authors.map(pa => ({
-    name: pa.author.name,
-    affiliation: pa.author.affiliation || undefined,
+    name: pa.name,
+    affiliation: pa.affiliation || undefined,
   }));
 
   return generatePaperMetadata(
@@ -44,7 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       authors,
       keywords: paper.keywords,
       doi: paper.doi || undefined,
-      publishedAt: paper.publishedAt || undefined,
+      publishedAt: paper.publishedDate || undefined,
       pdfUrl: paper.pdfUrl ? paper.pdfUrl : undefined,
     },
     baseUrl
@@ -54,12 +53,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function PaperDetailPage({ params }: PageProps) {
   const { id } = await params;
   
-  const paper = await prisma.paper.findUnique({
-    where: { id, status: "PUBLISHED" },
+  const paper = await prisma.archivedPaper.findUnique({
+    where: { id },
     include: {
       category: true,
+      issue: {
+        include: {
+          volume: true,
+        },
+      },
       authors: {
-        include: { author: true },
         orderBy: { order: "asc" },
       },
     },
@@ -71,8 +74,8 @@ export default async function PaperDetailPage({ params }: PageProps) {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ictirc.org";
 
   const authors = paper.authors.map(pa => ({
-    name: pa.author.name,
-    affiliation: pa.author.affiliation || undefined,
+    name: pa.name,
+    affiliation: pa.affiliation || undefined,
   }));
 
   const jsonLd = generatePaperJsonLd(
@@ -82,7 +85,7 @@ export default async function PaperDetailPage({ params }: PageProps) {
       authors,
       keywords: paper.keywords,
       doi: paper.doi || undefined,
-      publishedAt: paper.publishedAt || undefined,
+      publishedAt: paper.publishedDate || undefined,
     },
     `${baseUrl}/archive/${id}`
   );
@@ -129,10 +132,10 @@ export default async function PaperDetailPage({ params }: PageProps) {
               <Users className="w-4 h-4 text-gray-400" />
               {paper.authors.map((pa, i) => (
                 <span key={pa.id} className="text-gray-700 text-sm md:text-base">
-                  {pa.author.name}
-                  {pa.author.affiliation && (
+                  {pa.name}
+                  {pa.affiliation && (
                     <span className="text-gray-400 text-xs md:text-sm">
-                      {" "}({pa.author.affiliation})
+                      {" "}({pa.affiliation})
                     </span>
                   )}
                   {i < paper.authors.length - 1 && ", "}
@@ -142,18 +145,16 @@ export default async function PaperDetailPage({ params }: PageProps) {
 
             {/* Meta row */}
             <div className="flex flex-wrap items-center gap-3 md:gap-4 text-xs md:text-sm text-gray-500">
-              {paper.publishedAt && (
-                <div className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" />
-                  <span>
-                    {paper.publishedAt.toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </span>
-                </div>
-              )}
+              <div className="flex items-center gap-1">
+                <Calendar className="w-4 h-4" />
+                <span>
+                  {new Date(paper.publishedDate).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              </div>
               {paper.doi && (
                 <div className="flex items-center gap-1 font-mono text-xs">
                   <FileText className="w-4 h-4" />
@@ -166,7 +167,7 @@ export default async function PaperDetailPage({ params }: PageProps) {
           {/* Actions */}
           <PaperActions
             pdfUrl={paper.pdfUrl || undefined}
-            citation={`${paper.authors.map(pa => pa.author.name).join(", ")} (${paper.publishedAt?.getFullYear() || new Date().getFullYear()}). ${paper.title}. ICTIRC. DOI: ${paper.doi || "pending"}`}
+            citation={`${paper.authors.map(pa => pa.name).join(", ")} (${new Date(paper.publishedDate).getFullYear()}). ${paper.title}. ICTIRC. DOI: ${paper.doi || "pending"}`}
           />
 
           {/* Abstract */}

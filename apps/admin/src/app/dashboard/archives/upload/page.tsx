@@ -10,7 +10,34 @@ export const metadata = {
   description: "Upload papers to the archive",
 };
 
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { prisma } from "@ictirc/database";
+
 export default async function UploadPage() {
+  const supabase = await createClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    redirect("/auth/login");
+  }
+
+  // Ensure user exists in local DB to satisfy foreign key constraints
+  const dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
+  });
+
+  if (!dbUser && user.email) {
+    await prisma.user.create({
+      data: {
+        id: user.id,
+        email: user.email,
+        name: user.user_metadata?.full_name || user.email.split("@")[0],
+        role: "EDITOR", // Default role for uploaded users in dev
+      },
+    });
+  }
+
   const issuesResult = await listIssues();
   const issues = issuesResult.success ? issuesResult.data : [];
 
@@ -67,7 +94,7 @@ export default async function UploadPage() {
         </TabsList>
 
         <TabsContent value="single" className="mt-6">
-          <SingleUploadForm issues={issues || []} />
+          <SingleUploadForm issues={issues || []} userId={user.id} />
         </TabsContent>
 
         <TabsContent value="batch" className="mt-6">

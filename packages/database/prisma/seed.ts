@@ -37,9 +37,7 @@ async function main() {
       name: "Industrial Technology",
       slug: "ind-tech",
       description: "Field concerned with the application of engineering and manufacturing technology.",
-      children: [
-        { name: "General Industrial Technology", slug: "general-ind-tech" },
-      ]
+      children: []
     }
   ];
 

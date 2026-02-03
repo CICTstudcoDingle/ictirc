@@ -53,6 +53,10 @@ export interface FileUploadProps {
    * Additional class names
    */
   className?: string;
+  /**
+   * Display name of the file (for already uploaded files or local selection)
+   */
+  fileName?: string;
 }
 
 export function FileUpload({
@@ -68,6 +72,7 @@ export function FileUpload({
   label,
   description,
   className,
+  fileName,
 }: FileUploadProps) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [internalError, setInternalError] = useState<string | null>(null);
@@ -120,7 +125,7 @@ export function FileUpload({
     setInternalError(null);
     
     // Create preview for images
-    if (variant === "image" && file.type.startsWith("image/")) {
+    if (file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
@@ -161,6 +166,8 @@ export function FileUpload({
     if (fileInputRef.current) fileInputRef.current.value = "";
     onRemove();
   };
+
+  const hasFile = value || fileName;
 
   return (
     <div className={cn("w-full space-y-2", className)}>
@@ -227,12 +234,14 @@ export function FileUpload({
               <Loader2 className="w-10 h-10 text-maroon animate-spin mb-3" />
               <p className="text-sm font-medium text-gray-600">Uploading {progress}%</p>
             </div>
-          ) : value && variant === "file" ? (
+            ) : hasFile ? (
             <div className="flex flex-col items-center w-full">
               <div className="flex items-center gap-3 p-3 bg-green-50 border border-green-200 rounded-lg w-full max-w-sm">
                 <FileText className="w-6 h-6 text-green-600" />
                 <div className="flex-1 truncate">
-                  <p className="text-sm font-medium text-green-900 truncate">File Attached</p>
+                      <p className="text-sm font-medium text-green-900 truncate">
+                        {fileName || "File Attached"}
+                      </p>
                   <p className="text-xs text-green-700">Click to replace</p>
                 </div>
                 <button

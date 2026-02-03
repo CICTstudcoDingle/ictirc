@@ -141,7 +141,11 @@ export function IssueForm({ issue }: IssueFormProps) {
                 <Select onValueChange={field.onChange} value={field.value as string || ""}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a volume" />
+                      <SelectValue placeholder="Select a volume">
+                        {volumes.find(v => v.id === field.value)
+                          ? `Volume ${volumes.find(v => v.id === field.value)?.volumeNumber} (${volumes.find(v => v.id === field.value)?.year})`
+                          : undefined}
+                      </SelectValue>
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -246,7 +250,11 @@ export function IssueForm({ issue }: IssueFormProps) {
                 <Select onValueChange={field.onChange} value={field.value as string || "none"}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a conference" />
+                    <SelectValue placeholder="Select a conference">
+                      {field.value && field.value !== "none"
+                        ? conferences.find(c => c.id === field.value)?.name
+                        : undefined}
+                    </SelectValue>
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>

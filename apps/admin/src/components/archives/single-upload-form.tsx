@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Card,
   CardContent,
@@ -9,7 +12,13 @@ import {
   CardHeader,
   CardTitle,
   Button,
-  Label,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
   Input,
   Textarea,
   Select,
@@ -23,8 +32,37 @@ import { toast } from "@/lib/toast";
 import { createArchivedPaper } from "@/lib/actions/archived-paper";
 import { listCategories } from "@/lib/actions/category";
 import { uploadFile } from "@ictirc/storage";
+import { Loader2, Wand2, Plus, Trash2 } from "lucide-react";
+import { extractPdfMetadata } from "@/lib/pdf-parser";
+
+// Define Schema
+const authorSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email().optional().or(z.literal("")),
+  affiliation: z.string().optional(),
+  isCorresponding: z.boolean().default(false),
+});
+
+const formSchema = z.object({
+  issueId: z.string().min(1, "Issue is required"),
+  title: z.string().min(1, "Title is required"),
+  abstract: z.string().min(1, "Abstract is required"),
+  keywords: z.string().min(1, "Keywords are required"),
+  categoryId: z.string().min(1, "Category is required"),
+  pageStart: z.coerce.number().optional(),
+  pageEnd: z.coerce.number().optional(),
+  publishedDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid date string",
+  }),
+  authors: z.array(authorSchema).min(1, "At least one author is required"),
+  pdfUrl: z.string().optional(),
+  docxUrl: z.string().optional(),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 interface SingleUploadFormProps {
+  userId: string;
   issues: Array<{
     id: string;
     issueNumber: number;
@@ -35,12 +73,29 @@ interface SingleUploadFormProps {
   }>;
 }
 
-export function SingleUploadForm({ issues }: SingleUploadFormProps) {
+export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
   const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [categories, setCategories] = useState<any[]>([]);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [docxFile, setDocxFile] = useState<File | null>(null);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [isProcessingPdf, setIsProcessingPdf] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      abstract: "",
+      keywords: "",
+      publishedDate: new Date().toISOString().split('T')[0],
+      authors: [{ name: "", email: "", affiliation: "" }],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "authors",
+  });
 
   useEffect(() => {
     async function loadCategories() {
@@ -52,110 +107,113 @@ export function SingleUploadForm({ issues }: SingleUploadFormProps) {
     loadCategories();
   }, []);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handlePdfSelect = async (file: File) => {
+    setPdfFile(file);
+
+    // Autofill Logic
+    if (file) {
+      try {
+        setIsProcessingPdf(true);
+        const metadata = await extractPdfMetadata(file);
+
+        if (metadata.title) form.setValue("title", metadata.title);
+        if (metadata.abstract) form.setValue("abstract", metadata.abstract);
+
+        if (metadata.keywords && metadata.keywords.length > 0) {
+          form.setValue("keywords", metadata.keywords.join("; "));
+        }
+
+        if (metadata.authors && metadata.authors.length > 0) {
+          // Replace current authors with extracted ones
+          form.setValue("authors", metadata.authors.map(a => ({
+            name: a.name,
+            email: a.email || "",
+            affiliation: a.affiliation || "",
+            isCorresponding: false // defaulting to false, subsequent logic handles 1st author
+          })));
+        }
+
+        toast({
+          title: "PDF Metadata Extracted",
+          description: "Form fields have been autofilled from the PDF.",
+        });
+      } catch (error) {
+        console.error("Autofill error:", error);
+        toast({
+          title: "Autofill Warning",
+          description: "Could not extract metadata automatically. Please fill fields manually.",
+          variant: "default",
+        });
+      } finally {
+        setIsProcessingPdf(false);
+      }
+    }
+  };
+
+  async function onSubmit(data: FormData) {
+    setIsUploading(true);
 
     try {
-      const formData = new FormData(e.currentTarget);
-
       if (!pdfFile) {
-        toast({
-          title: "Error",
-          description: "PDF file is required",
-          variant: "destructive",
-        });
+        toast({ title: "Error", description: "PDF file is required", variant: "destructive" });
+        setIsUploading(false);
         return;
       }
 
-      // Generate unique filenames with subfolder structure
+      // Upload PDF
       const timestamp = Date.now();
       const pdfPath = `papers/${timestamp}-${pdfFile.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+      const pdfUpload = await uploadFile(pdfFile, pdfPath, "archive");
       
-      // Upload files to archive bucket
-      const pdfUrl = await uploadFile(pdfFile, pdfPath, "archive");
-      
-      if (!pdfUrl.success) {
-        toast({
-          title: "Error",
-          description: `Failed to upload PDF: ${pdfUrl.error}`,
-          variant: "destructive",
-        });
-        return;
+      if (!pdfUpload.success || !pdfUpload.url) {
+        throw new Error(`Failed to upload PDF: ${pdfUpload.error}`);
       }
 
-      let docxUrl;
+      // Upload DOCX (Optional)
+      let docxUrlStr = undefined;
       if (docxFile) {
         const docxPath = `papers/${timestamp}-${docxFile.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
-        docxUrl = await uploadFile(docxFile, docxPath, "archive");
-        
-        if (!docxUrl.success) {
-          toast({
-            title: "Warning",
-            description: `Failed to upload DOCX: ${docxUrl.error}`,
-            variant: "default",
-          });
-          // Continue anyway since DOCX is optional
+        const docxUpload = await uploadFile(docxFile, docxPath, "archive");
+        if (docxUpload.success) {
+          docxUrlStr = docxUpload.url;
         }
       }
 
-      // Parse authors
-      const authorsData = [];
-      for (let i = 1; i <= 5; i++) {
-        const name = formData.get(`author_${i}_name`) as string;
-        if (name) {
-          authorsData.push({
-            name,
-            email: (formData.get(`author_${i}_email`) as string) || undefined,
-            affiliation: (formData.get(`author_${i}_affiliation`) as string) || undefined,
-            order: i - 1,
-            isCorresponding: i === 1,
-          });
-        }
-      }
-
-      // Create paper
-      const paperData = {
-        title: formData.get("title") as string,
-        abstract: formData.get("abstract") as string,
-        keywords: (formData.get("keywords") as string).split(";").map((k) => k.trim()),
-        categoryId: formData.get("categoryId") as string,
-        issueId: formData.get("issueId") as string,
-        publishedDate: new Date(formData.get("publishedDate") as string),
-        pageStart: parseInt(formData.get("pageStart") as string) || undefined,
-        pageEnd: parseInt(formData.get("pageEnd") as string) || undefined,
-        pdfUrl: pdfUrl.url || "",
-        docxUrl: docxUrl?.url,
-        authors: authorsData,
+      // Prepare payload
+      const payload = {
+        issueId: data.issueId,
+        categoryId: data.categoryId,
+        title: data.title,
+        abstract: data.abstract,
+        keywords: data.keywords.split(/[;,]/).map(k => k.trim()).filter(Boolean),
+        pageStart: data.pageStart,
+        pageEnd: data.pageEnd,
+        publishedDate: new Date(data.publishedDate),
+        pdfUrl: pdfUpload.url,
+        docxUrl: docxUrlStr,
+        authors: data.authors.map((a, index) => ({
+          ...a,
+          order: index,
+          // First author is corresponding by default logic for now, or add checkbox
+          isCorresponding: index === 0
+        }))
       };
 
-      // Get current user ID (you'll need to implement this based on your auth)
-      const userId = "current-user-id"; // TODO: Get from auth context
-
-      const result = await createArchivedPaper(paperData, userId);
+      const result = await createArchivedPaper(payload, userId);
 
       if (result.success) {
-        toast({
-          title: "Success",
-          description: "Paper uploaded successfully",
-        });
+        toast({ title: "Success", description: "Paper uploaded successfully" });
         router.push("/dashboard/archives");
         router.refresh();
       } else {
-        toast({
-          title: "Error",
-          description: result.error,
-          variant: "destructive",
-        });
+        toast({ title: "Error", description: result.error, variant: "destructive" });
       }
+
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to upload paper",
-        variant: "destructive",
-      });
+      console.error(error);
+      toast({ title: "Error", description: "Failed to create paper", variant: "destructive" });
     } finally {
-      setIsSubmitting(false);
+      setIsUploading(false);
     }
   }
 
@@ -164,144 +222,292 @@ export function SingleUploadForm({ issues }: SingleUploadFormProps) {
       <CardHeader>
         <CardTitle>Single Paper Upload</CardTitle>
         <CardDescription>
-          Upload a single paper with metadata
+          Upload a paper. PDF metadata will be autofilled when possible.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Issue Selection */}
-          <div className="space-y-2">
-            <Label htmlFor="issueId">Issue *</Label>
-            <Select name="issueId" required>
-              <SelectTrigger>
-                <SelectValue placeholder="Select an issue" />
-              </SelectTrigger>
-              <SelectContent>
-                {issues.map((issue) => (
-                  <SelectItem key={issue.id} value={issue.id}>
-                    Volume {issue.volume.volumeNumber}, Issue {issue.issueNumber} ({issue.volume.year})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
-          {/* Paper Title */}
-          <div className="space-y-2">
-            <Label htmlFor="title">Title *</Label>
-            <Input name="title" required placeholder="Paper title" />
-          </div>
-
-          {/* Abstract */}
-          <div className="space-y-2">
-            <Label htmlFor="abstract">Abstract *</Label>
-            <Textarea name="abstract" required placeholder="Abstract" rows={5} />
-          </div>
-
-          {/* Keywords */}
-          <div className="space-y-2">
-            <Label htmlFor="keywords">Keywords *</Label>
-            <Input name="keywords" required placeholder="keyword1;keyword2;keyword3" />
-            <p className="text-sm text-muted-foreground">Separate keywords with semicolons</p>
-          </div>
-
-          {/* Category */}
-          <div className="space-y-2">
-            <Label htmlFor="categoryId">Category *</Label>
-            <Select name="categoryId" required>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.length === 0 ? (
-                  <div className="p-2 text-sm text-muted-foreground">
-                    No categories available. Please create categories first.
-                  </div>
-                ) : (
-                  categories.map((category) => (
-                    <SelectItem key={category.id} value={category.id}>
-                      {category.name}
-                    </SelectItem>
-                  ))
-                )}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Page Numbers */}
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="pageStart">Start Page</Label>
-              <Input name="pageStart" type="number" placeholder="1" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="pageEnd">End Page</Label>
-              <Input name="pageEnd" type="number" placeholder="10" />
-            </div>
-          </div>
-
-          {/* Published Date */}
-          <div className="space-y-2">
-            <Label htmlFor="publishedDate">Published Date *</Label>
-            <Input name="publishedDate" type="date" required />
-          </div>
-
-          {/* Authors */}
-          <div className="space-y-4">
-            <h3 className="font-semibold">Authors</h3>
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="grid gap-4 md:grid-cols-3 p-4 border rounded">
-                <div className="space-y-2">
-                  <Label htmlFor={`author_${i}_name`}>
-                    Author {i} Name {i === 1 ? "*" : ""}
-                  </Label>
-                  <Input
-                    name={`author_${i}_name`}
-                    required={i === 1}
-                    placeholder="Full name"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`author_${i}_email`}>Email</Label>
-                  <Input
-                    name={`author_${i}_email`}
-                    type="email"
-                    placeholder="email@example.com"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`author_${i}_affiliation`}>Affiliation</Label>
-                  <Input
-                    name={`author_${i}_affiliation`}
-                    placeholder="Institution"
-                  />
-                </div>
+            {/* File Upload Section - First because it drives autofill */}
+            <div className="grid gap-6 md:grid-cols-2 p-4 bg-muted/20 rounded-lg">
+              <div className="space-y-2">
+                <FormLabel className="flex items-center gap-2">
+                  PDF File *
+                  {isProcessingPdf && <Loader2 className="h-3 w-3 animate-spin" />}
+                </FormLabel>
+                <FileUpload
+                  accept=".pdf"
+                  variant="file"
+                  fileName={pdfFile?.name}
+                  onFileSelect={handlePdfSelect}
+                  onRemove={() => setPdfFile(null)}
+                  label="Upload PDF"
+                  description="Select the full paper PDF"
+                />
               </div>
-            ))}
-          </div>
+              <div className="space-y-2">
+                <FormLabel>DOCX File (Optional)</FormLabel>
+                <FileUpload
+                  accept=".docx"
+                  variant="file"
+                  fileName={docxFile?.name}
+                  onFileSelect={(f) => setDocxFile(f)}
+                  onRemove={() => setDocxFile(null)}
+                  label="Upload DOCX"
+                  description="Source file for editing"
+                />
+              </div>
+            </div>
 
-          {/* File Uploads */}
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>PDF File *</Label>
-              <FileUpload
-                accept=".pdf"
-                onFileSelect={(file) => setPdfFile(file)}
+            <div className="grid gap-4 md:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="issueId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Issue *</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select an issue">
+                            {issues.find(i => i.id === field.value)
+                              ? `Volume ${issues.find(i => i.id === field.value)?.volume.volumeNumber}, Issue ${issues.find(i => i.id === field.value)?.issueNumber} (${issues.find(i => i.id === field.value)?.volume.year})`
+                              : "Select an Issue"}
+                          </SelectValue>
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {issues.map((issue) => (
+                          <SelectItem key={issue.id} value={issue.id}>
+                            Volume {issue.volume.volumeNumber}, Issue {issue.issueNumber} ({issue.volume.year})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category *</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Category">
+                            {categories.find(c => c.id === field.value)?.name || "Select Category"}
+                          </SelectValue>
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem key={category.id} value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-            <div className="space-y-2">
-              <Label>DOCX File (Optional)</Label>
-              <FileUpload
-                accept=".docx"
-                onFileSelect={(file) => setDocxFile(file)}
+
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title *</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Paper Title" {...field} value={field.value || ""} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="abstract"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Abstract *</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Paper Abstract..." rows={5} {...field} value={field.value || ""} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="keywords"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Keywords *</FormLabel>
+                  <FormControl>
+                    <Input placeholder="AI; Machine Learning; Education" {...field} value={field.value || ""} />
+                  </FormControl>
+                  <FormDescription>Semi-colon separated</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Dynamic Authors */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-medium">Authors</h3>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => append({ name: "", email: "", affiliation: "", isCorresponding: false })}
+                >
+                  <Plus className="h-4 w-4 mr-2" /> Add Author
+                </Button>
+              </div>
+
+              {fields.map((field, index) => (
+                <Card key={field.id}>
+                  <CardContent className="pt-6">
+                    <div className="grid gap-4 md:grid-cols-12 items-start">
+                      <div className="md:col-span-11 grid gap-4 md:grid-cols-3">
+                        <FormField
+                          control={form.control}
+                          name={`authors.${index}.name`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Name *</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Full Name" {...field} value={field.value || ""} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name={`authors.${index}.email`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Optional" {...field} value={field.value || ""} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name={`authors.${index}.affiliation`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Affiliation</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Institution" {...field} value={field.value || ""} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="md:col-span-1 flex justify-end mt-8">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                          disabled={fields.length === 1}
+                          onClick={() => remove(index)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              <FormField
+                control={form.control}
+                name="pageStart"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Start Page</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value ?? ""}
+                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="pageEnd"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>End Page</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        value={field.value ?? ""}
+                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="publishedDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Published Date *</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="date"
+                        {...field}
+                        value={typeof field.value === 'string' ? field.value : ''}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-          </div>
 
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Uploading..." : "Upload Paper"}
-          </Button>
-        </form>
+            <div className="flex justify-end">
+              <Button type="submit" disabled={isUploading} className="w-full md:w-auto min-w-[200px]">
+                {isUploading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Uploading Paper...
+                  </>
+                ) : (
+                  "Upload Paper"
+                )}
+              </Button>
+            </div>
+
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );

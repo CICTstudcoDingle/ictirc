@@ -66,9 +66,9 @@ const SelectTrigger = React.forwardRef<
 });
 SelectTrigger.displayName = "SelectTrigger";
 
-const SelectValue = ({ placeholder }: { placeholder?: string }) => {
+const SelectValue = ({ placeholder, children }: { placeholder?: string; children?: React.ReactNode }) => {
   const { value, selectedLabel } = React.useContext(SelectContext);
-  return <span className={!value && placeholder ? "text-gray-500" : ""}>{selectedLabel || value || placeholder}</span>;
+  return <span className={!value && placeholder ? "text-gray-500" : ""}>{children || selectedLabel || value || placeholder}</span>;
 };
 
 const SelectContent = React.forwardRef<
