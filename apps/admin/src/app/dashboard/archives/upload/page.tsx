@@ -11,6 +11,7 @@ export const metadata = {
 };
 
 import { redirect } from "next/navigation";
+// Deployment fix trigger
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@ictirc/database";
 
