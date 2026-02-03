@@ -574,8 +574,8 @@ function EventsSettings({
       const cleanData = {
         title: formData.title,
         description: formData.description,
-        startDate: formData.startDate,
-        endDate: formData.endDate || undefined,
+        startDate: new Date(formData.startDate),
+        endDate: formData.endDate ? new Date(formData.endDate) : undefined,
         location: formData.location || undefined,
         imageUrl: formData.imageUrl || undefined,
         isPublished: formData.isPublished,
