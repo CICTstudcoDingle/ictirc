@@ -6,6 +6,7 @@ import { UpcomingEventCard } from "@/components/events/upcoming-event-card";
 import { ParticipatingUniversities } from "@/components/home/participating-universities";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
 
+// Deployment trigger: Force Vercel rebuild
 export const dynamic = "force-dynamic";
 
 export default function HomePage() {
