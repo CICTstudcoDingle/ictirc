@@ -109,22 +109,35 @@ export function ParticipatingUniversities() {
 }
 
 function UniversityItem({ university }: { university: typeof UNIVERSITIES[0] }) {
+  const isIsufst = university.id === 1;
+
   return (
     <div className="flex items-center gap-5 min-w-[340px] group transition-all duration-300">
-      {/* Logo container - removed background card styling */}
-      <div className="relative w-24 h-24 shrink-0 flex items-center justify-center">
+      {/* Logo container - Dynamic sizing for ISUFST */}
+      <div
+        className={cn(
+          "relative shrink-0 flex items-center justify-center transition-all duration-300",
+          isIsufst ? "w-32 h-32" : "w-24 h-24"
+        )}
+      >
         <Image
           src={university.logo}
           alt={university.name}
-          width={100}
-          height={100}
-          className="object-contain w-full h-full drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+          width={isIsufst ? 140 : 100}
+          height={isIsufst ? 140 : 100}
+          className={cn(
+            "object-contain w-full h-full drop-shadow-md group-hover:scale-110 transition-transform duration-300",
+            isIsufst && "scale-125" // Initial scale boost for ISUFST
+          )}
         />
       </div>
       
       {/* Text Info */}
       <div className="flex flex-col">
-        <h4 className="text-sm font-bold text-maroon leading-tight mb-1 group-hover:text-maroon-600 transition-colors line-clamp-2">
+        <h4 className={cn(
+          "text-sm font-bold leading-tight mb-1 transition-colors line-clamp-2",
+          isIsufst ? "text-maroon text-base" : "text-maroon group-hover:text-maroon-600"
+        )}>
           {university.name}
         </h4>
         <div className="flex flex-col gap-0.5">
