@@ -16,14 +16,31 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  BookOpen,
+  ChevronDown,
+  ChevronRight as ChevronRightSmall,
+  BookOpenCheck,
+  CalendarDays,
+  Building2,
+  Upload,
 } from "lucide-react";
 import { cn } from "@ictirc/ui";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/papers", label: "Papers", icon: FileText },
+  {
+    href: "/dashboard/archives",
+    label: "Archives",
+    icon: BookOpen,
+    submenu: [
+      { href: "/dashboard/archives/volumes", label: "Volumes", icon: BookOpenCheck },
+      { href: "/dashboard/archives/issues", label: "Issues", icon: CalendarDays },
+      { href: "/dashboard/archives/conferences", label: "Conferences", icon: Building2 },
+      { href: "/dashboard/archives/upload", label: "Upload Papers", icon: Upload },
+    ]
+  },
   { href: "/dashboard/users", label: "Users", icon: Users },
-  { href: "/dashboard/events", label: "Events", icon: Calendar },
   { href: "/dashboard/audit-logs", label: "Audit Logs", icon: ScrollText },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
@@ -31,6 +48,7 @@ const navItems = [
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
   const pathname = usePathname();
 
   // Persist collapsed state in localStorage
@@ -39,7 +57,12 @@ export function Sidebar() {
     if (saved === "true") {
       setIsCollapsed(true);
     }
-  }, []);
+
+    // Auto-expand Archives if on archive page
+    if (pathname.startsWith("/dashboard/archives")) {
+      setExpandedMenus(prev => ({ ...prev, "/dashboard/archives": true }));
+    }
+  }, [pathname]);
 
   const toggleCollapse = () => {
     const newState = !isCollapsed;
@@ -47,6 +70,10 @@ export function Sidebar() {
     localStorage.setItem("sidebar-collapsed", String(newState));
     // Dispatch event for layout to respond
     window.dispatchEvent(new CustomEvent("sidebar-toggle", { detail: { collapsed: newState } }));
+  };
+
+  const toggleSubmenu = (href: string) => {
+    setExpandedMenus(prev => ({ ...prev, [href]: !prev[href] }));
   };
 
   const supabase = createBrowserClient(
@@ -135,23 +162,78 @@ export function Sidebar() {
               pathname === item.href ||
               (item.href !== "/dashboard" && pathname.startsWith(item.href));
 
+            const hasSubmenu = item.submenu && item.submenu.length > 0;
+            const isExpanded = expandedMenus[item.href];
+
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                title={isCollapsed ? item.label : undefined}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-maroon/5 text-maroon"
-                    : "text-gray-600 hover:bg-gray-100",
-                  isCollapsed && "justify-center px-2"
+              <div key={item.href}>
+                {hasSubmenu ? (
+                  <>
+                    <button
+                      onClick={() => toggleSubmenu(item.href)}
+                      title={isCollapsed ? item.label : undefined}
+                      className={cn(
+                        "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                        isActive
+                          ? "bg-maroon/5 text-maroon"
+                          : "text-gray-600 hover:bg-gray-100",
+                        isCollapsed && "justify-center px-2"
+                      )}
+                    >
+                      <item.icon className="w-5 h-5 flex-shrink-0" />
+                      {!isCollapsed && (
+                        <>
+                          <span className="flex-1 text-left">{item.label}</span>
+                          {isExpanded ? (
+                            <ChevronDown className="w-4 h-4 flex-shrink-0" />
+                          ) : (
+                            <ChevronRightSmall className="w-4 h-4 flex-shrink-0" />
+                          )}
+                        </>
+                      )}
+                    </button>
+                    {isExpanded && !isCollapsed && (
+                      <div className="ml-4 mt-1 space-y-1 border-l-2 border-gray-100 pl-2">
+                        {item.submenu?.map((subitem) => {
+                          const isSubActive = pathname === subitem.href;
+                          return (
+                            <Link
+                              key={subitem.href}
+                              href={subitem.href}
+                              onClick={() => setIsOpen(false)}
+                              className={cn(
+                                "flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors",
+                                isSubActive
+                                  ? "bg-maroon/10 text-maroon font-medium"
+                                  : "text-gray-600 hover:bg-gray-50"
+                              )}
+                            >
+                              <subitem.icon className="w-4 h-4 flex-shrink-0" />
+                              <span>{subitem.label}</span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    title={isCollapsed ? item.label : undefined}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                      isActive
+                        ? "bg-maroon/5 text-maroon"
+                        : "text-gray-600 hover:bg-gray-100",
+                      isCollapsed && "justify-center px-2"
+                    )}
+                  >
+                    <item.icon className="w-5 h-5 flex-shrink-0" />
+                    {!isCollapsed && <span>{item.label}</span>}
+                  </Link>
                 )}
-              >
-                <item.icon className="w-5 h-5 flex-shrink-0" />
-                {!isCollapsed && <span>{item.label}</span>}
-              </Link>
+              </div>
             );
           })}
         </nav>

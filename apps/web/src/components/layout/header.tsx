@@ -48,22 +48,10 @@ export function Header() {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
               <Link
-                href="/archive"
+                href="/about"
                 className="text-gray-700 hover:text-maroon transition-colors font-medium"
               >
-                Archive
-              </Link>
-              <Link
-                href="/conferences"
-                className="text-gray-700 hover:text-maroon transition-colors font-medium"
-              >
-                Conferences
-              </Link>
-              <Link
-                href="/guides"
-                className="text-gray-700 hover:text-maroon transition-colors font-medium"
-              >
-                Guides
+                About
               </Link>
               <Link
                 href="/faq"
@@ -72,10 +60,22 @@ export function Header() {
                 FAQ
               </Link>
               <Link
-                href="/about"
+                href="/guides"
                 className="text-gray-700 hover:text-maroon transition-colors font-medium"
               >
-                About
+                Guides
+              </Link>
+              <Link
+                href="/conferences"
+                className="text-gray-700 hover:text-maroon transition-colors font-medium"
+              >
+                Conferences
+              </Link>
+              <Link
+                href="/archive"
+                className="text-gray-700 hover:text-maroon transition-colors font-medium"
+              >
+                Archive
               </Link>
             </nav>
 

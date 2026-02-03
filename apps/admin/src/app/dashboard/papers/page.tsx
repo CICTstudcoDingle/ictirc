@@ -118,7 +118,7 @@ export default function PapersPage() {
         </div>
         <Button>
           <Plus className="w-4 h-4" />
-          Add Paper
+          New Submission
         </Button>
       </div>
 

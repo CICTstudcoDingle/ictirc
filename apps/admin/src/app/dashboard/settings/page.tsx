@@ -1,9 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, Button } from "@ictirc/ui";
+import { Card, Button, FileUpload } from "@ictirc/ui";
 import { useToastActions } from "@/lib/toast";
-import { FileUpload } from "@/components/file-upload";
+import { useUpload } from "@/hooks/use-upload";
+import {
+  listConferences,
+  createConference,
+  updateConference,
+  deleteConference,
+} from "@/lib/actions/conference";
 import {
   Settings as SettingsIcon,
   FileText,
@@ -85,10 +91,20 @@ export default function SettingsPage() {
   async function fetchEvents() {
     setLoading(true);
     try {
-      const response = await fetch("/api/events");
-      if (response.ok) {
-        const data = await response.json();
-        setEvents(data.events || []);
+      const result = await listConferences();
+      if (result.success) {
+        // Map to local Event interface
+        const mappedEvents = (result.data || []).map((c: any) => ({
+          id: c.id,
+          title: c.title,
+          description: c.description || "",
+          imageUrl: c.imageUrl,
+          startDate: new Date(c.startDate).toISOString().slice(0, 16),
+          endDate: c.endDate ? new Date(c.endDate).toISOString().slice(0, 16) : null,
+          location: c.location,
+          isPublished: c.isPublished || false,
+        }));
+        setEvents(mappedEvents);
       }
     } catch (error) {
       console.error("Failed to fetch events:", error);
@@ -207,6 +223,10 @@ function GuidesSettings({
     fileUrl: "",
   });
   const [submitting, setSubmitting] = useState(false);
+  const pdfUpload = useUpload({
+    bucket: process.env.NEXT_PUBLIC_SUPABASE_BUCKET_GUIDES || "research guides",
+    folder: "guides"
+  });
 
   function openAddModal() {
     setEditingGuide(null);
@@ -440,26 +460,32 @@ function GuidesSettings({
                     <span className="text-sm text-green-800 flex-1 truncate">
                       {editingGuide ? "File attached" : "File uploaded"}
                     </span>
-                    {!editingGuide && (
-                      <button
-                        type="button"
-                        onClick={() => setFormData({ ...formData, fileUrl: "" })}
-                        className="text-green-600 hover:text-green-800"
-                        aria-label="Remove uploaded file"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, fileUrl: "" })}
+                      className="text-green-600 hover:text-green-800"
+                      aria-label="Remove uploaded file"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
                   </div>
                 ) : (
                   <FileUpload
-                    onUploadComplete={(url, fileName) => {
-                      setFormData((prev) => ({
-                        ...prev,
-                        fileUrl: url,
-                        title: prev.title || fileName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
-                      }));
+                      onFileSelect={async (file) => {
+                        const url = await pdfUpload.uploadFile(file);
+                        if (url) {
+                          setFormData((prev) => ({
+                            ...prev,
+                            fileUrl: url,
+                            title: prev.title || file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
+                          }));
+                        }
                     }}
+                      onRemove={() => setFormData({ ...formData, fileUrl: "" })}
+                      isUploading={pdfUpload.isUploading}
+                      progress={pdfUpload.progress}
+                      accept=".pdf"
+                      variant="file"
                   />
                 )}
                 <p className="text-xs text-gray-400 mt-1">PDF files only, max 10MB</p>
@@ -506,6 +532,7 @@ function EventsSettings({
     isPublished: true,
   });
   const [submitting, setSubmitting] = useState(false);
+  const imageUpload = useUpload({ folder: "events" });
 
   function openAddModal() {
     setEditingEvent(null);
@@ -544,18 +571,21 @@ function EventsSettings({
 
     setSubmitting(true);
     try {
-      const method = editingEvent ? "PUT" : "POST";
-      const body = editingEvent
-        ? { id: editingEvent.id, ...formData }
-        : formData;
+      const cleanData = {
+        title: formData.title,
+        description: formData.description,
+        startDate: formData.startDate,
+        endDate: formData.endDate || undefined,
+        location: formData.location || undefined,
+        imageUrl: formData.imageUrl || undefined,
+        isPublished: formData.isPublished,
+      };
 
-      const response = await fetch("/api/events", {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      const result = editingEvent
+        ? await updateConference(editingEvent.id, cleanData)
+        : await createConference(cleanData);
 
-      if (response.ok) {
+      if (result.success) {
         toast.success(
           editingEvent ? "Event updated" : "Event created",
           `"${formData.title}" has been ${editingEvent ? "updated" : "added"} successfully.`
@@ -563,8 +593,7 @@ function EventsSettings({
         setShowModal(false);
         onRefresh();
       } else {
-        const data = await response.json();
-        toast.error("Error", data.error || "Failed to save event.");
+        toast.error("Error", result.error || "Failed to save event.");
       }
     } catch (error) {
       toast.error("Error", "An unexpected error occurred.");
@@ -577,15 +606,13 @@ function EventsSettings({
     if (!confirm(`Are you sure you want to delete "${event.title}"?`)) return;
 
     try {
-      const response = await fetch(`/api/events?id=${event.id}`, {
-        method: "DELETE",
-      });
+      const result = await deleteConference(event.id);
 
-      if (response.ok) {
+      if (result.success) {
         toast.success("Event deleted", `"${event.title}" has been removed.`);
         onRefresh();
       } else {
-        toast.error("Error", "Failed to delete event.");
+        toast.error("Error", result.error || "Failed to delete event.");
       }
     } catch (error) {
       toast.error("Error", "An unexpected error occurred.");
@@ -750,15 +777,19 @@ function EventsSettings({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Image URL
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Event Image
                 </label>
-                <input
-                  type="url"
+                <FileUpload
                   value={formData.imageUrl}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                  placeholder="https://..."
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon"
+                  onFileSelect={async (file) => {
+                    const url = await imageUpload.uploadFile(file);
+                    if (url) setFormData({ ...formData, imageUrl: url });
+                  }}
+                  onRemove={() => setFormData({ ...formData, imageUrl: "" })}
+                  isUploading={imageUpload.isUploading}
+                  progress={imageUpload.progress}
+                  variant="image"
                 />
               </div>
               <div className="flex items-center gap-2">

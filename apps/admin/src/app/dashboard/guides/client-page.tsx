@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Card, CardContent, CardHeader, CardTitle } from "@ictirc/ui";
+import { Button, Input, Card, CardContent, CardHeader, CardTitle, FileUpload } from "@ictirc/ui";
 import { Plus, Trash2, FileText, FolderOpen, Save, Book } from "lucide-react";
 import { createCategory, deleteCategory, createGuide, deleteGuide } from "./actions";
 import { useToast } from "@/lib/toast";
+import { uploadFile } from "@ictirc/storage";
 
 interface Category {
   id: string;
@@ -44,7 +45,7 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
 
   // Guide Form State
   const [newGuideTitle, setNewGuideTitle] = useState("");
-  const [newGuideUrl, setNewGuideUrl] = useState("");
+  const [newGuideFile, setNewGuideFile] = useState<File | null>(null);
   const [newGuideCategoryId, setNewGuideCategoryId] = useState("");
   const [isCreatingGuide, setIsCreatingGuide] = useState(false);
 
@@ -76,25 +77,44 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
   };
 
   const handleCreateGuide = async () => {
-    if (!newGuideTitle || !newGuideUrl || !newGuideCategoryId) {
-      showToast("Please fill all fields", "error");
+    if (!newGuideTitle || !newGuideFile || !newGuideCategoryId) {
+      showToast("Please fill all fields and select a file", "error");
       return;
     }
     setIsCreatingGuide(true);
-    const result = await createGuide({
-      title: newGuideTitle,
-      fileUrl: newGuideUrl,
-      categoryId: newGuideCategoryId,
-    });
-    setIsCreatingGuide(false);
 
-    if (result.success && result.guide) {
-      setGuides([...guides, result.guide as Guide]); // Type assertion for joined data
-      setNewGuideTitle("");
-      setNewGuideUrl("");
-      showToast("Guide created successfully", "success");
-    } else {
-      showToast(result.error || "Failed to create guide", "error");
+    try {
+      // Upload file to research guides bucket
+      const timestamp = Date.now();
+      const sanitizedName = newGuideFile.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+      const filePath = `guides/${timestamp}-${sanitizedName}`;
+
+      const uploadResult = await uploadFile(newGuideFile, filePath, "research guides");
+
+      if (!uploadResult.success || !uploadResult.url) {
+        showToast(uploadResult.error || "Failed to upload file", "error");
+        setIsCreatingGuide(false);
+        return;
+      }
+
+      const result = await createGuide({
+        title: newGuideTitle,
+        fileUrl: uploadResult.url,
+        categoryId: newGuideCategoryId,
+      });
+
+      if (result.success && result.guide) {
+        setGuides([...guides, result.guide as Guide]);
+        setNewGuideTitle("");
+        setNewGuideFile(null);
+        showToast("Guide created successfully", "success");
+      } else {
+        showToast(result.error || "Failed to create guide", "error");
+      }
+    } catch (error) {
+      showToast("Failed to create guide", "error");
+    } finally {
+      setIsCreatingGuide(false);
     }
   };
 
@@ -228,11 +248,13 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
                 />
               </div>
               <div>
-                <label className="text-xs font-medium text-gray-500 mb-1 block">File URL</label>
-                <Input
-                  value={newGuideUrl}
-                  onChange={(e) => setNewGuideUrl(e.target.value)}
-                  placeholder="https://..."
+                <label className="text-xs font-medium text-gray-500 mb-1 block">File</label>
+                <FileUpload
+                  accept=".pdf,.doc,.docx"
+                  onFileSelect={(file) => setNewGuideFile(file)}
+                  onRemove={() => setNewGuideFile(null)}
+                  variant="file"
+                  description="Upload a research guide (PDF or Word)"
                 />
               </div>
               <div>
@@ -252,7 +274,7 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
               </div>
               <Button
                 onClick={handleCreateGuide}
-                disabled={isCreatingGuide || !newGuideTitle || !newGuideCategoryId}
+                disabled={isCreatingGuide || !newGuideTitle || !newGuideCategoryId || !newGuideFile}
                 className="w-full"
               >
                 {isCreatingGuide ? "Adding..." : "Add Guide"}

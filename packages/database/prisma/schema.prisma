@@ -109,7 +109,8 @@ model Category {
   children Category[] @relation("CategoryHierarchy")
 
   // Relations
-  papers Paper[]
+  papers         Paper[]
+  archivedPapers ArchivedPaper[]
 
   @@index([parentId])
 }
@@ -161,9 +162,10 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relations
-  invites        InviteToken[]
-  comments       PaperComment[]
-  assignedPapers PaperReviewer[]
+  invites          InviteToken[]
+  comments         PaperComment[]
+  assignedPapers   PaperReviewer[]
+  uploadedArchives ArchivedPaper[]
 
   @@index([email])
   @@index([role])
@@ -190,22 +192,6 @@ model InviteToken {
 // ============================================
 // EVENTS & RESEARCH GUIDES
 // ============================================
-
-model Event {
-  id          String    @id @default(cuid())
-  title       String
-  description String    @db.Text
-  imageUrl    String?
-  startDate   DateTime
-  endDate     DateTime?
-  location    String?
-  isPublished Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@index([isPublished])
-  @@index([startDate])
-}
 
 model ResearchGuide {
   id          String   @id @default(cuid())
@@ -275,5 +261,125 @@ model DoiSequence {
   count Int    @default(0)
 
   @@unique([year])
+}
+
+// ============================================
+// ARCHIVE MODELS
+// ============================================
+
+model Volume {
+  id           String   @id @default(cuid())
+  volumeNumber Int
+  year         Int
+  description  String?  @db.Text
+  coverImageUrl String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  issues Issue[]
+
+  @@unique([volumeNumber, year])
+  @@index([year])
+  @@index([volumeNumber])
+}
+
+model Issue {
+  id            String   @id @default(cuid())
+  issueNumber   Int
+  month         String?
+  publishedDate DateTime
+  issn          String?
+  theme         String?  @db.Text
+  description   String?  @db.Text
+  coverImageUrl String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  volume       Volume          @relation(fields: [volumeId], references: [id], onDelete: Cascade)
+  volumeId     String
+  conference   Conference?     @relation(fields: [conferenceId], references: [id])
+  conferenceId String?
+  papers       ArchivedPaper[]
+
+  @@unique([volumeId, issueNumber])
+  @@index([volumeId])
+  @@index([conferenceId])
+  @@index([publishedDate])
+}
+
+model Conference {
+  id          String    @id @default(cuid())
+  name        String
+  fullName    String?   @db.Text
+  description String?   @db.Text
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  venue       String?   @db.Text
+  theme       String?   @db.Text
+  organizers  String[]  @default([])
+  partners    String[]  @default([])
+  logoUrl     String?
+  imageUrl    String?
+  websiteUrl  String?
+  isPublished Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  issues Issue[]
+
+  @@index([startDate])
+  @@index([isPublished])
+}
+
+model ArchivedPaper {
+  id            String    @id @default(cuid())
+  title         String
+  abstract      String    @db.Text
+  keywords      String[]
+  doi           String?   @unique
+  pdfUrl        String
+  docxUrl       String?
+  pageStart     Int?
+  pageEnd       Int?
+  publishedDate DateTime
+  submittedDate DateTime?
+  acceptedDate  DateTime?
+  uploadedAt    DateTime  @default(now())
+  uploadedBy    String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  authors    ArchivedPaperAuthor[]
+  category   Category              @relation(fields: [categoryId], references: [id])
+  categoryId String
+  issue      Issue                 @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  issueId    String
+  uploader   User                  @relation(fields: [uploadedBy], references: [id])
+
+  @@index([issueId])
+  @@index([categoryId])
+  @@index([publishedDate])
+  @@index([uploadedAt])
+}
+
+model ArchivedPaperAuthor {
+  id              String  @id @default(cuid())
+  name            String
+  email           String?
+  affiliation     String?
+  order           Int     @default(0)
+  isCorresponding Boolean @default(false)
+
+  // Relations
+  paper   ArchivedPaper @relation(fields: [paperId], references: [id], onDelete: Cascade)
+  paperId String
+
+  @@index([paperId])
+  @@index([email])
 }
 

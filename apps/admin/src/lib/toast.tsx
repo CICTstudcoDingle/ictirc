@@ -40,6 +40,22 @@ export function useToastActions() {
   };
 }
 
+// Global toast function for use in forms (non-hook context)
+let globalAddToast: ((type: ToastType, title: string, description?: string) => void) | null = null;
+
+export function setGlobalToast(addToastFn: (type: ToastType, title: string, description?: string) => void) {
+  globalAddToast = addToastFn;
+}
+
+export function toast({ title, description, variant }: { title: string; description?: string; variant?: "default" | "destructive" }) {
+  if (globalAddToast) {
+    const type = variant === "destructive" ? "error" : "success";
+    globalAddToast(type, title, description);
+  } else {
+    console.warn("Toast called before ToastProvider is mounted");
+  }
+}
+
 const icons: Record<ToastType, React.ReactNode> = {
   success: <CheckCircle className="w-5 h-5 text-green-500" />,
   error: <XCircle className="w-5 h-5 text-red-500" />,
@@ -71,6 +87,12 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
+
+  // Set global toast function
+  React.useEffect(() => {
+    setGlobalToast(addToast);
+    return () => setGlobalToast(null!);
+  }, [addToast]);
 
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>

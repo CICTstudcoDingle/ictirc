@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Calendar, MapPin, ArrowRight, Clock } from "lucide-react";
 import { prisma } from "@ictirc/database";
 import { Button, CircuitBackground } from "@ictirc/ui";
+import { ScrollAnimation } from "@/components/ui/scroll-animation";
 
 export const dynamic = "force-dynamic";
 
@@ -12,10 +13,10 @@ export const metadata: Metadata = {
   description: "Academic conferences and events hosted by the ISUFST College of Information and Computing Technology.",
 };
 
-interface Event {
+interface Conference {
   id: string;
-  title: string;
-  description: string;
+  name: string;
+  description: string | null;
   imageUrl: string | null;
   startDate: Date;
   endDate: Date | null;
@@ -46,23 +47,23 @@ function getDaysUntil(date: Date): number {
   return Math.ceil((new Date(date).getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
 }
 
-function EventCard({ event, isPast }: { event: Event; isPast: boolean }) {
-  const daysUntil = getDaysUntil(event.startDate);
+function ConferenceCard({ conference, isPast }: { conference: Conference; isPast: boolean }) {
+  const daysUntil = getDaysUntil(conference.startDate);
   const showCountdown = !isPast && daysUntil > 0 && daysUntil <= 30;
 
   return (
-    <Link href={`/conferences/${event.id}`}>
+    <Link href={`/conferences/${conference.id}`}>
       <div
         className={`group relative bg-white border rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg ${
           isPast ? "opacity-60 hover:opacity-80" : "hover:border-maroon/30"
         }`}
       >
         {/* Image */}
-        {event.imageUrl && (
+        {conference.imageUrl && (
           <div className="relative h-48 overflow-hidden">
             <Image
-              src={event.imageUrl}
-              alt={event.title}
+              src={conference.imageUrl}
+              alt={conference.name}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
@@ -77,7 +78,7 @@ function EventCard({ event, isPast }: { event: Event; isPast: boolean }) {
 
         {/* Content */}
         <div className="p-6">
-          {!event.imageUrl && showCountdown && (
+          {!conference.imageUrl && showCountdown && (
             <div className="inline-flex items-center gap-1 bg-gold/20 text-amber-800 px-3 py-1 rounded-full text-sm font-medium mb-3">
               <Clock className="w-4 h-4" />
               {daysUntil} days remaining
@@ -85,25 +86,27 @@ function EventCard({ event, isPast }: { event: Event; isPast: boolean }) {
           )}
 
           <h3 className={`text-xl font-bold mb-2 group-hover:text-maroon transition-colors ${isPast ? "text-gray-600" : "text-gray-900"}`}>
-            {event.title}
+            {conference.name}
           </h3>
 
           <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-3">
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              {formatDateRange(event.startDate, event.endDate)}
+              {formatDateRange(conference.startDate, conference.endDate)}
             </div>
-            {event.location && (
+            {conference.location && (
               <div className="flex items-center gap-1">
                 <MapPin className="w-4 h-4" />
-                {event.location}
+                {conference.location}
               </div>
             )}
           </div>
 
-          <p className={`line-clamp-2 mb-4 ${isPast ? "text-gray-500" : "text-gray-600"}`}>
-            {event.description}
-          </p>
+          {conference.description && (
+            <p className={`line-clamp-2 mb-4 ${isPast ? "text-gray-500" : "text-gray-600"}`}>
+              {conference.description}
+            </p>
+          )}
 
           <div className="flex items-center text-maroon font-medium group-hover:gap-2 transition-all">
             View Details
@@ -118,16 +121,16 @@ function EventCard({ event, isPast }: { event: Event; isPast: boolean }) {
 export default async function ConferencesPage() {
   const now = new Date();
 
-  const events = await prisma.event.findMany({
+  const conferences = await prisma.conference.findMany({
     where: { isPublished: true },
     orderBy: { startDate: "desc" },
   });
 
-  const upcoming = events
-    .filter((event) => new Date(event.startDate) >= now)
-    .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+  const upcoming = conferences
+    .filter((conference) => new Date(conference.startDate) >= now)
+    .sort((a: Conference, b: Conference) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
-  const past = events.filter((event) => new Date(event.startDate) < now);
+  const past = conferences.filter((conference) => new Date(conference.startDate) < now);
 
   return (
     <div className="pt-14 md:pt-16 min-h-screen bg-gray-50">
@@ -135,12 +138,14 @@ export default async function ConferencesPage() {
       <section className="relative bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 py-16 md:py-20 overflow-hidden">
         <CircuitBackground variant="default" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-            Conferences & <span className="text-gold">Events</span>
-          </h1>
-          <p className="text-gray-300 max-w-2xl mx-auto">
-            Join us at academic conferences and events hosted by the ISUFST College of Information and Communications Technology.
-          </p>
+          <ScrollAnimation direction="up">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+              Conferences & <span className="text-gold">Events</span>
+            </h1>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              Join us at academic conferences and events hosted by the ISUFST College of Information and Communications Technology.
+            </p>
+          </ScrollAnimation>
         </div>
       </section>
 
@@ -158,11 +163,13 @@ export default async function ConferencesPage() {
             </div>
 
             <div className="relative pl-8 border-l-2 border-gold/30 space-y-8">
-              {upcoming.map((event) => (
-                <div key={event.id} className="relative">
-                  <div className="absolute -left-[2.45rem] w-4 h-4 rounded-full bg-gold border-4 border-white" />
-                  <EventCard event={event} isPast={false} />
-                </div>
+              {upcoming.map((conference: Conference, index: number) => (
+                <ScrollAnimation key={conference.id} direction="up" staggerIndex={index}>
+                  <div className="relative">
+                    <div className="absolute -left-[2.45rem] w-4 h-4 rounded-full bg-gold border-4 border-white" />
+                    <ConferenceCard conference={conference} isPast={false} />
+                  </div>
+                </ScrollAnimation>
               ))}
             </div>
           </section>
@@ -180,18 +187,20 @@ export default async function ConferencesPage() {
             </div>
 
             <div className="relative pl-8 border-l-2 border-gray-200 space-y-8">
-              {past.map((event) => (
-                <div key={event.id} className="relative">
-                  <div className="absolute -left-[2.45rem] w-4 h-4 rounded-full bg-gray-300 border-4 border-white" />
-                  <EventCard event={event} isPast={true} />
-                </div>
+              {past.map((conference: Conference, index: number) => (
+                <ScrollAnimation key={conference.id} direction="up" staggerIndex={index}>
+                  <div className="relative">
+                    <div className="absolute -left-[2.45rem] w-4 h-4 rounded-full bg-gray-300 border-4 border-white" />
+                    <ConferenceCard conference={conference} isPast={true} />
+                  </div>
+                </ScrollAnimation>
               ))}
             </div>
           </section>
         )}
 
         {/* Empty State */}
-        {events.length === 0 && (
+        {conferences.length === 0 && (
           <div className="text-center py-16">
             <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-600 mb-2">No Events Yet</h3>

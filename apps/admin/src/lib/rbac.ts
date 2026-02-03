@@ -20,6 +20,11 @@ export const PROTECTED_ROUTES: Record<string, UserRole[]> = {
   "/dashboard/users": ["EDITOR", "DEAN"],
   "/dashboard/settings": ["DEAN"],
   "/dashboard/system": ["DEAN"],
+  "/dashboard/archives": ["EDITOR", "DEAN"],
+  "/dashboard/archives/volumes": ["EDITOR", "DEAN"],
+  "/dashboard/archives/issues": ["EDITOR", "DEAN"],
+  "/dashboard/archives/upload": ["EDITOR", "DEAN"],
+  "/dashboard/archives/conferences": ["EDITOR", "DEAN"],
 };
 
 /**
@@ -41,7 +46,18 @@ export type Permission =
   | "system:lock"
   | "system:settings"
   | "audit:read"
-  | "audit:export";
+  | "audit:export"
+  | "archive:read"
+  | "archive:volume:create"
+  | "archive:volume:update"
+  | "archive:volume:delete"
+  | "archive:issue:create"
+  | "archive:issue:update"
+  | "archive:issue:delete"
+  | "archive:paper:upload"
+  | "archive:paper:update"
+  | "archive:paper:delete"
+  | "archive:conference:manage";
 
 /**
  * Role-based permissions matrix
@@ -57,6 +73,14 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     "paper:publish",
     "user:read",
     "user:invite",
+    "archive:read",
+    "archive:volume:create",
+    "archive:volume:update",
+    "archive:issue:create",
+    "archive:issue:update",
+    "archive:paper:upload",
+    "archive:paper:update",
+    "archive:conference:manage",
   ],
   DEAN: [
     "paper:read",
@@ -75,6 +99,17 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     "system:settings",
     "audit:read",
     "audit:export",
+    "archive:read",
+    "archive:volume:create",
+    "archive:volume:update",
+    "archive:volume:delete",
+    "archive:issue:create",
+    "archive:issue:update",
+    "archive:issue:delete",
+    "archive:paper:upload",
+    "archive:paper:update",
+    "archive:paper:delete",
+    "archive:conference:manage",
   ],
 };
 

@@ -16,7 +16,33 @@ export { BottomNav } from "./components/bottom-nav";
 export { FloatingActionButton } from "./components/fab";
 export { CircuitBackground } from "./components/circuit-background";
 export { Sidebar } from "./components/sidebar";
+export { FileUpload, type FileUploadProps } from "./components/file-upload";
+
+// Form Components
+export {
+  useFormField,
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  FormField,
+} from "./components/form";
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+} from "./components/select";
+export { Textarea } from "./components/textarea";
+export { Label } from "./components/label";
 
 // Utilities
+export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/tabs";
 export { cn } from "./lib/utils";
 

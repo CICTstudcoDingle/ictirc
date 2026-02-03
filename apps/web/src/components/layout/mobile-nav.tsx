@@ -12,11 +12,11 @@ interface MobileNavProps {
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
-  { href: "/archive", label: "Archive", icon: FileText },
-  { href: "/conferences", label: "Conferences", icon: Calendar },
-  { href: "/guides", label: "Guides", icon: BookOpen },
-  { href: "/faq", label: "FAQ", icon: HelpCircle },
   { href: "/about", label: "About", icon: Info },
+  { href: "/faq", label: "FAQ", icon: HelpCircle },
+  { href: "/guides", label: "Guides", icon: BookOpen },
+  { href: "/conferences", label: "Conferences", icon: Calendar },
+  { href: "/archive", label: "Archive", icon: FileText },
   { href: "/submit", label: "Submit Research", icon: PlusCircle, highlight: true },
 ];
 

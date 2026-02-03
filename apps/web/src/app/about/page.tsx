@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, Mail, MapPin, Phone, Smartphone, ExternalLink, BookOpen, ShieldCheck, Globe } from "lucide-react";
 import { Button, CircuitBackground } from "@ictirc/ui";
+import { ScrollAnimation } from "@/components/ui/scroll-animation";
 
 export default function AboutPage() {
   return (
@@ -9,15 +10,17 @@ export default function AboutPage() {
       <section className="relative bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 text-white py-16 md:py-24 overflow-hidden">
         <CircuitBackground variant="subtle" animated />
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-5xl font-bold mb-4">
-            About <span className="text-gold">IRJICT</span>
-          </h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-4">
-            International Research Journal on Information and Communications Technology
-          </p>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-sm font-mono text-gold">
-            <span>ISSN No.: 2960-3773</span>
-          </div>
+          <ScrollAnimation direction="up">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4">
+              About <span className="text-gold">IRJICT</span>
+            </h1>
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-4">
+              International Research Journal on Information and Communications Technology
+            </p>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-sm font-mono text-gold">
+              <span>ISSN No.: 2960-3773</span>
+            </div>
+          </ScrollAnimation>
         </div>
       </section>
 
@@ -26,77 +29,85 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto px-4 space-y-8">
 
           {/* Introduction Section */}
-          <div className="mb-12">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
-                <BookOpen className="w-6 h-6 text-maroon" />
+          <ScrollAnimation direction="right">
+            <div className="mb-12">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
+                  <BookOpen className="w-6 h-6 text-maroon" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Advancing Digital Innovation
+                </h2>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                Advancing Digital Innovation
-              </h2>
-            </div>
-            <div className="prose prose-lg text-gray-600 max-w-none">
-              <p>
-                Advancing the frontiers of digital innovation, the International Research Journal for Information and Communications Technology (IRJICT) facilitates the open-access publication of peer-reviewed research. Our scope encompasses diverse fields, including Computer Science, Engineering, and Industrial Technology, ensuring global visibility for scholarly excellence.
-              </p>
-              <p>
-                Since its inception in 2023, IRJICT has bridged the gap between innovation and publication. Our dual-layer review process—involving both specialized peer reviewers and our editorial team—guarantees the highest caliber of content. To maximize research impact, every article is published with unrestricted free access for readers worldwide.
-              </p>
-              <div className="bg-gray-50 p-4 rounded-md border-l-4 border-gold text-sm italic mt-4">
-                Join a community of innovators. IRJICT follows a streamlined editorial process designed to uphold the highest academic standards. We are currently accepting online submissions from experts in Computer Science, Engineering, ICT, and Industrial Technology.
+              <div className="prose prose-lg text-gray-600 max-w-none">
+                <p>
+                  Advancing the frontiers of digital innovation, the International Research Journal for Information and Communications Technology (IRJICT) facilitates the open-access publication of peer-reviewed research. Our scope encompasses diverse fields, including Computer Science, Engineering, and Industrial Technology, ensuring global visibility for scholarly excellence.
+                </p>
+                <p>
+                  Since its inception in 2023, IRJICT has bridged the gap between innovation and publication. Our dual-layer review process—involving both specialized peer reviewers and our editorial team—guarantees the highest caliber of content. To maximize research impact, every article is published with unrestricted free access for readers worldwide.
+                </p>
+                <div className="bg-gray-50 p-4 rounded-md border-l-4 border-gold text-sm italic mt-4">
+                  Join a community of innovators. IRJICT follows a streamlined editorial process designed to uphold the highest academic standards. We are currently accepting online submissions from experts in Computer Science, Engineering, ICT, and Industrial Technology.
+                </div>
               </div>
             </div>
-          </div>
+          </ScrollAnimation>
 
           {/* Academic Integrity Section */}
-          <div className="mb-12">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
-                <ShieldCheck className="w-6 h-6 text-maroon" />
+          <ScrollAnimation direction="left">
+            <div className="mb-12">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
+                  <ShieldCheck className="w-6 h-6 text-maroon" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Academic Integrity Plagiarism Policy
+                </h2>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                Academic Integrity Plagiarism Policy
-              </h2>
+              <div className="prose prose-lg text-gray-600 max-w-none">
+                <p>
+                  IRJICT maintains the highest standards of academic integrity. We implement rigorous plagiarism screening for all submissions during the initial review stage.
+                </p>
+                <p>
+                  We recognize plagiarism not only as a violation of intellectual property and potential copyright infringement but also as a breach of ethical publishing agreements. By systematically vetting all manuscripts, we ensure compliance with institutional restrictions and uphold the originality of the scholarly record.
+                </p>
+              </div>
             </div>
-            <div className="prose prose-lg text-gray-600 max-w-none">
-              <p>
-                IRJICT maintains the highest standards of academic integrity. We implement rigorous plagiarism screening for all submissions during the initial review stage.
-              </p>
-              <p>
-                We recognize plagiarism not only as a violation of intellectual property and potential copyright infringement but also as a breach of ethical publishing agreements. By systematically vetting all manuscripts, we ensure compliance with institutional restrictions and uphold the originality of the scholarly record.
-              </p>
-            </div>
-          </div>
+          </ScrollAnimation>
 
           {/* Aim & Scope and Open Access Grid */}
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 border-l-4 border-l-maroon hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
-                  <Globe className="w-6 h-6 text-maroon" />
+            <ScrollAnimation direction="up" staggerIndex={0} className="h-full">
+              <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 border-l-4 border-l-maroon hover:shadow-md transition-shadow h-full">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
+                    <Globe className="w-6 h-6 text-maroon" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">
+                    Our Aim & Scope
+                  </h2>
                 </div>
-                <h2 className="text-xl font-bold text-gray-900">
-                  Our Aim & Scope
-                </h2>
+                <p className="text-gray-600 leading-relaxed">
+                  IRJICT empowers researchers in ICT and Engineering by providing an open-access platform for original, peer-reviewed contributions. We are committed to academic integrity and the pursuit of making cutting-edge research intuitive and accessible to the modern world.
+                </p>
               </div>
-              <p className="text-gray-600 leading-relaxed">
-                IRJICT empowers researchers in ICT and Engineering by providing an open-access platform for original, peer-reviewed contributions. We are committed to academic integrity and the pursuit of making cutting-edge research intuitive and accessible to the modern world.
-              </p>
-            </div>
+            </ScrollAnimation>
 
-            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 border-l-4 border-l-maroon hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
-                  <ExternalLink className="w-6 h-6 text-maroon" />
+            <ScrollAnimation direction="up" staggerIndex={1} className="h-full">
+              <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 border-l-4 border-l-maroon hover:shadow-md transition-shadow h-full">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-maroon/10 rounded-full flex items-center justify-center">
+                    <ExternalLink className="w-6 h-6 text-maroon" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">
+                    Open Access Journal
+                  </h2>
                 </div>
-                <h2 className="text-xl font-bold text-gray-900">
-                  Open Access Journal
-                </h2>
+                <p className="text-gray-600 leading-relaxed">
+                  Knowledge shouldn't be locked behind a paywall. By making research freely available online, we empower individuals and accelerate societal progress. Today, even the world’s top-tier journals are making this possible by lowering the financial barriers for both readers and contributing authors.
+                </p>
               </div>
-              <p className="text-gray-600 leading-relaxed">
-                Knowledge shouldn't be locked behind a paywall. By making research freely available online, we empower individuals and accelerate societal progress. Today, even the world’s top-tier journals are making this possible by lowering the financial barriers for both readers and contributing authors.
-              </p>
-            </div>
+            </ScrollAnimation>
           </div>
 
         </div>

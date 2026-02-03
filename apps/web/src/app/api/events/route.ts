@@ -7,26 +7,26 @@ export async function GET() {
   try {
     const now = new Date();
 
-    // Fetch all published events
-    const events = await prisma.event.findMany({
+    // Fetch all published conferences
+    const conferences = await prisma.conference.findMany({
       where: { isPublished: true },
       orderBy: { startDate: "desc" },
     });
 
-    // Separate into upcoming and past events
-    const upcoming = events.filter((event) => new Date(event.startDate) >= now);
-    const past = events.filter((event) => new Date(event.startDate) < now);
+    // Separate into upcoming and past conferences
+    const upcoming = conferences.filter((conference) => new Date(conference.startDate) >= now);
+    const past = conferences.filter((conference) => new Date(conference.startDate) < now);
 
     // Sort upcoming by startDate ascending (nearest first)
-    upcoming.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    upcoming.sort((a: any, b: any) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
-    // Format events with additional computed fields
-    const formatEvent = (event: typeof events[0]) => {
-      const startDate = new Date(event.startDate);
+    // Format conferences with additional computed fields
+    const formatEvent = (conference: typeof conferences[0]) => {
+      const startDate = new Date(conference.startDate);
       const daysUntil = Math.ceil((startDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
       
       return {
-        ...event,
+        ...conference,
         isUpcoming: startDate >= now,
         daysUntil: daysUntil > 0 ? daysUntil : null,
         showCountdown: daysUntil > 0 && daysUntil <= 30,

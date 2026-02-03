@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, Users, Calendar } from "lucide-react";
+import { LayoutDashboard, FileText, Users, Calendar, BookOpen } from "lucide-react";
 import { cn } from "@ictirc/ui";
 
 const quickActions = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/papers", label: "Papers", icon: FileText },
+  { href: "/dashboard/archives", label: "Archives", icon: BookOpen },
   { href: "/dashboard/users", label: "Users", icon: Users },
-  { href: "/dashboard/events", label: "Events", icon: Calendar },
 ];
 
 export function AdminBottomNav() {
