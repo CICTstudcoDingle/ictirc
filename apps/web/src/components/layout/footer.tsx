@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, ExternalLink, Store, GraduationCap } from "lucide-react";
+import { Facebook, ExternalLink, Store, GraduationCap, Mail, Phone, Globe, Linkedin, Youtube } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -111,14 +111,30 @@ export function Footer() {
           {/* Contact & Socials */}
           <div>
             <h4 className="font-semibold text-white mb-4">Contact</h4>
-            <ul className="space-y-2 text-sm text-gray-200 mb-4">
-              <li>ISUFST - CICT Department</li>
-              <li>Dingle Campus, Iloilo</li>
-              <li className="font-mono text-xs text-white/70">ictirc@isufst.edu.ph</li>
-              <li className="font-mono text-xs text-white/70">cictstudentcouncil@isufst.edu.ph</li>
+            <ul className="space-y-2.5 text-sm text-gray-200 mb-4">
+              <li className="flex items-start gap-2">
+                <GraduationCap className="w-4 h-4 shrink-0 mt-0.5 text-gold" />
+                <span>ISUFST - CICT Department<br />Dingle Campus, Iloilo</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Mail className="w-4 h-4 shrink-0 text-gold" />
+                <a href="mailto:ictirc@isufst.edu.ph" className="hover:text-white transition-colors font-mono text-xs">
+                  ictirc@isufst.edu.ph
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="w-4 h-4 shrink-0 text-gold" />
+                <span className="font-mono text-xs">+63-33-5801815</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Globe className="w-4 h-4 shrink-0 text-gold" />
+                <a href="https://isufst.edu.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors text-xs">
+                  isufst.edu.ph
+                </a>
+              </li>
             </ul>
 
-            {/* Facebook Pages */}
+            {/* Social Media Links */}
             <h4 className="font-semibold text-white mb-2 text-sm">Follow Us</h4>
             <div className="space-y-2">
               <a
@@ -128,7 +144,7 @@ export function Footer() {
                 className="flex items-center gap-2 text-sm text-gray-200 hover:text-white transition-colors"
               >
                 <Facebook className="w-4 h-4" />
-                CICT Official Page
+                <span>CICT Official Page</span>
               </a>
               <a
                 href="https://www.facebook.com/profile.php?id=61587106231483"
@@ -137,8 +153,27 @@ export function Footer() {
                 className="flex items-center gap-2 text-sm text-gray-200 hover:text-white transition-colors"
               >
                 <Facebook className="w-4 h-4" />
-                Student Council
+                <span>CICT Student Council</span>
               </a>
+              {/* Add more social links as they become available */}
+              {/* <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-gray-200 hover:text-white transition-colors"
+              >
+                <Linkedin className="w-4 h-4" />
+                <span>LinkedIn</span>
+              </a>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-gray-200 hover:text-white transition-colors"
+              >
+                <Youtube className="w-4 h-4" />
+                <span>YouTube</span>
+              </a> */}
             </div>
           </div>
         </div>
