@@ -219,6 +219,7 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
                         <button
                           onClick={() => handleDeleteCategory(cat.id)}
                           className="text-gray-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                          aria-label="Delete category"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -263,6 +264,7 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
                   value={newGuideCategoryId}
                   onChange={(e) => setNewGuideCategoryId(e.target.value)}
                   className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon"
+                  aria-label="Select category for guide"
                 >
                   <option value="">Select Category</option>
                   {categories.map((c) => (
@@ -321,6 +323,7 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
                         <button
                           onClick={() => handleDeleteGuide(guide.id)}
                           className="text-gray-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                          aria-label="Delete guide"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>

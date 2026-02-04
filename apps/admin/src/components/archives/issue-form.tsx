@@ -175,7 +175,7 @@ export function IssueForm({ issue }: IssueFormProps) {
                     <Input
                       type="number"
                       {...field}
-                      value={field.value || ""}
+                      value={field.value !== undefined ? String(field.value) : ""}
                       onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                     />
                   </FormControl>
@@ -232,7 +232,7 @@ export function IssueForm({ issue }: IssueFormProps) {
               <FormItem>
                 <FormLabel>ISSN</FormLabel>
                 <FormControl>
-                  <Input placeholder="Format: XXXX-XXXX" {...field} value={field.value || ""} />
+                  <Input placeholder="Format: XXXX-XXXX" {...field} value={String(field.value || "")} />
                 </FormControl>
                 <FormDescription>International Standard Serial Number</FormDescription>
                 <FormMessage />
@@ -315,7 +315,7 @@ export function IssueForm({ issue }: IssueFormProps) {
               <FormLabel>Cover Image (Optional)</FormLabel>
               <FormControl>
                 <FileUpload
-                  value={field.value || ""}
+                  value={String(field.value || "")}
                   onFileSelect={async (file) => {
                     const url = await coverUpload.uploadFile(file);
                     if (url) field.onChange(url);

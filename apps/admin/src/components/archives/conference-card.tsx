@@ -63,7 +63,7 @@ export function ConferenceCard({ conference }: ConferenceCardProps) {
               {issueCount} linked issue{issueCount !== 1 ? "s" : ""}
             </div>
             {!conference.isPublished && (
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="default" className="text-xs">
                 Draft
               </Badge>
             )}

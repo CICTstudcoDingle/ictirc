@@ -114,11 +114,9 @@ export default async function PaperDetailPage({ params }: PageProps) {
       issn: paper.issue.issn || undefined,
       pageStart: paper.pageStart || undefined,
       pageEnd: paper.pageEnd || undefined,
-      // Conference info
-      conferenceName: paper.issue.conference?.name || undefined,
-      conferenceUrl: paper.issue.conference
-        ? `${baseUrl}/conferences/${paper.issue.conference.id}`
-        : undefined,
+      // Conference info - TODO: Add conference to include query
+      conferenceName: undefined,
+      conferenceUrl: undefined,
     },
     `${baseUrl}/archive/${id}`
   );

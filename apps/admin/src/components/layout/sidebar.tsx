@@ -121,9 +121,9 @@ export function Sidebar() {
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 flex flex-col transition-all duration-200 md:translate-x-0",
-          isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+          isOpen ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0",
+          isCollapsed ? "md:w-16" : "md:w-64"
         )}
-        style={{ width: isOpen ? 256 : isCollapsed ? 64 : 256 }}
       >
         {/* Logo */}
         <div className={cn(

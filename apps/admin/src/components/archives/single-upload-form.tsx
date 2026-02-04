@@ -129,7 +129,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
           // Replace current authors with extracted ones
           form.setValue("authors", metadata.authors.map(a => ({
             name: a.name,
-            email: a.email || "",
+            email: "",
             affiliation: a.affiliation || "",
             isCorresponding: false // defaulting to false, subsequent logic handles 1st author
           })));
@@ -270,7 +270,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Issue *</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select onValueChange={field.onChange} value={String(field.value || "")}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select an issue">
@@ -299,7 +299,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category *</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select onValueChange={field.onChange} value={String(field.value || "")}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select Category">
@@ -328,7 +328,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 <FormItem>
                   <FormLabel>Title *</FormLabel>
                   <FormControl>
-                    <Input placeholder="Paper Title" {...field} value={field.value || ""} />
+                    <Input placeholder="Paper Title" {...field} value={String(field.value || "")} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -342,7 +342,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 <FormItem>
                   <FormLabel>Abstract *</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Paper Abstract..." rows={5} {...field} value={field.value || ""} />
+                    <Textarea placeholder="Paper Abstract..." rows={5} {...field} value={String(field.value || "")} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -356,7 +356,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 <FormItem>
                   <FormLabel>Keywords *</FormLabel>
                   <FormControl>
-                    <Input placeholder="AI; Machine Learning; Education" {...field} value={field.value || ""} />
+                    <Input placeholder="AI; Machine Learning; Education" {...field} value={String(field.value || "")} />
                   </FormControl>
                   <FormDescription>Semi-colon separated</FormDescription>
                   <FormMessage />
@@ -371,7 +371,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 <FormItem>
                   <FormLabel>DOI (Optional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="10.xxxxx/xxxxx" {...field} value={field.value || ""} />
+                    <Input placeholder="10.xxxxx/xxxxx" {...field} value={String(field.value || "")} />
                   </FormControl>
                   <FormDescription>
                     Digital Object Identifier - Leave empty if not yet registered
@@ -407,7 +407,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                             <FormItem>
                               <FormLabel>Name *</FormLabel>
                               <FormControl>
-                                <Input placeholder="Full Name" {...field} value={field.value || ""} />
+                                <Input placeholder="Full Name" {...field} value={String(field.value || "")} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -420,7 +420,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                             <FormItem>
                               <FormLabel>Email</FormLabel>
                               <FormControl>
-                                <Input placeholder="Optional" {...field} value={field.value || ""} />
+                                <Input placeholder="Optional" {...field} value={String(field.value || "")} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -433,7 +433,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                             <FormItem>
                               <FormLabel>Affiliation</FormLabel>
                               <FormControl>
-                                <Input placeholder="Institution" {...field} value={field.value || ""} />
+                                <Input placeholder="Institution" {...field} value={String(field.value || "")} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -469,7 +469,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                       <Input
                         type="number"
                         {...field}
-                        value={field.value ?? ""}
+                        value={field.value !== undefined ? String(field.value) : ""}
                         onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
                       />
                     </FormControl>
@@ -487,7 +487,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                       <Input
                         type="number"
                         {...field}
-                        value={field.value ?? ""}
+                        value={field.value !== undefined ? String(field.value) : ""}
                         onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
                       />
                     </FormControl>

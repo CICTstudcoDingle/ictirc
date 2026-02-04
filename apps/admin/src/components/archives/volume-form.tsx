@@ -161,7 +161,7 @@ export function VolumeForm({ volume }: VolumeFormProps) {
               <FormLabel>Cover Image (Optional)</FormLabel>
               <FormControl>
                 <FileUpload
-                  value={field.value || ""}
+                  value={String(field.value || "")}
                   onFileSelect={async (file) => {
                     const url = await coverUpload.uploadFile(file);
                     if (url) field.onChange(url);
