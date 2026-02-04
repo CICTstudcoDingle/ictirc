@@ -79,6 +79,7 @@ export default async function PaperDetailPage({ params }: PageProps) {
       issue: {
         include: {
           volume: true,
+          conference: true,
         },
       },
       authors: {
