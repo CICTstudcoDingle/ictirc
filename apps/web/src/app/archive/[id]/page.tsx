@@ -18,6 +18,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     where: { id },
     include: {
       category: true,
+      issue: {
+        include: {
+          volume: true,
+          conference: true,
+        },
+      },
       authors: {
         orderBy: { order: "asc" },
       },
@@ -34,6 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const authors = paper.authors.map(pa => ({
     name: pa.name,
     affiliation: pa.affiliation || undefined,
+    orcid: undefined, // TODO: Add ORCID field to schema
   }));
 
   return generatePaperMetadata(
@@ -45,6 +52,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       doi: paper.doi || undefined,
       publishedAt: paper.publishedDate || undefined,
       pdfUrl: paper.pdfUrl ? paper.pdfUrl : undefined,
+      // Volume/Issue info
+      volumeNumber: paper.issue.volume.volumeNumber,
+      issueNumber: paper.issue.issueNumber,
+      year: paper.issue.volume.year,
+      issn: paper.issue.issn || undefined,
+      pageStart: paper.pageStart || undefined,
+      pageEnd: paper.pageEnd || undefined,
+      // Conference info
+      conferenceName: paper.issue.conference?.name || undefined,
+      conferenceUrl: paper.issue.conference
+        ? `${baseUrl}/conferences/${paper.issue.conference.id}`
+        : undefined,
     },
     baseUrl
   );
@@ -76,6 +95,7 @@ export default async function PaperDetailPage({ params }: PageProps) {
   const authors = paper.authors.map(pa => ({
     name: pa.name,
     affiliation: pa.affiliation || undefined,
+    orcid: undefined, // TODO: Add ORCID field to schema
   }));
 
   const jsonLd = generatePaperJsonLd(
@@ -86,6 +106,18 @@ export default async function PaperDetailPage({ params }: PageProps) {
       keywords: paper.keywords,
       doi: paper.doi || undefined,
       publishedAt: paper.publishedDate || undefined,
+      // Volume/Issue info
+      volumeNumber: paper.issue.volume.volumeNumber,
+      issueNumber: paper.issue.issueNumber,
+      year: paper.issue.volume.year,
+      issn: paper.issue.issn || undefined,
+      pageStart: paper.pageStart || undefined,
+      pageEnd: paper.pageEnd || undefined,
+      // Conference info
+      conferenceName: paper.issue.conference?.name || undefined,
+      conferenceUrl: paper.issue.conference
+        ? `${baseUrl}/conferences/${paper.issue.conference.id}`
+        : undefined,
     },
     `${baseUrl}/archive/${id}`
   );

@@ -24,10 +24,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description = conference.description?.slice(0, 160) || conference.name;
 
   return {
-    title: `${conference.name} | ICTIRC Conferences`,
+    title: `${conference.fullName || conference.name} | ICTIRC Conferences`,
     description,
     openGraph: {
-      title: conference.name,
+      title: conference.fullName || conference.name,
       description,
       type: "article",
       ...(conference.imageUrl && { images: [conference.imageUrl] }),
@@ -111,7 +111,7 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
 
           {/* Title */}
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
-            {conference.name}
+            {conference.fullName || conference.name}
           </h1>
 
           {/* Meta Info */}
