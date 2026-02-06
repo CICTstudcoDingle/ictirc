@@ -109,7 +109,7 @@ export function Footer() {
           </div>
 
           {/* Contact & Socials */}
-          <div>
+          <div id="contact">
             <h4 className="font-semibold text-white mb-4">Contact</h4>
             <ul className="space-y-2.5 text-sm text-gray-200 mb-4">
               <li className="flex items-start gap-2">
@@ -201,6 +201,16 @@ export function Footer() {
 
           {/* Powered by & Built with */}
           <div className="flex flex-col sm:flex-row items-center gap-3">
+            {/* Version Badge - Now Linked */}
+            <Link
+              href="/changelog"
+              className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white rounded-full text-xs font-mono border border-white/20 hover:border-white/30 transition-all"
+            >
+              <span className="font-semibold">v1.1.0-beta</span>
+              <span className="opacity-50">•</span>
+              <span className="opacity-70">git-{process.env.NEXT_PUBLIC_GIT_COMMIT_HASH || 'dev'}</span>
+            </Link>
+
             {/* Main attribution */}
             <div className="px-3 py-1.5 bg-white/10 text-white rounded-full text-xs font-medium border border-white/10">
               Powered by CICT-ISUFST Dingle Campus

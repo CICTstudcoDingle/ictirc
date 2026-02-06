@@ -35,6 +35,23 @@ enum InviteStatus {
   EXPIRED
 }
 
+enum ReleaseType {
+  MAJOR
+  MINOR
+  PATCH
+  BETA
+  ALPHA
+}
+
+enum ChangeType {
+  FEATURE
+  ENHANCEMENT
+  BUGFIX
+  SECURITY
+  BREAKING
+  DEPRECATED
+}
+
 // ============================================
 // MODELS
 // ============================================
@@ -51,6 +68,10 @@ model Paper {
   publishedAt DateTime?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
+
+  // R2 Cold Storage Backup
+  r2BackupUrl String?   // R2 cold storage URL
+  r2BackupAt  DateTime? // Last backup timestamp
 
   // Relations
   authors    PaperAuthor[]
@@ -73,6 +94,7 @@ model Author {
   name        String
   email       String   @unique
   affiliation String?
+  avatarUrl   String?  // Profile image URL
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -83,16 +105,18 @@ model Author {
 }
 
 model PaperAuthor {
-  id       String  @id @default(cuid())
-  order    Int     @default(0)
-  paper    Paper   @relation(fields: [paperId], references: [id], onDelete: Cascade)
-  paperId  String
-  author   Author  @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId String
+  id                    String  @id @default(cuid())
+  order                 Int     @default(0)
+  isCorrespondingAuthor Boolean @default(false)
+  paper                 Paper   @relation(fields: [paperId], references: [id], onDelete: Cascade)
+  paperId               String
+  author                Author  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId              String
 
   @@unique([paperId, authorId])
   @@index([paperId])
   @@index([authorId])
+  @@index([isCorrespondingAuthor])
 }
 
 model Category {
@@ -158,6 +182,8 @@ model User {
   name      String?
   role      UserRole @default(AUTHOR)
   isActive  Boolean  @default(true)
+  avatarUrl String?  // Profile image URL
+  position  String?  // Faculty/Staff position
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -166,6 +192,7 @@ model User {
   comments         PaperComment[]
   assignedPapers   PaperReviewer[]
   uploadedArchives ArchivedPaper[]
+  releases         Release[]
 
   @@index([email])
   @@index([role])
@@ -383,3 +410,53 @@ model ArchivedPaperAuthor {
   @@index([email])
 }
 
+// ============================================
+// VERSION & CHANGELOG MODELS
+// ============================================
+
+model Release {
+  id              String      @id @default(cuid())
+  version         String      @unique // e.g., "1.1.0"
+  versionType     ReleaseType
+  releaseDate     DateTime
+  gitCommitHash   String?
+  gitTag          String?
+  githubReleaseId String?     @unique
+  title           String
+  description     String?     @db.Text
+  isPublished     Boolean     @default(false)
+  isBeta          Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  createdBy       String
+  
+  // Relations
+  creator User            @relation(fields: [createdBy], references: [id])
+  entries ChangelogEntry[]
+  
+  @@index([releaseDate])
+  @@index([isPublished])
+  @@index([version])
+}
+
+model ChangelogEntry {
+  id          String     @id @default(cuid())
+  title       String
+  description String     @db.Text
+  changeType  ChangeType
+  prNumber    Int? // GitHub PR number
+  prUrl       String?
+  issueNumber Int? // GitHub issue number
+  issueUrl    String?
+  order       Int        @default(0) // For custom ordering
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  // Relations
+  release   Release @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  releaseId String
+  
+  @@index([releaseId])
+  @@index([changeType])
+  @@index([order])
+}

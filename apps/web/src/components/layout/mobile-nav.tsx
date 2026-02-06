@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, Home, FileText, Calendar, BookOpen, HelpCircle, Info, PlusCircle } from "lucide-react";
+import { X, Home, FileText, Calendar, BookOpen, HelpCircle, Info, PlusCircle, Users, Award } from "lucide-react";
 import { cn } from "@ictirc/ui";
 
 interface MobileNavProps {
@@ -11,8 +11,10 @@ interface MobileNavProps {
 }
 
 const navItems = [
-  { href: "/", label: "Home", icon: Home },
+  { href: "/home", label: "Home", icon: Home },
   { href: "/about", label: "About", icon: Info },
+  { href: "/committees", label: "Committees", icon: Users },
+  { href: "/sponsors", label: "Sponsors", icon: Award },
   { href: "/faq", label: "FAQ", icon: HelpCircle },
   { href: "/guides", label: "Guides", icon: BookOpen },
   { href: "/conferences", label: "Conferences", icon: Calendar },
@@ -64,8 +66,8 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
           <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
             {navItems.map((item) => {
               const isActive =
-                item.href === "/"
-                  ? pathname === "/"
+                item.href === "/home"
+                  ? pathname === "/home" || pathname === "/"
                   : pathname.startsWith(item.href);
 
               return (

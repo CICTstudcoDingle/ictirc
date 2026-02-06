@@ -1,14 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Menu } from "lucide-react";
-import { Button } from "@ictirc/ui";
+import { Search, Menu, ChevronDown } from "lucide-react";
+import { Button, cn } from "@ictirc/ui";
 import { MobileNav } from "./mobile-nav";
 
 export function Header() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isOrgDropdownOpen, setIsOrgDropdownOpen] = useState(false);
+  const [isResourcesDropdownOpen, setIsResourcesDropdownOpen] = useState(false);
+  const orgDropdownRef = useRef<HTMLDivElement>(null);
+  const resourcesDropdownRef = useRef<HTMLDivElement>(null);
+
+  const closeOrgDropdown = () => setIsOrgDropdownOpen(false);
+  const toggleOrgDropdown = () => setIsOrgDropdownOpen((prev) => !prev);
+
+  const closeResourcesDropdown = () => setIsResourcesDropdownOpen(false);
+  const toggleResourcesDropdown = () => setIsResourcesDropdownOpen((prev) => !prev);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (orgDropdownRef.current && !orgDropdownRef.current.contains(event.target as Node)) {
+        closeOrgDropdown();
+      }
+      if (resourcesDropdownRef.current && !resourcesDropdownRef.current.contains(event.target as Node)) {
+        closeResourcesDropdown();
+      }
+    };
+
+    if (isOrgDropdownOpen || isResourcesDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOrgDropdownOpen, isResourcesDropdownOpen]);
 
   return (
     <>
@@ -48,34 +78,139 @@ export function Header() {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
               <Link
+                href="/home"
+                className="text-gray-700 hover:text-maroon transition-colors font-medium"
+              >
+                Home
+              </Link>
+              <Link
                 href="/about"
                 className="text-gray-700 hover:text-maroon transition-colors font-medium"
               >
                 About
               </Link>
-              <Link
-                href="/faq"
-                className="text-gray-700 hover:text-maroon transition-colors font-medium"
+
+              {/* Organization Dropdown */}
+              <div
+                ref={orgDropdownRef}
+                className="relative"
+                onMouseEnter={() => setIsOrgDropdownOpen(true)}
+                onMouseLeave={closeOrgDropdown}
               >
-                FAQ
-              </Link>
-              <Link
-                href="/guides"
-                className="text-gray-700 hover:text-maroon transition-colors font-medium"
+                <button
+                  type="button"
+                  aria-haspopup="menu"
+                  aria-expanded={isOrgDropdownOpen}
+                  onClick={toggleOrgDropdown}
+                  className="flex items-center gap-1 text-gray-700 hover:text-maroon transition-colors font-medium"
+                >
+                  Organization
+                  <ChevronDown
+                    className={cn(
+                      "w-4 h-4 transition-transform",
+                      isOrgDropdownOpen && "rotate-180"
+                    )}
+                  />
+                </button>
+
+                {isOrgDropdownOpen && (
+                  <div className="absolute top-full left-0 pt-2 z-[100]">
+                    <div
+                      role="menu"
+                      aria-label="Organization"
+                      className="bg-white rounded-lg shadow-lg border border-gray-100 py-2 w-48"
+                    >
+                      <Link
+                        href="/committees"
+                        role="menuitem"
+                        className="block px-4 py-2 text-gray-700 hover:bg-maroon/5 hover:text-maroon transition-colors"
+                        onClick={closeOrgDropdown}
+                      >
+                        Committees
+                      </Link>
+                      <Link
+                        href="/sponsors"
+                        role="menuitem"
+                        className="block px-4 py-2 text-gray-700 hover:bg-maroon/5 hover:text-maroon transition-colors"
+                        onClick={closeOrgDropdown}
+                      >
+                        Sponsors
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Resources Dropdown */}
+              <div
+                ref={resourcesDropdownRef}
+                className="relative"
+                onMouseEnter={() => setIsResourcesDropdownOpen(true)}
+                onMouseLeave={closeResourcesDropdown}
               >
-                Guides
-              </Link>
-              <Link
-                href="/conferences"
-                className="text-gray-700 hover:text-maroon transition-colors font-medium"
-              >
-                Conferences
-              </Link>
+                <button
+                  type="button"
+                  aria-haspopup="menu"
+                  aria-expanded={isResourcesDropdownOpen}
+                  onClick={toggleResourcesDropdown}
+                  className="flex items-center gap-1 text-gray-700 hover:text-maroon transition-colors font-medium"
+                >
+                  Resources
+                  <ChevronDown
+                    className={cn(
+                      "w-4 h-4 transition-transform",
+                      isResourcesDropdownOpen && "rotate-180"
+                    )}
+                  />
+                </button>
+
+                {isResourcesDropdownOpen && (
+                  <div className="absolute top-full left-0 pt-2 z-[100]">
+                    <div
+                      role="menu"
+                      aria-label="Resources"
+                      className="bg-white rounded-lg shadow-lg border border-gray-100 py-2 w-48"
+                    >
+                      <Link
+                        href="/guides"
+                        role="menuitem"
+                        className="block px-4 py-2 text-gray-700 hover:bg-maroon/5 hover:text-maroon transition-colors"
+                        onClick={closeResourcesDropdown}
+                      >
+                        Research Guidelines
+                      </Link>
+                      <Link
+                        href="/faq"
+                        role="menuitem"
+                        className="block px-4 py-2 text-gray-700 hover:bg-maroon/5 hover:text-maroon transition-colors"
+                        onClick={closeResourcesDropdown}
+                      >
+                        FAQ
+                      </Link>
+                      <Link
+                        href="/conferences"
+                        role="menuitem"
+                        className="block px-4 py-2 text-gray-700 hover:bg-maroon/5 hover:text-maroon transition-colors"
+                        onClick={closeResourcesDropdown}
+                      >
+                        Conferences
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <Link
                 href="/archive"
                 className="text-gray-700 hover:text-maroon transition-colors font-medium"
               >
                 Archive
+              </Link>
+              <Link
+                href="/authors"
+                className="text-gray-700 hover:text-maroon transition-colors font-medium"
+              >
+                Authors
               </Link>
             </nav>
 
@@ -87,6 +222,12 @@ export function Header() {
                 aria-label="Search"
               >
                 <Search className="w-5 h-5" />
+              </Link>
+              <Link
+                href="http://localhost:3002/login"
+                className="text-gray-700 hover:text-maroon transition-colors font-medium text-sm"
+              >
+                Author Portal
               </Link>
               <Link href="/submit">
                 <Button size="sm">Submit Research</Button>

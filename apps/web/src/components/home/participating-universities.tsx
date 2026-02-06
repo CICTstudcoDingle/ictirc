@@ -16,8 +16,8 @@ const UNIVERSITIES = [
   {
     id: 2,
     name: "Iloilo Science and Technology University - Miagao Campus",
-    admin: "Dr. Gabriel M. Salistre, Jr.",
-    role: "University President",
+    admin: "Dr. Ramon N. Emmanuel, Jr.",
+    role: "Campus Administrator",
     logo: "/images/ISAT-U.png",
   },
   {

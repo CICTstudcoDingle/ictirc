@@ -235,3 +235,113 @@ export async function copyInHotStorage(
     };
   }
 }
+
+/**
+ * Upload a profile image to the profile bucket
+ * Path format: {userId}/avatar.{ext}
+ */
+export async function uploadProfileImage(
+  userId: string,
+  file: File | Buffer,
+  options?: {
+    contentType?: string;
+  }
+): Promise<UploadResult> {
+  try {
+    const client = createStorageClient();
+    const bucketName = process.env.NEXT_PUBLIC_SUPABASE_BUCKET_PROFILE || "profile";
+
+    // Generate path based on user ID
+    let extension = "jpg";
+    if (options?.contentType) {
+      extension = options.contentType.split("/")[1] || "jpg";
+    } else if (file instanceof File) {
+      extension = file.name.split(".").pop() || "jpg";
+    }
+
+    const path = `${userId}/avatar.${extension}`;
+
+    console.log("[Storage] Uploading profile image:", {
+      userId,
+      bucketName,
+      path,
+      contentType: options?.contentType,
+    });
+
+    // Upload with upsert to allow updates
+    const { data, error } = await client.storage
+      .from(bucketName)
+      .upload(path, file, {
+        contentType: options?.contentType || "image/jpeg",
+        upsert: true, // Allow overwriting existing avatar
+      });
+
+    if (error) {
+      return {
+        success: false,
+        path,
+        error: error.message,
+      };
+    }
+
+    // Get the public URL
+    const { data: urlData } = client.storage
+      .from(bucketName)
+      .getPublicUrl(data.path);
+
+    return {
+      success: true,
+      path: data.path,
+      url: urlData.publicUrl,
+    };
+  } catch (error) {
+    console.error("[Supabase Storage] Profile image upload error:", error);
+    return {
+      success: false,
+      path: `${userId}/avatar`,
+      error: error instanceof Error ? error.message : "Unknown upload error",
+    };
+  }
+}
+
+/**
+ * Delete a profile image from the profile bucket
+ */
+export async function deleteProfileImage(
+  userId: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const client = createStorageClient();
+    const bucketName = "profile";
+
+    // List files in user's folder to find avatar
+    const { data: files, error: listError } = await client.storage
+      .from(bucketName)
+      .list(userId);
+
+    if (listError) {
+      return { success: false, error: listError.message };
+    }
+
+    if (!files || files.length === 0) {
+      return { success: true }; // No avatar to delete
+    }
+
+    // Delete all files in user's folder (usually just one avatar)
+    const paths = files.map((f) => `${userId}/${f.name}`);
+    const { error } = await client.storage.from(bucketName).remove(paths);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("[Supabase Storage] Profile image delete error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown delete error",
+    };
+  }
+}
+

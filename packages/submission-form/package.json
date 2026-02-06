@@ -1,0 +1,29 @@
+{
+  "name": "@ictirc/submission-form",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./wizard": "./src/components/submission-wizard.tsx",
+    "./actions": "./src/actions/submit-paper.ts",
+    "./types": "./src/types/index.ts",
+    "./validation": "./src/validation/schemas.ts"
+  },
+  "dependencies": {
+    "@ictirc/database": "workspace:*",
+    "@ictirc/storage": "workspace:*",
+    "@ictirc/ui": "workspace:*",
+    "lucide-react": "0.474.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "zod": "3.24.1"
+  },
+  "devDependencies": {
+    "@ictirc/config": "workspace:*",
+    "@types/react": "19.0.8",
+    "@types/react-dom": "19.0.3",
+    "typescript": "5.7.3"
+  }
+}

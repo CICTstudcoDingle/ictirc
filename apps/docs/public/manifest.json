@@ -1,0 +1,27 @@
+{
+  "name": "IRJICT Research Journal",
+  "short_name": "IRJICT",
+  "description": "International Research Journal on Information and Communications Technology from ISUFST CICT",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#800000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/irjict-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/irjict-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "research", "productivity"],
+  "lang": "en",
+  "dir": "ltr"
+}

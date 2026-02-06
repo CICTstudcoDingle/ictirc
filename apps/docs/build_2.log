@@ -1,0 +1,24 @@
+
+> @ictirc/docs@0.0.0 build C:\dev\Monorepo\ICTIRC\apps\docs
+> next build
+
+Γû▓ Next.js 16.2.0-canary.17 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 2.5s
+  Running TypeScript ...
+Failed to compile.
+
+./src/components/layout/footer.tsx:3:10
+Type error: 'GraduationCap' is declared but its value is never read.
+
+  1 | import Link from "next/link";
+  2 | import Image from "next/image";
+> 3 | import { GraduationCap, Mail, Globe, ExternalLink } from "lucide-react";
+    |          ^
+  4 |
+  5 | export function Footer() {
+  6 |   const currentYear = new Date().getFullYear();
+Next.js build worker exited with code: 1 and signal: null
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.

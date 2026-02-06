@@ -5,4 +5,5 @@ export {
   deleteFromR2,
   getR2SignedUrl,
   copyToR2ColdStorage,
+  backupPaperToR2,
 } from "./operations";

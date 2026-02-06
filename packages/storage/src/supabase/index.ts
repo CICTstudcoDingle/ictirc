@@ -5,4 +5,6 @@ export {
   deleteFromHotStorage,
   getHotStorageSignedUrl,
   getPublicUrl,
+  uploadProfileImage,
+  deleteProfileImage,
 } from "./operations";

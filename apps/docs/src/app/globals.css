@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 0 100% 25%; /* Maroon #800000 */
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 43 74% 49%; /* Gold #D4AF37 */
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 0 100% 25%; /* Maroon */
+    --radius: 0.5rem;
+
+    --maroon: #800000;
+    --gold: #D4AF37;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* JetBrains Mono for technical data */
+  .font-mono {
+    font-feature-settings: "liga" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  /* Glassmorphism navbar */
+  .navbar-glass {
+    @apply bg-white/80 backdrop-blur-md border-b border-gray-200;
+  }
+
+  /* Paper card with maroon indicator */
+  .paper-card {
+    @apply bg-white border border-gray-200 shadow-sm rounded-lg;
+    @apply border-l-4 border-l-maroon;
+    @apply hover:border-l-gold transition-colors duration-200;
+  }
+
+  /* Status badges */
+  .badge-published {
+    @apply bg-green-100 text-green-700;
+  }
+
+  .badge-under-review {
+    @apply bg-maroon/10 text-maroon;
+  }
+
+  .badge-accepted {
+    @apply bg-gold/20 text-amber-800;
+  }
+  
+  /* Docs Code Blocks */
+  .docs-pre {
+    @apply p-4 rounded-lg bg-gray-50 border border-gray-200 font-mono text-sm overflow-x-auto;
+    @apply border-l-4 border-l-maroon;
+  }
+}
+
+@layer utilities {
+  /* Custom gold shadow for buttons */
+  .shadow-gold {
+    box-shadow: 4px 4px 0px 0px rgba(212, 175, 55, 1);
+  }
+  
+  /* Safe area utilities */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+}

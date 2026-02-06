@@ -114,7 +114,7 @@ export default function AboutPage() {
       </section>
 
       {/* Contact - Split Layout (Stackable on mobile) */}
-      <section className="min-h-[60vh] flex flex-col md:flex-row">
+      <section id="contact" className="min-h-[60vh] flex flex-col md:flex-row">
         {/* CONTACT INFO SIDE (Left - 100% on mobile, 50% on desktop) */}
         <div className="flex-1 bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 relative overflow-hidden flex items-center justify-center p-8 lg:p-16">
           <CircuitBackground variant="subtle" animated className="opacity-30" />

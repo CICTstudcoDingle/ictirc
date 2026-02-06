@@ -1,0 +1,38 @@
+
+> @ictirc/author@0.0.0 build C:\dev\Monorepo\ICTIRC\apps\author
+> next build
+
+Γû▓ Next.js 16.2.0-canary.17 (Turbopack)
+- Environments: .env.local
+- Experiments (use with caution):
+  ┬╖ serverActions
+
+  Creating an optimized production build ...
+Turbopack build encountered 1 warnings:
+[externals]/@prisma/client
+unexpected export *
+export * used with module [externals]/@prisma/client [external] (@prisma/client, cjs, [project]/node_modules/@prisma/client) which is a CommonJS module with exports only available at runtime
+List all export names manually (`export { a, b, c } from "...") or rewrite the module to ESM, to avoid the additional runtime code.`
+
+Import trace:
+  external:
+    [externals]/@prisma/client [external]
+    ./apps/author/src/app/api/sync/route.ts [App Route]
+
+
+Γ£ô Compiled successfully in 3.0s
+  Running TypeScript ...
+Failed to compile.
+
+.next/dev/types/validator.ts:5:79
+Type error: Cannot find module './routes.js' or its corresponding type declarations.
+
+  3 | // This file validates that all pages and layouts export the correct types
+  4 |
+> 5 | import type { AppRoutes, LayoutRoutes, ParamMap, AppRouteHandlerRoutes } from "./routes.js"
+    |                                                                               ^
+  6 | import type { ResolvingMetadata, ResolvingViewport } from "next/types.js"
+  7 | import type { NextRequest } from 'next/server.js'
+  8 |
+Next.js build worker exited with code: 1 and signal: null
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.

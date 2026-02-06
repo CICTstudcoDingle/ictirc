@@ -1,4 +1,15 @@
 import type { NextConfig } from "next";
+import { execSync } from "child_process";
+
+// Get git commit hash at build time
+let gitCommitHash = "dev";
+try {
+  gitCommitHash = execSync("git rev-parse --short HEAD")
+    .toString()
+    .trim();
+} catch (error) {
+  console.warn("Could not retrieve git commit hash:", error);
+}
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -25,6 +36,9 @@ const nextConfig: NextConfig = {
         pathname: "/storage/v1/object/public/**",
       },
     ],
+  },
+  env: {
+    NEXT_PUBLIC_GIT_COMMIT_HASH: gitCommitHash,
   },
 };
 

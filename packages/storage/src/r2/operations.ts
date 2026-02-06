@@ -198,3 +198,82 @@ export async function copyWithinR2(
     };
   }
 }
+
+/**
+ * Backup a paper to R2 Cold Storage
+ * Downloads from Supabase hot storage and uploads to R2 with metadata
+ * Returns the R2 URL for database update
+ */
+export async function backupPaperToR2(
+  paperId: string,
+  supabaseFileUrl: string,
+  metadata?: {
+    title?: string;
+    originalName?: string;
+    uploadedBy?: string;
+  }
+): Promise<{
+  success: boolean;
+  r2Url?: string;
+  backupAt?: Date;
+  error?: string;
+}> {
+  try {
+    // Download file from Supabase URL
+    const response = await fetch(supabaseFileUrl);
+    if (!response.ok) {
+      return {
+        success: false,
+        error: `Failed to download from Supabase: ${response.statusText}`,
+      };
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    // Determine file extension from URL or content type
+    const contentType = response.headers.get("content-type") || "application/pdf";
+    let extension = "pdf";
+    if (contentType.includes("docx")) {
+      extension = "docx";
+    } else if (contentType.includes("doc")) {
+      extension = "doc";
+    }
+
+    // Generate R2 path: papers/{year}/{paperId}/{filename}
+    const year = new Date().getFullYear();
+    const filename = metadata?.originalName || `paper.${extension}`;
+    const r2Path = `papers/${year}/${paperId}/${filename}`;
+
+    // Upload to R2 with metadata
+    const result = await uploadToR2(buffer, r2Path, {
+      paperId,
+      originalName: filename,
+      mimeType: contentType.includes("docx")
+        ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        : "application/pdf",
+      uploadedBy: metadata?.uploadedBy || "system",
+      uploadedAt: new Date(),
+    });
+
+    if (!result.success) {
+      return {
+        success: false,
+        error: result.error,
+      };
+    }
+
+    return {
+      success: true,
+      r2Url: result.url,
+      backupAt: new Date(),
+    };
+  } catch (error) {
+    console.error("[R2] Backup paper error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown backup error",
+    };
+  }
+}
+

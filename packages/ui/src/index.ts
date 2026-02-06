@@ -17,6 +17,7 @@ export { FloatingActionButton } from "./components/fab";
 export { CircuitBackground } from "./components/circuit-background";
 export { Sidebar } from "./components/sidebar";
 export { FileUpload, type FileUploadProps } from "./components/file-upload";
+export { AvatarUpload, type AvatarUploadProps } from "./components/avatar-upload";
 
 // Form Components
 export {

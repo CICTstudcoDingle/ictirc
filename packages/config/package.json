@@ -4,6 +4,7 @@
   "private": true,
   "exports": {
     "./typescript": "./typescript.json",
+    "./typescript.json": "./typescript.json",
     "./eslint": "./eslint.config.mjs"
   },
   "devDependencies": {

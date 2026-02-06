@@ -23,6 +23,7 @@ import {
   CalendarDays,
   Building2,
   Upload,
+  User,
 } from "lucide-react";
 import { cn } from "@ictirc/ui";
 
@@ -42,6 +43,7 @@ const navItems = [
   },
   { href: "/dashboard/users", label: "Users", icon: Users },
   { href: "/dashboard/audit-logs", label: "Audit Logs", icon: ScrollText },
+  { href: "/dashboard/profile", label: "Profile", icon: User },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 

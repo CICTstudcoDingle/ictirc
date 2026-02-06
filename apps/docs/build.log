@@ -1,0 +1,50 @@
+
+> @ictirc/docs@0.0.0 build C:\dev\Monorepo\ICTIRC\apps\docs
+> next build
+
+Γû▓ Next.js 16.2.0-canary.17 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+Turbopack build encountered 1 warnings:
+./apps/docs/tailwind.config.js:72:13
+Module not found: Can't resolve '@tailwindcss/typography'
+  70 |     },
+  71 |   },
+> 72 |   plugins: [require("@tailwindcss/typography")],
+     |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  73 | };
+  74 |
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+
+> Build error occurred
+Error: Turbopack build failed with 1 errors:
+./apps/docs/src/app/globals.css
+Error evaluating Node.js code
+Error: Cannot find module '@tailwindcss/typography'
+Require stack:
+- C:\dev\Monorepo\ICTIRC\apps\docs\tailwind.config.js
+    [at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)]
+    [at Function.resolve (node:internal/modules/helpers:146:19)]
+    [at _resolve (C:\dev\Monorepo\ICTIRC\node_modules\jiti\dist\jiti.js:1:246378)]
+    [at jiti (C:\dev\Monorepo\ICTIRC\node_modules\jiti\dist\jiti.js:1:249092)]
+    [at C:\dev\Monorepo\ICTIRC\apps\docs\tailwind.config.js:72:13]
+    [at evalModule (C:\dev\Monorepo\ICTIRC\node_modules\jiti\dist\jiti.js:1:251913)]
+    [at jiti (C:\dev\Monorepo\ICTIRC\node_modules\jiti\dist\jiti.js:1:249841)]
+    [at C:\dev\Monorepo\ICTIRC\node_modules\tailwindcss\lib\lib\load-config.js:52:26]
+    [at loadConfig (C:\dev\Monorepo\ICTIRC\node_modules\tailwindcss\lib\lib\load-config.js:62:6)]
+    [at getTailwindConfig (C:\dev\Monorepo\ICTIRC\node_modules\tailwindcss\lib\lib\setupTrackingContext.js:71:116)]
+
+Import trace:
+  Client Component Browser:
+    ./apps/docs/src/app/globals.css [Client Component Browser]
+    ./apps/docs/src/app/layout.tsx [Server Component]
+
+
+    at ignore-listed frames
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.

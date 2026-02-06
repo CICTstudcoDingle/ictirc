@@ -7,6 +7,7 @@ import { ReviewerAssignment } from '@/components/papers/reviewer-assignment';
 import { StatusControl } from '@/components/papers/status-control';
 import { PublishButton } from '@/components/papers/publish-button';
 import { PublicationTracker } from "@/components/papers/publication-tracker";
+import { BackupButton } from "@/components/papers/backup-button";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -228,6 +229,13 @@ export default async function PaperDetailPage({ params }: PageProps) {
 
             {/* Reviewer Assignment */}
             <ReviewerAssignment paperId={paper.id} currentReviewers={paper.reviewers} />
+
+            {/* Cold Storage Backup */}
+            <BackupButton
+              paperId={paper.id}
+              hasBackup={!!paper.r2BackupUrl}
+              lastBackupAt={paper.r2BackupAt}
+            />
 
             {/* Authors Info */}
             <div className="bg-white rounded-lg shadow-sm border p-6">
