@@ -4,6 +4,9 @@ import { ArrowRight, BookOpen, Users, Award, FileCheck, Zap } from "lucide-react
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { UpcomingEventCard } from "@/components/events/upcoming-event-card";
 import { ParticipatingUniversities } from "@/components/home/participating-universities";
+import { ConferenceHeroBanner } from "@/components/home/conference-hero-banner";
+import { VenueSection } from "@/components/home/venue-section";
+import { OrganizersSection } from "@/components/home/organizers-section";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
 
 // Deployment trigger: Force Vercel rebuild
@@ -148,6 +151,15 @@ export default function HomePage() {
 
       {/* Participating Universities Marquee */}
       <ParticipatingUniversities />
+
+      {/* Dynamic Conference Banner - from /home */}
+      <ConferenceHeroBanner />
+
+      {/* Dynamic Venue Section - from /home */}
+      <VenueSection />
+
+      {/* Dynamic Organizers Section - from /home */}
+      <OrganizersSection />
 
       {/* Why Publish With Us - Merged Section */}
       <section className="py-16 md:py-20 bg-white">

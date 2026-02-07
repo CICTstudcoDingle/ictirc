@@ -24,6 +24,7 @@ import {
   Building2,
   Upload,
   User,
+  Search,
 } from "lucide-react";
 import { cn } from "@ictirc/ui";
 
@@ -41,7 +42,17 @@ const navItems = [
       { href: "/dashboard/archives/upload", label: "Upload Papers", icon: Upload },
     ]
   },
+  {
+    href: "/dashboard/conferences",
+    label: "Conferences",
+    icon: Calendar,
+    submenu: [
+      { href: "/dashboard/conferences", label: "All Conferences", icon: Calendar },
+      { href: "/dashboard/conferences/new", label: "Create New", icon: Upload },
+    ]
+  },
   { href: "/dashboard/users", label: "Users", icon: Users },
+  { href: "/dashboard/search", label: "Search Management", icon: Search },
   { href: "/dashboard/audit-logs", label: "Audit Logs", icon: ScrollText },
   { href: "/dashboard/profile", label: "Profile", icon: User },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },

@@ -1,72 +1,213 @@
-import { Search as SearchIcon } from "lucide-react";
-import { Input, Button } from "@ictirc/ui";
+'use client'
 
-export default function SearchPage() {
-  return (
-    <div className="pt-14 md:pt-16 min-h-screen">
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        {/* Search Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-            Search Papers
-          </h1>
-          <p className="text-gray-600">
-            Find research papers by title, author, keyword, or DOI.
-          </p>
+import { Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { Search, Filter, Clock, TrendingUp } from 'lucide-react'
+import { SearchInput, SearchHit, useSearchResults } from '@ictirc/search'
+
+function SearchResultsContent() {
+  const searchParams = useSearchParams()
+  const query = searchParams.get('q') || ''
+
+  const { results, isLoading, error, nbHits, processingTimeMS } = useSearchResults({
+    query,
+    enabled: !!query,
+    hitsPerPage: 20
+  })
+
+  if (!query) {
+    return (
+      <div className="min-h-screen bg-gray-50 pt-14 md:pt-16">
+        <div className="max-w-4xl mx-auto px-4 py-12">
+          <div className="text-center">
+            <Search className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              Search IRCICT
+            </h1>
+            <p className="text-gray-600 mb-8">
+              Find research papers, authors, conferences, and more
+            </p>
+            
+            {/* Search Input */}
+            <div className="max-w-2xl mx-auto mb-8">
+              <SearchInput
+                placeholder="Search papers, authors, conferences..."
+                className="w-full"
+                showResults={false}
+              />
+            </div>
+
+            {/* Popular Searches or Categories */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+              <button className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
+                <div className="text-blue-600 mb-2">📄</div>
+                <div className="text-sm font-medium">Research Papers</div>
+              </button>
+              <button className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
+                <div className="text-green-600 mb-2">👥</div>
+                <div className="text-sm font-medium">Authors</div>
+              </button>
+              <button className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
+                <div className="text-purple-600 mb-2">📅</div>
+                <div className="text-sm font-medium">Conferences</div>
+              </button>
+              <button className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
+                <div className="text-orange-600 mb-2">📚</div>
+                <div className="text-sm font-medium">Archives</div>
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
+    )
+  }
 
-        {/* Search Form */}
-        <div className="space-y-4">
-          <div className="relative">
-            <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="search"
-              placeholder="Search for papers..."
-              className="w-full h-14 pl-12 pr-4 rounded-xl border-2 border-gray-200 focus:border-maroon focus:outline-none text-lg"
-              autoFocus
+  return (
+    <div className="min-h-screen bg-gray-50 pt-14 md:pt-16">
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        {/* Search Header */}
+        <div className="mb-6">
+          <div className="max-w-2xl">
+            <SearchInput
+              placeholder="Search papers, authors, conferences..."
+              className="w-full"
+              showResults={false}
             />
           </div>
-
-          {/* Quick Filters */}
-          <div className="flex flex-wrap gap-2">
-            <Button variant="secondary" size="sm">
-              AI & Machine Learning
-            </Button>
-            <Button variant="secondary" size="sm">
-              Cybersecurity
-            </Button>
-            <Button variant="secondary" size="sm">
-              IoT
-            </Button>
-            <Button variant="secondary" size="sm">
-              Blockchain
-            </Button>
-          </div>
         </div>
 
-        {/* Recent Searches */}
-        <div className="mt-12">
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">
-            Popular Searches
-          </h2>
-          <div className="space-y-3">
-            {[
-              "Machine learning intrusion detection",
-              "Natural language processing Filipino",
-              "Smart agriculture IoT",
-              "Blockchain credential verification",
-            ].map((search) => (
-              <button
-                key={search}
-                className="flex items-center gap-3 w-full p-3 rounded-lg hover:bg-gray-50 transition-colors text-left"
-              >
-                <SearchIcon className="w-4 h-4 text-gray-400" />
-                <span className="text-gray-700">{search}</span>
-              </button>
-            ))}
+        {/* Results Info */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4 text-sm text-gray-600">
+            <span>
+              {isLoading ? 'Searching...' : `${nbHits.toLocaleString()} results for "${query}"`}
+            </span>
+            {processingTimeMS > 0 && (
+              <span className="flex items-center gap-1">
+                <Clock className="h-4 w-4" />
+                {processingTimeMS}ms
+              </span>
+            )}
+          </div>
+          
+          <button className="flex items-center gap-2 px-3 py-1.5 text-sm border border-gray-300 rounded-md hover:bg-gray-50">
+            <Filter className="h-4 w-4" />
+            Filters
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Filters Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg border border-gray-200 p-4 sticky top-6">
+              <h3 className="font-semibold text-gray-900 mb-3">Refine Results</h3>
+              
+              {/* Content Type Filter */}
+              <div className="mb-4">
+                <h4 className="text-sm font-medium text-gray-700 mb-2">Content Type</h4>
+                <div className="space-y-2">
+                  {['paper', 'author', 'conference', 'archive'].map(type => (
+                    <label key={type} className="flex items-center">
+                      <input type="checkbox" className="rounded border-gray-300 mr-2" />
+                      <span className="text-sm text-gray-600 capitalize">{type}s</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Year Filter */}
+              <div className="mb-4">
+                <h4 className="text-sm font-medium text-gray-700 mb-2">Year</h4>
+                <select className="w-full text-sm border border-gray-300 rounded-md px-3 py-1">
+                  <option>All years</option>
+                  <option>2026</option>
+                  <option>2025</option>
+                  <option>2024</option>
+                  <option>2023</option>
+                </select>
+              </div>
+
+              {/* Category Filter */}
+              <div>
+                <h4 className="text-sm font-medium text-gray-700 mb-2">Category</h4>
+                <select className="w-full text-sm border border-gray-300 rounded-md px-3 py-1">
+                  <option>All categories</option>
+                  <option>Computer Science</option>
+                  <option>Information Technology</option>
+                  <option>Data Science</option>
+                  <option>AI & Machine Learning</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Results */}
+          <div className="lg:col-span-3">
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                <p className="text-red-800">
+                  Search error: {error}. Please try again.
+                </p>
+              </div>
+            )}
+
+            {isLoading ? (
+              <div className="space-y-4">
+                {[1, 2, 3, 4, 5].map(i => (
+                  <div key={i} className="bg-white rounded-lg border border-gray-200 p-6 animate-pulse">
+                    <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/2 mb-4"></div>
+                    <div className="h-3 bg-gray-200 rounded w-full"></div>
+                  </div>
+                ))}
+              </div>
+            ) : results.length > 0 ? (
+              <div className="space-y-4">
+                {results.map((result) => (
+                  <div key={result.objectID} className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                    <SearchHit
+                      hit={result}
+                      onClick={() => window.location.href = result.url}
+                    />
+                  </div>
+                ))}
+
+                {/* Load More / Pagination */}
+                <div className="text-center py-6">
+                  <button className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    Load More Results
+                  </button>
+                </div>
+              </div>
+            ) : query && !isLoading ? (
+              <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
+                <Search className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  No results found
+                </h3>
+                <p className="text-gray-600">
+                  We couldn't find anything matching "{query}". Try different keywords or check your spelling.
+                </p>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
     </div>
-  );
+  )
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-14 md:pt-16">
+        <div className="text-center">
+          <Search className="h-8 w-8 animate-spin text-blue-600 mx-auto mb-2" />
+          <p className="text-gray-600">Loading search...</p>
+        </div>
+      </div>
+    }>
+      <SearchResultsContent />
+    </Suspense>
+  )
 }

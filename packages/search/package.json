@@ -1,0 +1,27 @@
+{
+  "name": "@ictirc/search",
+  "version": "0.1.0",
+  "description": "Algolia search integration for ICTIRC platform",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "algoliasearch": "^4.24.0",
+    "@algolia/client-search": "^4.24.0",
+    "instantsearch.js": "^4.71.1",
+    "react-instantsearch": "^7.12.2",
+    "react-instantsearch-core": "^7.12.2",
+    "@types/react": "^18.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "next": "^15.0.0"
+  }
+}

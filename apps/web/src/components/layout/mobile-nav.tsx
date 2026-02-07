@@ -11,7 +11,7 @@ interface MobileNavProps {
 }
 
 const navItems = [
-  { href: "/home", label: "Home", icon: Home },
+  { href: "/", label: "Home", icon: Home },
   { href: "/about", label: "About", icon: Info },
   { href: "/committees", label: "Committees", icon: Users },
   { href: "/sponsors", label: "Sponsors", icon: Award },
@@ -66,8 +66,8 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
           <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
             {navItems.map((item) => {
               const isActive =
-                item.href === "/home"
-                  ? pathname === "/home" || pathname === "/"
+                item.href === "/"
+                  ? pathname === "/"
                   : pathname.startsWith(item.href);
 
               return (

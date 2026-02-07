@@ -53,6 +53,23 @@ enum ChangeType {
 }
 
 // ============================================
+// DYNAMIC ROLES (Managed by DEAN)
+// ============================================
+
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique // e.g., "AUTHOR", "REVIEWER", "EDITOR", "DEAN"
+  displayName String   // e.g., "Author", "Reviewer", "Editor", "Dean"
+  description String?  @db.Text
+  permissions String[] @default([]) // Array of permission strings
+  isSystem    Boolean  @default(false) // System roles can't be deleted
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([name])
+}
+
+// ============================================
 // MODELS
 // ============================================
 
@@ -352,14 +369,35 @@ model Conference {
   imageUrl    String?
   websiteUrl  String?
   isPublished Boolean   @default(true)
+  isActive    Boolean   @default(false) // Only one active for landing page
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
   // Relations
-  issues Issue[]
+  issues    Issue[]
+  committee CommitteeMember[]
 
   @@index([startDate])
   @@index([isPublished])
+  @@index([isActive])
+}
+
+model CommitteeMember {
+  id           String     @id @default(cuid())
+  conferenceId String
+  conference   Conference @relation(fields: [conferenceId], references: [id], onDelete: Cascade)
+
+  name         String     // e.g., "DR. RENANTE A. DIAMANTE"
+  position     String     // e.g., "Overall Chair", "IT Chair"
+  affiliation  String?    // Institution name
+  email        String?
+  photoUrl     String?
+  displayOrder Int        @default(0)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([conferenceId])
+  @@index([displayOrder])
 }
 
 model ArchivedPaper {

@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
     fs.writeFileSync(filePath, JSON.stringify(exportData, null, 2));
     const stats = fs.statSync(filePath);
 
-    // Google Drive upload (if configured)
+    // Google Drive upload (if configured) - placeholder for future implementation
     let driveResult = null;
     if (uploadToGdrive) {
       const gdriveEmail = process.env.GDRIVE_SERVICE_EMAIL;
@@ -108,18 +108,13 @@ export async function POST(request: NextRequest) {
       const gdriveFolderId = process.env.GDRIVE_BACKUP_FOLDER_ID;
 
       if (gdriveEmail && gdriveKey && gdriveFolderId) {
-        try {
-          // Dynamic import to avoid issues when googleapis is not installed
-          const { uploadToGoogleDrive } = await import("@ictirc/backup");
-          driveResult = await uploadToGoogleDrive(filePath, {
-            clientEmail: gdriveEmail,
-            privateKey: gdriveKey,
-            folderId: gdriveFolderId,
-          });
-        } catch (err) {
-          console.error("[Backup] Google Drive upload failed:", err);
-          driveResult = { success: false, error: "Google Drive upload failed" };
-        }
+        // TODO: Implement Google Drive upload when @ictirc/backup package is created
+        // For now, just mark as not implemented
+        driveResult = {
+          success: false,
+          error: "Google Drive upload not yet configured. Install googleapis package and create @ictirc/backup."
+        };
+        console.log("[Backup] Google Drive upload skipped - package not installed");
       }
     }
 

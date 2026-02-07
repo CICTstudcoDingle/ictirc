@@ -179,16 +179,14 @@ export default function BackupSettingsPage() {
                         {new Date(backup.createdAt).toLocaleString()}
                       </p>
                     </div>
-                    <Button variant="ghost" size="sm" asChild>
-                      <a
-                        href={`/backups/${backup.fileName}`}
-                        download
-                        className="flex items-center gap-1"
-                      >
-                        <Download className="w-4 h-4" />
-                        Download
-                      </a>
-                    </Button>
+                    <a
+                      href={`/backups/${backup.fileName}`}
+                      download
+                      className="inline-flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 hover:text-maroon hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download
+                    </a>
                   </div>
                 ))}
               </div>
