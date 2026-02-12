@@ -1,12 +1,12 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { prisma } from "@ictirc/database";
 
 /**
  * Author App Middleware
- * 
- * Protects all dashboard routes - requires authentication and AUTHOR/REVIEWER/EDITOR/DEAN roles
- * Guest users are redirected to login
+ *
+ * Handles authentication checks at the Edge level.
+ * Role-based access control is handled in Server Components (layout.tsx)
+ * because Prisma cannot run in Edge Runtime.
  */
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -23,7 +23,13 @@ export async function middleware(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
+        setAll(
+          cookiesToSet: {
+            name: string;
+            value: string;
+            options: CookieOptions;
+          }[]
+        ) {
           cookiesToSet.forEach(({ name, value }) => {
             request.cookies.set(name, value);
           });
@@ -46,7 +52,7 @@ export async function middleware(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
-  // Protected Dashboard Routes - require auth
+  // Protected Dashboard Routes - require authentication
   if (pathname.startsWith("/dashboard")) {
     if (!authUser) {
       const url = request.nextUrl.clone();
@@ -54,41 +60,13 @@ export async function middleware(request: NextRequest) {
       url.searchParams.set("redirect", pathname);
       return NextResponse.redirect(url);
     }
-
-    // Verify user exists in database with appropriate role
-    try {
-      const dbUser = await prisma.user.findUnique({
-        where: { id: authUser.id },
-        select: { role: true, isActive: true },
-      });
-
-      // User not in database - they need to complete registration
-      if (!dbUser) {
-        const url = request.nextUrl.clone();
-        url.pathname = "/register";
-        url.searchParams.set("step", "complete");
-        return NextResponse.redirect(url);
-      }
-
-      // User is deactivated
-      if (!dbUser.isActive) {
-        const url = request.nextUrl.clone();
-        url.pathname = "/login";
-        url.searchParams.set("error", "deactivated");
-        return NextResponse.redirect(url);
-      }
-
-      // Add user info to response headers for client-side use
-      response.headers.set("x-user-role", dbUser.role);
-    } catch (error) {
-      console.error("[Author Middleware] Database error:", error);
-    }
   }
 
   // Redirect authenticated users from /login to /dashboard
   if (pathname === "/login") {
     if (authUser) {
-      const redirectTo = request.nextUrl.searchParams.get("redirect") || "/dashboard";
+      const redirectTo =
+        request.nextUrl.searchParams.get("redirect") || "/dashboard";
       const url = request.nextUrl.clone();
       url.pathname = redirectTo;
       url.searchParams.delete("redirect");
@@ -96,7 +74,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Redirect root to /dashboard if auth, otherwise /login
+  // Redirect root to /dashboard if authenticated, otherwise /login
   if (pathname === "/") {
     const url = request.nextUrl.clone();
     url.pathname = authUser ? "/dashboard" : "/login";

@@ -5,9 +5,9 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding database...\n");
 
-  // 1. Clear existing categories
-  console.log("🧹 Clearing existing categories...");
-  await prisma.category.deleteMany({});
+  // 1. Clear existing categories (Bypassed for safety as per user request)
+  // console.log("🧹 Clearing existing categories...");
+  // await prisma.category.deleteMany({});
 
   // 2. Define Hierarchy
   const hierarchy = [
@@ -37,38 +37,52 @@ async function main() {
       name: "Industrial Technology",
       slug: "ind-tech",
       description: "Field concerned with the application of engineering and manufacturing technology.",
-      children: []
+      children: [
+        { name: "General Industrial Technology", slug: "gen-ind-tech" },
+      ]
     }
   ];
 
-  console.log("📂 Creating category hierarchy...");
+  console.log("📂 Upserting category hierarchy...");
 
   for (const root of hierarchy) {
-    // Create Parent
-    const parent = await prisma.category.create({
-      data: {
+    // Upsert Parent
+    const parent = await prisma.category.upsert({
+      where: { slug: root.slug },
+      update: {
+        name: root.name,
+        description: root.description,
+      },
+      create: {
         name: root.name,
         slug: root.slug,
         description: root.description,
       }
     });
-    console.log(`  > Created Parent: ${parent.name}`);
+    console.log(`  > Upserted Parent: ${parent.name}`);
 
-    // Create Children
+    // Upsert Children
     if (root.children && root.children.length > 0) {
-      await prisma.category.createMany({
-        data: root.children.map(child => ({
-          name: child.name,
-          slug: child.slug,
-          parentId: parent.id
-        }))
-      });
-      console.log(`    + Added ${root.children.length} sub-topics`);
+      for (const child of root.children) {
+        await prisma.category.upsert({
+          where: { slug: child.slug },
+          update: {
+            name: child.name,
+            parentId: parent.id
+          },
+          create: {
+            name: child.name,
+            slug: child.slug,
+            parentId: parent.id
+          }
+        });
+      }
+      console.log(`    + Synchronized ${root.children.length} sub-topics`);
     }
   }
 
   const count = await prisma.category.count();
-  console.log(`\n✅ Database seeded successfully with ${count} total categories!`);
+  console.log(`\n✅ Database seeding/sync completed with ${count} total categories!`);
 }
 
 main()
