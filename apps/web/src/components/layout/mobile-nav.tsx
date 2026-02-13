@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, Home, FileText, Calendar, BookOpen, HelpCircle, Info, PlusCircle, Users, Award } from "lucide-react";
+import { X, Home, FileText, Calendar, BookOpen, HelpCircle, Info, PlusCircle, Users, Award, Film } from "lucide-react";
 import { cn } from "@ictirc/ui";
 
 interface MobileNavProps {
@@ -15,6 +15,7 @@ const navItems = [
   { href: "/about", label: "About", icon: Info },
   { href: "/committees", label: "Committees", icon: Users },
   { href: "/sponsors", label: "Sponsors", icon: Award },
+  { href: "/promotional-videos", label: "Promotional Videos", icon: Film },
   { href: "/faq", label: "FAQ", icon: HelpCircle },
   { href: "/guides", label: "Guides", icon: BookOpen },
   { href: "/conferences", label: "Conferences", icon: Calendar },

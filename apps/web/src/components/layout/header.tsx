@@ -136,6 +136,14 @@ export function Header() {
                       >
                         Sponsors
                       </Link>
+                      <Link
+                        href="/promotional-videos"
+                        role="menuitem"
+                        className="block px-4 py-2 text-gray-700 hover:bg-maroon/5 hover:text-maroon transition-colors"
+                        onClick={closeOrgDropdown}
+                      >
+                        Promotional Videos
+                      </Link>
                     </div>
                   </div>
                 )}

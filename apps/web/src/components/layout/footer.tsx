@@ -93,6 +93,7 @@ export function Footer() {
                 { label: "Submit Paper", href: "/submit" },
                 { label: "Research Guides", href: "/guides" },
                 { label: "About IRJICT", href: "/about" },
+                { label: "Feedback", href: "/about#feedback" },
                 { label: "FAQ", href: "/faq" },
                 { label: "Search Repository", href: "/search" },
               ].map((link) => (

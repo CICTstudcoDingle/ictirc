@@ -25,6 +25,9 @@ import {
   Upload,
   User,
   Search,
+  Video,
+  Home,
+  MessageSquare,
 } from "lucide-react";
 import { cn } from "@ictirc/ui";
 
@@ -52,6 +55,9 @@ const navItems = [
     ]
   },
   { href: "/dashboard/users", label: "Users", icon: Users },
+  { href: "/dashboard/videos", label: "Videos", icon: Video },
+  { href: "/dashboard/home-content", label: "Home Content", icon: Home },
+  { href: "/dashboard/feedback", label: "Feedback", icon: MessageSquare },
   { href: "/dashboard/search", label: "Search Management", icon: Search },
   { href: "/dashboard/audit-logs", label: "Audit Logs", icon: ScrollText },
   { href: "/dashboard/profile", label: "Profile", icon: User },

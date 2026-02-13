@@ -52,6 +52,11 @@ enum ChangeType {
   DEPRECATED
 }
 
+enum VideoType {
+  PROMOTIONAL // For the department (CICT)
+  TEASER      // For the event (IT Week)
+}
+
 // ============================================
 // DYNAMIC ROLES (Managed by DEAN)
 // ============================================
@@ -497,4 +502,70 @@ model ChangelogEntry {
   @@index([releaseId])
   @@index([changeType])
   @@index([order])
+}
+
+// ============================================
+// HOME PAGE CONTENT (Admin-Editable)
+// ============================================
+
+model HomeContent {
+  id                String   @id @default(cuid())
+  section           String   @unique // e.g., "hero", "sponsors", "cta"
+  title             String?
+  subtitle          String?  @db.Text
+  content           Json?    // Flexible JSON for section-specific data
+  imageUrl          String?
+  isPublished       Boolean  @default(true)
+  displayOrder      Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([section])
+  @@index([isPublished])
+  @@map("home_content")
+}
+
+// ============================================
+// FEEDBACK SYSTEM
+// ============================================
+
+model Feedback {
+  id          String   @id @default(cuid())
+  name        String?  // Optional – anonymous allowed
+  email       String?  // Optional – anonymous allowed
+  subject     String?
+  category    String   @default("General") // "General", "Bug Report", "Feature Request", "Content", "Other"
+  message     String   @db.Text
+  rating      Int?     // Optional 1-5 star rating
+  userAgent   String?  // Browser info for debugging
+  isRead      Boolean  @default(false)
+  isArchived  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([isRead])
+  @@index([category])
+  @@map("feedback")
+}
+
+// ============================================
+// PROMOTIONAL VIDEOS
+// ============================================
+
+model PromotionalVideo {
+  id          String    @id @default(cuid())
+  title       String
+  description String?   @db.Text
+  type        VideoType // PROMOTIONAL (CICT) or TEASER (IT Week)
+  r2Key       String    // R2 object key for the video file
+  thumbnailUrl String?  // Optional thumbnail image URL
+  editorName  String    // Name of the editor/uploader
+  isPublished Boolean   @default(true)
+  uploadDate  DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([type])
+  @@index([isPublished])
+  @@index([uploadDate])
 }

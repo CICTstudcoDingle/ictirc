@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, Mail, MapPin, Phone, Smartphone, ExternalLink, BookOpen, ShieldCheck, Globe } from "lucide-react";
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
+import { FeedbackSection } from "@/components/feedback/feedback-section";
 
 export default function AboutPage() {
   return (
@@ -104,7 +105,7 @@ export default function AboutPage() {
                   </h2>
                 </div>
                 <p className="text-gray-600 leading-relaxed">
-                  Knowledge shouldn't be locked behind a paywall. By making research freely available online, we empower individuals and accelerate societal progress. Today, even the world’s top-tier journals are making this possible by lowering the financial barriers for both readers and contributing authors.
+                  Knowledge shouldn&apos;t be locked behind a paywall. By making research freely available online, we empower individuals and accelerate societal progress. Today, even the world&apos;s top-tier journals are making this possible by lowering the financial barriers for both readers and contributing authors.
                 </p>
               </div>
             </ScrollAnimation>
@@ -191,6 +192,11 @@ export default function AboutPage() {
             title="ISUFST Dingle Campus Location"
           />
         </div>
+      </section>
+
+      {/* Feedback Section */}
+      <section id="feedback" className="py-16 md:py-20 bg-gray-50">
+        <FeedbackSection />
       </section>
 
       {/* CTA */}

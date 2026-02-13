@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowRight, BookOpen, Users, Award, FileCheck, Zap } from "lucide-react";
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { UpcomingEventCard } from "@/components/events/upcoming-event-card";
+import { HeroVideoCard } from "@/components/videos/hero-video-card";
 import { ParticipatingUniversities } from "@/components/home/participating-universities";
 import { ConferenceHeroBanner } from "@/components/home/conference-hero-banner";
 import { VenueSection } from "@/components/home/venue-section";
@@ -139,6 +140,7 @@ export default function HomePage() {
             {/* Mobile Upcoming Event Banner - only shows on mobile */}
             <div className="lg:hidden">
               <UpcomingEventCard />
+              <HeroVideoCard />
             </div>
           </div>
           
@@ -146,6 +148,9 @@ export default function HomePage() {
           <div className="hidden lg:block">
             <UpcomingEventCard />
           </div>
+          
+          {/* Desktop Floating Video Card - below event card */}
+          <HeroVideoCard />
         </div>
       </section>
 

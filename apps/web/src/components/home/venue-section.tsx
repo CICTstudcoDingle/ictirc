@@ -1,5 +1,6 @@
 import { Calendar, MapPin, Users, Video, Mail, Award, Building2 } from "lucide-react";
 import { prisma } from "@ictirc/database";
+import { ScrollAnimation } from "@/components/ui/scroll-animation";
 
 interface ConferenceData {
   venue?: string | null;
@@ -55,25 +56,28 @@ export async function VenueSection() {
   return (
     <section className="py-16 md:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-maroon/10 rounded-full px-6 py-2 mb-4">
-            <Building2 className="w-5 h-5 text-maroon" />
-            <span className="text-sm font-semibold text-maroon uppercase tracking-wide">
-              Conference Venue
-            </span>
+        <ScrollAnimation direction="up">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-maroon/10 rounded-full px-6 py-2 mb-4">
+              <Building2 className="w-5 h-5 text-maroon" />
+              <span className="text-sm font-semibold text-maroon uppercase tracking-wide">
+                Conference Venue
+              </span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              {data.venue || "Knowledge Hub Center"}
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Iloilo State University of Fisheries Science and Technology – Dingle Campus
+            </p>
+            <p className="text-lg text-gray-500 mt-2">
+              {dateString}
+            </p>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {data.venue || "Knowledge Hub Center"}
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Iloilo State University of Fisheries Science and Technology – Dingle Campus
-          </p>
-          <p className="text-lg text-gray-500 mt-2">
-            {dateString}
-          </p>
-        </div>
+        </ScrollAnimation>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <ScrollAnimation direction="up" delay={0.2}>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0 w-12 h-12 bg-maroon/10 rounded-xl flex items-center justify-center">
               <MapPin className="w-6 h-6 text-maroon" />
@@ -105,7 +109,8 @@ export async function VenueSection() {
               </a>
             </div>
           </div>
-        </div>
+          </div>
+        </ScrollAnimation>
       </div>
     </section>
   );
