@@ -1,7 +1,7 @@
-// Component exports
-export { SearchInput } from './search-input'
-export { SearchResults } from './search-results'
-export { SearchProvider } from './search-provider'
-export { SearchModal } from './search-modal'
-export { FacetFilter } from './facet-filter'
-export { SearchHit } from './search-hit'
+// Component exports - Placeholder stubs until Algolia is configured
+// SearchHit component removed due to naming conflict with SearchHit type in types.ts
+// Use the SearchHit type from '../types' for now
+
+export function SearchInput({ placeholder, className, onSearch, onSelect, showResults }: any) {
+  return null // Search is not configured, Algolia credentials required
+}

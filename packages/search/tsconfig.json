@@ -6,7 +6,9 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "strict": false,
+    "noUnusedLocals": false
   },
   "include": [
     "src/**/*"

@@ -1,13 +1,14 @@
-import { createAdminClient, INDICES } from '@ictirc/search'
+import { createAdminClient, INDICES } from './client'
 import { 
   transformPaperToSearch, 
   transformArchiveToSearch, 
   transformAuthorToSearch, 
   transformConferenceToSearch,
   chunkArray
-} from '@ictirc/search'
-import { addObjectsToIndex, updateObjectsInIndex, deleteObjectsFromIndex } from '@ictirc/search'
+} from './transformers'
+import { addObjectsToIndex, updateObjectsInIndex, deleteObjectsFromIndex } from './indices'
 import { db } from '@ictirc/database'
+
 
 // Sync all data from database to Algolia
 export async function syncAllData() {
