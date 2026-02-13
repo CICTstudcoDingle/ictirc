@@ -40,7 +40,7 @@ export default async function PromotionalVideosPage() {
         title: video.title,
         description: video.description,
         type: video.type as "PROMOTIONAL" | "TEASER",
-        streamUrl: streamResult.success ? streamResult.url : null,
+        streamUrl: streamResult.success ? (streamResult.url ?? null) : null,
         editorName: video.editorName,
         uploadDate: video.uploadDate.toISOString(),
       };

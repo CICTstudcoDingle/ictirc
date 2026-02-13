@@ -23,7 +23,7 @@ export async function GET() {
           title: video.title,
           description: video.description,
           type: video.type,
-          streamUrl: streamResult.success ? streamResult.url : null,
+          streamUrl: streamResult.success ? (streamResult.url ?? null) : null,
           editorName: video.editorName,
           uploadDate: video.uploadDate.toISOString(),
         };

@@ -24,7 +24,7 @@ export async function HeroVideoCard() {
         id: video.id,
         title: video.title,
         type: video.type as "PROMOTIONAL" | "TEASER",
-        streamUrl: streamResult.success ? streamResult.url : null,
+        streamUrl: streamResult.success ? (streamResult.url ?? null) : null,
         editorName: video.editorName,
         uploadDate: video.uploadDate.toISOString(),
       };

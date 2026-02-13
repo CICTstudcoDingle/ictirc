@@ -209,7 +209,7 @@ export async function getIndexStats(): Promise<Record<string, any>> {
       }
     } catch (error) {
       console.error(`❌ Failed to get stats for index ${indexName}:`, error)
-      stats[indexName] = { error: error.message }
+      stats[indexName] = { error: error instanceof Error ? error.message : String(error) }
     }
   }
   
