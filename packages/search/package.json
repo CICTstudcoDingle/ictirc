@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@ictirc/database": "workspace:*",
     "algoliasearch": "^4.24.0",
     "@algolia/client-search": "^4.24.0",
     "instantsearch.js": "^4.71.1",

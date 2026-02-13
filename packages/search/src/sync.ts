@@ -1,13 +1,16 @@
 import { createAdminClient, INDICES } from './client'
-import { 
-  transformPaperToSearch, 
-  transformArchiveToSearch, 
-  transformAuthorToSearch, 
+import {
+  transformPaperToSearch,
+  transformArchiveToSearch,
+  transformAuthorToSearch,
   transformConferenceToSearch,
   chunkArray
 } from './transformers'
 import { addObjectsToIndex, updateObjectsInIndex, deleteObjectsFromIndex } from './indices'
-import { db } from '@ictirc/database'
+import { prisma } from '@ictirc/database'
+
+// Alias prisma client for clarity within this module
+const db = prisma
 
 
 // Sync all data from database to Algolia

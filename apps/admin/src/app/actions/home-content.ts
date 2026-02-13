@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@ictirc/database";
+import { Prisma } from "@ictirc/database";
 import { revalidatePath } from "next/cache";
 
 export async function getHomeContent() {
@@ -35,7 +36,7 @@ export async function upsertHomeSection(data: {
       data: {
         title: data.title ?? existing.title,
         subtitle: data.subtitle ?? existing.subtitle,
-        content: data.content ?? existing.content,
+        content: (data.content ?? existing.content) as Prisma.InputJsonValue,
         imageUrl: data.imageUrl ?? existing.imageUrl,
         isPublished: data.isPublished ?? existing.isPublished,
         displayOrder: data.displayOrder ?? existing.displayOrder,
@@ -47,7 +48,7 @@ export async function upsertHomeSection(data: {
         section: data.section,
         title: data.title,
         subtitle: data.subtitle,
-        content: data.content ?? undefined,
+        content: (data.content ?? Prisma.JsonNull) as Prisma.InputJsonValue,
         imageUrl: data.imageUrl,
         isPublished: data.isPublished ?? true,
         displayOrder: data.displayOrder ?? 0,
