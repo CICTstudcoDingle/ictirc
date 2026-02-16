@@ -232,7 +232,7 @@ export function Header() {
                 <Search className="w-5 h-5" />
               </Link>
               <Link
-                href="http://localhost:3002/login"
+                href="https://ictirc-author.vercel.app/login"
                 className="text-gray-700 hover:text-maroon transition-colors font-medium text-sm"
               >
                 Author Portal

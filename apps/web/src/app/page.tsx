@@ -137,20 +137,18 @@ export default function HomePage() {
               </div>
             </ScrollAnimation>
             
-            {/* Mobile Upcoming Event Banner - only shows on mobile */}
+            {/* Mobile cards - only shows on mobile */}
             <div className="lg:hidden">
               <UpcomingEventCard />
               <HeroVideoCard />
             </div>
           </div>
           
-          {/* Desktop Floating Event Card - positioned absolutely within hero, hidden on mobile */}
-          <div className="hidden lg:block">
+          {/* Desktop Floating Cards - stacked vertically on right side */}
+          <div className="hidden lg:flex flex-col gap-4 absolute top-1/2 -translate-y-1/2 right-8 xl:right-16 w-80 z-20">
             <UpcomingEventCard />
+            <HeroVideoCard />
           </div>
-          
-          {/* Desktop Floating Video Card - below event card */}
-          <HeroVideoCard />
         </div>
       </section>
 

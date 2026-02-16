@@ -30,8 +30,8 @@ function formatDate(dateString: string): string {
 export function EventCardClient({ event, isUpcoming, daysUntil, daysSince }: EventCardClientProps) {
   return (
     <>
-      {/* Desktop Card - Floating on right side */}
-      <div className="hidden lg:block lg:absolute lg:top-1/2 lg:-translate-y-1/2 lg:right-8 xl:right-16 w-80 z-20">
+      {/* Desktop Card */}
+      <div className="hidden lg:block">
         <ScrollAnimation direction="right" delay={1.0}>
           <Link href={`/conferences/${event.id}`}>
             <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300 group shadow-2xl">

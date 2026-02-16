@@ -48,19 +48,18 @@ export async function syncPapers() {
           author: true
         }
       },
-      category: true,
       conference: true
-    }
+    } as any
   })
 
   const searchObjects = papers.map(paper => transformPaperToSearch({
     ...paper,
-    authors: paper.authors.map(a => ({
+    authors: (paper as any).authors.map((a: any) => ({
       id: a.author.id,
       name: a.author.name,
       email: a.author.email
     }))
-  }))
+  } as any))
 
   if (searchObjects.length > 0) {
     await addObjectsToIndex(INDICES.PAPERS, searchObjects)
@@ -73,15 +72,14 @@ export async function syncArchives() {
   
   const archives = await db.archivedPaper.findMany({
     include: {
-      category: true,
       conference: true
-    }
+    } as any
   })
 
   const searchObjects = archives.map(archive => transformArchiveToSearch({
     ...archive,
-    authors: archive.authors // Already array of strings in archived papers
-  }))
+    authors: (archive as any).authors
+  } as any))
 
   if (searchObjects.length > 0) {
     await addObjectsToIndex(INDICES.ARCHIVES, searchObjects)
@@ -95,13 +93,13 @@ export async function syncAuthors() {
   const authors = await db.author.findMany({
     include: {
       papers: true
-    }
+    } as any
   })
 
   const searchObjects = authors.map(author => transformAuthorToSearch({
     ...author,
-    papers: author.papers // For counting
-  }))
+    papers: (author as any).papers
+  } as any))
 
   if (searchObjects.length > 0) {
     await addObjectsToIndex(INDICES.AUTHORS, searchObjects)
@@ -115,13 +113,13 @@ export async function syncConferences() {
   const conferences = await db.conference.findMany({
     include: {
       papers: true
-    }
+    } as any
   })
 
   const searchObjects = conferences.map(conf => transformConferenceToSearch({
     ...conf,
-    papers: conf.papers // For counting
-  }))
+    papers: (conf as any).papers
+  } as any))
 
   if (searchObjects.length > 0) {
     await addObjectsToIndex(INDICES.CONFERENCES, searchObjects)
@@ -139,20 +137,19 @@ export async function syncPaper(paperId: string) {
           author: true
         }
       },
-      category: true,
       conference: true
-    }
-  })
+    } as any
+  }) as any // Cast to any to avoid complex Prisma include typing issues
 
   if (paper) {
     const searchObject = transformPaperToSearch({
       ...paper,
-      authors: paper.authors.map(a => ({
+      authors: paper.authors.map((a: any) => ({
         id: a.author.id,
         name: a.author.name,
         email: a.author.email
       }))
-    })
+    } as any)
     await updateObjectsInIndex(INDICES.PAPERS, [searchObject])
   }
 }
@@ -162,14 +159,14 @@ export async function syncAuthor(authorId: string) {
     where: { id: authorId },
     include: {
       papers: true
-    }
+    } as any
   })
 
   if (author) {
     const searchObject = transformAuthorToSearch({
       ...author,
-      papers: author.papers
-    })
+      papers: (author as any).papers
+    } as any)
     await updateObjectsInIndex(INDICES.AUTHORS, [searchObject])
   }
 }
