@@ -1,17 +1,23 @@
-Scope: all 8 workspace projects
-Progress: resolved 1, reused 0, downloaded 0, added 0
-apps/web                                 | ΓÇëWARNΓÇë deprecated @studio-freight/lenis@1.0.42
-C:\dev\Monorepo\ICTIRC\packages\email:
-ΓÇëERR_PNPM_NO_MATCHING_VERSIONΓÇë No matching version found for resend@4.1.0
+Scope: all 14 workspace projects
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 0, reused 1, downloaded 0, added 0
+Packages: +20 -108
+++++++++++++--------------------------------------------------------------------
+Progress: resolved 0, reused 120, downloaded 0, added 14
+Progress: resolved 0, reused 120, downloaded 0, added 20, done
 
-This error happened while installing a direct dependency of C:\dev\Monorepo\ICTIRC\packages\email
+devDependencies:
++ @ictirc/config 0.0.0 <- packages\config
 
-The latest release of resend is "6.9.1".
-
-Other releases are:
-  * preview-topics: 4.7.0-preview-topics.2
-  * preview-templates: 6.1.2-preview-templates.1
-  * preview-batch: 6.5.2-batch.0
-  * canary: 6.7.0-canary.0
-
-If you need the full list of all 130 published versions run "$ pnpm view resend versions".
+. postinstall$ pnpm --filter @ictirc/database run db:generate
+. postinstall: > @ictirc/database@0.0.0 db:generate C:\dev\Monorepo\ICTIRC\packages\database
+. postinstall: > prisma generate
+. postinstall: Environment variables loaded from .env
+. postinstall: Prisma schema loaded from prisma\schema.prisma
+. postinstall: Error: 
+. postinstall: EPERM: operation not permitted, rename 'C:\dev\Monorepo\ICTIRC\node_modules\.prisma\client\query_engine-windows.dll.node.tmp8852' -> 'C:\dev\Monorepo\ICTIRC\node_modules\.prisma\client\query_engine-windows.dll.node'
+. postinstall: C:\dev\Monorepo\ICTIRC\packages\database:
+. postinstall: ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @ictirc/database@0.0.0 db:generate: `prisma generate`
+. postinstall: Exit status 1
+. postinstall: Failed
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
