@@ -42,6 +42,17 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // Fix: browsers require application/manifest+json MIME type for PWA manifests.
+        // Without this, Chrome rejects the fetch with error code 441.
+        source: '/manifest.json',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/manifest+json',
+          },
+        ],
+      },
+      {
         source: '/(.*)',
         headers: [
           {
