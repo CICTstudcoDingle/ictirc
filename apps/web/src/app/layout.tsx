@@ -4,7 +4,6 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { ToastProvider } from "@/lib/use-toast";
-import { FloatingActionButton } from "@ictirc/ui";
 import { WebBottomNav } from "@/components/layout/bottom-nav";
 import { AiChatWidget } from "@/components/ai-chat";
 import { generateOrganizationJsonLd, generateWebsiteJsonLd } from "@ictirc/seo";
@@ -160,7 +159,6 @@ export default function RootLayout({
             <Footer />
 
             {/* Mobile-only components */}
-            <FloatingActionButton />
             <WebBottomNav />
 
             {/* AI Chat Assistant */}

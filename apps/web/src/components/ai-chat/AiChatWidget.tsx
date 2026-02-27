@@ -21,7 +21,10 @@ function getOrCreateSessionId(): string {
   const key = "irjict_chat_session_id";
   let id = sessionStorage.getItem(key);
   if (!id) {
-    id = crypto.randomUUID();
+    id =
+      typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+        ? crypto.randomUUID()
+        : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
     sessionStorage.setItem(key, id);
   }
   return id;
@@ -146,7 +149,7 @@ export function AiChatWidget() {
         <div
           className={cn(
             "fixed z-50 flex flex-col",
-            "bottom-24 left-4 md:bottom-6 md:left-auto md:right-6",
+            "bottom-24 right-4 md:bottom-6 md:right-6",
             "w-[calc(100vw-2rem)] max-w-sm",
             "bg-white rounded-2xl shadow-2xl border border-gray-200",
             "overflow-hidden",
@@ -304,7 +307,7 @@ export function AiChatWidget() {
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
           "fixed z-50 flex items-center justify-center",
-          "bottom-[5.5rem] left-4 md:bottom-6 md:left-auto md:right-6",
+          "bottom-[5.5rem] right-4 md:bottom-6 md:right-6",
           "w-14 h-14 rounded-full shadow-lg",
           "bg-maroon text-white",
           "hover:shadow-[0_0_0_4px_rgba(212,175,55,0.35)]",
