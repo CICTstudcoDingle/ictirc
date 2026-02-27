@@ -6,8 +6,10 @@ import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provi
 import { ToastProvider } from "@/lib/use-toast";
 import { FloatingActionButton } from "@ictirc/ui";
 import { WebBottomNav } from "@/components/layout/bottom-nav";
+import { AiChatWidget } from "@/components/ai-chat";
 import { generateOrganizationJsonLd, generateWebsiteJsonLd } from "@ictirc/seo";
 import "./globals.css";
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,7 +22,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufst.edu.ph"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufstcict.com"),
   title: {
     default: "IRJICT - International Research Journal on Information and Communications Technology",
     template: "%s | IRJICT",
@@ -73,18 +75,19 @@ export const metadata: Metadata = {
     description: "A scholarly publication platform for ICT research from ISUFST CICT.",
     images: [
       {
-        url: "/images/irjict-logo.png",
-        width: 512,
-        height: 512,
-        alt: "IRJICT Logo",
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "IRJICT - International Research Journal on Information and Communications Technology",
+        type: "image/png",
       },
     ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "IRJICT Research Journal",
     description: "A scholarly publication platform for ICT research from ISUFST CICT.",
-    images: ["/images/irjict-logo.png"],
+    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: "/",
@@ -104,7 +107,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufst.edu.ph";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufstcict.com";
 
   // Organization structured data for rich results
   const organizationData = generateOrganizationJsonLd({
@@ -159,6 +162,9 @@ export default function RootLayout({
             {/* Mobile-only components */}
             <FloatingActionButton />
             <WebBottomNav />
+
+            {/* AI Chat Assistant */}
+            <AiChatWidget />
           </SmoothScrollProvider>
         </ToastProvider>
       </body>

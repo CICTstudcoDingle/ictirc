@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ictirc.isufst.edu.ph";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufstcict.com";
 
   return {
     rules: [
@@ -13,10 +13,24 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "Googlebot",
         allow: "/",
+        disallow: ["/api/", "/dashboard/", "/login", "/unauthorized"],
       },
       {
         userAgent: "Googlebot-Scholar",
         allow: "/",
+      },
+      {
+        // Block AI training crawlers
+        userAgent: "GPTBot",
+        disallow: "/",
+      },
+      {
+        userAgent: "CCBot",
+        disallow: "/",
+      },
+      {
+        userAgent: "anthropic-ai",
+        disallow: "/",
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

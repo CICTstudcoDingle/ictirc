@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@ictirc/database": "workspace:*",
     "@ictirc/email": "workspace:*",
     "@ictirc/search": "workspace:*",
