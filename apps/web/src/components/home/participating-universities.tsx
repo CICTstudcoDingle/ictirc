@@ -42,6 +42,13 @@ const UNIVERSITIES = [
     logo: "/images/GSU.png",
   },
   {
+    id: 9,
+    name: "Siquijor State College",
+    admin: "STEVEN J. SUMAYLO, Ph.D.",
+    role: "SUC President II",
+    logo: "/images/SSC.jpg",
+  },
+  {
     id: 6,
     name: "University of Antique",
     admin: "Dr. Pablo S. Crespo Jr.",
