@@ -6,6 +6,7 @@ import { UpcomingEventCard } from "@/components/events/upcoming-event-card";
 import { HeroVideoCard } from "@/components/videos/hero-video-card";
 import { ParticipatingUniversities } from "@/components/home/participating-universities";
 import { ConferenceHeroBanner } from "@/components/home/conference-hero-banner";
+import { KeynoteSpeakers } from "@/components/home/keynote-speakers";
 import { VenueSection } from "@/components/home/venue-section";
 import { OrganizersSection } from "@/components/home/organizers-section";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
@@ -157,6 +158,9 @@ export default function HomePage() {
 
       {/* Dynamic Conference Banner - from /home */}
       <ConferenceHeroBanner />
+
+      {/* Keynote Speakers - Dynamic from active conference */}
+      <KeynoteSpeakers />
 
       {/* Dynamic Venue Section - from /home */}
       <VenueSection />

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Users } from "lucide-react";
+import { ArrowLeft, Users, Mic2 } from "lucide-react";
 import { Button } from "@ictirc/ui";
 import { getConference } from "../actions";
 import { ConferenceEditForm } from "./conference-edit-form";
@@ -22,7 +22,7 @@ export default async function EditConferencePage({ params }: PageProps) {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
           <Link href="/dashboard/conferences">
             <Button variant="ghost" size="sm">
@@ -35,12 +35,20 @@ export default async function EditConferencePage({ params }: PageProps) {
             <p className="text-sm text-gray-500 mt-1">{conference.name}</p>
           </div>
         </div>
-        <Link href={`/dashboard/conferences/${id}/committee`}>
-          <Button variant="outline">
-            <Users className="w-4 h-4 mr-2" />
-            Manage Committee ({conference.committee?.length || 0})
-          </Button>
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link href={`/dashboard/conferences/${id}/speakers`}>
+            <Button variant="outline">
+              <Mic2 className="w-4 h-4 mr-2" />
+              Manage Speakers ({conference.speakers?.length || 0})
+            </Button>
+          </Link>
+          <Link href={`/dashboard/conferences/${id}/committee`}>
+            <Button variant="outline">
+              <Users className="w-4 h-4 mr-2" />
+              Manage Committee ({conference.committee?.length || 0})
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Form */}

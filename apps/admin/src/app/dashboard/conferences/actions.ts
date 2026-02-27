@@ -25,7 +25,7 @@ export async function getConferences() {
       orderBy: { startDate: "desc" },
       include: {
         _count: {
-          select: { committee: true, issues: true },
+          select: { committee: true, issues: true, speakers: true },
         },
       },
     });
@@ -41,7 +41,7 @@ export async function getConferences() {
 }
 
 /**
- * Get single conference with committee
+ * Get single conference with committee and speakers
  */
 export async function getConference(id: string) {
   try {
@@ -49,6 +49,9 @@ export async function getConference(id: string) {
       where: { id },
       include: {
         committee: {
+          orderBy: { displayOrder: "asc" },
+        },
+        speakers: {
           orderBy: { displayOrder: "asc" },
         },
       },
@@ -386,6 +389,161 @@ export async function reorderCommitteeMembers(
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to reorder committee members",
+    };
+  }
+}
+
+// ============================================
+// KEYNOTE SPEAKER ACTIONS (DEAN ONLY)
+// ============================================
+
+/**
+ * Add keynote speaker
+ */
+export async function addKeynoteSpeaker(data: {
+  conferenceId: string;
+  name: string;
+  position: string;
+  title?: string;
+  affiliation?: string;
+  location?: string;
+  bio?: string;
+  photoUrl?: string;
+  displayOrder?: number;
+}) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    await requireRole(user.id, "DEAN");
+
+    const speaker = await prisma.keynoteSpeaker.create({
+      data,
+    });
+
+    revalidatePath(`/dashboard/conferences/${data.conferenceId}`);
+    revalidatePath(`/dashboard/conferences/${data.conferenceId}/speakers`);
+    revalidatePath("/");
+
+    return { success: true, speaker };
+  } catch (error) {
+    console.error("[addKeynoteSpeaker] Error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to add keynote speaker",
+    };
+  }
+}
+
+/**
+ * Update keynote speaker
+ */
+export async function updateKeynoteSpeaker(
+  id: string,
+  data: {
+    name?: string;
+    position?: string;
+    title?: string;
+    affiliation?: string;
+    location?: string;
+    bio?: string;
+    photoUrl?: string;
+    displayOrder?: number;
+  }
+) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    await requireRole(user.id, "DEAN");
+
+    const speaker = await prisma.keynoteSpeaker.update({
+      where: { id },
+      data,
+    });
+
+    revalidatePath(`/dashboard/conferences/${speaker.conferenceId}`);
+    revalidatePath(`/dashboard/conferences/${speaker.conferenceId}/speakers`);
+    revalidatePath("/");
+
+    return { success: true, speaker };
+  } catch (error) {
+    console.error("[updateKeynoteSpeaker] Error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to update keynote speaker",
+    };
+  }
+}
+
+/**
+ * Delete keynote speaker
+ */
+export async function deleteKeynoteSpeaker(id: string) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    await requireRole(user.id, "DEAN");
+
+    const speaker = await prisma.keynoteSpeaker.delete({
+      where: { id },
+    });
+
+    revalidatePath(`/dashboard/conferences/${speaker.conferenceId}`);
+    revalidatePath(`/dashboard/conferences/${speaker.conferenceId}/speakers`);
+    revalidatePath("/");
+
+    return { success: true };
+  } catch (error) {
+    console.error("[deleteKeynoteSpeaker] Error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to delete keynote speaker",
+    };
+  }
+}
+
+/**
+ * Update speaker photo URL
+ */
+export async function updateSpeakerPhoto(speakerId: string, photoUrl: string) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    await requireRole(user.id, "DEAN");
+
+    const speaker = await prisma.keynoteSpeaker.update({
+      where: { id: speakerId },
+      data: { photoUrl },
+    });
+
+    revalidatePath(`/dashboard/conferences/${speaker.conferenceId}/speakers`);
+    revalidatePath("/");
+
+    return { success: true, speaker };
+  } catch (error) {
+    console.error("[updateSpeakerPhoto] Error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to update speaker photo",
     };
   }
 }

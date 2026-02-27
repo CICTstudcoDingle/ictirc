@@ -38,7 +38,7 @@ export default function ProfilePage() {
 
           <p className="text-sm text-gray-500 mt-8">
             Are you an admin?{" "}
-            <Link href="http://localhost:3001" className="text-maroon hover:underline">
+            <Link href={process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'https://admin.irjict.isufstcict.com'} className="text-maroon hover:underline">
               Go to Admin Portal
             </Link>
           </p>

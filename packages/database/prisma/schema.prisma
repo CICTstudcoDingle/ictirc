@@ -381,6 +381,7 @@ model Conference {
   // Relations
   issues    Issue[]
   committee CommitteeMember[]
+  speakers  KeynoteSpeaker[]
 
   @@index([startDate])
   @@index([isPublished])
@@ -397,6 +398,26 @@ model CommitteeMember {
   affiliation  String?    // Institution name
   email        String?
   photoUrl     String?
+  displayOrder Int        @default(0)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([conferenceId])
+  @@index([displayOrder])
+}
+
+model KeynoteSpeaker {
+  id           String     @id @default(cuid())
+  conferenceId String
+  conference   Conference @relation(fields: [conferenceId], references: [id], onDelete: Cascade)
+
+  name         String     // e.g., "Dr. Indriati, S.T., M.Kom."
+  title        String?    // Academic title/honorific
+  position     String     // e.g., "Lecturer – Faculty of Computer Science"
+  affiliation  String?    // e.g., "Universitas Brawijaya"
+  location     String?    // e.g., "Malang, Indonesia"
+  bio          String?    @db.Text
+  photoUrl     String?    // Uploaded via drag-and-drop to Supabase Storage
   displayOrder Int        @default(0)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
