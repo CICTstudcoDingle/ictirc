@@ -21,7 +21,6 @@ import {
   ChevronRight as ChevronRightSmall,
   BookOpenCheck,
   CalendarDays,
-  Building2,
   Upload,
   User,
   Search,
@@ -41,7 +40,6 @@ const navItems = [
     submenu: [
       { href: "/dashboard/archives/volumes", label: "Volumes", icon: BookOpenCheck },
       { href: "/dashboard/archives/issues", label: "Issues", icon: CalendarDays },
-      { href: "/dashboard/archives/conferences", label: "Conferences", icon: Building2 },
       { href: "/dashboard/archives/upload", label: "Upload Papers", icon: Upload },
     ]
   },

@@ -58,9 +58,10 @@ interface ConferenceFormProps {
     imageUrl?: string | null;
     websiteUrl?: string | null;
   };
+  redirectTo?: string;
 }
 
-export function ConferenceForm({ conference }: ConferenceFormProps) {
+export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/conferences" }: ConferenceFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -122,7 +123,7 @@ export function ConferenceForm({ conference }: ConferenceFormProps) {
           title: conference ? "Conference updated" : "Conference created",
           description: `${data.name} has been ${conference ? "updated" : "created"} successfully.`,
         });
-        router.push("/dashboard/archives/conferences");
+        router.push(redirectTo);
         router.refresh();
       } else {
         toast({

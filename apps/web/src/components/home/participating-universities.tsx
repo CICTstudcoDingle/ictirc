@@ -5,13 +5,25 @@ import { useEffect, useState } from "react";
 import { cn } from "@ictirc/ui";
 
 // Data extracted from user documents
-const UNIVERSITIES = [
+type University = {
+  id: number;
+  name: string;
+  admin: string;
+  role: string;
+  logo: string;
+  badge?: string;
+  badgeColor?: string;
+};
+
+const UNIVERSITIES: University[] = [
   {
     id: 1,
     name: "Iloilo State University of Fisheries Science and Technology",
     admin: "Dr. Nordy D. Siason, Jr.",
-    role: "Proprietary",
+    role: "University President",
     logo: "/images/ISUFST_LOGO.png",
+    badge: "Proprietary",
+    badgeColor: "#022157",
   },
   {
     id: 2,
@@ -115,7 +127,7 @@ export function ParticipatingUniversities() {
   );
 }
 
-function UniversityItem({ university }: { university: typeof UNIVERSITIES[0] }) {
+function UniversityItem({ university }: { university: University }) {
   const isIsufst = university.id === 1;
 
   return (
@@ -146,6 +158,14 @@ function UniversityItem({ university }: { university: typeof UNIVERSITIES[0] }) 
           isIsufst ? "text-maroon text-base" : "text-maroon group-hover:text-maroon-600"
         )}>
           {university.name}
+          {university.badge && (
+            <span
+              className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium text-white ml-2 align-middle"
+              style={{ backgroundColor: university.badgeColor }}
+            >
+              {university.badge}
+            </span>
+          )}
         </h4>
         <div className="flex flex-col gap-0.5">
           <p className="text-sm font-semibold text-gray-900">

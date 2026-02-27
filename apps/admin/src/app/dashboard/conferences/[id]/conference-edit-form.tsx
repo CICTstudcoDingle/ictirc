@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Save, Loader2, Trash2 } from "lucide-react";
-import { Button, Input, Label } from "@ictirc/ui";
+import { Save, Loader2, Trash2, Plus, X } from "lucide-react";
+import { Button, Input, Label, FileUpload } from "@ictirc/ui";
 import { updateConference, deleteConference } from "../actions";
+import { useUpload } from "@/hooks/use-upload";
 
 interface ConferenceEditFormProps {
   conference: {
@@ -18,6 +19,10 @@ interface ConferenceEditFormProps {
     location?: string | null;
     venue?: string | null;
     theme?: string | null;
+    organizers: string[];
+    partners: string[];
+    logoUrl?: string | null;
+    imageUrl?: string | null;
     websiteUrl?: string | null;
     isPublished: boolean;
     isActive: boolean;
@@ -29,6 +34,13 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState(conference.imageUrl || "");
+  const [logoUrl, setLogoUrl] = useState(conference.logoUrl || "");
+  const [organizers, setOrganizers] = useState<string[]>(conference.organizers || []);
+  const [partners, setPartners] = useState<string[]>(conference.partners || []);
+
+  const bannerUpload = useUpload({ folder: "conferences/banners" });
+  const logoUpload = useUpload({ folder: "conferences/logos" });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,6 +62,10 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
         venue: formData.get("venue") as string || undefined,
         theme: formData.get("theme") as string || undefined,
         websiteUrl: formData.get("websiteUrl") as string || undefined,
+        imageUrl: imageUrl || undefined,
+        logoUrl: logoUrl || undefined,
+        organizers: organizers.filter(Boolean),
+        partners: partners.filter(Boolean),
         isPublished: formData.get("isPublished") === "on",
       });
 
@@ -146,6 +162,7 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
             id="description"
             name="description"
             rows={3}
+            placeholder="Brief description of the conference..."
             defaultValue={conference.description || ""}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-maroon/30 focus:border-maroon"
           />
@@ -204,6 +221,120 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
               defaultValue={conference.venue || ""}
             />
           </div>
+        </div>
+      </div>
+
+      {/* Media */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Media</h2>
+
+        <div>
+          <Label>Conference Banner</Label>
+          <FileUpload
+            value={imageUrl}
+            onFileSelect={async (file) => {
+              const url = await bannerUpload.uploadFile(file);
+              if (url) setImageUrl(url);
+            }}
+            onRemove={() => setImageUrl("")}
+            isUploading={bannerUpload.isUploading}
+            progress={bannerUpload.progress}
+            variant="image"
+            description="Upload a high-resolution banner or poster (event-images bucket)"
+          />
+        </div>
+
+        <div>
+          <Label>Conference Logo (Optional)</Label>
+          <FileUpload
+            value={logoUrl}
+            onFileSelect={async (file) => {
+              const url = await logoUpload.uploadFile(file);
+              if (url) setLogoUrl(url);
+            }}
+            onRemove={() => setLogoUrl("")}
+            isUploading={logoUpload.isUploading}
+            progress={logoUpload.progress}
+            variant="image"
+            description="Upload the official conference or organizer logo"
+          />
+        </div>
+      </div>
+
+      {/* Organizers & Partners */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Organizers &amp; Partners</h2>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label>Organizers</Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setOrganizers([...organizers, ""])}
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              Add Organizer
+            </Button>
+          </div>
+          {organizers.map((org, index) => (
+            <div key={index} className="flex gap-2">
+              <Input
+                value={org}
+                onChange={(e) => {
+                  const updated = [...organizers];
+                  updated[index] = e.target.value;
+                  setOrganizers(updated);
+                }}
+                placeholder="Organization name"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => setOrganizers(organizers.filter((_, i) => i !== index))}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label>Partners</Label>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setPartners([...partners, ""])}
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              Add Partner
+            </Button>
+          </div>
+          {partners.map((partner, index) => (
+            <div key={index} className="flex gap-2">
+              <Input
+                value={partner}
+                onChange={(e) => {
+                  const updated = [...partners];
+                  updated[index] = e.target.value;
+                  setPartners(updated);
+                }}
+                placeholder="Partner organization"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => setPartners(partners.filter((_, i) => i !== index))}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
         </div>
       </div>
 
