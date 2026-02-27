@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, FileText, BookOpen } from "lucide-react";
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, CircuitBackground } from "@ictirc/ui";
 import { prisma } from "@ictirc/database";
+import { IssuePapersFilter } from "@/components/archive/issue-papers-filter";
 
 interface PageProps {
   params: Promise<{
@@ -121,7 +122,7 @@ export default async function IssueDetailPage({ params }: PageProps) {
             </Card>
           </div>
 
-          {/* Papers List */}
+          {/* Papers List with Search & Filter */}
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">Papers in this Issue</h2>
 
@@ -133,70 +134,86 @@ export default async function IssueDetailPage({ params }: PageProps) {
                 </CardContent>
               </Card>
             ) : (
-              <div className="space-y-4">
-                {issue.papers.map((paper, index) => (
-                  <Card key={paper.id}>
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <CardTitle className="text-xl mb-2">
-                            <Link
-                              href={`/archive/${paper.id}`}
-                              className="hover:text-maroon transition-colors"
-                            >
-                              {paper.title}
-                            </Link>
-                          </CardTitle>
-                          <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-                            <span>{paper.authors.map((a) => a.name).join(", ")}</span>
-                            {paper.pageStart && paper.pageEnd && (
-                              <>
-                                <span>•</span>
-                                <span>
-                                  Pages {paper.pageStart}-{paper.pageEnd}
-                                </span>
-                              </>
-                            )}
-                            <span>•</span>
-                            <span className="text-maroon font-medium">{paper.category.name}</span>
-                          </div>
-                        </div>
-                        {paper.doi && (
-                          <div className="ml-4">
-                            <a
-                              href={`https://doi.org/${paper.doi}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs text-muted-foreground hover:text-maroon"
-                            >
-                              DOI: {paper.doi}
-                            </a>
-                          </div>
-                        )}
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground line-clamp-3">
-                        {paper.abstract}
-                      </p>
-                      <div className="mt-4 flex gap-2">
-                        <Link href={`/archive/${paper.id}`}>
-                          <Button size="sm" variant="outline">
-                            View Details
-                          </Button>
-                        </Link>
-                        {paper.pdfUrl && (
-                          <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer">
-                            <Button size="sm">
-                              Download PDF
-                            </Button>
-                          </a>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                <IssuePapersFilter
+                  papers={issue.papers.map((paper: any) => ({
+                    id: paper.id,
+                    title: paper.title,
+                    abstract: paper.abstract,
+                    authors: paper.authors,
+                    category: paper.category,
+                    doi: paper.doi,
+                    pdfUrl: paper.pdfUrl,
+                    pageStart: paper.pageStart,
+                    pageEnd: paper.pageEnd,
+                  }))}
+                >
+                  {(filteredPapers) => (
+                    <div className="space-y-4">
+                      {filteredPapers.map((paper) => (
+                        <Card key={paper.id}>
+                          <CardHeader>
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <CardTitle className="text-xl mb-2">
+                                  <Link
+                                    href={`/archive/${paper.id}`}
+                                    className="hover:text-maroon transition-colors"
+                                  >
+                                    {paper.title}
+                                  </Link>
+                                </CardTitle>
+                                <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+                                  <span>{paper.authors.map((a) => a.name).join(", ")}</span>
+                                  {paper.pageStart && paper.pageEnd && (
+                                    <>
+                                      <span>•</span>
+                                      <span>
+                                        Pages {paper.pageStart}-{paper.pageEnd}
+                                      </span>
+                                    </>
+                                  )}
+                                  <span>•</span>
+                                  <span className="text-maroon font-medium">{paper.category.name}</span>
+                                </div>
+                              </div>
+                              {paper.doi && (
+                                <div className="ml-4">
+                                  <a
+                                    href={`https://doi.org/${paper.doi}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs text-muted-foreground hover:text-maroon"
+                                  >
+                                    DOI: {paper.doi}
+                                  </a>
+                                </div>
+                              )}
+                            </div>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-sm text-muted-foreground line-clamp-3">
+                              {paper.abstract}
+                            </p>
+                            <div className="mt-4 flex gap-2">
+                              <Link href={`/archive/${paper.id}`}>
+                                <Button size="sm" variant="outline">
+                                  View Details
+                                </Button>
+                              </Link>
+                              {paper.pdfUrl && (
+                                <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer">
+                                  <Button size="sm">
+                                    Download PDF
+                                  </Button>
+                                </a>
+                              )}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </IssuePapersFilter>
             )}
           </div>
         </div>

@@ -38,8 +38,10 @@ const navItems = [
     label: "Archives",
     icon: BookOpen,
     submenu: [
+      { href: "/dashboard/archives", label: "Overview", icon: BookOpen },
       { href: "/dashboard/archives/volumes", label: "Volumes", icon: BookOpenCheck },
       { href: "/dashboard/archives/issues", label: "Issues", icon: CalendarDays },
+      { href: "/dashboard/archives/papers", label: "Papers", icon: FileText },
       { href: "/dashboard/archives/upload", label: "Upload Papers", icon: Upload },
     ]
   },

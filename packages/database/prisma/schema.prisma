@@ -19,6 +19,7 @@ enum PaperStatus {
   UNDER_REVIEW
   ACCEPTED
   PUBLISHED
+  ARCHIVED
   REJECTED
 }
 
@@ -91,6 +92,18 @@ model Paper {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
+  // Archive-specific fields (optional for current papers)
+  pageStart     Int?      // Starting page in issue (for archived papers)
+  pageEnd       Int?      // Ending page in issue (for archived papers)
+  submittedDate DateTime? // Original submission date (for archived papers)
+  acceptedDate  DateTime? // Original acceptance date (for archived papers)
+  uploadedAt    DateTime? // When archived paper was uploaded
+  uploadedBy    String?   // Who uploaded the archived paper
+
+  // Archive issue relation (optional)
+  issueId String?
+  issue   Issue?  @relation(fields: [issueId], references: [id])
+
   // R2 Cold Storage Backup
   r2BackupUrl String?   // R2 cold storage URL
   r2BackupAt  DateTime? // Last backup timestamp
@@ -101,6 +114,7 @@ model Paper {
   categoryId String
   comments   PaperComment[]
   reviewers  PaperReviewer[]
+  uploader   User?         @relation("UploadedPapers", fields: [uploadedBy], references: [id])
 
   // Publication Tracking (1-7)
   publicationStep Int     @default(1)
@@ -109,6 +123,8 @@ model Paper {
   @@index([status])
   @@index([categoryId])
   @@index([publishedAt])
+  @@index([issueId])
+  @@index([uploadedAt])
 }
 
 model Author {
@@ -214,6 +230,7 @@ model User {
   comments         PaperComment[]
   assignedPapers   PaperReviewer[]
   uploadedArchives ArchivedPaper[]
+  uploadedPapers   Paper[]         @relation("UploadedPapers")
   releases         Release[]
 
   @@index([email])
@@ -346,11 +363,12 @@ model Issue {
   updatedAt     DateTime @updatedAt
 
   // Relations
-  volume       Volume          @relation(fields: [volumeId], references: [id], onDelete: Cascade)
-  volumeId     String
-  conference   Conference?     @relation(fields: [conferenceId], references: [id])
-  conferenceId String?
-  papers       ArchivedPaper[]
+  volume         Volume          @relation(fields: [volumeId], references: [id], onDelete: Cascade)
+  volumeId       String
+  conference     Conference?     @relation(fields: [conferenceId], references: [id])
+  conferenceId   String?
+  archivedPapers ArchivedPaper[] // Keep existing archived papers
+  papers         Paper[]         // Add unified papers relation
 
   @@unique([volumeId, issueNumber])
   @@index([volumeId])

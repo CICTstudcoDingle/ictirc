@@ -1,5 +1,4 @@
 import algoliasearch from 'algoliasearch'
-import type { SearchClient } from 'algoliasearch/lite'
 
 // Environment validation
 const requiredEnvVars = {
@@ -35,7 +34,7 @@ export function createAdminClient() {
 }
 
 // Search client (client-side safe)
-export function createSearchClient(): SearchClient {
+export function createSearchClient() {
   if (!requiredEnvVars.ALGOLIA_APP_ID || !requiredEnvVars.NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY) {
     console.warn('Algolia credentials not found, search will be disabled')
     // Return a mock client for development

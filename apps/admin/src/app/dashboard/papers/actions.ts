@@ -44,6 +44,7 @@ export async function updatePaperStatus(
       UNDER_REVIEW: ["ACCEPTED", "REJECTED", "SUBMITTED"],
       ACCEPTED: ["PUBLISHED", "UNDER_REVIEW"],
       PUBLISHED: [], // Can only be unpublished by Dean
+      ARCHIVED: [], // Archived papers cannot have their status changed via this action
       REJECTED: ["SUBMITTED"], // Allow resubmission
     };
 

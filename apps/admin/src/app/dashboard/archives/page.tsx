@@ -93,9 +93,12 @@ export default async function ArchiveDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.paperCount}</div>
-            <p className="text-xs text-muted-foreground">
-              Published research papers
-            </p>
+            <Link
+              href="/dashboard/archives/papers"
+              className="text-xs text-blue-600 hover:underline"
+            >
+              View all archived papers →
+            </Link>
           </CardContent>
         </Card>
 
@@ -191,7 +194,7 @@ export default async function ArchiveDashboardPage() {
       </Card>
 
       {/* Management Links */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-4">
         <Link href="/dashboard/archives/volumes">
           <Card className="hover:bg-accent cursor-pointer transition-colors">
             <CardHeader>
@@ -215,6 +218,20 @@ export default async function ArchiveDashboardPage() {
               </CardTitle>
               <CardDescription>
                 Manage journal issues
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/archives/papers">
+          <Card className="hover:bg-accent cursor-pointer transition-colors">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <FileText className="mr-2 h-5 w-5" />
+                Papers
+              </CardTitle>
+              <CardDescription>
+                Browse and manage archived papers
               </CardDescription>
             </CardHeader>
           </Card>

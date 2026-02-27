@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
 import { CheckCircle, XCircle, AlertCircle, Info, X } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -32,12 +32,12 @@ export function useToast() {
 // Convenience methods
 export function useToastActions() {
   const { addToast } = useToast();
-  return {
+  return useMemo(() => ({
     success: (title: string, description?: string) => addToast("success", title, description),
     error: (title: string, description?: string) => addToast("error", title, description),
     warning: (title: string, description?: string) => addToast("warning", title, description),
     info: (title: string, description?: string) => addToast("info", title, description),
-  };
+  }), [addToast]);
 }
 
 // Global toast function for use in forms (non-hook context)

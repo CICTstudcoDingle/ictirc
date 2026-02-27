@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ictirc/database": "workspace:*",
+    "@ictirc/search": "workspace:*",
     "@ictirc/storage": "workspace:*",
     "@ictirc/submission-form": "workspace:*",
     "@ictirc/ui": "workspace:*",

@@ -13,6 +13,7 @@ import {
   ChevronRight,
   Bell,
   Settings,
+  Search,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@ictirc/ui";
@@ -33,6 +34,11 @@ const navItems = [
     title: "My Papers",
     href: "/dashboard/papers",
     icon: FileText,
+  },
+  {
+    title: "Search Papers",
+    href: "/dashboard/search",
+    icon: Search,
   },
   {
     title: "Submit New",
