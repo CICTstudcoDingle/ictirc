@@ -7,6 +7,7 @@ import { ToastProvider } from "@/lib/use-toast";
 import { WebBottomNav } from "@/components/layout/bottom-nav";
 import { AiChatWidget } from "@/components/ai-chat";
 import { generateOrganizationJsonLd, generateWebsiteJsonLd } from "@ictirc/seo";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 
@@ -165,6 +166,7 @@ export default function RootLayout({
             <AiChatWidget />
           </SmoothScrollProvider>
         </ToastProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
