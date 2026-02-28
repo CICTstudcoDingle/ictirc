@@ -3,6 +3,7 @@
 import { prisma } from "@ictirc/database/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { sendSubmissionConfirmation } from "@ictirc/email";
 
 /**
  * Shared Server Action for Paper Submission
@@ -180,6 +181,21 @@ export async function submitPaper(
     // Revalidate paths
     revalidatePath("/archive");
     revalidatePath("/dashboard/papers");
+
+    // Send submission confirmation email to the corresponding author (first author)
+    const correspondingAuthor = data.authors[0];
+    if (correspondingAuthor) {
+      sendSubmissionConfirmation({
+        to: correspondingAuthor.email,
+        paperTitle: data.title,
+        authorName: correspondingAuthor.name,
+        submissionId: paper.id,
+        submittedAt: new Date(),
+      }).catch((err) => {
+        // Non-blocking — log but don't fail the submission
+        console.error("[submitPaper] Failed to send confirmation email:", err);
+      });
+    }
 
     return {
       success: true,

@@ -32,6 +32,9 @@ importers:
       '@ictirc/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@ictirc/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@ictirc/search':
         specifier: workspace:*
         version: link:../../packages/search
@@ -371,13 +374,19 @@ importers:
       '@react-email/components':
         specifier: 0.0.31
         version: 0.0.31(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@react-email/render':
+        specifier: 1.0.5
+        version: 1.0.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react:
         specifier: 19.0.0
         version: 19.0.0
       resend:
         specifier: 6.9.1
-        version: 6.9.1(@react-email/render@1.0.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))
+        version: 6.9.1(@react-email/render@1.0.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0))
     devDependencies:
+      '@types/node':
+        specifier: 22.13.4
+        version: 22.13.4
       '@types/react':
         specifier: 19.0.8
         version: 19.0.8
@@ -464,6 +473,9 @@ importers:
       '@ictirc/database':
         specifier: workspace:*
         version: link:../database
+      '@ictirc/email':
+        specifier: workspace:*
+        version: link:../email
       '@ictirc/storage':
         specifier: workspace:*
         version: link:../storage
@@ -1531,6 +1543,13 @@ packages:
       react: ^18.0 || ^19.0 || ^19.0.0-rc
       react-dom: ^18.0 || ^19.0 || ^19.0.0-rc
 
+  '@react-email/render@1.0.5':
+    resolution: {integrity: sha512-CA69HYXPk21HhtAXATIr+9JJwpDNmAFCvdMUjWmeoD1+KhJ9NAxusMRxKNeibdZdslmq3edaeOKGbdQ9qjK8LQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^18.0 || ^19.0 || ^19.0.0-rc
+
   '@react-email/row@0.0.12':
     resolution: {integrity: sha512-HkCdnEjvK3o+n0y0tZKXYhIXUNPDx+2vq1dJTmqappVHXS5tXS6W5JOPZr5j+eoZ8gY3PShI2LWj5rWF7ZEtIQ==}
     engines: {node: '>=18.0.0'}
@@ -1851,6 +1870,9 @@ packages:
 
   '@types/node@22.10.7':
     resolution: {integrity: sha512-V09KvXxFiutGp6B7XkpaDXlNadZxrzajcY50EuoLIpQ6WWYCSvf19lVIazzfIzQvhUN2HjX12spLojTnhuKlGg==}
+
+  '@types/node@22.13.4':
+    resolution: {integrity: sha512-ywP2X0DYtX3y08eFVx5fNIw7/uIv8hYUKgXoK8oayJlLnKcRfEYCxWMVE1XagUdVtCJlZT1AU4LXEABW+L1Peg==}
 
   '@types/phoenix@1.6.7':
     resolution: {integrity: sha512-oN9ive//QSBkf19rfDv45M7eZPi0eEXylht2OLEXicu5b4KoQ1OzXIw+xDSGWxSxe1JmepRR/ZH283vsu518/Q==}
@@ -5693,6 +5715,14 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
       react-promise-suspense: 0.3.4
 
+  '@react-email/render@1.0.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      html-to-text: 9.0.5
+      prettier: 3.4.2
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+      react-promise-suspense: 0.3.4
+
   '@react-email/row@0.0.12(react@19.0.0)':
     dependencies:
       react: 19.0.0
@@ -6142,6 +6172,10 @@ snapshots:
     dependencies:
       undici-types: 6.20.0
 
+  '@types/node@22.13.4':
+    dependencies:
+      undici-types: 6.20.0
+
   '@types/phoenix@1.6.7': {}
 
   '@types/prop-types@15.7.15': {}
@@ -6167,7 +6201,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.13.4
 
   '@typescript-eslint/eslint-plugin@8.21.0(@typescript-eslint/parser@8.21.0(eslint@9.18.0(jiti@2.6.1))(typescript@5.7.3))(eslint@9.18.0(jiti@2.6.1))(typescript@5.7.3)':
     dependencies:
@@ -8896,12 +8930,12 @@ snapshots:
       mdast-util-to-markdown: 2.1.2
       unified: 11.0.5
 
-  resend@6.9.1(@react-email/render@1.0.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)):
+  resend@6.9.1(@react-email/render@1.0.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)):
     dependencies:
       mailparser: 3.9.1
       svix: 1.84.1
     optionalDependencies:
-      '@react-email/render': 1.0.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@react-email/render': 1.0.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
 
   resolve-from@4.0.0: {}
 

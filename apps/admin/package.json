@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
     "@ictirc/database": "workspace:*",
+    "@ictirc/email": "workspace:*",
     "@ictirc/search": "workspace:*",
     "@ictirc/storage": "workspace:*",
     "@ictirc/ui": "workspace:*",

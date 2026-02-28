@@ -27,6 +27,7 @@ const nextConfig: NextConfig = {
     "@ictirc/seo",
     "@ictirc/email",
     "@ictirc/search",
+    "@ictirc/storage",
   ],
   images: {
     remotePatterns: [

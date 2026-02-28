@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { convertDocxToPdf } from '@/lib/cloudconvert';
 import { generateDoi } from '@/lib/doi';
 import { createClient } from '@supabase/supabase-js';
+import { sendPlagiarismPassEmail } from '@ictirc/email';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -252,6 +253,34 @@ export async function recordPlagiarismCheck(input: RecordPlagiarismInput) {
 
     revalidatePath(`/dashboard/papers/${paperId}`);
     revalidatePath('/dashboard/papers');
+
+    // Send email to corresponding author if plagiarism check passed
+    if (status === 'PASS') {
+      const paperWithAuthors = await prisma.paper.findUnique({
+        where: { id: paperId },
+        include: {
+          authors: {
+            where: { isCorrespondingAuthor: true },
+            include: { author: true },
+            take: 1,
+          },
+        },
+      });
+
+      const correspondingAuthor = paperWithAuthors?.authors[0]?.author;
+      if (correspondingAuthor) {
+        sendPlagiarismPassEmail({
+          to: correspondingAuthor.email,
+          paperTitle: paper.title,
+          authorName: correspondingAuthor.name,
+          submissionId: paperId,
+          similarityScore: score,
+        }).catch((err) => {
+          // Non-blocking — log but don't fail the action
+          console.error('[recordPlagiarismCheck] Failed to send pass email:', err);
+        });
+      }
+    }
 
     return {
       success: true,
