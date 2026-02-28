@@ -73,7 +73,7 @@ KEY POLICIES:
 - DOI: IRJICT is working towards DOI registration. Official DOI assignment is not yet established. Check the website for the latest updates.
 - Acceptance letter: Issued after the completion of the review process
 
-ABOUT THE WEBSITE (irjict.isufst.edu.ph):
+ABOUT THE WEBSITE (irjict.isufstcict.com):
 - Browse Archive: View all published research papers by year/issue
 - Submit: Online manuscript submission form
 - Guides: Downloadable templates and formatting guidelines

@@ -109,7 +109,7 @@ export async function publishPaper(paperId: string): Promise<PublishResult> {
     await prisma.auditLog.create({
       data: {
         actorId: 'admin-system',
-        actorEmail: 'admin@ictirc.com',
+        actorEmail: 'noreply@isufstcict.com',
         action: 'PUBLISH_PAPER',
         targetId: paperId,
         targetType: 'Paper',

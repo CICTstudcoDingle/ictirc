@@ -63,8 +63,8 @@ export function SubmissionConfirmationEmail({
           <Text style={footer}>
             ISUFST - College of Information and Computing Technology
             <br />
-            <Link href="https://ictirc.org" style={link}>
-              ictirc.org
+            <Link href="https://irjict.isufstcict.com" style={link}>
+              irjict.isufstcict.com
             </Link>
           </Text>
         </Container>
