@@ -4,6 +4,7 @@ import { prisma, PaperStatus } from "@ictirc/database";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { requirePermission, requireRole } from "@/lib/rbac";
+import { sendStatusChangeEmail } from "@ictirc/email";
 
 /**
  * Update paper status (review workflow)
@@ -32,6 +33,12 @@ export async function updatePaperStatus(
     // Get current paper state
     const paper = await prisma.paper.findUnique({
       where: { id: paperId },
+      include: {
+        authors: {
+          include: { author: true },
+          orderBy: { order: "asc" },
+        },
+      },
     });
 
     if (!paper) {
@@ -73,6 +80,23 @@ export async function updatePaperStatus(
 
     revalidatePath("/dashboard/papers");
     revalidatePath("/archive");
+
+    // Send status change email to corresponding author — non-blocking
+    const correspondingAuthor = paper.authors?.find((a) => a.isCorrespondingAuthor) ?? paper.authors?.[0];
+    const STATUS_EMAIL_TRIGGERS: PaperStatus[] = ["UNDER_REVIEW", "ACCEPTED", "REJECTED", "PUBLISHED"];
+    if (correspondingAuthor?.author?.email && STATUS_EMAIL_TRIGGERS.includes(newStatus)) {
+      sendStatusChangeEmail({
+        to: correspondingAuthor.author.email,
+        paperTitle: paper.title,
+        authorName: correspondingAuthor.author.name,
+        submissionId: paper.id,
+        newStatus: newStatus as "UNDER_REVIEW" | "ACCEPTED" | "REJECTED" | "PUBLISHED",
+        doi: updatedPaper.doi ?? undefined,
+        notifyAdmin: true,
+      }).catch((err) => {
+        console.error("[updatePaperStatus] Failed to send status email:", err);
+      });
+    }
 
     return { success: true, paper: updatedPaper };
   } catch (error) {

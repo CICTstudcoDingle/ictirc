@@ -12,7 +12,31 @@ try {
 }
 
 const nextConfig: NextConfig = {
+  // ── Performance / INP Optimizations ──────────────────────────────────────
+  poweredByHeader: false,
+  compress: true,
+
+  // Strip console.log in production builds (keeps errors/warnings)
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production"
+      ? { exclude: ["error", "warn"] }
+      : false,
+  },
+
   experimental: {
+    // React Compiler — automatic memoization of components & hooks.
+    // Eliminates manual useMemo/useCallback, drastically reduces INP-causing re-renders.
+    reactCompiler: true,
+
+    // Tree-shake heavy packages at import time so only used icons/components are bundled.
+    // This reduces the JS parse+evaluation cost that blocks the main thread (INP).
+    optimizePackageImports: [
+      "lucide-react",
+      "framer-motion",
+      "@ictirc/ui",
+      "@studio-freight/lenis",
+    ],
+
     // Enable Partial Prerendering when stable
     // ppr: true,
 
@@ -30,6 +54,8 @@ const nextConfig: NextConfig = {
     "@ictirc/storage",
   ],
   images: {
+    // Prefer AVIF then WebP — smaller payloads decode faster, reducing LCP and INP delay
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",
@@ -43,6 +69,17 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      {
+        // Immutable cache for hashed Next.js static assets (JS chunks, CSS, fonts).
+        // Browser won't even make a network request for these — zero latency on repeat visits.
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
       {
         // Fix: browsers require application/manifest+json MIME type for PWA manifests.
         // Without this, Chrome rejects the fetch with error code 441.

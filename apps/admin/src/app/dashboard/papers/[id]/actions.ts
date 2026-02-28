@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { convertDocxToPdf } from '@/lib/cloudconvert';
 import { generateDoi } from '@/lib/doi';
 import { createClient } from '@supabase/supabase-js';
-import { sendPlagiarismPassEmail } from '@ictirc/email';
+import { sendPlagiarismPassEmail, sendStatusChangeEmail } from '@ictirc/email';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -125,6 +125,24 @@ export async function publishPaper(paperId: string): Promise<PublishResult> {
     revalidatePath(`/dashboard/papers/${paperId}`);
     revalidatePath('/dashboard/papers');
     revalidatePath('/archive');
+
+    // Send published notification to corresponding author — non-blocking
+    const correspondingAuthor =
+      paper.authors.find((a) => a.isCorrespondingAuthor) ?? paper.authors[0];
+    if (correspondingAuthor?.author?.email) {
+      sendStatusChangeEmail({
+        to: correspondingAuthor.author.email,
+        paperTitle: paper.title,
+        authorName: correspondingAuthor.author.name,
+        submissionId: paperId,
+        newStatus: 'PUBLISHED',
+        doi: doi ?? undefined,
+        pdfUrl: pdfUrl ?? undefined,
+        notifyAdmin: true,
+      }).catch((err) => {
+        console.error('[publishPaper] Failed to send published email:', err);
+      });
+    }
 
     return {
       success: true,

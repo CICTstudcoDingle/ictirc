@@ -12,7 +12,27 @@ try {
 }
 
 const nextConfig: NextConfig = {
+  // ── Performance / INP Optimizations ──────────────────────────────────────
+  poweredByHeader: false,
+  compress: true,
+
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production"
+      ? { exclude: ["error", "warn"] }
+      : false,
+  },
+
   experimental: {
+    // React Compiler — automatic memoization, reduces re-renders that cause INP spikes
+    reactCompiler: true,
+
+    // Tree-shake icon/UI libs so only used exports are bundled
+    optimizePackageImports: [
+      "lucide-react",
+      "@ictirc/ui",
+      "@ictirc/submission-form",
+    ],
+
     // Support large file uploads (50MB) for manuscript submissions
     serverActions: {
       bodySizeLimit: "50mb",
@@ -25,6 +45,8 @@ const nextConfig: NextConfig = {
     "@ictirc/storage",
   ],
   images: {
+    // Prefer AVIF then WebP for faster rendering
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",

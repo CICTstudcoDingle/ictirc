@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@ictirc/database";
 import { generateDoi } from "@/lib/doi";
+import { sendStatusChangeEmail, type StatusChangeType } from "@ictirc/email";
 
 // Helper: Create audit log
 async function createAuditLog(
@@ -268,6 +269,26 @@ export async function PUT(request: NextRequest) {
       { previousStatus: status, newStatus: paper.status, doi: paper.doi },
       ipAddress
     );
+
+    // Send status change notification email — non-blocking
+    const STATUS_EMAIL_TRIGGERS: StatusChangeType[] = ["UNDER_REVIEW", "ACCEPTED", "REJECTED", "PUBLISHED"];
+    if (status && STATUS_EMAIL_TRIGGERS.includes(status as StatusChangeType)) {
+      const correspondingAuthor =
+        paper.authors.find((a) => a.isCorrespondingAuthor) ?? paper.authors[0];
+      if (correspondingAuthor?.author?.email) {
+        sendStatusChangeEmail({
+          to: correspondingAuthor.author.email,
+          paperTitle: paper.title,
+          authorName: correspondingAuthor.author.name,
+          submissionId: paper.id,
+          newStatus: status as StatusChangeType,
+          doi: paper.doi ?? undefined,
+          notifyAdmin: true,
+        }).catch((err) => {
+          console.error("[PUT /api/papers] Failed to send status email:", err);
+        });
+      }
+    }
 
     return NextResponse.json({ paper });
   } catch (error) {

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { uploadToHotStorage, generateFilePath } from "@ictirc/storage";
+import { sendSubmissionConfirmation } from "@ictirc/email";
 
 /**
  * Server-side validation schemas
@@ -181,6 +182,20 @@ export async function submitPaper(
     // Revalidate paths
     revalidatePath("/archive");
     revalidatePath("/dashboard/papers");
+
+    // Send confirmation email to the corresponding (first) author — non-blocking
+    const correspondingAuthor = data.authors[0];
+    if (correspondingAuthor) {
+      sendSubmissionConfirmation({
+        to: correspondingAuthor.email,
+        paperTitle: data.title,
+        authorName: correspondingAuthor.name,
+        submissionId: paper.id,
+        submittedAt: new Date(),
+      }).catch((err) => {
+        console.error("[submitPaper] Failed to send confirmation email:", err);
+      });
+    }
 
     return {
       success: true,
