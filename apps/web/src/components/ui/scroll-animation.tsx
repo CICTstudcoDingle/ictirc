@@ -1,11 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@ictirc/ui";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface ScrollAnimationProps {
   children: React.ReactNode;
@@ -16,6 +12,14 @@ interface ScrollAnimationProps {
   delay?: number;
 }
 
+/**
+ * Lightweight scroll-triggered animation using IntersectionObserver
+ * instead of GSAP + ScrollTrigger. This eliminates ~60KB of JS from
+ * the critical path and improves INP by removing GSAP's RAF overhead.
+ *
+ * CSS transitions handle the actual animation, which runs on the
+ * compositor thread and do not block the main thread.
+ */
 export function ScrollAnimation({
   children,
   className,
@@ -24,59 +28,48 @@ export function ScrollAnimation({
   delay = 0,
 }: ScrollAnimationProps) {
   const elementRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const element = elementRef.current;
     if (!element) return;
 
-    // Initial state based on direction
-    let initialX = 0;
-    let initialY = 0;
-
-    switch (direction) {
-      case "left":
-        initialX = -50;
-        break;
-      case "right":
-        initialX = 50;
-        break;
-      case "up":
-        initialY = 50;
-        break;
-      case "down":
-        initialY = -50;
-        break;
-    }
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        element,
-        {
-          opacity: 0,
-          x: initialX,
-          y: initialY,
-        },
-        {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          delay: delay + staggerIndex * 0.1, // Stagger effect
-          scrollTrigger: {
-            trigger: element,
-            start: "top 85%", // Trigger when top of element hits 85% of viewport
-            once: true, // Only animate once
-          },
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(element);
         }
-      );
-    });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" }
+    );
 
-    return () => ctx.revert();
-  }, [direction, staggerIndex, delay]);
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Calculate initial transform based on direction
+  const transforms: Record<string, string> = {
+    up: "translateY(30px)",
+    down: "translateY(-30px)",
+    left: "translateX(-30px)",
+    right: "translateX(30px)",
+  };
+
+  const totalDelay = delay + staggerIndex * 0.1;
 
   return (
-    <div ref={elementRef} className={cn("opacity-0", className)}>
+    <div
+      ref={elementRef}
+      className={cn(className)}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? "translate(0, 0)" : transforms[direction],
+        transition: `opacity 0.6s ease-out ${totalDelay}s, transform 0.6s ease-out ${totalDelay}s`,
+        willChange: isVisible ? "auto" : "opacity, transform",
+      }}
+    >
       {children}
     </div>
   );

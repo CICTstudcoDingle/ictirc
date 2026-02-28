@@ -1,10 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useCallback, lazy, Suspense } from "react";
 import { FileText, Calendar, Users, Quote } from "lucide-react";
 import { Badge, Button } from "@ictirc/ui";
-import { CitationModal } from "./citation-modal";
+
+// Lazy-load CitationModal — only needed when user clicks "Cite"
+const CitationModal = lazy(() =>
+  import("./citation-modal").then((mod) => ({ default: mod.CitationModal }))
+);
 
 interface PaperCardProps {
   id: string;
@@ -111,16 +115,20 @@ export function PaperCard({
         </article>
       </Link>
 
-      <CitationModal
-        isOpen={isCiteModalOpen}
-        onClose={() => setIsCiteModalOpen(false)}
-        paper={{
-          title,
-          authors,
-          publishedAt,
-          doi,
-        }}
-      />
+      {isCiteModalOpen && (
+        <Suspense fallback={null}>
+          <CitationModal
+            isOpen={isCiteModalOpen}
+            onClose={() => setIsCiteModalOpen(false)}
+            paper={{
+              title,
+              authors,
+              publishedAt,
+              doi,
+            }}
+          />
+        </Suspense>
+      )}
     </>
   );
 }

@@ -11,8 +11,9 @@ import { VenueSection } from "@/components/home/venue-section";
 import { OrganizersSection } from "@/components/home/organizers-section";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
 
-// Deployment trigger: Force Vercel rebuild
-export const dynamic = "force-dynamic";
+// Revalidate every 60s (ISR) instead of force-dynamic
+// This gives fast cached responses while keeping data reasonably fresh
+export const revalidate = 60;
 
 export default function HomePage() {
   const jsonLd = {

@@ -1,11 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, startTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { Search, Menu, ChevronDown } from "lucide-react";
 import { Button, cn } from "@ictirc/ui";
-import { MobileNav } from "./mobile-nav";
+
+// Lazy-load MobileNav — it's only needed on interaction (hamburger tap)
+const MobileNav = dynamic(() => import("./mobile-nav").then(mod => mod.MobileNav), {
+  ssr: false,
+});
 
 export function Header() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -14,11 +19,19 @@ export function Header() {
   const orgDropdownRef = useRef<HTMLDivElement>(null);
   const resourcesDropdownRef = useRef<HTMLDivElement>(null);
 
-  const closeOrgDropdown = () => setIsOrgDropdownOpen(false);
-  const toggleOrgDropdown = () => setIsOrgDropdownOpen((prev) => !prev);
+  const closeOrgDropdown = useCallback(() => {
+    startTransition(() => setIsOrgDropdownOpen(false));
+  }, []);
+  const toggleOrgDropdown = useCallback(() => {
+    startTransition(() => setIsOrgDropdownOpen((prev) => !prev));
+  }, []);
 
-  const closeResourcesDropdown = () => setIsResourcesDropdownOpen(false);
-  const toggleResourcesDropdown = () => setIsResourcesDropdownOpen((prev) => !prev);
+  const closeResourcesDropdown = useCallback(() => {
+    startTransition(() => setIsResourcesDropdownOpen(false));
+  }, []);
+  const toggleResourcesDropdown = useCallback(() => {
+    startTransition(() => setIsResourcesDropdownOpen((prev) => !prev));
+  }, []);
 
   // Close dropdowns when clicking outside
   useEffect(() => {

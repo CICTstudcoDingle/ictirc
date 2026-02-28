@@ -8,6 +8,8 @@ import { StatusControl } from '@/components/papers/status-control';
 import { PublishButton } from '@/components/papers/publish-button';
 import { PublicationTracker } from "@/components/papers/publication-tracker";
 import { BackupButton } from "@/components/papers/backup-button";
+import { PlagiarismCheck } from '@/components/papers/plagiarism-check';
+import { createClient } from '@/lib/supabase/server';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -15,6 +17,14 @@ interface PageProps {
 
 export default async function PaperDetailPage({ params }: PageProps) {
   const { id } = await params;
+
+  // Get current user for role-based UI
+  const supabase = await createClient();
+  const { data: { user: authUser } } = await supabase.auth.getUser();
+  const currentUser = authUser
+    ? await prisma.user.findUnique({ where: { id: authUser.id }, select: { role: true } })
+    : null;
+  const userRole = currentUser?.role ?? 'AUTHOR';
 
   const paper = await prisma.paper.findUnique({
     where: { id },
@@ -44,12 +54,23 @@ export default async function PaperDetailPage({ params }: PageProps) {
           assignedAt: 'desc',
         },
       },
+      plagiarismChecker: {
+        select: { name: true },
+      },
     },
   });
 
   if (!paper) {
     notFound();
   }
+
+  // Resolve override author name if exists
+  const overrideUser = paper.plagiarismOverriddenBy
+    ? await prisma.user.findUnique({
+        where: { id: paper.plagiarismOverriddenBy },
+        select: { name: true },
+      })
+    : null;
 
   const isPdf = paper.rawFileUrl?.toLowerCase().endsWith('.pdf');
   const isDocx = paper.rawFileUrl?.toLowerCase().match(/\.docx?$/);
@@ -200,6 +221,19 @@ export default async function PaperDetailPage({ params }: PageProps) {
               currentStep={paper.publicationStep || 1}
               // @ts-ignore
               currentNote={paper.publicationNote}
+            />
+
+            {/* Plagiarism Check */}
+            <PlagiarismCheck
+              paperId={paper.id}
+              currentScore={paper.plagiarismScore}
+              currentStatus={paper.plagiarismStatus}
+              checkedAt={paper.plagiarismCheckedAt?.toISOString() ?? null}
+              checkedByName={paper.plagiarismChecker?.name ?? null}
+              notes={paper.plagiarismNotes}
+              overriddenByName={overrideUser?.name ?? null}
+              overrideNote={paper.plagiarismOverrideNote}
+              userRole={userRole}
             />
 
             {/* Status Info */}

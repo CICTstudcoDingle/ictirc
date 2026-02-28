@@ -1,6 +1,6 @@
 'use server';
 
-import { prisma } from '@ictirc/database';
+import { prisma, PlagiarismStatus } from '@ictirc/database';
 import { revalidatePath } from 'next/cache';
 import { convertDocxToPdf } from '@/lib/cloudconvert';
 import { generateDoi } from '@/lib/doi';
@@ -171,6 +171,182 @@ export async function updatePublicationStep(paperId: string, step: number, note?
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update publication step',
+    };
+  }
+}
+
+// ============================================
+// PLAGIARISM CHECK ACTIONS
+// ============================================
+
+/**
+ * Thresholds for automatic plagiarism status determination
+ * - Under 15%: Auto-PASS
+ * - 15-25%: FLAGGED for editor review
+ * - Over 25%: Auto-REJECTED (Dean can override)
+ */
+function determinePlagiarismStatus(score: number): PlagiarismStatus {
+  if (score < 15) return 'PASS';
+  if (score <= 25) return 'FLAGGED';
+  return 'REJECTED';
+}
+
+interface RecordPlagiarismInput {
+  paperId: string;
+  score: number;        // 0-100
+  notes?: string;       // e.g., "Checked via Turnitin on 2026-03-01"
+  checkedByUserId: string;
+}
+
+/**
+ * Record a plagiarism check result for a paper.
+ * Editors and Dean can record. Status is auto-determined by thresholds.
+ */
+export async function recordPlagiarismCheck(input: RecordPlagiarismInput) {
+  try {
+    const { paperId, score, notes, checkedByUserId } = input;
+
+    // Validate score range
+    if (score < 0 || score > 100) {
+      return { success: false, error: 'Score must be between 0 and 100' };
+    }
+
+    // Verify the paper exists
+    const paper = await prisma.paper.findUnique({ where: { id: paperId } });
+    if (!paper) {
+      return { success: false, error: 'Paper not found' };
+    }
+
+    // Determine status based on thresholds
+    const status = determinePlagiarismStatus(score);
+
+    // Update paper with plagiarism data
+    const updatedPaper = await prisma.paper.update({
+      where: { id: paperId },
+      data: {
+        plagiarismScore: score,
+        plagiarismStatus: status,
+        plagiarismCheckedAt: new Date(),
+        plagiarismCheckedBy: checkedByUserId,
+        plagiarismNotes: notes || null,
+        // Clear any previous override if re-checking
+        plagiarismOverriddenBy: null,
+        plagiarismOverrideNote: null,
+      },
+    });
+
+    // Audit log
+    await prisma.auditLog.create({
+      data: {
+        actorId: checkedByUserId,
+        action: 'RECORD_PLAGIARISM_CHECK',
+        targetId: paperId,
+        targetType: 'Paper',
+        metadata: {
+          score,
+          status,
+          notes: notes || null,
+        },
+      },
+    });
+
+    revalidatePath(`/dashboard/papers/${paperId}`);
+    revalidatePath('/dashboard/papers');
+
+    return {
+      success: true,
+      paper: updatedPaper,
+      status,
+      message: status === 'PASS'
+        ? `Score ${score}% — Auto-passed (under 15%)`
+        : status === 'FLAGGED'
+        ? `Score ${score}% — Flagged for editor review (15-25%)`
+        : `Score ${score}% — Auto-rejected (over 25%). Dean can override.`,
+    };
+  } catch (error) {
+    console.error('[recordPlagiarismCheck] Error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to record plagiarism check',
+    };
+  }
+}
+
+interface OverridePlagiarismInput {
+  paperId: string;
+  overriddenByUserId: string;
+  overrideNote: string;     // Required: Dean must provide a reason
+}
+
+/**
+ * Dean-only: Override a plagiarism rejection.
+ * Changes status from REJECTED → OVERRIDDEN.
+ */
+export async function overridePlagiarismRejection(input: OverridePlagiarismInput) {
+  try {
+    const { paperId, overriddenByUserId, overrideNote } = input;
+
+    if (!overrideNote.trim()) {
+      return { success: false, error: 'Override reason is required' };
+    }
+
+    // Verify the user is a Dean
+    const user = await prisma.user.findUnique({ where: { id: overriddenByUserId } });
+    if (!user || user.role !== 'DEAN') {
+      return { success: false, error: 'Only the Dean can override plagiarism rejections' };
+    }
+
+    // Get current paper
+    const paper = await prisma.paper.findUnique({ where: { id: paperId } });
+    if (!paper) {
+      return { success: false, error: 'Paper not found' };
+    }
+
+    if (paper.plagiarismStatus !== 'REJECTED') {
+      return {
+        success: false,
+        error: `Cannot override: current plagiarism status is ${paper.plagiarismStatus}, not REJECTED`,
+      };
+    }
+
+    // Apply override
+    const updatedPaper = await prisma.paper.update({
+      where: { id: paperId },
+      data: {
+        plagiarismStatus: 'OVERRIDDEN',
+        plagiarismOverriddenBy: overriddenByUserId,
+        plagiarismOverrideNote: overrideNote,
+      },
+    });
+
+    // Audit log (critical action)
+    await prisma.auditLog.create({
+      data: {
+        actorId: overriddenByUserId,
+        actorEmail: user.email,
+        action: 'OVERRIDE_PLAGIARISM_REJECTION',
+        targetId: paperId,
+        targetType: 'Paper',
+        metadata: {
+          previousScore: paper.plagiarismScore,
+          overrideNote,
+        },
+      },
+    });
+
+    revalidatePath(`/dashboard/papers/${paperId}`);
+    revalidatePath('/dashboard/papers');
+
+    return {
+      success: true,
+      paper: updatedPaper,
+      message: `Plagiarism rejection overridden by Dean. Reason: ${overrideNote}`,
+    };
+  } catch (error) {
+    console.error('[overridePlagiarismRejection] Error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to override plagiarism rejection',
     };
   }
 }
