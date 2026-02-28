@@ -57,7 +57,9 @@ export type Permission =
   | "archive:paper:upload"
   | "archive:paper:update"
   | "archive:paper:delete"
-  | "archive:conference:manage";
+  | "archive:conference:manage"
+  | "plagiarism:record"
+  | "plagiarism:override";
 
 /**
  * Role-based permissions matrix
@@ -81,6 +83,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     "archive:paper:upload",
     "archive:paper:update",
     "archive:conference:manage",
+    "plagiarism:record",
   ],
   DEAN: [
     "paper:read",
@@ -110,6 +113,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     "archive:paper:update",
     "archive:paper:delete",
     "archive:conference:manage",
+    "plagiarism:record",
+    "plagiarism:override",
   ],
 };
 

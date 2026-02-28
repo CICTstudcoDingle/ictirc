@@ -143,6 +143,7 @@ model Paper {
   @@index([publishedAt])
   @@index([issueId])
   @@index([uploadedAt])
+  @@index([plagiarismStatus])
 }
 
 model Author {
