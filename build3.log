@@ -1,0 +1,218 @@
+
+> ictirc@ build C:\dev\Monorepo\ICTIRC
+> turbo build
+
+ΓÇó turbo 2.8.0
+ΓÇó Packages in scope: @ictirc/admin, @ictirc/author, @ictirc/backup, @ictirc/config, @ictirc/database, @ictirc/docs, @ictirc/email, @ictirc/search, @ictirc/seo, @ictirc/storage, @ictirc/submission-form, @ictirc/ui, @ictirc/web
+ΓÇó Running build in 13 packages
+ΓÇó Remote caching disabled
+@ictirc/database:db:generate: cache bypass, force executing 20b15a41053da6f8
+@ictirc/seo:build: cache miss, executing 8548a16865cc34f3
+@ictirc/ui:build: cache miss, executing 61f237ed61b7ed59
+@ictirc/email:build: cache miss, executing 30b2017402f54852
+@ictirc/storage:build: cache miss, executing 55ca7b5b55e54d23
+@ictirc/database:db:generate: 
+@ictirc/database:db:generate: > @ictirc/database@0.0.0 db:generate C:\dev\Monorepo\ICTIRC\packages\database
+@ictirc/database:db:generate: > prisma generate
+@ictirc/database:db:generate: 
+@ictirc/seo:build: 
+@ictirc/seo:build: > @ictirc/seo@0.0.0 build C:\dev\Monorepo\ICTIRC\packages\seo
+@ictirc/seo:build: > tsc
+@ictirc/seo:build: 
+@ictirc/ui:build: 
+@ictirc/email:build: 
+@ictirc/email:build: > @ictirc/email@0.0.0 build C:\dev\Monorepo\ICTIRC\packages\email
+@ictirc/ui:build: > @ictirc/ui@0.0.0 build C:\dev\Monorepo\ICTIRC\packages\ui
+@ictirc/ui:build: > tsc
+@ictirc/ui:build: 
+@ictirc/email:build: > tsc
+@ictirc/email:build: 
+@ictirc/storage:build: 
+@ictirc/storage:build: > @ictirc/storage@0.0.0 build C:\dev\Monorepo\ICTIRC\packages\storage
+@ictirc/storage:build: > tsc
+@ictirc/storage:build: 
+@ictirc/database:db:generate: Environment variables loaded from .env
+@ictirc/database:db:generate: Prisma schema loaded from prisma\schema.prisma
+@ictirc/database:db:generate: 
+@ictirc/database:db:generate: Γ£ö Generated Prisma Client (v6.3.0) to .\..\..\node_modules\@prisma\client in 476ms
+@ictirc/database:db:generate: 
+@ictirc/database:db:generate: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+@ictirc/database:db:generate: 
+@ictirc/database:db:generate: Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+@ictirc/database:db:generate: 
+@ictirc/database:build: cache miss, executing 481a58128656c0a1
+@ictirc/database:build: 
+@ictirc/database:build: > @ictirc/database@0.0.0 build C:\dev\Monorepo\ICTIRC\packages\database
+@ictirc/database:build: > tsc
+@ictirc/database:build: 
+@ictirc/docs:build: cache miss, executing dcde1df9e0e96274
+@ictirc/docs:build: 
+@ictirc/docs:build: > @ictirc/docs@0.0.0 build C:\dev\Monorepo\ICTIRC\apps\docs
+@ictirc/docs:build: > next build
+@ictirc/docs:build: 
+@ictirc/docs:build: Γû▓ Next.js 16.2.0-canary.17 (Turbopack)
+@ictirc/docs:build: - Environments: .env.local
+@ictirc/docs:build: - Experiments (use with caution):
+@ictirc/docs:build:   ┬╖ optimizePackageImports
+@ictirc/docs:build: 
+@ictirc/docs:build:   Creating an optimized production build ...
+@ictirc/search:build: cache miss, executing c54df7448933252d
+@ictirc/search:build: 
+@ictirc/search:build: > @ictirc/search@0.1.0 build C:\dev\Monorepo\ICTIRC\packages\search
+@ictirc/search:build: > tsc
+@ictirc/search:build: 
+@ictirc/web:build: cache miss, executing 8abe3d2649c6b249
+@ictirc/admin:build: cache miss, executing 463cdfc074cdaa8c
+@ictirc/author:build: cache miss, executing da356b9fe46a0078
+@ictirc/web:build: 
+@ictirc/web:build: > @ictirc/web@1.1.0 build C:\dev\Monorepo\ICTIRC\apps\web
+@ictirc/web:build: > pnpm --filter @ictirc/database run db:generate && next build
+@ictirc/web:build: 
+@ictirc/admin:build: 
+@ictirc/admin:build: > @ictirc/admin@0.0.0 build C:\dev\Monorepo\ICTIRC\apps\admin
+@ictirc/admin:build: > next build
+@ictirc/admin:build: 
+@ictirc/author:build: 
+@ictirc/author:build: > @ictirc/author@0.0.0 build C:\dev\Monorepo\ICTIRC\apps\author
+@ictirc/author:build: > pnpm --filter @ictirc/database run db:generate && next build
+@ictirc/author:build: 
+@ictirc/author:build: 
+@ictirc/author:build: > @ictirc/database@0.0.0 db:generate C:\dev\Monorepo\ICTIRC\packages\database
+@ictirc/author:build: > prisma generate
+@ictirc/author:build: 
+@ictirc/web:build: 
+@ictirc/web:build: > @ictirc/database@0.0.0 db:generate C:\dev\Monorepo\ICTIRC\packages\database
+@ictirc/web:build: > prisma generate
+@ictirc/web:build: 
+@ictirc/docs:build: Γ£ô Compiled successfully in 4.2s
+@ictirc/docs:build:   Running TypeScript ...
+@ictirc/author:build: Environment variables loaded from .env
+@ictirc/author:build: Prisma schema loaded from prisma\schema.prisma
+@ictirc/web:build: Environment variables loaded from .env
+@ictirc/web:build: Prisma schema loaded from prisma\schema.prisma
+@ictirc/admin:build: Γû▓ Next.js 16.2.0-canary.17 (Turbopack)
+@ictirc/admin:build: - Environments: .env.local
+@ictirc/admin:build: - Experiments (use with caution):
+@ictirc/admin:build:   ┬╖ optimizePackageImports
+@ictirc/admin:build:   ┬╖ serverActions
+@ictirc/admin:build: 
+@ictirc/admin:build:   Creating an optimized production build ...
+@ictirc/author:build: 
+@ictirc/author:build: Γ£ö Generated Prisma Client (v6.3.0) to .\..\..\node_modules\@prisma\client in 382ms
+@ictirc/author:build: 
+@ictirc/author:build: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+@ictirc/author:build: 
+@ictirc/author:build: Tip: Easily identify and fix slow SQL queries in your app. Optimize helps you enhance your visibility: https://pris.ly/--optimize
+@ictirc/author:build: 
+@ictirc/web:build: 
+@ictirc/web:build: Γ£ö Generated Prisma Client (v6.3.0) to .\..\..\node_modules\@prisma\client in 459ms
+@ictirc/web:build: 
+@ictirc/web:build: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+@ictirc/web:build: 
+@ictirc/web:build: Tip: Want to react to database changes in your app as they happen? Discover how with Pulse: https://pris.ly/tip-1-pulse
+@ictirc/web:build: 
+@ictirc/author:build: Γû▓ Next.js 16.2.0-canary.17 (Turbopack)
+@ictirc/web:build: Warning: Custom Cache-Control headers detected for the following routes:
+@ictirc/web:build:   - /_next/static/(.*)
+@ictirc/web:build: 
+@ictirc/web:build: Setting a custom Cache-Control header can break Next.js development behavior.
+@ictirc/author:build: - Environments: .env.local
+@ictirc/author:build: - Experiments (use with caution):
+@ictirc/author:build:   ┬╖ optimizePackageImports
+@ictirc/author:build:   ┬╖ serverActions
+@ictirc/author:build: 
+@ictirc/web:build: Γû▓ Next.js 16.2.0-canary.17 (Turbopack)
+@ictirc/web:build: - Environments: .env.local
+@ictirc/web:build: - Experiments (use with caution):
+@ictirc/web:build:   ┬╖ optimizePackageImports
+@ictirc/web:build:   ┬╖ serverActions
+@ictirc/web:build: 
+@ictirc/web:build:   Creating an optimized production build ...
+@ictirc/author:build:   Creating an optimized production build ...
+@ictirc/docs:build: Failed to compile.
+@ictirc/docs:build: 
+@ictirc/docs:build: ./next.config.ts:4:3
+@ictirc/docs:build: Type error: Unused '@ts-expect-error' directive.
+@ictirc/docs:build: 
+@ictirc/docs:build: [0m [90m 2 |[39m
+@ictirc/docs:build:  [90m 3 |[39m [36mconst[39m nextConfig[33m:[39m [33mNextConfig[39m [33m=[39m {
+@ictirc/docs:build: [31m[1m>[22m[39m[90m 4 |[39m   [90m// @ts-expect-error type not present[39m
+@ictirc/docs:build:  [90m   |[39m   [31m[1m^[22m[39m
+@ictirc/docs:build:  [90m 5 |[39m   reactCompiler[33m:[39m [36mtrue[39m[33m,[39m
+@ictirc/docs:build:  [90m 6 |[39m   [90m// ΓöÇΓöÇ Performance / INP Optimizations ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ[39m
+@ictirc/docs:build:  [90m 7 |[39m   poweredByHeader[33m:[39m [36mfalse[39m[33m,[39m[0m
+@ictirc/docs:build: Next.js build worker exited with code: 1 and signal: null
+@ictirc/docs:build: ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
+@ictirc/author:build: Turbopack build encountered 1 warnings:
+@ictirc/author:build: [externals]/@prisma/client
+@ictirc/author:build: unexpected export *
+@ictirc/author:build: export * used with module [externals]/@prisma/client [external] (@prisma/client, cjs, [project]/node_modules/@prisma/client) which is a CommonJS module with exports only available at runtime
+@ictirc/author:build: List all export names manually (`export { a, b, c } from "...") or rewrite the module to ESM, to avoid the additional runtime code.`
+@ictirc/author:build: 
+@ictirc/author:build: Import trace:
+@ictirc/author:build:   external:
+@ictirc/author:build:     [externals]/@prisma/client [external]
+@ictirc/author:build:     ./apps/author/src/app/auth/callback/route.ts [App Route]
+@ictirc/author:build: 
+@ictirc/author:build: 
+@ictirc/author:build: Γ£ô Compiled successfully in 15.4s
+@ictirc/author:build:   Running TypeScript ...
+@ictirc/admin:build: Turbopack build encountered 1 warnings:
+@ictirc/admin:build: [externals]/@prisma/client
+@ictirc/admin:build: unexpected export *
+@ictirc/admin:build: export * used with module [externals]/@prisma/client [external] (@prisma/client, cjs, [project]/node_modules/@prisma/client) which is a CommonJS module with exports only available at runtime
+@ictirc/admin:build: List all export names manually (`export { a, b, c } from "...") or rewrite the module to ESM, to avoid the additional runtime code.`
+@ictirc/admin:build: 
+@ictirc/admin:build: Import trace:
+@ictirc/admin:build:   external:
+@ictirc/admin:build:     [externals]/@prisma/client [external]
+@ictirc/admin:build:     ./packages/database/src/client.ts [App Route]
+@ictirc/admin:build:     ./apps/admin/src/app/api/papers/[id]/comments/route.ts [App Route]
+@ictirc/admin:build: 
+@ictirc/admin:build: 
+@ictirc/admin:build: Γ£ô Compiled successfully in 23.1s
+@ictirc/admin:build:   Running TypeScript ...
+@ictirc/web:build: Γ£ô Compiled successfully in 21.0s
+@ictirc/web:build:   Running TypeScript ...
+@ictirc/author:build: Failed to compile.
+@ictirc/author:build: 
+@ictirc/author:build: .next/dev/types/validator.ts:5:79
+@ictirc/author:build: Type error: Cannot find module './routes.js' or its corresponding type declarations.
+@ictirc/author:build: 
+@ictirc/author:build: [0m [90m 3 |[39m [90m// This file validates that all pages and layouts export the correct types[39m
+@ictirc/author:build:  [90m 4 |[39m
+@ictirc/author:build: [31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m type { [33mAppRoutes[39m[33m,[39m [33mLayoutRoutes[39m[33m,[39m [33mParamMap[39m[33m,[39m [33mAppRouteHandlerRoutes[39m } [36mfrom[39m [32m"./routes.js"[39m
+@ictirc/author:build:  [90m   |[39m                                                                               [31m[1m^[22m[39m
+@ictirc/author:build:  [90m 6 |[39m [36mimport[39m type { [33mResolvingMetadata[39m[33m,[39m [33mResolvingViewport[39m } [36mfrom[39m [32m"next/types.js"[39m
+@ictirc/author:build:  [90m 7 |[39m [36mimport[39m type { [33mNextRequest[39m } [36mfrom[39m [32m'next/server.js'[39m
+@ictirc/author:build:  [90m 8 |[39m[0m
+@ictirc/author:build: Next.js build worker exited with code: 1 and signal: null
+@ictirc/author:build: ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
+@ictirc/admin:build: Failed to compile.
+@ictirc/admin:build: 
+@ictirc/admin:build: .next/dev/types/validator.ts:5:79
+@ictirc/admin:build: Type error: Cannot find module './routes.js' or its corresponding type declarations.
+@ictirc/admin:build: 
+@ictirc/admin:build: [0m [90m 3 |[39m [90m// This file validates that all pages and layouts export the correct types[39m
+@ictirc/admin:build:  [90m 4 |[39m
+@ictirc/admin:build: [31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m type { [33mAppRoutes[39m[33m,[39m [33mLayoutRoutes[39m[33m,[39m [33mParamMap[39m[33m,[39m [33mAppRouteHandlerRoutes[39m } [36mfrom[39m [32m"./routes.js"[39m
+@ictirc/admin:build:  [90m   |[39m                                                                               [31m[1m^[22m[39m
+@ictirc/admin:build:  [90m 6 |[39m [36mimport[39m type { [33mResolvingMetadata[39m[33m,[39m [33mResolvingViewport[39m } [36mfrom[39m [32m"next/types.js"[39m
+@ictirc/admin:build:  [90m 7 |[39m [36mimport[39m type { [33mNextRequest[39m } [36mfrom[39m [32m'next/server.js'[39m
+@ictirc/admin:build:  [90m 8 |[39m[0m
+@ictirc/admin:build: Next.js build worker exited with code: 1 and signal: null
+@ictirc/admin:build: ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
+@ictirc/web:build: Failed to compile.
+@ictirc/web:build: 
+@ictirc/web:build: .next/dev/types/validator.ts:5:79
+@ictirc/web:build: Type error: Cannot find module './routes.js' or its corresponding type declarations.
+@ictirc/web:build: 
+@ictirc/web:build: [0m [90m 3 |[39m [90m// This file validates that all pages and layouts export the correct types[39m
+@ictirc/web:build:  [90m 4 |[39m
+@ictirc/web:build: [31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m type { [33mAppRoutes[39m[33m,[39m [33mLayoutRoutes[39m[33m,[39m [33mParamMap[39m[33m,[39m [33mAppRouteHandlerRoutes[39m } [36mfrom[39m [32m"./routes.js"[39m
+@ictirc/web:build:  [90m   |[39m                                                                               [31m[1m^[22m[39m
+@ictirc/web:build:  [90m 6 |[39m [36mimport[39m type { [33mResolvingMetadata[39m[33m,[39m [33mResolvingViewport[39m } [36mfrom[39m [32m"next/types.js"[39m
+@ictirc/web:build:  [90m 7 |[39m [36mimport[39m type { [33mNextRequest[39m } [36mfrom[39m [32m'next/server.js'[39m
+@ictirc/web:build:  [90m 8 |[39m[0m
+@ictirc/web:build: Next.js build worker exited with code: 1 and signal: null
+@ictirc/web:build: ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
