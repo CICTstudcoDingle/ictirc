@@ -1,5 +1,6 @@
+import Link from "next/link";
 import Image from "next/image";
-import { Mic2, MapPin } from "lucide-react";
+import { Mic2, MapPin, ArrowRight } from "lucide-react";
 import { prisma } from "@ictirc/database";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
 
@@ -59,7 +60,9 @@ export async function KeynoteSpeakers() {
               staggerIndex={index}
               className="h-full"
             >
-              <div className="group relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-maroon/20 transition-all duration-300 overflow-hidden h-full flex flex-col">
+              <Link
+                href={`/speakers/${speaker.id}`}
+                className="group relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-maroon/20 transition-all duration-300 overflow-hidden h-full flex flex-col">
                 {/* Photo Section */}
                 <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-maroon/5 to-gold/5 overflow-hidden">
                   {speaker.photoUrl ? (
@@ -106,13 +109,27 @@ export async function KeynoteSpeakers() {
                       {speaker.bio}
                     </p>
                   )}
+
+                  <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-maroon opacity-0 group-hover:opacity-100 transition-opacity">
+                    View Profile <ArrowRight className="w-3.5 h-3.5" />
+                  </div>
                 </div>
 
                 {/* Bottom Gold Accent Bar */}
                 <div className="h-1 bg-gradient-to-r from-maroon via-gold to-maroon opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+              </Link>
             </ScrollAnimation>
           ))}
+        </div>
+
+        {/* View all link */}
+        <div className="mt-10 text-center">
+          <Link
+            href="/speakers"
+            className="inline-flex items-center gap-2 bg-maroon text-white rounded-full px-6 py-2.5 text-sm font-semibold hover:bg-maroon/90 transition-colors"
+          >
+            View All Speakers <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </section>

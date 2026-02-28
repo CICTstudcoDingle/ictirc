@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Calendar, MapPin, ArrowLeft, Clock, ExternalLink } from "lucide-react";
+import { Calendar, MapPin, ArrowLeft, Clock, ExternalLink, Mic2 } from "lucide-react";
 import { prisma } from "@ictirc/database";
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { ShareButton } from "@/components/events/share-button";
@@ -62,6 +62,9 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
 
   const conference = await prisma.conference.findUnique({
     where: { id, isPublished: true },
+    include: {
+      _count: { select: { speakers: true } },
+    },
   });
 
   if (!conference) {
@@ -233,6 +236,14 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
                 All Events
               </Button>
             </Link>
+            {conference._count.speakers > 0 && (
+              <Link href={`/conferences/${conference.id}/speakers`}>
+                <Button variant="primary">
+                  <Mic2 className="w-4 h-4" />
+                  View Keynote Speakers ({conference._count.speakers})
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
