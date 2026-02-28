@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import Link from 'next/link'
 import { Search, Filter, X, ChevronDown } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle, Button } from '@ictirc/ui'
 
 interface Paper {
   id: string
@@ -17,10 +19,75 @@ interface Paper {
 
 interface IssuePapersFilterProps {
   papers: Paper[]
-  children: (filteredPapers: Paper[]) => React.ReactNode
 }
 
-export function IssuePapersFilter({ papers, children }: IssuePapersFilterProps) {
+// NOTE: Defined at module-level (outside the component) to prevent React from
+// attempting to serialize this function reference across the Server/Client boundary.
+// See: https://react.dev/reference/rsc/use-client#passing-props-from-server-to-client-components
+function renderPapers(list: Paper[]) {
+  return (
+    <div className="space-y-4">
+      {list.map((paper) => (
+        <Card key={paper.id}>
+          <CardHeader>
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <CardTitle className="text-xl mb-2">
+                  <Link
+                    href={`/archive/${paper.id}`}
+                    className="hover:text-maroon transition-colors"
+                  >
+                    {paper.title}
+                  </Link>
+                </CardTitle>
+                <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+                  <span>{paper.authors.map((a) => a.name).join(', ')}</span>
+                  {paper.pageStart && paper.pageEnd && (
+                    <>
+                      <span>•</span>
+                      <span>Pages {paper.pageStart}-{paper.pageEnd}</span>
+                    </>
+                  )}
+                  <span>•</span>
+                  <span className="text-maroon font-medium">{paper.category.name}</span>
+                </div>
+              </div>
+              {paper.doi && (
+                <div className="ml-4">
+                  <a
+                    href={`https://doi.org/${paper.doi}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-muted-foreground hover:text-maroon"
+                  >
+                    DOI: {paper.doi}
+                  </a>
+                </div>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground line-clamp-3">
+              {paper.abstract}
+            </p>
+            <div className="mt-4 flex gap-2">
+              <Link href={`/archive/${paper.id}`}>
+                <Button size="sm" variant="outline">View Details</Button>
+              </Link>
+              {paper.pdfUrl && (
+                <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer">
+                  <Button size="sm">Download PDF</Button>
+                </a>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
+}
+
+export function IssuePapersFilter({ papers }: IssuePapersFilterProps) {
   const [query, setQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [showFilters, setShowFilters] = useState(false)
@@ -54,7 +121,7 @@ export function IssuePapersFilter({ papers, children }: IssuePapersFilterProps) 
   const hasActiveFilters = query.trim() || selectedCategory !== 'all'
 
   if (papers.length <= 1) {
-    return <>{children(papers)}</>
+    return <>{renderPapers(papers)}</>
   }
 
   return (
@@ -174,8 +241,8 @@ export function IssuePapersFilter({ papers, children }: IssuePapersFilterProps) 
         </p>
       )}
 
-      {/* Render filtered papers via render prop */}
-      {children(filteredPapers)}
+      {/* Render filtered papers */}
+      {renderPapers(filteredPapers)}
 
       {/* No results */}
       {hasActiveFilters && filteredPapers.length === 0 && (
@@ -192,4 +259,5 @@ export function IssuePapersFilter({ papers, children }: IssuePapersFilterProps) 
       )}
     </div>
   )
+
 }
