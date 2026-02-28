@@ -109,15 +109,23 @@ export default async function GuidesPage() {
                         </p>
 
                         {/* Download Button */}
-                        <a
-                          href={guide.fileUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-maroon px-4 py-2 text-sm font-medium text-white hover:bg-maroon/90 focus:outline-none focus:ring-2 focus:ring-maroon focus:ring-offset-2 transition-colors"
-                        >
-                          <Download className="w-4 h-4" />
-                          Download PDF
-                        </a>
+                        {(() => {
+                          const ext = guide.fileUrl?.split("?")[0].split(".").pop()?.toLowerCase();
+                          const isDocx = ext === "docx" || ext === "doc";
+                          const label = isDocx ? "Download DOCX" : "Download PDF";
+                          return (
+                            <a
+                              href={guide.fileUrl}
+                              download
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-maroon px-4 py-2 text-sm font-medium text-white hover:bg-maroon/90 focus:outline-none focus:ring-2 focus:ring-maroon focus:ring-offset-2 transition-colors"
+                            >
+                              <Download className="w-4 h-4" />
+                              {label}
+                            </a>
+                          );
+                        })()}
                       </CardContent>
                     </Card>
                   </ScrollAnimation>

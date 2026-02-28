@@ -1402,11 +1402,11 @@ function GuidesSettings({
                       onRemove={() => setFormData({ ...formData, fileUrl: "" })}
                       isUploading={pdfUpload.isUploading}
                       progress={pdfUpload.progress}
-                      accept=".pdf"
+                      accept=".pdf,.doc,.docx"
                       variant="file"
                   />
                 )}
-                <p className="text-xs text-gray-400 mt-1">PDF files only, max 10MB</p>
+                <p className="text-xs text-gray-400 mt-1">PDF or Word (.docx) files, max 10MB</p>
               </div>
               <div className="flex justify-end gap-3 pt-4">
                 <Button type="button" variant="outline" onClick={() => setShowModal(false)}>Cancel</Button>
