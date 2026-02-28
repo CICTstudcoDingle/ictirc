@@ -151,8 +151,11 @@ export default function AboutPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gold mb-1">Email</h3>
-                  <a href="mailto:ictirc@isufst.edu.ph" className="text-gray-300 hover:text-gold transition-colors text-sm">
-                    ictirc@isufst.edu.ph
+                  <a href="mailto:irjict@isufst.edu.ph" className="text-gray-300 hover:text-gold transition-colors text-sm block">
+                    irjict@isufst.edu.ph
+                  </a>
+                  <a href="mailto:cict_dingle@isufst.edu.ph" className="text-gray-300 hover:text-gold transition-colors text-sm block">
+                    cict_dingle@isufst.edu.ph
                   </a>
                 </div>
               </div>

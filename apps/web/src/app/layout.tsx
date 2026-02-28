@@ -7,6 +7,7 @@ import { ToastProvider } from "@/lib/use-toast";
 import { WebBottomNav } from "@/components/layout/bottom-nav";
 import { AiChatWidget } from "@/components/ai-chat";
 import { generateOrganizationJsonLd, generateWebsiteJsonLd } from "@ictirc/seo";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 
@@ -116,7 +117,7 @@ export default function RootLayout({
     logo: `${baseUrl}/images/irjict-logo.png`,
     description:
       "International Research Journal on Information and Communications Technology (IRJICT) - A scholarly publication platform by ISUFST College of Information and Computing Technology",
-    email: "ictirc@isufst.edu.ph",
+    email: ["irjict@isufst.edu.ph", "cict_dingle@isufst.edu.ph"],
     telephone: "+63-33-5801815",
     address: {
       streetAddress: "ISUFST Dingle Campus",
@@ -165,6 +166,7 @@ export default function RootLayout({
             <AiChatWidget />
           </SmoothScrollProvider>
         </ToastProvider>
+        <SpeedInsights />
       </body>
     </html>
   );

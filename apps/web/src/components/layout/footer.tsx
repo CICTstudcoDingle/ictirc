@@ -119,8 +119,14 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 shrink-0 text-gold" />
-                <a href="mailto:ictirc@isufst.edu.ph" className="hover:text-white transition-colors font-mono text-xs">
-                  ictirc@isufst.edu.ph
+                <a href="mailto:irjict@isufst.edu.ph" className="hover:text-white transition-colors font-mono text-xs">
+                  irjict@isufst.edu.ph
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Mail className="w-4 h-4 shrink-0 text-gold" />
+                <a href="mailto:cict_dingle@isufst.edu.ph" className="hover:text-white transition-colors font-mono text-xs">
+                  cict_dingle@isufst.edu.ph
                 </a>
               </li>
               <li className="flex items-center gap-2">

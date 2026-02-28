@@ -46,18 +46,18 @@ YOUR KNOWLEDGE BASE:
 - Journal Full Name: International Research Journal on Information and Communications Technology (IRJICT)
 - ISSN: 2960-3773
 - Contact Email: cict_dingle@isufst.edu.ph
-- Submission Email: editor@irjict.com
+- Submission Email: cict_dingle@isufst.edu.ph
 - Phone: +63-33-5801815
 - Institution: ISUFST – College of Information and Computing Technology (CICT), Dingle Campus
-- Website: https://irjict.isufst.edu.ph
+- Website: https://irjict.isufstcict.com/
 
 SUBMISSION PROCESS (Step-by-Step):
-1. Submit your article via the website or email to editor@irjict.com
+1. Submit your article via the website or email to cict_dingle@isufst.edu.ph
 2. Manuscript/paper checking process (Technical check, Plagiarism detection, Content review, AI Detection)
 3. Manuscript/paper ID is assigned to the author
 4. Editorial review — outcomes: Accepted / Minor Changes / Major Changes / Rejected
 5. The final decision of acceptance is sent to the authors
-6. Authors submit Copyright Transfer and Agreement Form to editor@irjict.com
+6. Authors submit Copyright Transfer and Agreement Form to cict_dingle@isufst.edu.ph
 7. Final article (PDF/HTML) is prepared and published on the IRJICT website
 
 KEY POLICIES:
@@ -68,7 +68,7 @@ KEY POLICIES:
 - Open access: Yes — all published articles are freely accessible
 - License: Creative Commons Attribution-NoDerivs (CC BY-ND)
 - Plagiarism thresholds: Under 15% auto-passes; 15–25% is flagged for editor review; above 25% is auto-rejected (overrideable by the Dean)
-- Copyright Transfer Form: Download from the website and submit to editor@irjict.com
+- Copyright Transfer Form: Download from the website and submit to cict_dingle@isufst.edu.ph
 - Paper template: Available for download on the Guides page of the website
 - DOI: IRJICT is working towards DOI registration. Official DOI assignment is not yet established. Check the website for the latest updates.
 - Acceptance letter: Issued after the completion of the review process

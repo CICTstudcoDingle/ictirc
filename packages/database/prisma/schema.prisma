@@ -23,6 +23,14 @@ enum PaperStatus {
   REJECTED
 }
 
+enum PlagiarismStatus {
+  PENDING    // Not yet checked
+  PASS       // Under 15% similarity
+  FLAGGED    // 15-25%, needs editor review
+  REJECTED   // Over 25%, auto-rejected (Dean can override)
+  OVERRIDDEN // Dean overrode a rejection
+}
+
 enum UserRole {
   AUTHOR
   REVIEWER
@@ -107,6 +115,16 @@ model Paper {
   // R2 Cold Storage Backup
   r2BackupUrl String?   // R2 cold storage URL
   r2BackupAt  DateTime? // Last backup timestamp
+
+  // Plagiarism Check (Manual Recording)
+  plagiarismScore    Float?            // Similarity percentage (0-100)
+  plagiarismStatus   PlagiarismStatus  @default(PENDING)
+  plagiarismCheckedAt DateTime?        // When the check was recorded
+  plagiarismCheckedBy String?          // User ID who recorded the result
+  plagiarismChecker   User?            @relation("PlagiarismChecker", fields: [plagiarismCheckedBy], references: [id])
+  plagiarismNotes    String?           @db.Text // Optional notes (e.g., external tool used, flagged sections)
+  plagiarismOverriddenBy String?       // Dean who overrode a rejection
+  plagiarismOverrideNote String?       @db.Text // Reason for override
 
   // Relations
   authors    PaperAuthor[]
@@ -231,6 +249,7 @@ model User {
   assignedPapers   PaperReviewer[]
   uploadedArchives ArchivedPaper[]
   uploadedPapers   Paper[]         @relation("UploadedPapers")
+  plagiarismChecks Paper[]         @relation("PlagiarismChecker")
   releases         Release[]
 
   @@index([email])
