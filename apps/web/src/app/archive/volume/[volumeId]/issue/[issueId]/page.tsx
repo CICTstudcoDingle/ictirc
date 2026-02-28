@@ -35,7 +35,7 @@ export default async function IssueDetailPage({ params }: PageProps) {
     include: {
       volume: true,
       conference: true,
-      papers: {
+      archivedPapers: {
         include: {
           category: true,
           authors: {
@@ -108,7 +108,7 @@ export default async function IssueDetailPage({ params }: PageProps) {
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <FileText className="h-4 w-4 text-muted-foreground" />
-                  {issue.papers.length} paper{issue.papers.length !== 1 ? "s" : ""}
+                  {issue.archivedPapers.length} paper{issue.archivedPapers.length !== 1 ? "s" : ""}
                 </div>
                 {issue.conference && (
                   <div className="pt-2 border-t">
@@ -126,7 +126,7 @@ export default async function IssueDetailPage({ params }: PageProps) {
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">Papers in this Issue</h2>
 
-            {issue.papers.length === 0 ? (
+            {issue.archivedPapers.length === 0 ? (
               <Card>
                 <CardContent className="py-12 text-center">
                   <FileText className="mx-auto h-12 w-12 text-muted-foreground/50 mb-4" />
@@ -135,7 +135,7 @@ export default async function IssueDetailPage({ params }: PageProps) {
               </Card>
             ) : (
                 <IssuePapersFilter
-                  papers={issue.papers.map((paper: any) => ({
+                  papers={issue.archivedPapers.map((paper: any) => ({
                     id: paper.id,
                     title: paper.title,
                     abstract: paper.abstract,

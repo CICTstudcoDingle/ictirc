@@ -11,7 +11,7 @@ export async function ArchiveVolumesView() {
           conference: true,
           _count: {
             select: {
-              papers: true,
+              archivedPapers: true,
             },
           },
         },
@@ -84,7 +84,7 @@ export async function ArchiveVolumesView() {
                       </div>
                     )}
                     <div className="text-sm text-muted-foreground">
-                      {issue._count.papers} paper{issue._count.papers !== 1 ? "s" : ""}
+                      {issue._count.archivedPapers} paper{issue._count.archivedPapers !== 1 ? "s" : ""}
                     </div>
                   </CardContent>
                 </Card>
