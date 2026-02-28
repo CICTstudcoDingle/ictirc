@@ -117,7 +117,7 @@ export default function RootLayout({
     logo: `${baseUrl}/images/irjict-logo.png`,
     description:
       "International Research Journal on Information and Communications Technology (IRJICT) - A scholarly publication platform by ISUFST College of Information and Computing Technology",
-    email: ["irjict@isufst.edu.ph", "cict_dingle@isufst.edu.ph"],
+    email: "irjict@isufst.edu.ph",
     telephone: "+63-33-5801815",
     address: {
       streetAddress: "ISUFST Dingle Campus",
