@@ -216,3 +216,13 @@
 @ictirc/web:build:  [90m 8 |[39m[0m
 @ictirc/web:build: Next.js build worker exited with code: 1 and signal: null
 @ictirc/web:build: ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
+@ictirc/author:build: ERROR: command finished with error: command (C:\dev\Monorepo\ICTIRC\apps\author) C:\Users\Lenovo\AppData\Roaming\npm\pnpm.cmd run build exited (1)
+@ictirc/author#build: command (C:\dev\Monorepo\ICTIRC\apps\author) C:\Users\Lenovo\AppData\Roaming\npm\pnpm.cmd run build exited (1)
+
+ Tasks:    7 successful, 11 total
+Cached:    0 cached, 11 total
+  Time:    29m0.778s 
+Failed:    @ictirc/author#build
+
+ ERROR  run failed: command  exited (1)
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
