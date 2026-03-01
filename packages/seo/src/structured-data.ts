@@ -6,7 +6,7 @@ export interface OrganizationData {
   url: string;
   logo: string;
   description: string;
-  email?: string;
+  email?: string | string[];
   telephone?: string;
   address?: {
     streetAddress: string;
