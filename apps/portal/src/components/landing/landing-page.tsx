@@ -3,6 +3,10 @@
 import HeroSection from "./hero-section";
 import FeaturesSection from "./features-section";
 import LiveCounter from "./live-counter";
+import OrgChartPreview from "./org-chart-preview";
+import ThroughTheYearsPreview from "./through-the-years-preview";
+import RetractableWidgetPanel from "./retractable-widget-panel";
+import PublicNavbar from "../layout/public-navbar";
 import Link from "next/link";
 
 interface LandingPageProps {
@@ -12,6 +16,12 @@ interface LandingPageProps {
 export function LandingPage({ isLoggedIn }: LandingPageProps) {
   return (
     <main className="bg-black min-h-screen">
+      {/* Public Floating Navbar */}
+      <PublicNavbar />
+
+      {/* Retractable Widget Panel (desktop, left side) */}
+      <RetractableWidgetPanel />
+
       {/* Cinematic Hero */}
       <HeroSection isLoggedIn={isLoggedIn} />
 
@@ -21,6 +31,12 @@ export function LandingPage({ isLoggedIn }: LandingPageProps) {
 
         {/* Features */}
         <FeaturesSection />
+
+        {/* Org Chart Preview */}
+        <OrgChartPreview />
+
+        {/* IT Through the Years */}
+        <ThroughTheYearsPreview />
 
         {/* CTA Section */}
         <section className="py-24 px-4 relative z-10">
@@ -103,3 +119,4 @@ export function LandingPage({ isLoggedIn }: LandingPageProps) {
     </main>
   );
 }
+

@@ -193,16 +193,21 @@ export default function HeroSection({ isLoggedIn }: HeroSectionProps) {
         </div>
       </div>
 
-      {/* Logo */}
+      {/* Logo - Animated CICT WebP (plays once) */}
       <div
         ref={logoContainerRef}
         className="fixed inset-0 z-30 flex items-center justify-center pointer-events-none"
       >
-        <div className="h-80 w-80 md:h-96 md:w-96 lg:h-[28rem] lg:w-[28rem] rounded-full bg-gradient-to-br from-maroon-900/50 to-black/50 flex items-center justify-center border border-gold/20 shadow-2xl">
-          <span className="text-6xl md:text-7xl font-display font-bold text-gradient-gold tracking-tight">
-            CICT
-          </span>
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/assets/images/CICT_logo_animation-ezgif.com-gif-to-webp-converter.webp"
+          alt="CICT Logo"
+          className="h-80 w-80 md:h-96 md:w-96 lg:h-[28rem] lg:w-[28rem] object-contain drop-shadow-2xl"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/assets/logo/CICT_Logo.svg";
+          }}
+        />
       </div>
 
       {/* Content */}
