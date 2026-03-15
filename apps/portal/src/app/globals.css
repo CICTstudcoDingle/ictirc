@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --maroon: #800000;
+    --gold: #D4AF37;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-hover: rgba(255, 255, 255, 0.1);
+  }
+
+  body {
+    @apply bg-black text-white antialiased;
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+
+  /* JetBrains Mono ligatures */
+  .font-mono {
+    font-feature-settings: "liga" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  /* ============================================ */
+  /* GLASSMORPHISM SYSTEM                         */
+  /* ============================================ */
+
+  /* Floating Glass Navbar */
+  .navbar-glass {
+    @apply bg-black/60 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/20;
+  }
+
+  /* Glass Card */
+  .glass-card {
+    @apply bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl;
+    @apply hover:bg-white/10 transition-colors duration-300;
+  }
+
+  /* Glass Card (Elevated - for dashboard stats) */
+  .glass-card-elevated {
+    @apply bg-white/[0.07] border border-white/[0.12] backdrop-blur-lg rounded-2xl;
+    @apply shadow-xl shadow-black/20;
+  }
+
+  /* Glass Input */
+  .glass-input {
+    @apply bg-white/5 border border-white/10 rounded-lg px-4 py-3;
+    @apply text-white placeholder:text-white/30;
+    @apply focus:outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20;
+    @apply transition-all duration-200;
+    font-family: var(--font-jetbrains), monospace;
+  }
+
+  /* ============================================ */
+  /* PAGE BACKGROUNDS                             */
+  /* ============================================ */
+
+  .bg-page-core {
+    @apply bg-gradient-to-b from-black via-maroon-950/40 to-black min-h-screen;
+  }
+
+  /* ============================================ */
+  /* BUTTONS                                      */
+  /* ============================================ */
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full;
+    @apply bg-gold px-6 py-3 font-semibold text-maroon-900;
+    @apply hover:bg-gold-300 hover:shadow-lg hover:shadow-gold/25;
+    @apply transition-all duration-200;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 rounded-full;
+    @apply border border-white/20 bg-white/5 px-6 py-3 font-semibold text-white;
+    @apply backdrop-blur-sm;
+    @apply hover:bg-white/10 hover:border-white/30;
+    @apply transition-all duration-200;
+  }
+
+  .btn-maroon {
+    @apply inline-flex items-center gap-2 rounded-md;
+    @apply bg-maroon px-6 py-3 font-semibold text-white;
+    @apply hover:bg-maroon-600 hover:shadow-[4px_4px_0px_0px_rgba(212,175,55,1)];
+    @apply transition-all duration-200;
+  }
+
+  /* ============================================ */
+  /* BADGES                                       */
+  /* ============================================ */
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-gold {
+    @apply badge bg-gold/20 text-gold-300 border border-gold/30;
+  }
+
+  .badge-maroon {
+    @apply badge bg-maroon/20 text-red-300 border border-maroon/30;
+  }
+
+  .badge-glass {
+    @apply badge bg-white/10 text-white/70 border border-white/10;
+  }
+
+  /* ============================================ */
+  /* TYPOGRAPHY                                   */
+  /* ============================================ */
+
+  .text-gradient-gold {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-200;
+  }
+
+  .metadata-text {
+    @apply font-mono text-xs text-white/40;
+  }
+}
+
+@layer utilities {
+  .shadow-glass {
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+  }
+
+  .shadow-gold-glow {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+}

@@ -1,0 +1,96 @@
+
+> ictirc@ lint C:\dev\Monorepo\ICTIRC
+> turbo lint
+
+ΓÇó turbo 2.8.0
+ΓÇó Packages in scope: @ictirc/admin, @ictirc/author, @ictirc/backup, @ictirc/config, @ictirc/database, @ictirc/docs, @ictirc/email, @ictirc/portal, @ictirc/portal-admin, @ictirc/search, @ictirc/seo, @ictirc/storage, @ictirc/submission-form, @ictirc/ui, @ictirc/web
+ΓÇó Running lint in 15 packages
+ΓÇó Remote caching disabled
+@ictirc/ui:lint: cache miss, executing 4040269f6ecc8112
+@ictirc/database:db:generate: cache bypass, force executing c953a59b45fde658
+@ictirc/seo:build: cache hit, replaying logs cd5141f76b7e97ab
+@ictirc/seo:build: 
+@ictirc/seo:build: > @ictirc/seo@0.0.0 build C:\dev\Monorepo\ICTIRC\packages\seo
+@ictirc/seo:build: > tsc
+@ictirc/seo:build: 
+@ictirc/storage:lint: cache miss, executing 673deca19923d941
+@ictirc/email:build: cache hit, replaying logs 36d6de3146cad0e3
+@ictirc/storage:build: cache hit, replaying logs 2d4284657475327e
+@ictirc/ui:build: cache hit, replaying logs 3147938c5f3b17be
+@ictirc/email:build: 
+@ictirc/email:build: > @ictirc/email@0.0.0 build C:\dev\Monorepo\ICTIRC\packages\email
+@ictirc/email:build: > tsc
+@ictirc/email:build: 
+@ictirc/ui:build: 
+@ictirc/ui:build: > @ictirc/ui@0.0.0 build C:\dev\Monorepo\ICTIRC\packages\ui
+@ictirc/ui:build: > tsc
+@ictirc/ui:build: 
+@ictirc/storage:build: 
+@ictirc/storage:build: > @ictirc/storage@0.0.0 build C:\dev\Monorepo\ICTIRC\packages\storage
+@ictirc/storage:build: > tsc
+@ictirc/storage:build: 
+@ictirc/docs:lint: cache miss, executing 150e97ef123e1ea5
+@ictirc/ui:lint: 
+@ictirc/ui:lint: > @ictirc/ui@0.0.0 lint C:\dev\Monorepo\ICTIRC\packages\ui
+@ictirc/ui:lint: > eslint . --max-warnings 0
+@ictirc/ui:lint: 
+@ictirc/database:db:generate: 
+@ictirc/database:db:generate: > @ictirc/database@0.0.0 db:generate C:\dev\Monorepo\ICTIRC\packages\database
+@ictirc/database:db:generate: > prisma generate
+@ictirc/database:db:generate: 
+@ictirc/storage:lint: 
+@ictirc/storage:lint: > @ictirc/storage@0.0.0 lint C:\dev\Monorepo\ICTIRC\packages\storage
+@ictirc/storage:lint: > eslint . --max-warnings 0
+@ictirc/storage:lint: 
+@ictirc/docs:lint: 
+@ictirc/docs:lint: > @ictirc/docs@0.0.0 lint C:\dev\Monorepo\ICTIRC\apps\docs
+@ictirc/docs:lint: > next lint
+@ictirc/docs:lint: 
+@ictirc/docs:lint: Invalid project directory provided, no such directory: C:\dev\Monorepo\ICTIRC\apps\docs\lint
+@ictirc/docs:lint: ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.
+@ictirc/storage:lint: 
+@ictirc/storage:lint: Oops! Something went wrong! :(
+@ictirc/storage:lint: 
+@ictirc/storage:lint: ESLint: 9.18.0
+@ictirc/storage:lint: 
+@ictirc/storage:lint: ESLint couldn't find an eslint.config.(js|mjs|cjs) file.
+@ictirc/storage:lint: 
+@ictirc/storage:lint: From ESLint v9.0.0, the default configuration file is now eslint.config.js.
+@ictirc/storage:lint: If you are using a .eslintrc.* file, please follow the migration guide
+@ictirc/storage:lint: to update your configuration file to the new format:
+@ictirc/storage:lint: 
+@ictirc/storage:lint: https://eslint.org/docs/latest/use/configure/migration-guide
+@ictirc/storage:lint: 
+@ictirc/storage:lint: If you still have problems after following the migration guide, please stop by
+@ictirc/storage:lint: https://eslint.org/chat/help to chat with the team.
+@ictirc/storage:lint: 
+@ictirc/ui:lint: 
+@ictirc/ui:lint: Oops! Something went wrong! :(
+@ictirc/ui:lint: 
+@ictirc/ui:lint: ESLint: 9.18.0
+@ictirc/ui:lint: 
+@ictirc/ui:lint: ESLint couldn't find an eslint.config.(js|mjs|cjs) file.
+@ictirc/ui:lint: 
+@ictirc/ui:lint: From ESLint v9.0.0, the default configuration file is now eslint.config.js.
+@ictirc/ui:lint: If you are using a .eslintrc.* file, please follow the migration guide
+@ictirc/ui:lint: to update your configuration file to the new format:
+@ictirc/ui:lint: 
+@ictirc/ui:lint: https://eslint.org/docs/latest/use/configure/migration-guide
+@ictirc/ui:lint: 
+@ictirc/ui:lint: If you still have problems after following the migration guide, please stop by
+@ictirc/ui:lint: https://eslint.org/chat/help to chat with the team.
+@ictirc/ui:lint: 
+@ictirc/storage:lint: ΓÇëELIFECYCLEΓÇë Command failed with exit code 2.
+@ictirc/ui:lint: ΓÇëELIFECYCLEΓÇë Command failed with exit code 2.
+@ictirc/database:db:generate: Environment variables loaded from .env
+@ictirc/database:db:generate: Prisma schema loaded from prisma\schema.prisma
+@ictirc/storage:lint: ERROR: command finished with error: command (C:\dev\Monorepo\ICTIRC\packages\storage) C:\Users\Lenovo\AppData\Roaming\npm\pnpm.cmd run lint exited (2)
+@ictirc/storage#lint: command (C:\dev\Monorepo\ICTIRC\packages\storage) C:\Users\Lenovo\AppData\Roaming\npm\pnpm.cmd run lint exited (2)
+
+ Tasks:    4 successful, 8 total
+Cached:    4 cached, 8 total
+  Time:    3.735s 
+Failed:    @ictirc/storage#lint
+
+ ERROR  run failed: command  exited (2)
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 2.

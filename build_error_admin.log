@@ -1,0 +1,26 @@
+
+> @ictirc/portal-admin@0.0.1 build C:\dev\Monorepo\ICTIRC\apps\portal-admin
+> next build
+
+Γû▓ Next.js 16.2.0-canary.17 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 3.6s
+  Running TypeScript ...
+Failed to compile.
+
+.next/dev/types/validator.ts:5:56
+Type error: Cannot find module './routes.js' or its corresponding type declarations.
+
+  3 | // This file validates that all pages and layouts export the correct types
+  4 |
+> 5 | import type { AppRoutes, LayoutRoutes, ParamMap } from "./routes.js"
+    |                                                        ^
+  6 | import type { ResolvingMetadata, ResolvingViewport } from "next/types.js"
+  7 |
+  8 | type AppPageConfig<Route extends AppRoutes = AppRoutes> = {
+Next.js build worker exited with code: 1 and signal: null
+C:\dev\Monorepo\ICTIRC\apps\portal-admin:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @ictirc/portal-admin@0.0.1 build: `next build`
+Exit status 1

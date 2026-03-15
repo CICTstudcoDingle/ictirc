@@ -1,0 +1,33 @@
+
+> @ictirc/portal@0.0.1 build C:\dev\Monorepo\ICTIRC\apps\portal
+> next build
+
+Γû▓ Next.js 16.2.0-canary.17 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 errors:
+./apps/portal/src/app/globals.css:1782:8
+Parsing CSS source code failed
+  1780 |   }
+  1781 |
+> 1782 | @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap');
+       |        ^
+  1783 |
+  1784 | .placeholder\:text-gray-400::-moz-placeholder {
+  1785 |   --tw-text-opacity: 1;
+
+@import rules must precede all rules aside from @charset and @layer statements
+
+Import trace:
+  Client Component Browser:
+    ./apps/portal/src/app/globals.css [Client Component Browser]
+    ./apps/portal/src/app/layout.tsx [Server Component]
+
+
+    at <unknown> (./apps/portal/src/app/globals.css:1782:8)
+C:\dev\Monorepo\ICTIRC\apps\portal:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë @ictirc/portal@0.0.1 build: `next build`
+Exit status 1

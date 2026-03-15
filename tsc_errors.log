@@ -1,0 +1,4 @@
+.next/dev/types/validator.ts(5,56): error TS2307: Cannot find module './routes.js' or its corresponding type declarations.
+undefined
+C:\dev\Monorepo\ICTIRC\apps\portal-admin:
+ΓÇëERR_PNPM_RECURSIVE_EXEC_FIRST_FAILΓÇë Command failed with exit code 1: tsc --noEmit
