@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { gsap, useGSAP } from "@/lib/gsap";
 import {
   Megaphone,
@@ -53,30 +54,44 @@ const features = [
     description:
       "Visit IRJICT — the official research journal of CICT for published papers.",
     href: process.env.NEXT_PUBLIC_IRJICT_URL || "#",
+    external: true,
   },
 ];
 
+/**
+ * FeaturesSection - Parallax split layout (ported from Laravel)
+ *
+ * Left: CSS sticky section label that stays visible while scrolling
+ * Right: Glassmorphic container with individually scrub-animated features
+ *
+ * INP optimized: uses CSS `position: sticky` instead of GSAP `pin`
+ * to avoid layout thrash and reduce main-thread blocking.
+ */
 export default function FeaturesSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(
     () => {
-      cardsRef.current.forEach((card, i) => {
-        if (!card) return;
+      // Animate each feature row as it enters the viewport
+      contentRefs.current.forEach((content) => {
+        if (!content) return;
 
-        gsap.from(card, {
-          scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-          y: 60,
-          opacity: 0,
-          duration: 0.8,
-          delay: i * 0.1,
-          ease: "power3.out",
-        });
+        gsap.fromTo(
+          content,
+          { opacity: 0, y: 60 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            scrollTrigger: {
+              trigger: content,
+              start: "top 80%",
+              end: "top 40%",
+              scrub: 0.5,
+            },
+          }
+        );
       });
     },
     { scope: sectionRef }
@@ -86,53 +101,96 @@ export default function FeaturesSection() {
     <section
       id="features"
       ref={sectionRef}
-      className="py-24 px-4 relative z-10"
+      className="relative min-h-screen bg-gradient-to-b from-black via-maroon-900/40 to-black"
     >
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="badge-gold mb-4 inline-block">
-            What We Offer
-          </span>
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-white mt-4">
-            Everything You Need
-          </h2>
-          <p className="text-white/50 mt-3 max-w-lg mx-auto">
-            Your one-stop hub for student council operations, events, and
-            academic services.
-          </p>
-        </div>
+      <div className="relative z-10 mx-auto max-w-7xl px-6 py-32">
+        {/* Split Layout: Left sticky label + Right scrolling content */}
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+          {/* Left Side - CSS Sticky Label (INP-friendly) */}
+          <div className="lg:w-1/3 lg:sticky lg:top-32 lg:self-start">
+            <div className="mb-4">
+              <span className="text-sm font-semibold tracking-widest text-gold-400 uppercase">
+                Features
+              </span>
+            </div>
+            <h2 className="text-4xl font-bold text-white lg:text-5xl">
+              Everything you need,{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-200">
+                in one place
+              </span>
+            </h2>
+            <p className="mt-6 text-lg text-white/50 leading-relaxed">
+              A comprehensive portal designed to streamline communication and
+              engagement between students and the CICT Student Council.
+            </p>
+          </div>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, i) => {
-            const Icon = feature.icon;
-            return (
-              <a
-                key={feature.title}
-                href={feature.href}
-                ref={(el) => {
-                  cardsRef.current[i] = el;
-                }}
-                className="glass-card p-6 group cursor-pointer"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center group-hover:bg-gold/20 transition-colors">
-                    <Icon className="w-5 h-5 text-gold-400" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-white">
-                    {feature.title}
-                  </h3>
-                </div>
-                <p className="text-white/50 text-sm leading-relaxed">
-                  {feature.description}
-                </p>
-                <div className="mt-4 text-gold-400 text-xs font-medium uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">
-                  Explore →
-                </div>
-              </a>
-            );
-          })}
+          {/* Right Side - Glassmorphic Container with Scrolling Features */}
+          <div className="lg:w-2/3">
+            <div className="rounded-3xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-xl p-8 lg:p-12">
+              {/* Features list - each animates on scroll */}
+              <div className="space-y-12">
+                {features.map((feature, index) => {
+                  const Icon = feature.icon;
+                  const isExternal = "external" in feature && feature.external;
+                  const Wrapper = isExternal ? "a" : Link;
+                  const wrapperProps = isExternal
+                    ? {
+                        href: feature.href,
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                      }
+                    : { href: feature.href };
+
+                  return (
+                    <div
+                      key={feature.title}
+                      ref={(el) => {
+                        contentRefs.current[index] = el;
+                      }}
+                      className="group flex gap-6 items-start"
+                    >
+                      {/* Icon */}
+                      <div className="flex-shrink-0 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-gold-500/20 to-gold-600/5 ring-1 ring-white/10 group-hover:ring-gold-500/30 transition-all">
+                        <Icon className="h-7 w-7 text-gold-400" />
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold text-white group-hover:text-gold-400 transition-colors">
+                          {feature.title}
+                        </h3>
+                        <p className="mt-2 text-white/50 leading-relaxed">
+                          {feature.description}
+                        </p>
+
+                        {/* Learn more link */}
+                        <Wrapper
+                          {...(wrapperProps as any)}
+                          className="inline-flex items-center mt-4 text-sm text-gold-400/70 hover:text-gold-400 transition-colors"
+                        >
+                          <span>Learn more</span>
+                          <svg
+                            className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </Wrapper>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
