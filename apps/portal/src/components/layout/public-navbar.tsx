@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, ExternalLink } from "lucide-react";
+import { Menu, X, ExternalLink, LogIn } from "lucide-react";
+
+const IRJICT_URL = "https://irjict.isufstcict.com/";
+const GRADE_PORTAL_URL = "https://gradeportal.isufstcict.com/";
 
 const publicNavLinks = [
   { href: "/announcements", label: "Announcements" },
@@ -38,9 +41,9 @@ export default function PublicNavbar() {
             </Link>
           ))}
 
-          {/* IRJICT Link */}
+          {/* IRJICT External Link */}
           <a
-            href={process.env.NEXT_PUBLIC_IRJICT_URL || "#"}
+            href={IRJICT_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium text-white/40 hover:text-gold-400 transition-colors"
@@ -49,12 +52,24 @@ export default function PublicNavbar() {
             <ExternalLink className="w-3 h-3" />
           </a>
 
-          {/* Login */}
+          {/* Grade Portal */}
+          <a
+            href={GRADE_PORTAL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium text-white/40 hover:text-gold-400 transition-colors"
+          >
+            Grades
+            <ExternalLink className="w-3 h-3" />
+          </a>
+
+          {/* Sign In */}
           <Link
             href="/login"
-            className="px-4 py-1.5 rounded-full bg-gradient-to-r from-gold-500 to-gold-600 text-maroon-900 text-sm font-bold shadow-sm hover:shadow-gold-500/30 transition-all"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-gold-500 to-gold-600 text-maroon-900 text-sm font-bold shadow-sm hover:shadow-gold-500/30 transition-all"
           >
-            Sign In
+            <LogIn className="w-3.5 h-3.5" />
+            Enter Portal
           </Link>
         </div>
       </nav>
@@ -93,12 +108,34 @@ export default function PublicNavbar() {
                 {link.label}
               </Link>
             ))}
+
+            {/* External links in mobile */}
+            <a
+              href={IRJICT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white/40 hover:text-gold-400 transition-colors"
+            >
+              IRJICT
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <a
+              href={GRADE_PORTAL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white/40 hover:text-gold-400 transition-colors"
+            >
+              Grade Portal
+              <ExternalLink className="w-3 h-3" />
+            </a>
+
             <Link
               href="/login"
               onClick={() => setMobileOpen(false)}
               className="flex items-center justify-center gap-2 mt-2 px-4 py-3 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-maroon-900 text-sm font-bold"
             >
-              Sign In
+              <LogIn className="w-4 h-4" />
+              Enter Portal
             </Link>
           </div>
         )}

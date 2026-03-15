@@ -53,7 +53,7 @@ const features = [
     title: "Research Journal",
     description:
       "Visit IRJICT — the official research journal of CICT for published papers.",
-    href: process.env.NEXT_PUBLIC_IRJICT_URL || "#",
+    href: "https://irjict.isufstcict.com/",
     external: true,
   },
 ];
