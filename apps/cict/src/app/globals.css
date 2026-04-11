@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --maroon: #800000;
+    --gold: #D4AF37;
+  }
+
+  body {
+    @apply bg-white text-gray-900 antialiased;
+  }
+
+  .font-mono {
+    font-feature-settings: "liga" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  /* Glassmorphism navbar */
+  .navbar-glass {
+    @apply bg-white/80 backdrop-blur-md border-b border-gray-200;
+  }
+
+  /* Paper card with maroon indicator */
+  .paper-card {
+    @apply bg-white border border-gray-200 shadow-sm rounded-lg;
+    @apply border-l-4 border-l-maroon;
+    @apply hover:border-l-gold transition-colors duration-200;
+  }
+
+  /* Status badges */
+  .badge-program {
+    @apply bg-maroon/10 text-maroon font-semibold;
+  }
+
+  .badge-gold {
+    @apply bg-gold/20 text-amber-800 font-semibold;
+  }
+
+  /* Technical metadata styling */
+  .metadata-text {
+    @apply font-mono text-xs text-gray-500;
+  }
+
+  /* Stat card */
+  .stat-card {
+    @apply bg-white rounded-xl border border-gray-100 shadow-sm p-6 text-center;
+    @apply hover:shadow-md hover:border-maroon/20 transition-all duration-300;
+  }
+}
+
+@layer utilities {
+  /* Custom gold shadow for buttons */
+  .shadow-gold {
+    box-shadow: 4px 4px 0px 0px rgba(212, 175, 55, 1);
+  }
+
+  /* Skeleton loading animation */
+  .skeleton-pulse {
+    @apply animate-pulse bg-gradient-to-r from-maroon/5 via-gold/10 to-maroon/5;
+  }
+
+  /* Safe area utilities for mobile devices */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+
+  .safe-area-right {
+    margin-right: env(safe-area-inset-right, 0);
+  }
+
+  /* Page content padding for bottom nav on mobile */
+  .pb-nav {
+    @apply pb-20 md:pb-0;
+  }
+
+  .desktop-only {
+    @apply hidden md:block;
+  }
+
+  .mobile-only {
+    @apply block md:hidden;
+  }
+}
