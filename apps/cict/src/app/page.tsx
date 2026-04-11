@@ -1,13 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, GraduationCap, BookOpen, Award, Lightbulb, Users, Laptop, Trophy, Zap } from "lucide-react";
+import { ArrowRight, GraduationCap, Lightbulb, Users, Laptop, Trophy } from "lucide-react";
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
 import { StatsCounter } from "@/components/home/stats-counter";
 import { ProgramsOverview } from "@/components/home/programs-overview";
-import { totalEnrolled } from "@/data/students";
+import { totalEnrolled, totalSections } from "@/data/students";
 import { totalAlumni } from "@/data/alumni";
-import { totalPrograms } from "@/data/programs";
+import { totalFaculty } from "@/data/faculty";
 
 export const dynamic = "force-dynamic";
 
@@ -35,10 +35,10 @@ export default function HomePage() {
   };
 
   const stats = [
-    { label: "Students Enrolled", value: totalEnrolled, suffix: "+" },
-    { label: "Alumni", value: totalAlumni, suffix: "+" },
-    { label: "Programs Offered", value: totalPrograms },
-    { label: "Years of Excellence", value: 10, suffix: "+" },
+    { label: "Students Enrolled", value: totalEnrolled },
+    { label: "Active Sections", value: totalSections },
+    { label: "Faculty Members", value: totalFaculty },
+    { label: "Alumni Graduates", value: totalAlumni, suffix: "+" },
   ];
 
   return (

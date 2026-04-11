@@ -1,10 +1,12 @@
-import { Award, Quote, TrendingUp, Users } from "lucide-react";
+import { Award, Quote } from "lucide-react";
 import { CircuitBackground } from "@ictirc/ui";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
 import { totalAlumni, alumniTestimonials, alumniBatches, alumniByYear } from "@/data/alumni";
 
 export default function AlumniPage() {
-  const years = Object.keys(alumniByYear).sort((a, b) => Number(b) - Number(a));
+  const years = Object.keys(alumniByYear)
+    .map(Number)
+    .sort((a, b) => b - a);
 
   return (
     <div className="pt-14 md:pt-16 min-h-screen">
@@ -17,26 +19,24 @@ export default function AlumniPage() {
               Our <span className="text-gold">Alumni</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-              Celebrating the success of CICT graduates making an impact worldwide
+              Celebrating BSIT graduates making their mark across the industry
             </p>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-sm font-mono text-gold mt-6">
               <Award className="w-4 h-4" />
-              <span>{totalAlumni}+ Graduates and Counting</span>
+              <span>{totalAlumni}+ BSIT Graduates</span>
             </div>
           </ScrollAnimation>
         </div>
       </section>
 
-      {/* Alumni Stats by Year */}
+      {/* Graduates by Year — Card Grid */}
       <section className="py-12 md:py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
           <ScrollAnimation direction="up" className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               Graduates by Year
             </h2>
-            <p className="text-sm text-gray-500">
-              Total graduates per academic year across all programs
-            </p>
+            <p className="text-sm text-gray-500">BSIT graduates per academic year</p>
           </ScrollAnimation>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -46,7 +46,7 @@ export default function AlumniPage() {
                   <p className="text-xs font-mono text-gray-400 mb-1">Batch</p>
                   <p className="text-lg font-bold text-maroon font-mono">{year}</p>
                   <p className="text-2xl font-bold text-gray-900 mt-1">
-                    {alumniByYear[Number(year)]}
+                    {alumniByYear[year]}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">graduates</p>
                 </div>
@@ -56,68 +56,54 @@ export default function AlumniPage() {
         </div>
       </section>
 
-      {/* Alumni by Program */}
+      {/* Summary Table */}
       <section className="py-12 md:py-16">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <ScrollAnimation direction="up" className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-              Graduates by Program
+              Graduate Summary
             </h2>
           </ScrollAnimation>
 
-          <div className="overflow-x-auto">
-            <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
+          <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+            <table className="w-full">
               <thead>
                 <tr className="bg-gray-100 border-b border-gray-200">
-                  <th className="px-4 md:px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider font-mono">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider font-mono">
                     Year
                   </th>
-                  <th className="px-4 md:px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider font-mono">
-                    BSIT
+                  <th className="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider font-mono">
+                    Program
                   </th>
-                  <th className="px-4 md:px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider font-mono">
-                    BSCS
-                  </th>
-                  <th className="px-4 md:px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider font-mono">
-                    ACT
-                  </th>
-                  <th className="px-4 md:px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider font-mono">
-                    Total
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider font-mono">
+                    Graduates
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
-                {years.map((year) => {
-                  const yearBatches = alumniBatches.filter((b) => b.year === Number(year));
-                  const bsit = yearBatches.find((b) => b.program === "BSIT")?.graduates || 0;
-                  const bscs = yearBatches.find((b) => b.program === "BSCS")?.graduates || 0;
-                  const act = yearBatches.find((b) => b.program === "ACT")?.graduates || 0;
-
-                  return (
-                    <tr key={year} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-4 md:px-6 py-3 font-mono text-sm font-semibold text-gray-900">{year}</td>
-                      <td className="px-4 md:px-6 py-3 text-right font-mono text-sm text-gray-700">{bsit}</td>
-                      <td className="px-4 md:px-6 py-3 text-right font-mono text-sm text-gray-700">{bscs}</td>
-                      <td className="px-4 md:px-6 py-3 text-right font-mono text-sm text-gray-700">{act}</td>
-                      <td className="px-4 md:px-6 py-3 text-right font-mono text-sm text-maroon font-bold">
-                        {alumniByYear[Number(year)]}
+              <tbody className="divide-y divide-gray-200 bg-white">
+                {alumniBatches
+                  .slice()
+                  .sort((a, b) => b.year - a.year)
+                  .map((batch) => (
+                    <tr key={batch.year} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-3 font-mono text-sm font-semibold text-gray-900">
+                        {batch.year}
+                      </td>
+                      <td className="px-6 py-3 text-center">
+                        <span className="inline-block text-xs font-mono font-bold text-gold bg-gold/10 px-2 py-0.5 rounded">
+                          BSIT
+                        </span>
+                      </td>
+                      <td className="px-6 py-3 text-right font-mono text-sm text-maroon font-bold">
+                        {batch.graduates}
                       </td>
                     </tr>
-                  );
-                })}
-                {/* Grand total row */}
+                  ))}
                 <tr className="bg-maroon/5 border-t-2 border-maroon/20">
-                  <td className="px-4 md:px-6 py-3 font-bold text-maroon text-sm">GRAND TOTAL</td>
-                  <td className="px-4 md:px-6 py-3 text-right font-mono text-sm font-bold text-maroon">
-                    {alumniBatches.filter((b) => b.program === "BSIT").reduce((s, b) => s + b.graduates, 0)}
+                  <td className="px-6 py-3 font-bold text-maroon text-sm" colSpan={2}>
+                    GRAND TOTAL
                   </td>
-                  <td className="px-4 md:px-6 py-3 text-right font-mono text-sm font-bold text-maroon">
-                    {alumniBatches.filter((b) => b.program === "BSCS").reduce((s, b) => s + b.graduates, 0)}
-                  </td>
-                  <td className="px-4 md:px-6 py-3 text-right font-mono text-sm font-bold text-maroon">
-                    {alumniBatches.filter((b) => b.program === "ACT").reduce((s, b) => s + b.graduates, 0)}
-                  </td>
-                  <td className="px-4 md:px-6 py-3 text-right font-mono text-sm font-bold text-maroon">
+                  <td className="px-6 py-3 text-right font-mono text-sm font-bold text-maroon">
                     {totalAlumni}
                   </td>
                 </tr>
@@ -132,10 +118,10 @@ export default function AlumniPage() {
         <div className="max-w-6xl mx-auto px-4">
           <ScrollAnimation direction="up" className="text-center mb-8 md:mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-              Alumni Success Stories
+              Alumni Voices
             </h2>
             <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
-              Hear from CICT graduates who are making their mark in the industry
+              Hear from CICT graduates making their mark in the industry
             </p>
           </ScrollAnimation>
 
