@@ -62,9 +62,25 @@ export default function ProgramsPage() {
 
               {/* Program Body */}
               <div className="p-6 md:p-10">
-                <p className="text-gray-600 leading-relaxed text-base mb-8">
+                <p className="text-gray-600 leading-relaxed text-base mb-10">
                   {program.description}
                 </p>
+
+                {/* Specializations Section */}
+                <div className="mb-12">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <div className="w-1.5 h-6 bg-maroon rounded-full" />
+                    Specialized Tracks
+                  </h3>
+                  <div className="grid sm:grid-cols-3 gap-6">
+                    {program.specializations.map((spec) => (
+                      <div key={spec.name} className="p-5 rounded-xl border border-gold/20 bg-gold/5 hover:border-gold/40 transition-colors">
+                        <h4 className="font-bold text-gray-900 mb-2 font-mono text-sm uppercase tracking-wider">{spec.name}</h4>
+                        <p className="text-xs text-gray-600 leading-relaxed">{spec.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                 <div className="grid md:grid-cols-2 gap-10">
                   {/* Curriculum Highlights */}

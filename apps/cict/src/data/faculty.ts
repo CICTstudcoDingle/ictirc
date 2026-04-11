@@ -15,8 +15,8 @@ export interface FacultyMember {
 export const facultyData: FacultyMember[] = [
   // Dean
   {
-    name: "Dr. Renante A. Diamante",
-    title: "Doctor of Education",
+    name: "Dr. Renante A. Diamante, DIT",
+    title: "Doctor of Information Technology",
     position: "Dean, College of Information and Communication Technology",
     email: "cict_dingle@isufst.edu.ph",
     type: "dean",

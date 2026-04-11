@@ -75,10 +75,10 @@ export default function AboutPage() {
               </div>
               <div className="prose prose-lg text-gray-600 max-w-none">
                 <p>
-                  The College of Information and Communication Technology (CICT) at the Iloilo State University of Fisheries Science and Technology (ISUFST) — Dingle Campus is dedicated to producing world-class IT professionals. Our department offers comprehensive programs in Bachelor of Science in Information Technology (BSIT), Bachelor of Science in Computer Science (BSCS), and Associate in Computer Technology (ACT).
+                  The College of Information and Communication Technology (CICT) at the Iloilo State University of Fisheries Science and Technology (ISUFST) — Dingle Campus is dedicated to producing world-class IT professionals through our Bachelor of Science in Information Technology (BSIT) program.
                 </p>
                 <p>
-                  Through a blend of theoretical instruction and hands-on laboratory experience, our students develop the skills needed to thrive in the rapidly evolving technology landscape. Our faculty members are experienced educators and researchers who bring real-world expertise into the classroom.
+                  To meet the evolving needs of the global tech landscape, we offer three specialized tracks: <strong>AI and Robotics</strong>, <strong>Web and Mobile</strong>, and <strong>Networking</strong>. Through a blend of theoretical instruction and hands-on laboratory experience, our students develop the expertise needed to excel in these cutting-edge fields.
                 </p>
                 <div className="bg-gray-50 p-4 rounded-md border-l-4 border-gold text-sm italic mt-4">
                   CICT is committed to fostering innovation, critical thinking, and ethical responsibility among its graduates, ensuring they are well-prepared to meet the demands of the global ICT industry.

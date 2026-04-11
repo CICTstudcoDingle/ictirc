@@ -45,14 +45,33 @@ export function ProgramsOverview() {
                   {program.description.slice(0, 250)}...
                 </p>
 
-                {/* Highlights grid */}
-                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-                  {program.highlights.slice(0, 4).map((h) => (
-                    <div key={h} className="flex items-center gap-2 text-sm text-gray-700">
-                      <div className="w-1.5 h-1.5 bg-gold rounded-full flex-shrink-0" />
-                      <span>{h}</span>
+                {/* Specializations & Highlights */}
+                <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4 mb-8">
+                  <div>
+                    <h4 className="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest mb-3">
+                      Specializations
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {program.specializations.map((s) => (
+                        <span key={s.name} className="px-3 py-1 bg-maroon/5 text-maroon text-xs font-bold rounded-full border border-maroon/10">
+                          {s.name}
+                        </span>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest mb-3">
+                      Core Highlights
+                    </h4>
+                    <div className="grid grid-cols-2 gap-2">
+                      {program.highlights.slice(0, 4).map((h) => (
+                        <div key={h} className="flex items-center gap-2 text-xs text-gray-600">
+                          <div className="w-1.5 h-1.5 bg-gold rounded-full flex-shrink-0" />
+                          <span className="truncate">{h}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
                 <Link href="/programs">
