@@ -824,3 +824,192 @@ model MemberCountSnapshot {
   @@index([recordedAt])
   @@map("member_count_snapshots")
 }
+
+// ============================================
+// CICT ADMIN: ENROLLMENT + CASHIER
+// ============================================
+
+enum CictAdminRole {
+  ADMIN
+  FACULTY
+  OFFICER
+}
+
+enum CictEnrollmentStatus {
+  SUBMITTED
+  APPROVED
+  REJECTED
+  PAID
+  ENROLLED
+}
+
+enum CictStudentType {
+  INCOMING
+  REGULAR
+}
+
+enum CictCashierPaymentStatus {
+  POSTED
+  VOID
+}
+
+enum CictCashierPaymentMethod {
+  CASH
+}
+
+model CictAdminProfile {
+  id        String        @id // Supabase Auth UID
+  email     String        @unique
+  name      String?
+  role      CictAdminRole @default(OFFICER)
+  isActive  Boolean       @default(true)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  cashierPayments CictCashierPayment[]       @relation("CashierPayments")
+  issuedReceipts  CictReceipt[]              @relation("IssuedReceipts")
+  statusChanges   CictEnrollmentStatusHistory[]
+  auditEvents     CictAuditEvent[]           @relation("CictAuditActor")
+
+  @@index([email])
+  @@index([role])
+  @@map("cict_admin_profiles")
+}
+
+model CictDepartment {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  name      String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  feeSchedules CictDepartmentFee[]
+  enrollments  CictEnrollment[]
+
+  @@index([isActive])
+  @@map("cict_departments")
+}
+
+model CictDepartmentFee {
+  id           String   @id @default(cuid())
+  academicYear String
+  amount       Decimal  @default(50) @db.Decimal(10, 2)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  department   CictDepartment @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  departmentId String
+
+  @@unique([departmentId, academicYear])
+  @@index([academicYear])
+  @@map("cict_department_fees")
+}
+
+model CictEnrollment {
+  id            String               @id @default(cuid())
+  studentType   CictStudentType      @default(INCOMING)
+  studentName   String
+  studentNumber String
+  program       String
+  yearLevel     Int
+  sectionName   String?
+  departmentFee Decimal              @default(50) @db.Decimal(10, 2)
+  paidAmount    Decimal              @default(0) @db.Decimal(10, 2)
+  status        CictEnrollmentStatus @default(SUBMITTED)
+  remarks       String?              @db.Text
+  submittedAt   DateTime             @default(now())
+  approvedAt    DateTime?
+  paidAt        DateTime?
+  sectionAssignedAt DateTime?
+  enrolledAt    DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  department         CictDepartment               @relation(fields: [departmentId], references: [id])
+  departmentId       String
+  payments           CictCashierPayment[]
+  statusHistory      CictEnrollmentStatusHistory[]
+
+  @@index([studentNumber])
+  @@index([studentType])
+  @@index([status])
+  @@index([departmentId])
+  @@map("cict_enrollments")
+}
+
+model CictEnrollmentStatusHistory {
+  id         String               @id @default(cuid())
+  fromStatus CictEnrollmentStatus?
+  toStatus   CictEnrollmentStatus
+  note       String?              @db.Text
+  createdAt  DateTime             @default(now())
+
+  enrollment   CictEnrollment   @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  enrollmentId String
+  actor        CictAdminProfile @relation(fields: [actorId], references: [id])
+  actorId      String
+
+  @@index([enrollmentId])
+  @@index([actorId])
+  @@index([createdAt])
+  @@map("cict_enrollment_status_history")
+}
+
+model CictCashierPayment {
+  id              String                   @id @default(cuid())
+  amount          Decimal                  @db.Decimal(10, 2)
+  method          CictCashierPaymentMethod @default(CASH)
+  status          CictCashierPaymentStatus @default(POSTED)
+  referenceNumber String
+  postedAt        DateTime                 @default(now())
+  createdAt       DateTime                 @default(now())
+
+  enrollment   CictEnrollment   @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  enrollmentId String
+  cashier      CictAdminProfile @relation("CashierPayments", fields: [cashierId], references: [id])
+  cashierId    String
+  receipt      CictReceipt?
+
+  @@index([enrollmentId])
+  @@index([cashierId])
+  @@index([postedAt])
+  @@map("cict_cashier_payments")
+}
+
+model CictReceipt {
+  id         String   @id @default(cuid())
+  receiptNo  String   @unique
+  payerName  String
+  issuedAt   DateTime @default(now())
+  remarks    String?  @db.Text
+  createdAt  DateTime @default(now())
+
+  payment   CictCashierPayment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  paymentId String             @unique
+  issuedBy  CictAdminProfile   @relation("IssuedReceipts", fields: [issuedById], references: [id])
+  issuedById String
+
+  @@index([issuedAt])
+  @@index([issuedById])
+  @@map("cict_receipts")
+}
+
+model CictAuditEvent {
+  id         String   @id @default(cuid())
+  action     String
+  targetType String
+  targetId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  actor    CictAdminProfile @relation("CictAuditActor", fields: [actorId], references: [id])
+  actorId  String
+
+  @@index([actorId])
+  @@index([targetType])
+  @@index([targetId])
+  @@index([createdAt])
+  @@map("cict_audit_events")
+}

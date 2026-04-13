@@ -1,6 +1,8 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
-import { prisma, UserRole } from "@ictirc/database";
+
+type UserRole = "AUTHOR" | "REVIEWER" | "EDITOR" | "DEAN";
 
 /**
  * Role hierarchy - higher index = more permissions
@@ -97,10 +99,36 @@ export async function middleware(request: NextRequest) {
 
     // RBAC Check - Get user from database
     try {
-      const dbUser = await prisma.user.findUnique({
-        where: { id: authUser.id },
-        select: { role: true, isActive: true },
-      });
+      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+      if (!serviceRoleKey) {
+        console.error("[RBAC] Missing SUPABASE_SERVICE_ROLE_KEY");
+        const url = request.nextUrl.clone();
+        url.pathname = "/unauthorized";
+        url.searchParams.set("reason", "config_missing");
+        return NextResponse.redirect(url);
+      }
+
+      const adminSupabase = createSupabaseClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        serviceRoleKey,
+        {
+          auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+          },
+        }
+      );
+
+      const { data: dbUser, error } = await adminSupabase
+        .from("User")
+        .select("role, isActive")
+        .eq("id", authUser.id)
+        .maybeSingle();
+
+      if (error) {
+        throw error;
+      }
 
       // User not in database - deny access
       if (!dbUser) {
@@ -111,8 +139,10 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(url);
       }
 
+      const typedUser = dbUser as { role: UserRole; isActive: boolean };
+
       // User is deactivated
-      if (!dbUser.isActive) {
+      if (!typedUser.isActive) {
         console.warn(`[RBAC] User ${authUser.email} account is deactivated`);
         const url = request.nextUrl.clone();
         url.pathname = "/unauthorized";
@@ -122,9 +152,9 @@ export async function middleware(request: NextRequest) {
 
       // Check route permissions
       const requiredRoles = getRequiredRoles(pathname);
-      if (requiredRoles && !hasAllowedRole(dbUser.role, requiredRoles)) {
+      if (requiredRoles && !hasAllowedRole(typedUser.role, requiredRoles)) {
         console.warn(
-          `[RBAC] User ${authUser.email} (${dbUser.role}) denied access to ${pathname}`
+          `[RBAC] User ${authUser.email} (${typedUser.role}) denied access to ${pathname}`
         );
         const url = request.nextUrl.clone();
         url.pathname = "/unauthorized";
@@ -134,7 +164,7 @@ export async function middleware(request: NextRequest) {
       }
 
       // Add user role to response headers for client-side use
-      response.headers.set("x-user-role", dbUser.role);
+      response.headers.set("x-user-role", typedUser.role);
     } catch (error) {
       console.error("[RBAC] Database error:", error);
     // On database error, allow through but log
