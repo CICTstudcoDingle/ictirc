@@ -2,15 +2,17 @@ import { requireCictAccess } from "@/lib/auth";
 import { prisma } from "@ictirc/database";
 import { postCashierPaymentAction } from "../actions";
 
+type EnrollmentRecord = Awaited<ReturnType<typeof prisma.cictEnrollment.findMany>>[number];
+
 export default async function CashierPage() {
   await requireCictAccess(["ADMIN", "OFFICER"]);
 
-  const enrollments = await prisma.cictEnrollment.findMany({
+  const enrollments = (await prisma.cictEnrollment.findMany({
     where: { status: "APPROVED" },
     include: { department: true },
     orderBy: { approvedAt: "desc" },
     take: 50,
-  });
+  })) as EnrollmentRecord[];
 
   return (
     <section className="space-y-6">
@@ -22,9 +24,9 @@ export default async function CashierPage() {
       <form action={postCashierPaymentAction} className="panel p-5 space-y-3">
         <h2 className="text-lg font-semibold">Post Payment</h2>
 
-        <select name="enrollmentId" className="input" required>
+        <select name="enrollmentId" className="input" aria-label="Select approved enrollment" required>
           <option value="">Select approved enrollment</option>
-          {enrollments.map((enrollment) => {
+          {enrollments.map((enrollment: EnrollmentRecord) => {
             const remaining = Number(enrollment.departmentFee) - Number(enrollment.paidAmount);
             return (
               <option key={enrollment.id} value={enrollment.id}>
@@ -35,7 +37,7 @@ export default async function CashierPage() {
         </select>
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <input value="PHP 50.00 (fixed)" className="input bg-gray-100" readOnly />
+          <input value="PHP 50.00 (fixed)" className="input bg-gray-100" aria-label="Fixed department fee" readOnly />
           <input name="referenceNumber" placeholder="Cashier reference number" className="input" required />
         </div>
 

@@ -6,10 +6,27 @@ import {
   updateEnrollmentStatusAction,
 } from "../actions";
 
+type DepartmentRecord = {
+  id: string;
+  name: string;
+};
+
+type EnrollmentRecord = {
+  id: string;
+  studentName: string;
+  studentNumber: string;
+  program: string;
+  yearLevel: number;
+  departmentFee: number | string;
+  sectionName: string | null;
+  status: string;
+  department: DepartmentRecord;
+};
+
 export default async function EnrollmentsPage() {
   await requireCictAccess();
 
-  const [departments, enrollments] = await Promise.all([
+  const [departments, enrollments] = (await Promise.all([
     prisma.cictDepartment.findMany({
       where: { isActive: true },
       orderBy: { name: "asc" },
@@ -19,7 +36,7 @@ export default async function EnrollmentsPage() {
       orderBy: { submittedAt: "desc" },
       take: 50,
     }),
-  ]);
+  ])) as unknown as [DepartmentRecord[], EnrollmentRecord[]];
 
   return (
     <section className="space-y-6">
@@ -48,9 +65,9 @@ export default async function EnrollmentsPage() {
             <input name="program" placeholder="Program" className="input" required />
             <input name="yearLevel" type="number" min="1" max="6" placeholder="Year level" className="input" required />
             <input name="academicYear" placeholder="Academic year" className="input" required />
-            <select name="departmentId" className="input" required>
+            <select name="departmentId" className="input" aria-label="Select department" required>
               <option value="">Select department</option>
-              {departments.map((department) => (
+              {departments.map((department: DepartmentRecord) => (
                 <option key={department.id} value={department.id}>
                   {department.name}
                 </option>
@@ -77,7 +94,7 @@ export default async function EnrollmentsPage() {
               </tr>
             </thead>
             <tbody>
-              {enrollments.map((enrollment) => (
+              {enrollments.map((enrollment: EnrollmentRecord) => (
                 <tr key={enrollment.id} className="border-t border-gray-200">
                   <td className="px-4 py-3">
                     <p className="font-medium">{enrollment.studentName}</p>
@@ -95,7 +112,7 @@ export default async function EnrollmentsPage() {
                   <td className="px-4 py-3">
                     <form action={updateEnrollmentStatusAction} className="flex items-center gap-2">
                       <input type="hidden" name="enrollmentId" value={enrollment.id} />
-                      <select name="status" className="input max-w-[180px]" defaultValue={enrollment.status}>
+                      <select name="status" className="input max-w-[180px]" aria-label="Update enrollment status" defaultValue={enrollment.status}>
                         <option value="APPROVED">APPROVED</option>
                         <option value="REJECTED">REJECTED</option>
                         <option value="ENROLLED">ENROLLED</option>

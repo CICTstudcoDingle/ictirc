@@ -8,7 +8,7 @@
     "typecheck": "turbo typecheck",
     "clean": "turbo clean",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "pnpm --filter @ictirc/database run db:generate"
+    "postinstall": "corepack pnpm --filter @ictirc/database run db:generate"
   },
   "devDependencies": {
     "@ictirc/config": "workspace:*",

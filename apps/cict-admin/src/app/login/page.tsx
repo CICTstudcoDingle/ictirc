@@ -61,6 +61,7 @@ export default function LoginPage() {
               <input
                 type="email"
                 className="input"
+                placeholder="name@ictirc.local"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 required
@@ -71,6 +72,7 @@ export default function LoginPage() {
               <input
                 type="password"
                 className="input"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 required
