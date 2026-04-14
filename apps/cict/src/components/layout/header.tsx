@@ -159,6 +159,18 @@ export function Header() {
               >
                 Alumni
               </Link>
+              <Link
+                href="/announcements"
+                className="text-gray-700 hover:text-maroon transition-colors font-medium"
+              >
+                Announcements
+              </Link>
+              <Link
+                href="/feedback"
+                className="text-gray-700 hover:text-maroon transition-colors font-medium"
+              >
+                Feedback
+              </Link>
             </nav>
 
             {/* Desktop Actions */}

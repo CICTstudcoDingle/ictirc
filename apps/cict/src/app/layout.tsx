@@ -4,6 +4,8 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { CICTBottomNav } from "@/components/layout/bottom-nav";
+import { ChatbotWidget } from "@/components/ui/chatbot";
+import { EnrollmentPopupModal } from "@/components/home/enrollment-popup-modal";
 import { generateOrganizationJsonLd, generateWebsiteJsonLd } from "@ictirc/seo";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -158,6 +160,10 @@ export default function RootLayout({
 
           {/* Mobile-only components */}
           <CICTBottomNav />
+
+          {/* Global overlays */}
+          <EnrollmentPopupModal />
+          <ChatbotWidget />
         </SmoothScrollProvider>
         <SpeedInsights />
       </body>

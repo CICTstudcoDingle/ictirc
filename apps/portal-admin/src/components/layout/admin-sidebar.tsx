@@ -12,6 +12,9 @@ import {
   BarChart3,
   LogOut,
   ExternalLink,
+  GraduationCap,
+  CreditCard,
+  Receipt,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -27,6 +30,14 @@ const sidebarLinks = [
     items: [
       { href: "/dashboard/announcements", label: "Announcements", icon: Megaphone },
       { href: "/dashboard/events", label: "Events", icon: Calendar },
+    ],
+  },
+  {
+    section: "Enrollment",
+    items: [
+      { href: "/dashboard/enrollment", label: "Queue", icon: GraduationCap },
+      { href: "/dashboard/enrollment/cashier", label: "Cashier", icon: CreditCard },
+      { href: "/dashboard/enrollment/receipts", label: "Receipts", icon: Receipt },
     ],
   },
   {

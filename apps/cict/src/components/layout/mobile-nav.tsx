@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, Home, Info, BookOpen, Users, GraduationCap, Building, Monitor, Award } from "lucide-react";
+import { X, Home, Info, BookOpen, Users, GraduationCap, Building, Monitor, Award, Megaphone, MessageSquare } from "lucide-react";
 import { cn } from "@ictirc/ui";
 
 interface MobileNavProps {
@@ -18,6 +18,8 @@ const navItems = [
   { href: "/students", label: "Students", icon: GraduationCap },
   { href: "/alumni", label: "Alumni", icon: Award },
   { href: "/facilities", label: "Facilities", icon: Monitor },
+  { href: "/announcements", label: "Announcements", icon: Megaphone },
+  { href: "/feedback", label: "Feedback", icon: MessageSquare },
 ];
 
 export function MobileNav({ isOpen, onClose }: MobileNavProps) {

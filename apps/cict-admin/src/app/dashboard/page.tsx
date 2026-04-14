@@ -13,6 +13,27 @@ export default async function DashboardPage() {
 
   return (
     <section className="space-y-6">
+      {/* Deprecation Notice */}
+      <div className="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+        <span className="text-amber-500 text-lg shrink-0">⚠️</span>
+        <div className="text-sm">
+          <p className="font-semibold text-amber-800">
+            This admin panel is deprecated.
+          </p>
+          <p className="text-amber-700 mt-0.5">
+            Enrollment management has been migrated to the{" "}
+            <a
+              href={process.env.NEXT_PUBLIC_PORTAL_ADMIN_URL || "https://portal-admin.isufstcict.com"}
+              className="font-medium underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Portal Admin Dashboard
+            </a>. This site will remain accessible for legacy cashier operations only.
+          </p>
+        </div>
+      </div>
+
       <div>
         <h1 className="text-2xl font-bold text-maroon">CICT Admin Dashboard</h1>
         <p className="mt-1 text-sm text-gray-600">

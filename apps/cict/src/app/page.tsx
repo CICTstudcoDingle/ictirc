@@ -1,17 +1,40 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, GraduationCap, Lightbulb, Users, Laptop, Trophy, ExternalLink, Globe, Store, BookOpen } from "lucide-react";
+import { ArrowRight, GraduationCap, Lightbulb, Users, Laptop, Trophy, ExternalLink, Globe, Store, BookOpen, MessageSquare } from "lucide-react";
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
 import { StatsCounter } from "@/components/home/stats-counter";
 import { ProgramsOverview } from "@/components/home/programs-overview";
+import { AnnouncementsFeed } from "@/components/home/announcements-feed";
+import { LiveTicker } from "@/components/home/live-ticker";
 import { totalEnrolled, totalSections } from "@/data/students";
 import { totalAlumni } from "@/data/alumni";
 import { totalFaculty } from "@/data/faculty";
+import { prisma } from "@ictirc/database";
 
 export const dynamic = "force-dynamic";
 
-export default function HomePage() {
+async function getTickerSeedData() {
+  try {
+    const announcements = await prisma.portalAnnouncement.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: { publishedAt: "desc" },
+      take: 3,
+      select: { id: true, title: true },
+    });
+    return announcements.map((a) => ({
+      id: `ann-${a.id}`,
+      text: `📢 ${a.title}`,
+      type: "announcement" as const,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export default async function HomePage() {
+  const [tickerItems] = await Promise.all([getTickerSeedData()]);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
@@ -43,6 +66,16 @@ export default function HomePage() {
 
   return (
     <div className="pt-14 md:pt-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      {/* ================================================
+          LIVE TICKER
+          ================================================ */}
+      <LiveTicker initial={tickerItems} />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -233,6 +266,11 @@ export default function HomePage() {
       </section>
 
       {/* ================================================
+          ANNOUNCEMENTS FEED
+          ================================================ */}
+      <AnnouncementsFeed />
+
+      {/* ================================================
           PROGRAMS OVERVIEW
           ================================================ */}
       <ProgramsOverview />
@@ -318,9 +356,15 @@ export default function HomePage() {
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
-              <Link href="/about#contact">
+              <Link href="/announcements">
                 <Button variant="secondary" size="lg" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
-                  Contact Us
+                  Announcements
+                </Button>
+              </Link>
+              <Link href="/feedback">
+                <Button variant="secondary" size="lg" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+                  <MessageSquare className="w-4 h-4" />
+                  Feedback
                 </Button>
               </Link>
             </div>

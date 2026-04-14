@@ -87,4 +87,29 @@
   .mobile-only {
     @apply block md:hidden;
   }
+
+  /* Live ticker marquee */
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-33.333%); }
+  }
+
+  .animate-ticker {
+    animation: ticker 30s linear infinite;
+  }
+
+  /* Slide up for popup/chatbot */
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.25s ease-out both;
+  }
+
+  /* Maroon dark for ticker header */
+  .bg-maroon-dark {
+    background-color: #5a0000;
+  }
 }
