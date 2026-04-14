@@ -9,6 +9,7 @@ import { MobileNav } from "./mobile-nav";
 
 export function Header() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isAcademicsDropdownOpen, setIsAcademicsDropdownOpen] = useState(false);
   const [isCommunityDropdownOpen, setIsCommunityDropdownOpen] = useState(false);
   const academicsDropdownRef = useRef<HTMLDivElement>(null);
   const communityDropdownRef = useRef<HTMLDivElement>(null);
@@ -37,7 +38,7 @@ export function Header() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isAcademicsDropdownOpen]);
+  }, [isAcademicsDropdownOpen, isCommunityDropdownOpen]);
 
   return (
     <>
