@@ -17,9 +17,9 @@ const navItems = [
   { href: "/faculty", label: "Faculty & Staff", icon: Users },
   { href: "/students", label: "Students", icon: GraduationCap },
   { href: "/alumni", label: "Alumni", icon: Award },
+  { href: "/feedback", label: "Feedback", icon: MessageSquare },
   { href: "/facilities", label: "Facilities", icon: Monitor },
   { href: "/announcements", label: "Announcements", icon: Megaphone },
-  { href: "/feedback", label: "Feedback", icon: MessageSquare },
 ];
 
 export function MobileNav({ isOpen, onClose }: MobileNavProps) {
@@ -67,27 +67,42 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
 
           {/* Navigation */}
           <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
-            {navItems.map((item) => {
+            {navItems.map((item, index) => {
               const isActive =
                 item.href === "/"
                   ? pathname === "/"
                   : pathname.startsWith(item.href);
 
+              // Add section headers
+              const showAcademicsHeader = item.href === "/programs";
+              const showCommunityHeader = item.href === "/students";
+
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={onClose}
-                  className={cn(
-                    "flex items-center gap-4 px-4 py-3 rounded-xl text-base font-medium transition-all duration-200",
-                    isActive
-                      ? "bg-maroon text-white shadow-md shadow-maroon/20"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-maroon"
+                <div key={item.href}>
+                  {showAcademicsHeader && (
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 mb-2 mt-4">
+                      Academics
+                    </p>
                   )}
-                >
-                  <item.icon className={cn("w-5 h-5", isActive ? "text-white" : "text-current")} />
-                  <span>{item.label}</span>
-                </Link>
+                  {showCommunityHeader && (
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 mb-2 mt-4">
+                      Community
+                    </p>
+                  )}
+                  <Link
+                    href={item.href}
+                    onClick={onClose}
+                    className={cn(
+                      "flex items-center gap-4 px-4 py-3 rounded-xl text-base font-medium transition-all duration-200",
+                      isActive
+                        ? "bg-maroon text-white shadow-md shadow-maroon/20"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-maroon"
+                    )}
+                  >
+                    <item.icon className={cn("w-5 h-5", isActive ? "text-white" : "text-current")} />
+                    <span>{item.label}</span>
+                  </Link>
+                </div>
               );
             })}
 

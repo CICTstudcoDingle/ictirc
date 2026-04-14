@@ -9,20 +9,28 @@ import { MobileNav } from "./mobile-nav";
 
 export function Header() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const [isAcademicsDropdownOpen, setIsAcademicsDropdownOpen] = useState(false);
+  const [isCommunityDropdownOpen, setIsCommunityDropdownOpen] = useState(false);
   const academicsDropdownRef = useRef<HTMLDivElement>(null);
+  const communityDropdownRef = useRef<HTMLDivElement>(null);
 
   const closeAcademicsDropdown = () => setIsAcademicsDropdownOpen(false);
   const toggleAcademicsDropdown = () => setIsAcademicsDropdownOpen((prev) => !prev);
 
+  const closeCommunityDropdown = () => setIsCommunityDropdownOpen(false);
+  const toggleCommunityDropdown = () => setIsCommunityDropdownOpen((prev) => !prev);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (academicsDropdownRef.current && !academicsDropdownRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (academicsDropdownRef.current && !academicsDropdownRef.current.contains(target)) {
         closeAcademicsDropdown();
+      }
+      if (communityDropdownRef.current && !communityDropdownRef.current.contains(target)) {
+        closeCommunityDropdown();
       }
     };
 
-    if (isAcademicsDropdownOpen) {
+    if (isAcademicsDropdownOpen || isCommunityDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
@@ -147,29 +155,70 @@ export function Header() {
                 )}
               </div>
 
-              <Link
-                href="/students"
-                className="text-gray-700 hover:text-maroon transition-colors font-medium"
+                {/* Community Dropdown */}
+              <div
+                ref={communityDropdownRef}
+                className="relative"
+                onMouseEnter={() => setIsCommunityDropdownOpen(true)}
+                onMouseLeave={closeCommunityDropdown}
               >
-                Students
-              </Link>
-              <Link
-                href="/alumni"
-                className="text-gray-700 hover:text-maroon transition-colors font-medium"
-              >
-                Alumni
-              </Link>
+                <button
+                  type="button"
+                  aria-haspopup="menu"
+                  aria-expanded={isCommunityDropdownOpen}
+                  onClick={toggleCommunityDropdown}
+                  className="flex items-center gap-1 text-gray-700 hover:text-maroon transition-colors font-medium"
+                >
+                  Community
+                  <ChevronDown
+                    className={cn(
+                      "w-4 h-4 transition-transform",
+                      isCommunityDropdownOpen && "rotate-180"
+                    )}
+                  />
+                </button>
+
+                {isCommunityDropdownOpen && (
+                  <div className="absolute top-full left-0 pt-2 z-[100]">
+                    <div
+                      role="menu"
+                      aria-label="Community"
+                      className="bg-white rounded-lg shadow-lg border border-gray-100 py-2 w-48"
+                    >
+                      <Link
+                        href="/students"
+                        role="menuitem"
+                        className="block px-4 py-2 text-gray-700 hover:bg-maroon/5 hover:text-maroon transition-colors"
+                        onClick={closeCommunityDropdown}
+                      >
+                        Students
+                      </Link>
+                      <Link
+                        href="/alumni"
+                        role="menuitem"
+                        className="block px-4 py-2 text-gray-700 hover:bg-maroon/5 hover:text-maroon transition-colors"
+                        onClick={closeCommunityDropdown}
+                      >
+                        Alumni
+                      </Link>
+                      <Link
+                        href="/feedback"
+                        role="menuitem"
+                        className="block px-4 py-2 text-gray-700 hover:bg-maroon/5 hover:text-maroon transition-colors"
+                        onClick={closeCommunityDropdown}
+                      >
+                        Feedback
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <Link
                 href="/announcements"
                 className="text-gray-700 hover:text-maroon transition-colors font-medium"
               >
                 Announcements
-              </Link>
-              <Link
-                href="/feedback"
-                className="text-gray-700 hover:text-maroon transition-colors font-medium"
-              >
-                Feedback
               </Link>
             </nav>
 

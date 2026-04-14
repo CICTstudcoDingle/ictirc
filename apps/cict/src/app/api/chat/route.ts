@@ -105,9 +105,12 @@ export async function POST(request: NextRequest) {
     }
 
     const systemPrompt = await buildSystemPrompt();
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.0-flash",
+      systemInstruction: systemPrompt,
+    });
 
-    // Build history (all but last message) in Gemini format
+    // Build history in Gemini format
     const history = messages
       .slice(0, -1)
       .map((m) => ({
@@ -118,18 +121,7 @@ export async function POST(request: NextRequest) {
     const lastMessage = messages[messages.length - 1];
 
     const chat = model.startChat({
-      history: [
-        // System prompt as first model turn (Gemini pattern)
-        {
-          role: "user",
-          parts: [{ text: "Please follow these instructions for our conversation:" }],
-        },
-        {
-          role: "model",
-          parts: [{ text: systemPrompt }],
-        },
-        ...history,
-      ],
+      history,
       generationConfig: {
         maxOutputTokens: 1024,
         temperature: 0.7,
@@ -144,11 +136,18 @@ export async function POST(request: NextRequest) {
         const encoder = new TextEncoder();
         try {
           for await (const chunk of result.stream) {
-            const text = chunk.text();
-            if (text) {
-              controller.enqueue(encoder.encode(text));
+            try {
+              const text = chunk.text();
+              if (text) {
+                controller.enqueue(encoder.encode(text));
+              }
+            } catch (innerError) {
+              console.warn("[Chat API Stream Warning]", innerError);
+              // Handle safety filters or other non-fatal chunk errors
             }
           }
+        } catch (streamError) {
+          console.error("[Chat API Stream Error]", streamError);
         } finally {
           controller.close();
         }
