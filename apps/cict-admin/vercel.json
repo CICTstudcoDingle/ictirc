@@ -2,5 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "pnpm --filter @ictirc/cict-admin build",
   "installCommand": "corepack enable && pnpm install",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "ignoreCommand": "npx turbo-ignore --fallback=HEAD^1"
 }

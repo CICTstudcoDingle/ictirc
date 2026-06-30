@@ -4,9 +4,7 @@ import { execSync } from "child_process";
 // Get git commit hash at build time
 let gitCommitHash = "dev";
 try {
-  gitCommitHash = execSync("git rev-parse --short HEAD")
-    .toString()
-    .trim();
+  gitCommitHash = execSync("git rev-parse --short HEAD").toString().trim();
 } catch (error) {
   console.warn("Could not retrieve git commit hash:", error);
 }
@@ -25,7 +23,6 @@ const nextConfig: NextConfig = {
     "@ictirc/ui",
     "@ictirc/database",
     "@ictirc/seo",
-    "@ictirc/email",
     "@ictirc/search",
   ],
   images: {
@@ -45,36 +42,37 @@ const nextConfig: NextConfig = {
       {
         // Fix: browsers require application/manifest+json MIME type for PWA manifests.
         // Without this, Chrome rejects the fetch with error code 441.
-        source: '/manifest.json',
+        source: "/manifest.json",
         headers: [
           {
-            key: 'Content-Type',
-            value: 'application/manifest+json',
+            key: "Content-Type",
+            value: "application/manifest+json",
           },
         ],
       },
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
           {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none';",
+            key: "Content-Security-Policy",
+            value:
+              "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none';",
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
           },
           {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
           },
         ],
       },

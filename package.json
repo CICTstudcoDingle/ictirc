@@ -2,23 +2,33 @@
   "name": "ictirc",
   "private": true,
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "typecheck": "turbo typecheck",
-    "clean": "turbo clean",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "corepack pnpm --filter @ictirc/database run db:generate"
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint -- --fix",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,cjs,json,md,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,mjs,cjs,json,md,css}\"",
+    "postinstall": "corepack pnpm --filter @ictirc/database run db:generate",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@ictirc/config": "workspace:*",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
     "prettier": "3.4.2",
     "syncpack": "13.0.4",
-    "turbo": "2.8.0",
+    "turbo": "2.10.0",
     "typescript": "5.7.3"
   },
-  "packageManager": "pnpm@9.1.0",
+  "packageManager": "pnpm@9.15.9",
   "engines": {
     "node": ">=20"
+  },
+  "pnpm": {
+    "overrides": {
+      "zod": "3.24.1"
+    }
   }
 }

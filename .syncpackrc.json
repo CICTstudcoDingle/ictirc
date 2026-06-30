@@ -17,10 +17,10 @@
       "pinVersion": "19.0.0"
     },
     {
-      "label": "Next.js (Enforce v16 Canary)",
+      "label": "Next.js (Enforce v15 Stable)",
       "packages": ["**"],
       "dependencies": ["next"],
-      "pinVersion": "16.2.0-canary.17"
+      "pinVersion": "15.5.19"
     },
     {
       "label": "Global External Consistency",

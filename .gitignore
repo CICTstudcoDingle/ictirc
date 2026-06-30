@@ -29,9 +29,20 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# Build / lint / install logs that should not be committed
+*.log
+build*.log
+build_error*.log
+install.log
+lint_errors.log
+tsc_errors.log
+
 # Testing
 coverage
 .nyc_output
 
 # Misc
 *.tsbuildinfo
+
+# Scratch / dump files
+supabase-storage-policies.sql

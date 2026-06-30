@@ -12,7 +12,9 @@ import * as fs from "fs";
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -27,7 +29,7 @@ export async function POST(request: NextRequest) {
     if (!dbUser || dbUser.role !== "DEAN") {
       return NextResponse.json(
         { error: "Only the Dean can trigger database backups" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -108,13 +110,13 @@ export async function POST(request: NextRequest) {
       const gdriveFolderId = process.env.GDRIVE_BACKUP_FOLDER_ID;
 
       if (gdriveEmail && gdriveKey && gdriveFolderId) {
-        // TODO: Implement Google Drive upload when @ictirc/backup package is created
+        // TODO: Implement Google Drive upload when backup integration is added
         // For now, just mark as not implemented
         driveResult = {
           success: false,
-          error: "Google Drive upload not yet configured. Install googleapis package and create @ictirc/backup."
+          error: "Google Drive upload not yet configured.",
         };
-        console.log("[Backup] Google Drive upload skipped - package not installed");
+        console.log("[Backup] Google Drive upload skipped - not configured");
       }
     }
 
@@ -133,7 +135,7 @@ export async function POST(request: NextRequest) {
     console.error("[Backup API] Error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -145,7 +147,9 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -161,12 +165,13 @@ export async function GET(request: NextRequest) {
     }
 
     const backupDir = path.join(process.cwd(), "backups");
-    
+
     if (!fs.existsSync(backupDir)) {
       return NextResponse.json({ backups: [] });
     }
 
-    const files = fs.readdirSync(backupDir)
+    const files = fs
+      .readdirSync(backupDir)
       .filter((f) => f.endsWith(".json") || f.endsWith(".sql"))
       .map((fileName) => {
         const filePath = path.join(backupDir, fileName);
@@ -177,14 +182,17 @@ export async function GET(request: NextRequest) {
           createdAt: stats.birthtime.toISOString(),
         };
       })
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
 
     return NextResponse.json({ backups: files });
   } catch (error) {
     console.error("[Backup API] Error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

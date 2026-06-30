@@ -22,7 +22,9 @@ export async function getUsers({
 }) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -76,7 +78,9 @@ export async function getUsers({
 export async function updateUserRole(userId: string, newRole: UserRole) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -115,7 +119,8 @@ export async function updateUserRole(userId: string, newRole: UserRole) {
     console.error("[updateUserRole] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update user role",
+      error:
+        error instanceof Error ? error.message : "Failed to update user role",
     };
   }
 }
@@ -126,7 +131,9 @@ export async function updateUserRole(userId: string, newRole: UserRole) {
 export async function toggleUserActive(userId: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -164,7 +171,8 @@ export async function toggleUserActive(userId: string) {
     console.error("[toggleUserActive] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update user status",
+      error:
+        error instanceof Error ? error.message : "Failed to update user status",
     };
   }
 }
@@ -174,13 +182,18 @@ export async function toggleUserActive(userId: string) {
  */
 const inviteSchema = z.object({
   email: z.string().email(),
-  role: z.nativeEnum(UserRole).optional().default("AUTHOR" as UserRole),
+  role: z
+    .nativeEnum(UserRole)
+    .optional()
+    .default("AUTHOR" as UserRole),
 });
 
 export async function createInvite(input: { email: string; role?: UserRole }) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -214,7 +227,10 @@ export async function createInvite(input: { email: string; role?: UserRole }) {
     });
 
     if (existingInvite) {
-      return { success: false, error: "Pending invite already exists for this email" };
+      return {
+        success: false,
+        error: "Pending invite already exists for this email",
+      };
     }
 
     // Create invite token (expires in 7 days)
@@ -230,7 +246,7 @@ export async function createInvite(input: { email: string; role?: UserRole }) {
       },
     });
 
-    // TODO: Send invite email via @ictirc/email package
+    // TODO: Send invite email (add email integration when needed)
 
     revalidatePath("/dashboard/users");
 
@@ -311,7 +327,9 @@ export async function acceptInvite(token: string, supabaseUserId: string) {
 export async function getPendingInvites() {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -349,7 +367,9 @@ export async function getPendingInvites() {
 export async function cancelInvite(inviteId: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };

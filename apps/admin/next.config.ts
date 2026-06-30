@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
     "@ictirc/ui",
     "@ictirc/database",
     "@ictirc/storage",
-    "@ictirc/email",
     "@ictirc/search",
   ],
 };

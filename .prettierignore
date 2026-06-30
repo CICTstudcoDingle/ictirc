@@ -1,0 +1,9 @@
+node_modules
+.pnpm-store
+.next
+out
+dist
+.turbo
+.vercel
+pnpm-lock.yaml
+*.log
