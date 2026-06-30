@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@ictirc/database';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@ictirc/database";
 
 interface RouteContext {
   params: Promise<{ id: string }>;
@@ -11,20 +11,23 @@ export async function POST(request: NextRequest, context: RouteContext) {
     const body = await request.json();
     const { content } = body;
 
-    if (!content || typeof content !== 'string') {
-      return NextResponse.json({ error: 'Content is required' }, { status: 400 });
+    if (!content || typeof content !== "string") {
+      return NextResponse.json(
+        { error: "Content is required" },
+        { status: 400 },
+      );
     }
 
     // TODO: Get actual user from session
     // For now, we'll create/use a system admin user
     const adminUser = await prisma.user.upsert({
-      where: { email: 'admin@ictirc.com' },
+      where: { email: "admin@ictirc.com" },
       update: {},
       create: {
-        id: 'admin-system',
-        email: 'admin@ictirc.com',
-        name: 'System Admin',
-        role: 'EDITOR',
+        id: "admin-system",
+        email: "admin@ictirc.com",
+        name: "System Admin",
+        role: "EDITOR",
       },
     });
 
@@ -41,8 +44,11 @@ export async function POST(request: NextRequest, context: RouteContext) {
 
     return NextResponse.json(comment);
   } catch (error) {
-    console.error('Error creating comment:', error);
-    return NextResponse.json({ error: 'Failed to create comment' }, { status: 500 });
+    console.error("Error creating comment:", error);
+    return NextResponse.json(
+      { error: "Failed to create comment" },
+      { status: 500 },
+    );
   }
 }
 
@@ -56,13 +62,16 @@ export async function GET(request: NextRequest, context: RouteContext) {
         author: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
     });
 
     return NextResponse.json(comments);
   } catch (error) {
-    console.error('Error fetching comments:', error);
-    return NextResponse.json({ error: 'Failed to fetch comments' }, { status: 500 });
+    console.error("Error fetching comments:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch comments" },
+      { status: 500 },
+    );
   }
 }

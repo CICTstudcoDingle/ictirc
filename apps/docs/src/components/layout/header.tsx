@@ -18,9 +18,13 @@ export function Header() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden p-2 -ml-2 text-gray-600 hover:text-maroon transition-colors"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
-            
+
             <Link href="/" className="flex items-center gap-3">
               <div className="flex items-center -space-x-2">
                 <div className="relative z-30 bg-white rounded-full p-0.5 shadow-sm">
@@ -51,7 +55,7 @@ export function Header() {
                   />
                 </div>
               </div>
-              
+
               <div className="hidden sm:block">
                 <h1 className="text-sm font-bold text-maroon leading-tight tracking-tight">
                   ICTIRC DOCS
@@ -68,7 +72,10 @@ export function Header() {
             <NavLink href="/" icon={<BookOpen className="w-4 h-4" />}>
               Home
             </NavLink>
-            <NavLink href="/getting-started" icon={<Rocket className="w-4 h-4" />}>
+            <NavLink
+              href="/getting-started"
+              icon={<Rocket className="w-4 h-4" />}
+            >
               Getting Started
             </NavLink>
             <NavLink href="/admin" icon={<Shield className="w-4 h-4" />}>
@@ -80,19 +87,31 @@ export function Header() {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setIsMobileMenuOpen(false)}>
-          <div 
+        <div
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <div
             className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl flex flex-col pt-20 px-6"
             onClick={(e) => e.stopPropagation()}
           >
             <nav className="space-y-2">
-              <MobileNavLink href="/" onClick={() => setIsMobileMenuOpen(false)}>
+              <MobileNavLink
+                href="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 Home
               </MobileNavLink>
-              <MobileNavLink href="/getting-started" onClick={() => setIsMobileMenuOpen(false)}>
+              <MobileNavLink
+                href="/getting-started"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 Getting Started
               </MobileNavLink>
-              <MobileNavLink href="/admin" onClick={() => setIsMobileMenuOpen(false)}>
+              <MobileNavLink
+                href="/admin"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 Admin Guide
               </MobileNavLink>
             </nav>
@@ -103,7 +122,15 @@ export function Header() {
   );
 }
 
-function NavLink({ href, children, icon }: { href: string; children: React.ReactNode; icon?: React.ReactNode }) {
+function NavLink({
+  href,
+  children,
+  icon,
+}: {
+  href: string;
+  children: React.ReactNode;
+  icon?: React.ReactNode;
+}) {
   return (
     <Link
       href={href}
@@ -115,7 +142,15 @@ function NavLink({ href, children, icon }: { href: string; children: React.React
   );
 }
 
-function MobileNavLink({ href, children, onClick }: { href: string; children: React.ReactNode; onClick: () => void }) {
+function MobileNavLink({
+  href,
+  children,
+  onClick,
+}: {
+  href: string;
+  children: React.ReactNode;
+  onClick: () => void;
+}) {
   return (
     <Link
       href={href}

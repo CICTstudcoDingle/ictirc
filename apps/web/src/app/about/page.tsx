@@ -1,5 +1,15 @@
 import Link from "next/link";
-import { ArrowLeft, Mail, MapPin, Phone, Smartphone, ExternalLink, BookOpen, ShieldCheck, Globe } from "lucide-react";
+import {
+  ArrowLeft,
+  Mail,
+  MapPin,
+  Phone,
+  Smartphone,
+  ExternalLink,
+  BookOpen,
+  ShieldCheck,
+  Globe,
+} from "lucide-react";
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
 import { FeedbackSection } from "@/components/feedback/feedback-section";
@@ -16,7 +26,8 @@ export default function AboutPage() {
               About <span className="text-gold">IRJICT</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-4">
-              International Research Journal on Information and Communications Technology
+              International Research Journal on Information and Communications
+              Technology
             </p>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-sm font-mono text-gold">
               <span>ISSN No.: 2960-3773</span>
@@ -28,7 +39,6 @@ export default function AboutPage() {
       {/* Main Content */}
       <section className="py-16 md:py-20">
         <div className="max-w-5xl mx-auto px-4 space-y-8">
-
           {/* Introduction Section */}
           <ScrollAnimation direction="right">
             <div className="mb-12">
@@ -42,13 +52,28 @@ export default function AboutPage() {
               </div>
               <div className="prose prose-lg text-gray-600 max-w-none">
                 <p>
-                  Advancing the frontiers of digital innovation, the International Research Journal for Information and Communications Technology (IRJICT) facilitates the open-access publication of peer-reviewed research. Our scope encompasses diverse fields, including Computer Science, Engineering, and Industrial Technology, ensuring global visibility for scholarly excellence.
+                  Advancing the frontiers of digital innovation, the
+                  International Research Journal for Information and
+                  Communications Technology (IRJICT) facilitates the open-access
+                  publication of peer-reviewed research. Our scope encompasses
+                  diverse fields, including Computer Science, Engineering, and
+                  Industrial Technology, ensuring global visibility for
+                  scholarly excellence.
                 </p>
                 <p>
-                  Since its inception in 2023, IRJICT has bridged the gap between innovation and publication. Our dual-layer review process—involving both specialized peer reviewers and our editorial team—guarantees the highest caliber of content. To maximize research impact, every article is published with unrestricted free access for readers worldwide.
+                  Since its inception in 2023, IRJICT has bridged the gap
+                  between innovation and publication. Our dual-layer review
+                  process—involving both specialized peer reviewers and our
+                  editorial team—guarantees the highest caliber of content. To
+                  maximize research impact, every article is published with
+                  unrestricted free access for readers worldwide.
                 </p>
                 <div className="bg-gray-50 p-4 rounded-md border-l-4 border-gold text-sm italic mt-4">
-                  Join a community of innovators. IRJICT follows a streamlined editorial process designed to uphold the highest academic standards. We are currently accepting online submissions from experts in Computer Science, Engineering, ICT, and Industrial Technology.
+                  Join a community of innovators. IRJICT follows a streamlined
+                  editorial process designed to uphold the highest academic
+                  standards. We are currently accepting online submissions from
+                  experts in Computer Science, Engineering, ICT, and Industrial
+                  Technology.
                 </div>
               </div>
             </div>
@@ -67,10 +92,17 @@ export default function AboutPage() {
               </div>
               <div className="prose prose-lg text-gray-600 max-w-none">
                 <p>
-                  IRJICT maintains the highest standards of academic integrity. We implement rigorous plagiarism screening for all submissions during the initial review stage.
+                  IRJICT maintains the highest standards of academic integrity.
+                  We implement rigorous plagiarism screening for all submissions
+                  during the initial review stage.
                 </p>
                 <p>
-                  We recognize plagiarism not only as a violation of intellectual property and potential copyright infringement but also as a breach of ethical publishing agreements. By systematically vetting all manuscripts, we ensure compliance with institutional restrictions and uphold the originality of the scholarly record.
+                  We recognize plagiarism not only as a violation of
+                  intellectual property and potential copyright infringement but
+                  also as a breach of ethical publishing agreements. By
+                  systematically vetting all manuscripts, we ensure compliance
+                  with institutional restrictions and uphold the originality of
+                  the scholarly record.
                 </p>
               </div>
             </div>
@@ -89,7 +121,11 @@ export default function AboutPage() {
                   </h2>
                 </div>
                 <p className="text-gray-600 leading-relaxed">
-                  IRJICT empowers researchers in ICT and Engineering by providing an open-access platform for original, peer-reviewed contributions. We are committed to academic integrity and the pursuit of making cutting-edge research intuitive and accessible to the modern world.
+                  IRJICT empowers researchers in ICT and Engineering by
+                  providing an open-access platform for original, peer-reviewed
+                  contributions. We are committed to academic integrity and the
+                  pursuit of making cutting-edge research intuitive and
+                  accessible to the modern world.
                 </p>
               </div>
             </ScrollAnimation>
@@ -105,12 +141,15 @@ export default function AboutPage() {
                   </h2>
                 </div>
                 <p className="text-gray-600 leading-relaxed">
-                  Knowledge shouldn&apos;t be locked behind a paywall. By making research freely available online, we empower individuals and accelerate societal progress. Today, even the world&apos;s top-tier journals are making this possible by lowering the financial barriers for both readers and contributing authors.
+                  Knowledge shouldn&apos;t be locked behind a paywall. By making
+                  research freely available online, we empower individuals and
+                  accelerate societal progress. Today, even the world&apos;s
+                  top-tier journals are making this possible by lowering the
+                  financial barriers for both readers and contributing authors.
                 </p>
               </div>
             </ScrollAnimation>
           </div>
-
         </div>
       </section>
 
@@ -119,17 +158,18 @@ export default function AboutPage() {
         {/* CONTACT INFO SIDE (Left - 100% on mobile, 50% on desktop) */}
         <div className="flex-1 bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 relative overflow-hidden flex items-center justify-center p-8 lg:p-16">
           <CircuitBackground variant="subtle" animated className="opacity-30" />
-          
+
           <div className="relative z-10 max-w-lg text-white">
             <div className="mb-8">
               <h2 className="text-3xl lg:text-4xl font-bold mb-4">
                 Contact <span className="text-gold">Us</span>
               </h2>
               <p className="text-gray-300 leading-relaxed">
-                Get in touch with our editorial team for submissions, inquiries, or collaboration opportunities.
+                Get in touch with our editorial team for submissions, inquiries,
+                or collaboration opportunities.
               </p>
             </div>
-            
+
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -138,28 +178,36 @@ export default function AboutPage() {
                 <div>
                   <h3 className="font-semibold text-gold mb-1">Address</h3>
                   <p className="text-gray-300 text-sm leading-relaxed">
-                    ISUFST - College of ICT<br />
-                    Dingle Campus<br />
+                    ISUFST - College of ICT
+                    <br />
+                    Dingle Campus
+                    <br />
                     Dingle, Iloilo, Philippines
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Mail className="w-5 h-5 text-gold" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-gold mb-1">Email</h3>
-                  <a href="mailto:irjict@isufst.edu.ph" className="text-gray-300 hover:text-gold transition-colors text-sm block">
+                  <a
+                    href="mailto:irjict@isufst.edu.ph"
+                    className="text-gray-300 hover:text-gold transition-colors text-sm block"
+                  >
                     irjict@isufst.edu.ph
                   </a>
-                  <a href="mailto:cict_dingle@isufst.edu.ph" className="text-gray-300 hover:text-gold transition-colors text-sm block">
+                  <a
+                    href="mailto:cict_dingle@isufst.edu.ph"
+                    className="text-gray-300 hover:text-gold transition-colors text-sm block"
+                  >
                     cict_dingle@isufst.edu.ph
                   </a>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Phone className="w-5 h-5 text-gold" />
@@ -169,7 +217,7 @@ export default function AboutPage() {
                   <p className="text-gray-300 text-sm">(033) 337 – 1544</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Smartphone className="w-5 h-5 text-gold" />
@@ -182,7 +230,7 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-        
+
         {/* MAP SIDE (Right - 100% on mobile, 50% on desktop) */}
         <div className="flex-1 relative h-[450px] md:h-auto">
           <iframe

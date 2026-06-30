@@ -36,16 +36,19 @@ This implementation plan establishes a comprehensive archive system for past ICT
 ### Primary Goals
 
 1. **Archive Management**
+
    - Enable batch upload of historical conference papers
    - Direct publish workflow (bypass review process)
    - Support PDF and DOCX file formats
 
 2. **Volume/Issue Structure**
+
    - One volume per year (flexible for multiple issues)
    - Link volumes/issues to specific conferences
    - Track publication metadata (ISSN, date, theme)
 
 3. **Enhanced Discovery**
+
    - Integrate with existing archive section
    - Default view: volumes/issues organized by month
    - Advanced filtering: year, category, topic
@@ -76,7 +79,7 @@ model Volume {
 
   // Relations
   issues      Issue[]
-  
+
   @@unique([volumeNumber, year])
   @@index([year])
   @@index([volumeNumber])
@@ -150,16 +153,16 @@ model ArchivedPaper {
   docxUrl        String?                    // Optional source file
   pageStart      Int?                       // Starting page in issue
   pageEnd        Int?                       // Ending page in issue
-  
+
   // Publication metadata
   publishedDate  DateTime                   // When originally published
   submittedDate  DateTime?                  // Original submission date
   acceptedDate   DateTime?                  // Original acceptance date
-  
+
   // File upload tracking
   uploadedAt     DateTime  @default(now())
   uploadedBy     String                     // Admin user ID
-  
+
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
@@ -207,7 +210,7 @@ Add relation to archived papers:
 ```prisma
 model User {
   // ... existing fields ...
-  
+
   // Add new relation
   uploadedArchives ArchivedPaper[]
 }
@@ -220,7 +223,7 @@ Add relation to archived papers:
 ```prisma
 model Category {
   // ... existing fields ...
-  
+
   // Add new relation
   archivedPapers ArchivedPaper[]
 }
@@ -233,11 +236,13 @@ model Category {
 ### 1. Archive Dashboard (`/admin/dashboard/archives`)
 
 **Features:**
+
 - Overview statistics (total volumes, issues, papers)
 - Recent uploads
 - Quick actions (Create Volume, Create Issue, Batch Upload)
 
 **Components:**
+
 - `ArchiveStats.tsx` - Statistics cards
 - `ArchiveOverview.tsx` - Main dashboard layout
 - `RecentUploads.tsx` - List of recently uploaded papers
@@ -245,12 +250,14 @@ model Category {
 ### 2. Volume Management (`/admin/dashboard/archives/volumes`)
 
 **Features:**
+
 - List all volumes
 - Create new volume
 - Edit/Delete volume
 - View issues within volume
 
 **Components:**
+
 - `VolumeList.tsx` - Data table of volumes
 - `VolumeForm.tsx` - Create/Edit volume form
 - `VolumeCard.tsx` - Volume display card
@@ -258,12 +265,14 @@ model Category {
 ### 3. Issue Management (`/admin/dashboard/archives/issues`)
 
 **Features:**
+
 - List all issues (filterable by volume)
 - Create new issue
 - Edit/Delete issue
 - View papers within issue
 
 **Components:**
+
 - `IssueList.tsx` - Data table of issues
 - `IssueForm.tsx` - Create/Edit issue form
 - `IssueCard.tsx` - Issue display card
@@ -271,6 +280,7 @@ model Category {
 ### 4. Batch Upload Interface (`/admin/dashboard/archives/upload`)
 
 **Features:**
+
 - Multi-file upload (PDF + optional DOCX)
 - CSV/Excel template for metadata import
 - Drag-and-drop interface
@@ -279,6 +289,7 @@ model Category {
 - Direct publish to archive
 
 **Components:**
+
 - `BatchUploadZone.tsx` - Drag-drop file upload
 - `MetadataImporter.tsx` - CSV/Excel import
 - `PaperMetadataForm.tsx` - Individual paper form
@@ -286,6 +297,7 @@ model Category {
 - `UploadProgress.tsx` - Upload status tracker
 
 **Batch Upload Flow:**
+
 1. Select target Issue (or create new)
 2. Upload files (PDF required, DOCX optional)
 3. Import metadata via CSV or manual entry
@@ -294,6 +306,7 @@ model Category {
 6. Publish to archive
 
 **CSV Template Structure:**
+
 ```csv
 title,abstract,keywords,category,page_start,page_end,pdf_filename,docx_filename,author_1_name,author_1_email,author_1_affiliation,author_2_name,author_2_email,author_2_affiliation,submitted_date,accepted_date
 "Paper Title Here","Abstract text...","keyword1;keyword2;keyword3","AI and Robotics",1,10,paper1.pdf,paper1.docx,"John Doe","john@example.com","University A","Jane Smith","jane@example.com","University B",2025-03-01,2025-04-10
@@ -302,6 +315,7 @@ title,abstract,keywords,category,page_start,page_end,pdf_filename,docx_filename,
 ### 5. Individual Paper Management
 
 **Features:**
+
 - Edit paper metadata
 - Update files
 - Assign/update DOI
@@ -309,6 +323,7 @@ title,abstract,keywords,category,page_start,page_end,pdf_filename,docx_filename,
 - Delete paper
 
 **Components:**
+
 - `ArchivedPaperEdit.tsx` - Edit form
 - `AuthorManager.tsx` - Manage paper authors
 
@@ -323,7 +338,9 @@ title,abstract,keywords,category,page_start,page_end,pdf_filename,docx_filename,
 #### New Default View: Volume/Issue Browser
 
 **Layout Options:**
+
 1. **Timeline View (Default)**
+
    - Organized by year
    - Show volumes with nested issues
    - Display issue cards with paper count
@@ -335,6 +352,7 @@ title,abstract,keywords,category,page_start,page_end,pdf_filename,docx_filename,
    - Key metadata (volume, issue, date, paper count)
 
 **Components:**
+
 - `VolumeTimeline.tsx` - Timeline of volumes by year
 - `IssueGrid.tsx` - Grid layout of issues
 - `IssueCard.tsx` - Individual issue display
@@ -343,12 +361,14 @@ title,abstract,keywords,category,page_start,page_end,pdf_filename,docx_filename,
 #### Enhanced Filters
 
 **Filter Options:**
+
 1. **View Mode:** Timeline / Grid / List
 2. **Year:** All / 2025 / 2026 / etc.
 3. **Category:** All / AI and Robotics / Computer Networking / etc.
 4. **Search:** Full-text search (integrate with Algolia)
 
 **Components:**
+
 - `ArchiveViewToggle.tsx` - Switch between views
 - `YearFilter.tsx` - Filter by year
 - `CategoryFilter.tsx` - Filter by category (existing, enhanced)
@@ -357,12 +377,14 @@ title,abstract,keywords,category,page_start,page_end,pdf_filename,docx_filename,
 #### Issue Detail View (`/archive/volume/[volumeId]/issue/[issueId]`)
 
 **Features:**
+
 - Issue metadata display
 - List of papers in issue
 - Download entire issue (future)
 - Citation export
 
 **Components:**
+
 - `IssueDetail.tsx` - Issue information
 - `IssuePaperList.tsx` - Papers in issue
 - `IssueCitation.tsx` - Citation formats
@@ -370,6 +392,7 @@ title,abstract,keywords,category,page_start,page_end,pdf_filename,docx_filename,
 #### Paper Detail Updates
 
 **Enhancements:**
+
 - Display Volume/Issue information
 - Link to issue page
 - Show page numbers in issue
@@ -387,19 +410,24 @@ title,abstract,keywords,category,page_start,page_end,pdf_filename,docx_filename,
 
 ```typescript
 // Create volume
-export async function createVolume(data: VolumeInput): Promise<Volume>
+export async function createVolume(data: VolumeInput): Promise<Volume>;
 
 // Update volume
-export async function updateVolume(id: string, data: VolumeInput): Promise<Volume>
+export async function updateVolume(
+  id: string,
+  data: VolumeInput,
+): Promise<Volume>;
 
 // Delete volume
-export async function deleteVolume(id: string): Promise<void>
+export async function deleteVolume(id: string): Promise<void>;
 
 // Get volume with issues
-export async function getVolumeWithIssues(id: string): Promise<VolumeWithIssues>
+export async function getVolumeWithIssues(
+  id: string,
+): Promise<VolumeWithIssues>;
 
 // List all volumes
-export async function listVolumes(): Promise<Volume[]>
+export async function listVolumes(): Promise<Volume[]>;
 ```
 
 #### Issue Management
@@ -408,19 +436,19 @@ export async function listVolumes(): Promise<Volume[]>
 
 ```typescript
 // Create issue
-export async function createIssue(data: IssueInput): Promise<Issue>
+export async function createIssue(data: IssueInput): Promise<Issue>;
 
 // Update issue
-export async function updateIssue(id: string, data: IssueInput): Promise<Issue>
+export async function updateIssue(id: string, data: IssueInput): Promise<Issue>;
 
 // Delete issue
-export async function deleteIssue(id: string): Promise<void>
+export async function deleteIssue(id: string): Promise<void>;
 
 // Get issue with papers
-export async function getIssueWithPapers(id: string): Promise<IssueWithPapers>
+export async function getIssueWithPapers(id: string): Promise<IssueWithPapers>;
 
 // List issues by volume
-export async function listIssuesByVolume(volumeId: string): Promise<Issue[]>
+export async function listIssuesByVolume(volumeId: string): Promise<Issue[]>;
 ```
 
 #### Batch Upload
@@ -431,23 +459,23 @@ export async function listIssuesByVolume(volumeId: string): Promise<Issue[]>
 // Upload files to storage
 export async function uploadArchiveFiles(
   files: File[],
-  issueId: string
-): Promise<UploadResult[]>
+  issueId: string,
+): Promise<UploadResult[]>;
 
 // Parse metadata CSV
-export async function parseMetadataCSV(file: File): Promise<PaperMetadata[]>
+export async function parseMetadataCSV(file: File): Promise<PaperMetadata[]>;
 
 // Batch create archived papers
 export async function batchCreateArchivedPapers(
   papers: ArchivedPaperInput[],
   issueId: string,
-  uploaderId: string
-): Promise<ArchivedPaper[]>
+  uploaderId: string,
+): Promise<ArchivedPaper[]>;
 
 // Validate batch data
 export async function validateBatchData(
-  papers: ArchivedPaperInput[]
-): Promise<ValidationResult>
+  papers: ArchivedPaperInput[],
+): Promise<ValidationResult>;
 ```
 
 #### Conference Management
@@ -456,13 +484,20 @@ export async function validateBatchData(
 
 ```typescript
 // Create conference
-export async function createConference(data: ConferenceInput): Promise<Conference>
+export async function createConference(
+  data: ConferenceInput,
+): Promise<Conference>;
 
 // Update conference
-export async function updateConference(id: string, data: ConferenceInput): Promise<Conference>
+export async function updateConference(
+  id: string,
+  data: ConferenceInput,
+): Promise<Conference>;
 
 // Get conference with issues
-export async function getConferenceWithIssues(id: string): Promise<ConferenceWithIssues>
+export async function getConferenceWithIssues(
+  id: string,
+): Promise<ConferenceWithIssues>;
 ```
 
 ### Public API
@@ -526,6 +561,7 @@ archives/
 **Index Name:** `ictirc_archived_papers`
 
 **Indexed Fields:**
+
 - title
 - abstract
 - keywords
@@ -537,6 +573,7 @@ archives/
 - doi
 
 **Facets:**
+
 - year
 - category
 - volume
@@ -544,6 +581,7 @@ archives/
 - authors
 
 **Ranking Criteria:**
+
 1. Text relevance
 2. Publication date (recent first)
 3. Custom ranking (featured papers)
@@ -572,16 +610,16 @@ archives/
 // apps/admin/src/lib/rbac.ts
 
 export const archivePermissions = {
-  'archive:volume:create': ['SUPER_ADMIN', 'ADMIN'],
-  'archive:volume:update': ['SUPER_ADMIN', 'ADMIN'],
-  'archive:volume:delete': ['SUPER_ADMIN'],
-  'archive:issue:create': ['SUPER_ADMIN', 'ADMIN'],
-  'archive:issue:update': ['SUPER_ADMIN', 'ADMIN'],
-  'archive:issue:delete': ['SUPER_ADMIN'],
-  'archive:paper:upload': ['SUPER_ADMIN', 'ADMIN'],
-  'archive:paper:update': ['SUPER_ADMIN', 'ADMIN'],
-  'archive:paper:delete': ['SUPER_ADMIN'],
-  'archive:conference:manage': ['SUPER_ADMIN', 'ADMIN'],
+  "archive:volume:create": ["SUPER_ADMIN", "ADMIN"],
+  "archive:volume:update": ["SUPER_ADMIN", "ADMIN"],
+  "archive:volume:delete": ["SUPER_ADMIN"],
+  "archive:issue:create": ["SUPER_ADMIN", "ADMIN"],
+  "archive:issue:update": ["SUPER_ADMIN", "ADMIN"],
+  "archive:issue:delete": ["SUPER_ADMIN"],
+  "archive:paper:upload": ["SUPER_ADMIN", "ADMIN"],
+  "archive:paper:update": ["SUPER_ADMIN", "ADMIN"],
+  "archive:paper:delete": ["SUPER_ADMIN"],
+  "archive:conference:manage": ["SUPER_ADMIN", "ADMIN"],
 };
 ```
 
@@ -600,11 +638,12 @@ const conference = {
   date: new Date("2025-04-25"),
   location: "Barotac Nuevo, Philippines",
   venue: "CICT Techno Hub, ISUFST Main Campus, Poblacion Site",
-  theme: "Resilience and Adaptation: Research for a More Equitable and Secure World",
+  theme:
+    "Resilience and Adaptation: Research for a More Equitable and Secure World",
   organizers: [
     "Office of Internationalization and Linkages, ISUFST",
     "Research and Development, ISUFST",
-    "College on Information and Communications Technology, ISUFST"
+    "College on Information and Communications Technology, ISUFST",
   ],
   partners: ["University of Brawijaya"],
 };
@@ -624,7 +663,8 @@ const issue = {
   month: "April",
   publishedDate: new Date("2025-04-25"),
   issn: "2960-3773",
-  theme: "Resilience and Adaptation: Research for a More Equitable and Secure World",
+  theme:
+    "Resilience and Adaptation: Research for a More Equitable and Secure World",
   volumeId: volume.id,
   conferenceId: conference.id,
 };
@@ -633,6 +673,7 @@ const issue = {
 #### Step 3: Prepare Categories
 
 Ensure these categories exist:
+
 1. AI and Robotics
 2. Computer Networking and Internet of Things (IoT)
 3. Web and Mobile
@@ -641,6 +682,7 @@ Ensure these categories exist:
 #### Step 4: Batch Upload 20 Papers
 
 Use batch upload interface with:
+
 - 20 PDF files
 - Metadata CSV with author information
 - Category assignments
@@ -653,6 +695,7 @@ Use batch upload interface with:
 ### Phase 1: Database Schema (Week 1)
 
 **Tasks:**
+
 1. Create Prisma migrations for new models
 2. Update existing models with relations
 3. Run migrations on development database
@@ -660,6 +703,7 @@ Use batch upload interface with:
 5. Test schema with sample data
 
 **Deliverables:**
+
 - Migration files
 - Updated schema.prisma
 - Seed script for 1st ICTIRC
@@ -667,6 +711,7 @@ Use batch upload interface with:
 ### Phase 2: Admin Backend (Week 1-2)
 
 **Tasks:**
+
 1. Implement server actions for volume management
 2. Implement server actions for issue management
 3. Implement server actions for conference management
@@ -676,6 +721,7 @@ Use batch upload interface with:
 7. Add validation logic
 
 **Deliverables:**
+
 - Server action files
 - Type definitions
 - API routes
@@ -684,6 +730,7 @@ Use batch upload interface with:
 ### Phase 3: Admin UI (Week 2-3)
 
 **Tasks:**
+
 1. Create archive dashboard layout
 2. Build volume management interface
 3. Build issue management interface
@@ -694,6 +741,7 @@ Use batch upload interface with:
 8. Implement RBAC checks
 
 **Deliverables:**
+
 - Admin pages
 - React components
 - Forms and validation
@@ -702,6 +750,7 @@ Use batch upload interface with:
 ### Phase 4: Public Archive Enhancement (Week 3-4)
 
 **Tasks:**
+
 1. Update archive page with volume/issue view
 2. Create timeline view component
 3. Create grid view component
@@ -712,6 +761,7 @@ Use batch upload interface with:
 8. Add breadcrumbs and navigation
 
 **Deliverables:**
+
 - Updated archive pages
 - New components
 - Enhanced filtering
@@ -720,6 +770,7 @@ Use batch upload interface with:
 ### Phase 5: Testing & Data Load (Week 4)
 
 **Tasks:**
+
 1. Test all admin functions
 2. Test batch upload with sample data
 3. Upload 20 papers from 1st ICTIRC
@@ -729,6 +780,7 @@ Use batch upload interface with:
 7. Security testing (RBAC)
 
 **Deliverables:**
+
 - Test results
 - Loaded archive data
 - Bug fixes
@@ -739,6 +791,7 @@ Use batch upload interface with:
 **Note:** To be handled by search/indexing specialist agent
 
 **Tasks:**
+
 1. Set up Algolia index
 2. Configure index settings
 3. Implement data sync
@@ -746,6 +799,7 @@ Use batch upload interface with:
 5. Add advanced search features
 
 **Deliverables:**
+
 - Algolia configuration
 - Search integration
 - Enhanced search UI
@@ -856,6 +910,7 @@ packages/database/
 ### 1. Storage Package (`@ictirc/storage`)
 
 **Updates Required:**
+
 - Add archive-specific upload functions
 - Implement batch upload support
 - Add file validation for PDF/DOCX
@@ -863,6 +918,7 @@ packages/database/
 ### 2. Database Package (`@ictirc/database`)
 
 **Updates Required:**
+
 - New models in schema
 - Export archive-related types
 - Add helper functions for archive queries
@@ -870,6 +926,7 @@ packages/database/
 ### 3. UI Package (`@ictirc/ui`)
 
 **Potential New Components:**
+
 - `FileUploadZone` - Drag-drop file upload
 - `CSVImporter` - CSV file import component
 - `DataTable` - Enhanced table for admin lists
@@ -877,6 +934,7 @@ packages/database/
 ### 4. SEO Package (`@ictirc/seo`)
 
 **Updates Required:**
+
 - Add metadata generators for issue pages
 - Add structured data for archived papers
 - Update sitemap to include volume/issue pages
@@ -888,6 +946,7 @@ packages/database/
 ### Unit Tests
 
 1. **Server Actions**
+
    - Volume CRUD operations
    - Issue CRUD operations
    - Batch upload logic
@@ -902,6 +961,7 @@ packages/database/
 ### Integration Tests
 
 1. **Admin Workflow**
+
    - Create volume → Create issue → Upload papers
    - Batch upload with CSV
    - Edit existing archives
@@ -946,26 +1006,31 @@ packages/database/
 ### Phase 2 Features (Post-Initial Launch)
 
 1. **Bulk Issue Download**
+
    - Generate PDF with all papers in issue
    - Create ZIP download option
 
 2. **Citation Export**
+
    - BibTeX export
    - RIS format
    - EndNote format
    - Citation builder
 
 3. **Analytics Dashboard**
+
    - Download statistics
    - Popular papers
    - Search trends
 
 4. **DOI Management**
+
    - Bulk DOI assignment
    - DOI validation
    - CrossRef integration
 
 5. **Advanced Metadata**
+
    - ORCID integration for authors
    - Funding information
    - Research data links
@@ -982,6 +1047,7 @@ packages/database/
 ### Sample Paper Metadata (from images)
 
 **Paper Example:**
+
 - **Title:** "Comparison of Machine Learning Algorithms for Phishing Detection of Uniform Resource Locators"
 - **Authors:** Fritz Noel C. Quilacio¹, Asher Paul M. Cuadra², Raj G. Redaja³, Shane M. Gabaton⁴, Menjoy P. Marinog⁵
 - **Affiliations:** ¹²³⁴⁵Guimaras State University
@@ -1006,6 +1072,7 @@ Located at: `/apps/admin/public/templates/archive-metadata-template.csv`
 ### Algolia Indexing Agent
 
 **Handoff Information:**
+
 - Database models: `ArchivedPaper`, `Volume`, `Issue`
 - Required indexes: Full-text search on title, abstract, authors
 - Facets needed: year, category, volume, issue
@@ -1013,6 +1080,7 @@ Located at: `/apps/admin/public/templates/archive-metadata-template.csv`
 - API endpoints for search
 
 **Deliverables Expected:**
+
 - Algolia configuration
 - Search components
 - Real-time indexing setup
@@ -1055,6 +1123,7 @@ Located at: `/apps/admin/public/templates/archive-metadata-template.csv`
 ### Admin User Guide
 
 Topics to cover:
+
 1. Creating volumes and issues
 2. Batch upload process
 3. CSV template usage
@@ -1065,6 +1134,7 @@ Topics to cover:
 ### Developer Documentation
 
 Topics to cover:
+
 1. Archive data models
 2. API usage
 3. Adding new features
@@ -1076,6 +1146,7 @@ Topics to cover:
 **End of Implementation Plan**
 
 **Next Steps:**
+
 1. Review and approve this plan
 2. Create detailed UI mockups (if required)
 3. Begin Phase 1: Database Schema

@@ -4,16 +4,21 @@ description: "Plan and implement the cict expansion: cict admin area, database i
 argument-hint: "Program scope, departments, fee rules, and payment provider"
 user-invocable: true
 ---
+
 # CICT Enrollment and Department Fee System
 
 ## Goal
+
 Deliver a staged implementation for:
+
 - Admin capability for `apps/cict`.
 - Database-backed enrollment records.
 - Department fee assessment and payment workflows.
 
 ## Clarification-First Rules
+
 Before implementation, ask and confirm:
+
 1. Which app hosts admin UX: `apps/cict`, `apps/admin`, or both?
 2. Who are system actors (student, cashier, department admin, college admin)?
 3. Which payment provider(s) are required (manual, online gateway, mixed)?
@@ -23,6 +28,7 @@ Before implementation, ask and confirm:
 7. What are receipt, ledger, refund, and audit requirements?
 
 ## Delivery Phases
+
 1. Domain and policy definition
    - Finalize actors, fee policy, and lifecycle states.
    - Define acceptance criteria per workflow.
@@ -43,6 +49,7 @@ Before implementation, ask and confirm:
    - Link rollout notes to existing project docs.
 
 ## Suggested Initial Data Model (Adjust After Clarification)
+
 - `Department`
 - `AcademicTerm`
 - `EnrollmentApplication`
@@ -56,12 +63,14 @@ Before implementation, ask and confirm:
 - `AuditLog`
 
 ## Risk Controls
+
 - Keep fee calculation deterministic and versioned by term.
 - Store payment gateway references and reconciliation status separately from enrollment status.
 - Require audit entries for approval, rejection, payment posting, refund, and fee override actions.
 - Never hard-delete financial transactions; use reversal records.
 
 ## Validation Checklist
+
 - Prisma schema generated and types updated.
 - Role permissions verified on all mutating actions.
 - Enrollment and payment states cannot move to invalid transitions.

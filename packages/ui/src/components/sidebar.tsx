@@ -57,15 +57,17 @@ export function Sidebar({ className, onLogout, ...props }: SidebarProps) {
       className={cn(
         "group relative flex flex-col border-r border-gray-200 bg-white transition-all duration-300",
         collapsed ? "w-16" : "w-64",
-        className
+        className,
       )}
       {...props}
     >
       {/* Header */}
-      <div className={cn(
-        "flex items-center h-16 border-b border-gray-100",
-        collapsed ? "justify-center px-2" : "justify-between px-4"
-      )}>
+      <div
+        className={cn(
+          "flex items-center h-16 border-b border-gray-100",
+          collapsed ? "justify-center px-2" : "justify-between px-4",
+        )}
+      >
         {!collapsed && (
           <div className="flex items-center gap-2 font-bold text-lg text-maroon">
             <img
@@ -83,25 +85,30 @@ export function Sidebar({ className, onLogout, ...props }: SidebarProps) {
             className="w-8 h-8 object-contain"
           />
         )}
-        
+
         <Button
           variant="ghost"
           size="icon"
           className={cn(
             "text-gray-400 hover:text-gray-600 hover:bg-gray-100 flex-shrink-0",
-            collapsed && "mx-auto"
+            collapsed && "mx-auto",
           )}
           onClick={() => setCollapsed(!collapsed)}
           title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
-          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          {collapsed ? (
+            <ChevronRight className="w-4 h-4" />
+          ) : (
+            <ChevronLeft className="w-4 h-4" />
+          )}
         </Button>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-2 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
-          const isActive = pathname === item.href || pathname?.startsWith(item.href + "/");
+          const isActive =
+            pathname === item.href || pathname?.startsWith(item.href + "/");
           return (
             <Link
               key={item.href}
@@ -111,11 +118,16 @@ export function Sidebar({ className, onLogout, ...props }: SidebarProps) {
                 isActive
                   ? "bg-maroon/5 text-maroon"
                   : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
-                collapsed && "justify-center px-2"
+                collapsed && "justify-center px-2",
               )}
               title={collapsed ? item.title : undefined}
             >
-              <item.icon className={cn("w-5 h-5 flex-shrink-0", isActive && "text-maroon")} />
+              <item.icon
+                className={cn(
+                  "w-5 h-5 flex-shrink-0",
+                  isActive && "text-maroon",
+                )}
+              />
               {!collapsed && <span>{item.title}</span>}
             </Link>
           );
@@ -128,7 +140,7 @@ export function Sidebar({ className, onLogout, ...props }: SidebarProps) {
           onClick={onLogout}
           className={cn(
             "flex items-center gap-3 w-full px-3 py-2 rounded-md transition-colors text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-700",
-            collapsed && "justify-center px-2"
+            collapsed && "justify-center px-2",
           )}
           title={collapsed ? "Logout" : undefined}
         >

@@ -128,7 +128,6 @@ export default function HoneycombBackground() {
       }
     }
     cellsRef.current = cells;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dimensions]);
 
   // Animation Loop
@@ -253,7 +252,6 @@ export default function HoneycombBackground() {
 
     animate();
     return () => cancelAnimationFrame(animationFrameId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dimensions]);
 
   return (
@@ -278,11 +276,7 @@ export default function HoneycombBackground() {
             width="200%"
             height="200%"
           >
-            <feGaussianBlur
-              in="SourceGraphic"
-              stdDeviation="6"
-              result="blur"
-            />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
           </filter>
 
           <filter

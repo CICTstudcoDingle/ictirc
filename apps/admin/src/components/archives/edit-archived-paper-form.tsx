@@ -76,7 +76,7 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
 
   function updateAuthor(index: number, key: keyof Author, value: any) {
     setAuthors((prev) =>
-      prev.map((a, i) => (i === index ? { ...a, [key]: value } : a))
+      prev.map((a, i) => (i === index ? { ...a, [key]: value } : a)),
     );
   }
 
@@ -163,7 +163,9 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
       {/* Basic fields */}
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-2">
-          <label className="block text-xs font-medium text-gray-700 mb-1">Title *</label>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Title *
+          </label>
           <Input
             value={fields.title}
             onChange={(e) => updateField("title", e.target.value)}
@@ -172,7 +174,9 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Category *</label>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Category *
+          </label>
           <select
             value={fields.categoryId}
             onChange={(e) => updateField("categoryId", e.target.value)}
@@ -187,7 +191,9 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Issue *</label>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Issue *
+          </label>
           <select
             value={fields.issueId}
             onChange={(e) => updateField("issueId", e.target.value)}
@@ -203,7 +209,9 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Published Date *</label>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Published Date *
+          </label>
           <Input
             type="date"
             value={fields.publishedDate}
@@ -213,7 +221,9 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">DOI</label>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            DOI
+          </label>
           <Input
             value={fields.doi}
             onChange={(e) => updateField("doi", e.target.value)}
@@ -223,7 +233,9 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Page Start</label>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Page Start
+          </label>
           <Input
             type="number"
             value={fields.pageStart}
@@ -233,7 +245,9 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">Page End</label>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Page End
+          </label>
           <Input
             type="number"
             value={fields.pageEnd}
@@ -255,7 +269,9 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
         </div>
 
         <div className="col-span-2">
-          <label className="block text-xs font-medium text-gray-700 mb-1">PDF URL *</label>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            PDF URL *
+          </label>
           <Input
             value={fields.pdfUrl}
             onChange={(e) => updateField("pdfUrl", e.target.value)}
@@ -264,7 +280,9 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
         </div>
 
         <div className="col-span-2">
-          <label className="block text-xs font-medium text-gray-700 mb-1">DOCX URL</label>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            DOCX URL
+          </label>
           <Input
             value={fields.docxUrl}
             onChange={(e) => updateField("docxUrl", e.target.value)}
@@ -273,7 +291,9 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
         </div>
 
         <div className="col-span-2">
-          <label className="block text-xs font-medium text-gray-700 mb-1">Abstract *</label>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Abstract *
+          </label>
           <textarea
             value={fields.abstract}
             onChange={(e) => updateField("abstract", e.target.value)}
@@ -301,13 +321,17 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
               className="border border-gray-200 rounded-lg p-3 space-y-2 bg-gray-50"
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-gray-500">Author #{i + 1}</span>
+                <span className="text-xs font-medium text-gray-500">
+                  Author #{i + 1}
+                </span>
                 <div className="flex items-center gap-3">
                   <label className="flex items-center gap-1.5 text-xs text-gray-600 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={author.isCorresponding}
-                      onChange={(e) => updateAuthor(i, "isCorresponding", e.target.checked)}
+                      onChange={(e) =>
+                        updateAuthor(i, "isCorresponding", e.target.checked)
+                      }
                       className="rounded"
                     />
                     Corresponding
@@ -331,14 +355,18 @@ export function EditArchivedPaperForm({ paper, categories, issues }: Props) {
                 <Input
                   placeholder="Email (optional)"
                   value={author.email ?? ""}
-                  onChange={(e) => updateAuthor(i, "email", e.target.value || null)}
+                  onChange={(e) =>
+                    updateAuthor(i, "email", e.target.value || null)
+                  }
                   className="text-sm"
                 />
                 <div className="col-span-2">
                   <Input
                     placeholder="Affiliation (optional)"
                     value={author.affiliation ?? ""}
-                    onChange={(e) => updateAuthor(i, "affiliation", e.target.value || null)}
+                    onChange={(e) =>
+                      updateAuthor(i, "affiliation", e.target.value || null)
+                    }
                     className="text-sm"
                   />
                 </div>

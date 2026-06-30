@@ -7,9 +7,14 @@ import { z } from "zod";
 const feedbackSchema = z.object({
   name: z.string().max(100).optional(),
   email: z.string().email("Invalid email address").optional().or(z.literal("")),
-  category: z.enum(["General", "Suggestion", "Bug Report", "Concern"]).default("General"),
+  category: z
+    .enum(["General", "Suggestion", "Bug Report", "Concern"])
+    .default("General"),
   subject: z.string().max(200).optional(),
-  message: z.string().min(10, "Message must be at least 10 characters").max(5000),
+  message: z
+    .string()
+    .min(10, "Message must be at least 10 characters")
+    .max(5000),
   rating: z.coerce.number().int().min(1).max(5).optional(),
 });
 
@@ -20,7 +25,7 @@ export type FeedbackActionResult = {
 };
 
 export async function submitFeedbackAction(
-  formData: FormData
+  formData: FormData,
 ): Promise<FeedbackActionResult> {
   const raw = {
     name: formData.get("name") as string | null,
@@ -43,7 +48,10 @@ export async function submitFeedbackAction(
   if (!result.success) {
     return {
       success: false,
-      fieldErrors: result.error.flatten().fieldErrors as Record<string, string[]>,
+      fieldErrors: result.error.flatten().fieldErrors as Record<
+        string,
+        string[]
+      >,
     };
   }
 

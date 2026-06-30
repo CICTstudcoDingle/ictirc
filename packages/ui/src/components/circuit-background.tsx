@@ -79,11 +79,17 @@ export function CircuitBackground({
       >
         <defs>
           {/* Maroon gradient for lines */}
-          <linearGradient id="maroon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient
+            id="maroon-gradient"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
             <stop offset="0%" stopColor="#800000" />
             <stop offset="100%" stopColor="#a00000" />
           </linearGradient>
-          
+
           {/* Gold glow filter */}
           <filter id="gold-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="3" result="blur" />
@@ -92,7 +98,7 @@ export function CircuitBackground({
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          
+
           {/* Maroon glow filter */}
           <filter id="maroon-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="2" result="blur" />
@@ -104,19 +110,53 @@ export function CircuitBackground({
         </defs>
 
         {/* Circuit Lines - Vertical drops */}
-        <g stroke="url(#maroon-gradient)" strokeWidth="2" fill="none" filter="url(#maroon-glow)">
-          <path className="circuit-line" d="M100,0 L100,200 L150,250 L150,400" />
-          <path className="circuit-line" d="M200,0 L200,150 L250,200 L250,300 L200,350 L200,500" />
-          <path className="circuit-line" d="M350,0 L350,100 L400,150 L400,350" />
-          <path className="circuit-line" d="M500,0 L500,250 L550,300 L550,450 L500,500 L500,600" />
-          <path className="circuit-line" d="M650,0 L650,180 L700,230 L700,380" />
-          <path className="circuit-line" d="M800,0 L800,120 L850,170 L850,320 L800,370 L800,520" />
-          <path className="circuit-line" d="M950,0 L950,200 L1000,250 L1000,400" />
-          <path className="circuit-line" d="M1100,0 L1100,150 L1050,200 L1050,350 L1100,400 L1100,550" />
+        <g
+          stroke="url(#maroon-gradient)"
+          strokeWidth="2"
+          fill="none"
+          filter="url(#maroon-glow)"
+        >
+          <path
+            className="circuit-line"
+            d="M100,0 L100,200 L150,250 L150,400"
+          />
+          <path
+            className="circuit-line"
+            d="M200,0 L200,150 L250,200 L250,300 L200,350 L200,500"
+          />
+          <path
+            className="circuit-line"
+            d="M350,0 L350,100 L400,150 L400,350"
+          />
+          <path
+            className="circuit-line"
+            d="M500,0 L500,250 L550,300 L550,450 L500,500 L500,600"
+          />
+          <path
+            className="circuit-line"
+            d="M650,0 L650,180 L700,230 L700,380"
+          />
+          <path
+            className="circuit-line"
+            d="M800,0 L800,120 L850,170 L850,320 L800,370 L800,520"
+          />
+          <path
+            className="circuit-line"
+            d="M950,0 L950,200 L1000,250 L1000,400"
+          />
+          <path
+            className="circuit-line"
+            d="M1100,0 L1100,150 L1050,200 L1050,350 L1100,400 L1100,550"
+          />
         </g>
 
         {/* Horizontal connectors */}
-        <g stroke="url(#maroon-gradient)" strokeWidth="1.5" fill="none" filter="url(#maroon-glow)">
+        <g
+          stroke="url(#maroon-gradient)"
+          strokeWidth="1.5"
+          fill="none"
+          filter="url(#maroon-glow)"
+        >
           <path className="circuit-line" d="M100,200 L200,200" />
           <path className="circuit-line" d="M250,300 L350,300" />
           <path className="circuit-line" d="M400,350 L500,350" />

@@ -18,15 +18,22 @@ export function Header() {
   const toggleOrgDropdown = () => setIsOrgDropdownOpen((prev) => !prev);
 
   const closeResourcesDropdown = () => setIsResourcesDropdownOpen(false);
-  const toggleResourcesDropdown = () => setIsResourcesDropdownOpen((prev) => !prev);
+  const toggleResourcesDropdown = () =>
+    setIsResourcesDropdownOpen((prev) => !prev);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (orgDropdownRef.current && !orgDropdownRef.current.contains(event.target as Node)) {
+      if (
+        orgDropdownRef.current &&
+        !orgDropdownRef.current.contains(event.target as Node)
+      ) {
         closeOrgDropdown();
       }
-      if (resourcesDropdownRef.current && !resourcesDropdownRef.current.contains(event.target as Node)) {
+      if (
+        resourcesDropdownRef.current &&
+        !resourcesDropdownRef.current.contains(event.target as Node)
+      ) {
         closeResourcesDropdown();
       }
     };
@@ -108,7 +115,7 @@ export function Header() {
                   <ChevronDown
                     className={cn(
                       "w-4 h-4 transition-transform",
-                      isOrgDropdownOpen && "rotate-180"
+                      isOrgDropdownOpen && "rotate-180",
                     )}
                   />
                 </button>
@@ -167,7 +174,7 @@ export function Header() {
                   <ChevronDown
                     className={cn(
                       "w-4 h-4 transition-transform",
-                      isResourcesDropdownOpen && "rotate-180"
+                      isResourcesDropdownOpen && "rotate-180",
                     )}
                   />
                 </button>

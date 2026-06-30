@@ -34,7 +34,7 @@ export interface SubmitPaperResult {
 
 /**
  * Submit a new paper to the repository
- * 
+ *
  * Flow:
  * 1. Validate input data
  * 2. Upload file to Supabase Storage (hot storage)
@@ -42,12 +42,14 @@ export interface SubmitPaperResult {
  * 4. Send confirmation email (async)
  */
 export async function submitPaper(
-  formData: FormData
+  formData: FormData,
 ): Promise<SubmitPaperResult> {
   try {
     // Get authenticated user (optional for submission)
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     // Extract and validate form data
     const rawData = {
@@ -58,7 +60,7 @@ export async function submitPaper(
         .map((k) => k.trim())
         .filter(Boolean),
       categoryId: formData.get("categoryId") as string,
-      authors: JSON.parse(formData.get("authors") as string || "[]"),
+      authors: JSON.parse((formData.get("authors") as string) || "[]"),
     };
 
     const file = formData.get("file") as File | null;
@@ -190,7 +192,8 @@ export async function submitPaper(
     console.error("[submitPaper] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "An unexpected error occurred",
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
     };
   }
 }
@@ -213,7 +216,11 @@ export async function getCategories() {
     return { success: true, categories };
   } catch (error) {
     console.error("[getCategories] Error:", error);
-    return { success: false, categories: [], error: "Failed to fetch categories" };
+    return {
+      success: false,
+      categories: [],
+      error: "Failed to fetch categories",
+    };
   }
 }
 

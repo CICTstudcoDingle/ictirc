@@ -15,13 +15,13 @@ export async function GET() {
 
     // Generate stream URLs for each video
     const videosWithUrls = await Promise.all(
-      videos.map(async (video: typeof videos[number]) => {
+      videos.map(async (video: (typeof videos)[number]) => {
         const streamResult = await getVideoStreamUrl(video.r2Key, 86400);
         return {
           ...video,
           streamUrl: streamResult.success ? streamResult.url : null,
         };
-      })
+      }),
     );
 
     return NextResponse.json({ videos: videosWithUrls });
@@ -29,7 +29,7 @@ export async function GET() {
     console.error("[Videos API] Error fetching videos:", error);
     return NextResponse.json(
       { error: "Failed to fetch videos" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -46,14 +46,14 @@ export async function POST(request: Request) {
     if (!title || !type || !r2Key || !editorName) {
       return NextResponse.json(
         { error: "Title, type, r2Key, and editorName are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!["PROMOTIONAL", "TEASER"].includes(type)) {
       return NextResponse.json(
         { error: "Type must be PROMOTIONAL or TEASER" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     console.error("[Videos API] Error creating video:", error);
     return NextResponse.json(
       { error: "Failed to create video" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -90,7 +90,7 @@ export async function PUT(request: Request) {
     if (!id) {
       return NextResponse.json(
         { error: "Video ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -108,7 +108,7 @@ export async function PUT(request: Request) {
     console.error("[Videos API] Error updating video:", error);
     return NextResponse.json(
       { error: "Failed to update video" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -124,7 +124,7 @@ export async function DELETE(request: Request) {
     if (!id) {
       return NextResponse.json(
         { error: "Video ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -134,10 +134,7 @@ export async function DELETE(request: Request) {
     });
 
     if (!video) {
-      return NextResponse.json(
-        { error: "Video not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Video not found" }, { status: 404 });
     }
 
     // Delete from R2
@@ -153,7 +150,7 @@ export async function DELETE(request: Request) {
     console.error("[Videos API] Error deleting video:", error);
     return NextResponse.json(
       { error: "Failed to delete video" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -10,11 +10,13 @@ import { requirePermission, requireRole } from "@/lib/rbac";
  */
 export async function updatePaperStatus(
   paperId: string,
-  newStatus: PaperStatus
+  newStatus: PaperStatus,
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -53,7 +55,7 @@ export async function updatePaperStatus(
       const dbUser = await prisma.user.findUnique({
         where: { id: user.id },
       });
-      
+
       if (dbUser?.role !== "DEAN") {
         return {
           success: false,
@@ -90,7 +92,9 @@ export async function updatePaperStatus(
 export async function assignDOI(paperId: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -112,7 +116,10 @@ export async function assignDOI(paperId: string) {
     }
 
     if (paper.status !== "ACCEPTED" && paper.status !== "PUBLISHED") {
-      return { success: false, error: "Paper must be accepted before DOI assignment" };
+      return {
+        success: false,
+        error: "Paper must be accepted before DOI assignment",
+      };
     }
 
     // Generate DOI using sequence
@@ -152,7 +159,9 @@ export async function assignDOI(paperId: string) {
 export async function revokeDOI(paperId: string, reason: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -209,7 +218,9 @@ export async function revokeDOI(paperId: string, reason: string) {
 export async function deletePaper(paperId: string, reason: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };

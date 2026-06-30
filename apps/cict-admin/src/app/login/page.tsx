@@ -17,7 +17,10 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) {
       setError(error.message);
       setLoading(false);
@@ -31,22 +34,30 @@ export default function LoginPage() {
     <div className="min-h-screen grid lg:grid-cols-2">
       <section className="hidden lg:flex items-center justify-center bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 p-12 text-white">
         <div className="max-w-xl">
-          <p className="text-sm font-mono tracking-widest uppercase text-gold">CICT Admin</p>
+          <p className="text-sm font-mono tracking-widest uppercase text-gold">
+            CICT Admin
+          </p>
           <h1 className="mt-4 text-5xl font-bold leading-tight">
             Enrollment and Cashier
             <span className="block text-gold">Management Portal</span>
           </h1>
           <p className="mt-6 text-lg text-gray-300">
-            Manual cashier posting and receipt issuance for department fee payments.
+            Manual cashier posting and receipt issuance for department fee
+            payments.
           </p>
         </div>
       </section>
 
       <section className="flex items-center justify-center p-6 sm:p-12 bg-gray-50">
-        <form onSubmit={onSubmit} className="panel w-full max-w-md p-6 sm:p-8 space-y-5">
+        <form
+          onSubmit={onSubmit}
+          className="panel w-full max-w-md p-6 sm:p-8 space-y-5"
+        >
           <div>
             <h2 className="text-2xl font-bold">Sign in</h2>
-            <p className="text-sm text-gray-600 mt-1">Use your Supabase account to continue.</p>
+            <p className="text-sm text-gray-600 mt-1">
+              Use your Supabase account to continue.
+            </p>
           </div>
 
           {error ? (
@@ -80,7 +91,11 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <button type="submit" className="btn-primary w-full" disabled={loading}>
+          <button
+            type="submit"
+            className="btn-primary w-full"
+            disabled={loading}
+          >
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

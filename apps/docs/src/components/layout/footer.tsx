@@ -16,7 +16,7 @@ export function Footer() {
       {/* Radial Spotlight & Sheen */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08)_0%,transparent_70%)]" />
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/20 to-black/40" />
-      
+
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
@@ -30,14 +30,17 @@ export function Footer() {
                 className="w-10 h-10 bg-white rounded-full p-0.5"
               />
               <div>
-                <h3 className="font-bold text-white text-lg leading-tight">ICTIRC Documentation</h3>
+                <h3 className="font-bold text-white text-lg leading-tight">
+                  ICTIRC Documentation
+                </h3>
                 <p className="text-xs text-white/70">
                   Official Technical Resource
                 </p>
               </div>
             </div>
             <p className="text-sm text-gray-200 max-w-sm mb-4">
-              Comprehensive guide for the International Conference on Technology, Innovation, Research, and Creativity platform.
+              Comprehensive guide for the International Conference on
+              Technology, Innovation, Research, and Creativity platform.
             </p>
           </div>
 
@@ -45,9 +48,27 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-white mb-4">Documentation</h4>
             <ul className="space-y-2 text-sm text-gray-300">
-              <li><Link href="/" className="hover:text-gold transition-colors">Home</Link></li>
-              <li><Link href="/getting-started" className="hover:text-gold transition-colors">Getting Started</Link></li>
-              <li><Link href="/admin" className="hover:text-gold transition-colors">Admin Guide</Link></li>
+              <li>
+                <Link href="/" className="hover:text-gold transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/getting-started"
+                  className="hover:text-gold transition-colors"
+                >
+                  Getting Started
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/admin"
+                  className="hover:text-gold transition-colors"
+                >
+                  Admin Guide
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -57,15 +78,32 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-gray-300">
               <li className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-gold" />
-                <a href="mailto:irjict@isufst.edu.ph" className="hover:text-white font-mono text-xs">irjict@isufst.edu.ph</a>
+                <a
+                  href="mailto:irjict@isufst.edu.ph"
+                  className="hover:text-white font-mono text-xs"
+                >
+                  irjict@isufst.edu.ph
+                </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-gold" />
-                <a href="mailto:cict_dingle@isufst.edu.ph" className="hover:text-white font-mono text-xs">cict_dingle@isufst.edu.ph</a>
+                <a
+                  href="mailto:cict_dingle@isufst.edu.ph"
+                  className="hover:text-white font-mono text-xs"
+                >
+                  cict_dingle@isufst.edu.ph
+                </a>
               </li>
               <li className="flex items-center gap-2">
                 <Globe className="w-3.5 h-3.5 text-gold" />
-                <a href="https://isufst.edu.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white text-xs">isufst.edu.ph</a>
+                <a
+                  href="https://isufst.edu.ph"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white text-xs"
+                >
+                  isufst.edu.ph
+                </a>
               </li>
             </ul>
           </div>
@@ -76,9 +114,11 @@ export function Footer() {
           <div className="text-sm text-gray-400">
             © {currentYear} ISUFST-CICT. All rights reserved.
           </div>
-          
+
           <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-full border border-white/10">
-             <span className="text-xs text-white/70 font-medium">Powered by CICT-ISUFST</span>
+            <span className="text-xs text-white/70 font-medium">
+              Powered by CICT-ISUFST
+            </span>
           </div>
         </div>
       </div>

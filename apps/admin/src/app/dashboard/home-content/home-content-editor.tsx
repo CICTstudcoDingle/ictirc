@@ -1,8 +1,18 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Save, Eye, EyeOff, Plus, ChevronDown, ChevronRight } from "lucide-react";
-import { upsertHomeSection, toggleHomeSectionPublished } from "@/app/actions/home-content";
+import {
+  Save,
+  Eye,
+  EyeOff,
+  Plus,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
+import {
+  upsertHomeSection,
+  toggleHomeSectionPublished,
+} from "@/app/actions/home-content";
 
 interface HomeSection {
   id: string;
@@ -47,12 +57,15 @@ export function HomeContentEditor({ sections, defaultSections }: Props) {
     };
   });
 
-  const handleSave = (section: string, data: {
-    title: string;
-    subtitle: string;
-    imageUrl: string;
-    content: Record<string, unknown>;
-  }) => {
+  const handleSave = (
+    section: string,
+    data: {
+      title: string;
+      subtitle: string;
+      imageUrl: string;
+      content: Record<string, unknown>;
+    },
+  ) => {
     startTransition(async () => {
       try {
         await upsertHomeSection({
@@ -63,7 +76,10 @@ export function HomeContentEditor({ sections, defaultSections }: Props) {
           content: data.content,
         });
         setSaveStatus((prev) => ({ ...prev, [section]: "saved" }));
-        setTimeout(() => setSaveStatus((prev) => ({ ...prev, [section]: "" })), 2000);
+        setTimeout(
+          () => setSaveStatus((prev) => ({ ...prev, [section]: "" })),
+          2000,
+        );
       } catch {
         setSaveStatus((prev) => ({ ...prev, [section]: "error" }));
       }
@@ -82,14 +98,18 @@ export function HomeContentEditor({ sections, defaultSections }: Props) {
         <div
           key={section.section}
           className={`bg-white rounded-xl border shadow-sm overflow-hidden transition-colors ${
-            section.isPublished ? "border-gray-200" : "border-orange-200 bg-orange-50/30"
+            section.isPublished
+              ? "border-gray-200"
+              : "border-orange-200 bg-orange-50/30"
           } ${isPending ? "opacity-60" : ""}`}
         >
           {/* Section Header */}
           <div
             className="flex items-center gap-4 px-6 py-4 cursor-pointer hover:bg-gray-50 transition-colors"
             onClick={() =>
-              setExpandedSection(expandedSection === section.section ? null : section.section)
+              setExpandedSection(
+                expandedSection === section.section ? null : section.section,
+              )
             }
           >
             {expandedSection === section.section ? (
@@ -112,7 +132,9 @@ export function HomeContentEditor({ sections, defaultSections }: Props) {
                 </span>
               )}
               {saveStatus[section.section] === "saved" && (
-                <span className="text-xs text-green-600 font-medium">✓ Saved</span>
+                <span className="text-xs text-green-600 font-medium">
+                  ✓ Saved
+                </span>
               )}
             </div>
           </div>
@@ -147,12 +169,15 @@ function SectionForm({
     isPublished: boolean;
     content: Record<string, unknown>;
   };
-  onSave: (section: string, data: {
-    title: string;
-    subtitle: string;
-    imageUrl: string;
-    content: Record<string, unknown>;
-  }) => void;
+  onSave: (
+    section: string,
+    data: {
+      title: string;
+      subtitle: string;
+      imageUrl: string;
+      content: Record<string, unknown>;
+    },
+  ) => void;
   onTogglePublished: (section: string) => void;
   isPending: boolean;
 }) {
@@ -160,14 +185,16 @@ function SectionForm({
   const [subtitle, setSubtitle] = useState(section.subtitle);
   const [imageUrl, setImageUrl] = useState(section.imageUrl);
   const [contentJson, setContentJson] = useState(
-    JSON.stringify(section.content, null, 2)
+    JSON.stringify(section.content, null, 2),
   );
 
   return (
     <div className="px-6 pb-6 border-t border-gray-100 space-y-4 pt-4">
       {/* Title */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Title
+        </label>
         <input
           type="text"
           value={title}
@@ -179,7 +206,9 @@ function SectionForm({
 
       {/* Subtitle */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Subtitle
+        </label>
         <textarea
           value={subtitle}
           onChange={(e) => setSubtitle(e.target.value)}
@@ -191,7 +220,9 @@ function SectionForm({
 
       {/* Image URL */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Image URL
+        </label>
         <input
           type="text"
           value={imageUrl}
@@ -204,7 +235,8 @@ function SectionForm({
       {/* Extra Content (JSON) */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Additional Content <span className="text-gray-400 text-xs">(JSON format)</span>
+          Additional Content{" "}
+          <span className="text-gray-400 text-xs">(JSON format)</span>
         </label>
         <textarea
           value={contentJson}

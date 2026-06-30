@@ -4,18 +4,13 @@ import { execSync } from "child_process";
 // Get git commit hash at build time
 let gitCommitHash = "dev";
 try {
-  gitCommitHash = execSync("git rev-parse --short HEAD")
-    .toString()
-    .trim();
+  gitCommitHash = execSync("git rev-parse --short HEAD").toString().trim();
 } catch (error) {
   console.warn("Could not retrieve git commit hash:", error);
 }
 
 const nextConfig: NextConfig = {
-  transpilePackages: [
-    "@ictirc/ui",
-    "@ictirc/seo",
-  ],
+  transpilePackages: ["@ictirc/ui", "@ictirc/seo"],
   images: {
     remotePatterns: [
       {
@@ -31,36 +26,37 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: '/manifest.json',
+        source: "/manifest.json",
         headers: [
           {
-            key: 'Content-Type',
-            value: 'application/manifest+json',
+            key: "Content-Type",
+            value: "application/manifest+json",
           },
         ],
       },
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
           {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: wss:; frame-src 'self' https://www.google.com; frame-ancestors 'none';",
+            key: "Content-Security-Policy",
+            value:
+              "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https: wss:; frame-src 'self' https://www.google.com; frame-ancestors 'none';",
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
           },
           {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
           },
         ],
       },

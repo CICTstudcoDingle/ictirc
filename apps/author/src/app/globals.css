@@ -6,14 +6,14 @@
   :root {
     /* ISUFST Maroon/Gold Brand Colors */
     --color-maroon: #800000;
-    --color-gold: #D4AF37;
-    
+    --color-gold: #d4af37;
+
     /* Background Canvas */
-    --color-paper: #FFFFFF;
-    --color-muted: #F3F4F6;
-    
+    --color-paper: #ffffff;
+    --color-muted: #f3f4f6;
+
     /* Data Grey */
-    --color-data: #4B5563;
+    --color-data: #4b5563;
   }
 }
 
@@ -22,8 +22,9 @@
     @apply bg-muted text-gray-900 antialiased;
     font-family: "Inter", system-ui, sans-serif;
   }
-  
-  code, .font-mono {
+
+  code,
+  .font-mono {
     font-family: "JetBrains Mono", monospace;
   }
 }

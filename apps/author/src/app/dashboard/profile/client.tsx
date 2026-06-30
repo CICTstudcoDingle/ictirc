@@ -1,7 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, AvatarUpload } from "@ictirc/ui";
+import {
+  Button,
+  Input,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  AvatarUpload,
+} from "@ictirc/ui";
 import { User, Save, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -22,7 +30,9 @@ interface ProfileClientProps {
 export function ProfileClient({ user, author }: ProfileClientProps) {
   const [name, setName] = useState(user.name);
   const [affiliation, setAffiliation] = useState(author?.affiliation || "");
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(user.avatarUrl || null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(
+    user.avatarUrl || null,
+  );
   const [saving, setSaving] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
@@ -67,7 +77,9 @@ export function ProfileClient({ user, author }: ProfileClientProps) {
       setAvatarUrl(data.avatarUrl);
       toast.success("Avatar uploaded successfully");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to upload avatar");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to upload avatar",
+      );
     } finally {
       setUploadingAvatar(false);
     }
@@ -98,9 +110,7 @@ export function ProfileClient({ user, author }: ProfileClientProps) {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
-        <p className="text-gray-600 mt-1">
-          Manage your account information
-        </p>
+        <p className="text-gray-600 mt-1">Manage your account information</p>
       </div>
 
       {/* Avatar Card */}

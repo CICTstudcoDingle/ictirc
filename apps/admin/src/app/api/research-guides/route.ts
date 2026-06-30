@@ -11,7 +11,7 @@ export async function GET() {
     console.error("Failed to fetch research guides:", error);
     return NextResponse.json(
       { error: "Failed to fetch research guides" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     if (!title || !category || !fileUrl) {
       return NextResponse.json(
         { error: "Title, category, and fileUrl are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     console.error("Failed to create research guide:", error);
     return NextResponse.json(
       { error: "Failed to create research guide" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -56,7 +56,7 @@ export async function PUT(request: Request) {
     if (!id) {
       return NextResponse.json(
         { error: "Guide ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -76,7 +76,7 @@ export async function PUT(request: Request) {
     console.error("Failed to update research guide:", error);
     return NextResponse.json(
       { error: "Failed to update research guide" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -89,7 +89,7 @@ export async function DELETE(request: Request) {
     if (!id) {
       return NextResponse.json(
         { error: "Guide ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -102,7 +102,7 @@ export async function DELETE(request: Request) {
     console.error("Failed to delete research guide:", error);
     return NextResponse.json(
       { error: "Failed to delete research guide" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

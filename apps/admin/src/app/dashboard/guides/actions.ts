@@ -24,17 +24,26 @@ export async function getCategories() {
   }
 }
 
-export async function createCategory(data: { name: string; description?: string }) {
+export async function createCategory(data: {
+  name: string;
+  description?: string;
+}) {
   try {
-    const slug = data.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-    
+    const slug = data.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
     // Check if slug exists
     const existing = await prisma.researchGuideCategory.findUnique({
       where: { slug },
     });
 
     if (existing) {
-      return { success: false, error: "Category with this name already exists" };
+      return {
+        success: false,
+        error: "Category with this name already exists",
+      };
     }
 
     const category = await prisma.researchGuideCategory.create({
@@ -85,7 +94,12 @@ export async function getGuides() {
   }
 }
 
-export async function createGuide(data: { title: string; categoryId: string; fileUrl: string; description?: string }) {
+export async function createGuide(data: {
+  title: string;
+  categoryId: string;
+  fileUrl: string;
+  description?: string;
+}) {
   try {
     // Get max order to append to end
     const lastGuide = await prisma.researchGuide.findFirst({
@@ -121,15 +135,17 @@ export async function createGuide(data: { title: string; categoryId: string; fil
   }
 }
 
-export async function updateGuideOrder(guides: { id: string; order: number }[]) {
+export async function updateGuideOrder(
+  guides: { id: string; order: number }[],
+) {
   try {
     await prisma.$transaction(
       guides.map((g) =>
         prisma.researchGuide.update({
           where: { id: g.id },
           data: { order: g.order },
-        })
-      )
+        }),
+      ),
     );
     revalidatePath("/dashboard/guides");
     return { success: true };

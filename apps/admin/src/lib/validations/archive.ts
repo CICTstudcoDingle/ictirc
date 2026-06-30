@@ -25,7 +25,11 @@ export const issueSchema = z.object({
   issueNumber: z.number().int().positive(),
   month: z.string().optional(),
   publishedDate: z.date().or(z.string().transform((str) => new Date(str))),
-  issn: z.string().regex(/^\d{4}-\d{4}$/).optional().or(z.literal("")),
+  issn: z
+    .string()
+    .regex(/^\d{4}-\d{4}$/)
+    .optional()
+    .or(z.literal("")),
   theme: z.string().optional(),
   description: z.string().optional(),
   coverImageUrl: z.string().url().optional().or(z.literal("")),
@@ -50,7 +54,11 @@ export const conferenceSchema = z.object({
   fullName: z.string().optional(),
   description: z.string().optional(),
   startDate: z.date().or(z.string().transform((str) => new Date(str))),
-  endDate: z.date().or(z.string().transform((str) => new Date(str))).optional().or(z.literal("")),
+  endDate: z
+    .date()
+    .or(z.string().transform((str) => new Date(str)))
+    .optional()
+    .or(z.literal("")),
   location: z.string().optional(),
   venue: z.string().optional(),
   theme: z.string().optional(),
@@ -81,7 +89,9 @@ export const archivedPaperAuthorSchema = z.object({
   isCorresponding: z.boolean().default(false),
 });
 
-export type ArchivedPaperAuthorInput = z.infer<typeof archivedPaperAuthorSchema>;
+export type ArchivedPaperAuthorInput = z.infer<
+  typeof archivedPaperAuthorSchema
+>;
 
 // ============================================
 // ARCHIVED PAPER SCHEMAS
@@ -97,8 +107,14 @@ export const archivedPaperSchema = z.object({
   pageStart: z.number().int().positive().optional(),
   pageEnd: z.number().int().positive().optional(),
   publishedDate: z.date().or(z.string().transform((str) => new Date(str))),
-  submittedDate: z.date().or(z.string().transform((str) => new Date(str))).optional(),
-  acceptedDate: z.date().or(z.string().transform((str) => new Date(str))).optional(),
+  submittedDate: z
+    .date()
+    .or(z.string().transform((str) => new Date(str)))
+    .optional(),
+  acceptedDate: z
+    .date()
+    .or(z.string().transform((str) => new Date(str)))
+    .optional(),
   categoryId: z.string().cuid(),
   issueId: z.string().cuid(),
   authors: z.array(archivedPaperAuthorSchema).min(1),
@@ -111,19 +127,23 @@ export const updateArchivedPaperSchema = archivedPaperSchema.partial().extend({
 });
 
 export type ArchivedPaperInput = z.infer<typeof archivedPaperSchema>;
-export type UpdateArchivedPaperInput = z.infer<typeof updateArchivedPaperSchema>;
+export type UpdateArchivedPaperInput = z.infer<
+  typeof updateArchivedPaperSchema
+>;
 
 // ============================================
 // BATCH UPLOAD SCHEMAS
 // ============================================
 
-export const batchUploadPaperSchema = archivedPaperSchema.omit({
-  pdfUrl: true,
-  docxUrl: true,
-}).extend({
-  pdfFileName: z.string(),
-  docxFileName: z.string().optional(),
-});
+export const batchUploadPaperSchema = archivedPaperSchema
+  .omit({
+    pdfUrl: true,
+    docxUrl: true,
+  })
+  .extend({
+    pdfFileName: z.string(),
+    docxFileName: z.string().optional(),
+  });
 
 export const batchUploadSchema = z.object({
   issueId: z.string().cuid(),

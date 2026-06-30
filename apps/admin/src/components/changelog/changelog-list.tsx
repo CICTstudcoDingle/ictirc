@@ -49,7 +49,10 @@ export function ChangelogList({ releases, userId }: ChangelogListProps) {
     setLoading(null);
 
     if (result.success) {
-      toast.success("Release publish status updated", "The release has been updated successfully");
+      toast.success(
+        "Release publish status updated",
+        "The release has been updated successfully",
+      );
     } else {
       toast.error("Update failed", result.error || "Failed to update release");
     }
@@ -65,7 +68,10 @@ export function ChangelogList({ releases, userId }: ChangelogListProps) {
     setLoading(null);
 
     if (result.success) {
-      toast.success("Release deleted", "The release has been deleted successfully");
+      toast.success(
+        "Release deleted",
+        "The release has been deleted successfully",
+      );
     } else {
       toast.error("Delete failed", result.error || "Failed to delete release");
     }
@@ -191,10 +197,16 @@ export function ChangelogList({ releases, userId }: ChangelogListProps) {
                   >
                     <span
                       className={`px-2 py-1 rounded text-xs font-medium whitespace-nowrap ${
-                        changeTypeColors[entry.changeType as keyof typeof changeTypeColors]
+                        changeTypeColors[
+                          entry.changeType as keyof typeof changeTypeColors
+                        ]
                       }`}
                     >
-                      {changeTypeLabels[entry.changeType as keyof typeof changeTypeLabels]}
+                      {
+                        changeTypeLabels[
+                          entry.changeType as keyof typeof changeTypeLabels
+                        ]
+                      }
                     </span>
                     <div className="flex-1">
                       <p className="font-medium">{entry.title}</p>

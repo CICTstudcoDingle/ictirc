@@ -2,7 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, Home, FileText, Calendar, BookOpen, HelpCircle, Info, PlusCircle, Users, Award, Film } from "lucide-react";
+import {
+  X,
+  Home,
+  FileText,
+  Calendar,
+  BookOpen,
+  HelpCircle,
+  Info,
+  PlusCircle,
+  Users,
+  Award,
+  Film,
+} from "lucide-react";
 import { cn } from "@ictirc/ui";
 
 interface MobileNavProps {
@@ -20,7 +32,12 @@ const navItems = [
   { href: "/guides", label: "Guides", icon: BookOpen },
   { href: "/conferences", label: "Conferences", icon: Calendar },
   { href: "/archive", label: "Archive", icon: FileText },
-  { href: "/submit", label: "Submit Research", icon: PlusCircle, highlight: true },
+  {
+    href: "/submit",
+    label: "Submit Research",
+    icon: PlusCircle,
+    highlight: true,
+  },
 ];
 
 export function MobileNav({ isOpen, onClose }: MobileNavProps) {
@@ -40,7 +57,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-[70] w-72 bg-white shadow-2xl md:hidden transform transition-transform duration-300 ease-in-out",
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex flex-col h-full">
@@ -81,11 +98,16 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                     isActive
                       ? "bg-maroon text-white shadow-md shadow-maroon/20"
                       : item.highlight
-                      ? "text-maroon bg-maroon/5 border border-maroon/20"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-maroon"
+                        ? "text-maroon bg-maroon/5 border border-maroon/20"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-maroon",
                   )}
                 >
-                  <item.icon className={cn("w-5 h-5", isActive ? "text-white" : "text-current")} />
+                  <item.icon
+                    className={cn(
+                      "w-5 h-5",
+                      isActive ? "text-white" : "text-current",
+                    )}
+                  />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -98,8 +120,8 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
               Institutional Repository
             </p>
             <p className="text-[10px] text-gray-400 text-center leading-relaxed">
-              International Research Journal on Information and Communications Technology
-              © {new Date().getFullYear()} ISUFST
+              International Research Journal on Information and Communications
+              Technology © {new Date().getFullYear()} ISUFST
             </p>
           </div>
         </div>

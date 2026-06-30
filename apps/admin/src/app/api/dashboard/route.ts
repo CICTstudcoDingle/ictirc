@@ -34,17 +34,19 @@ export async function GET() {
       // Total users
       prisma.user.count().catch(() => 0),
       // Recent 5 paper submissions
-      prisma.paper.findMany({
-        take: 5,
-        orderBy: { createdAt: "desc" },
-        include: {
-          authors: {
-            include: { author: true },
-            orderBy: { order: "asc" },
-            take: 1,
+      prisma.paper
+        .findMany({
+          take: 5,
+          orderBy: { createdAt: "desc" },
+          include: {
+            authors: {
+              include: { author: true },
+              orderBy: { order: "asc" },
+              take: 1,
+            },
           },
-        },
-      }).catch(() => []),
+        })
+        .catch(() => []),
     ]);
 
     // Format recent papers for response
@@ -73,7 +75,7 @@ export async function GET() {
     console.error("Failed to fetch dashboard stats:", error);
     return NextResponse.json(
       { error: "Failed to fetch dashboard stats", details: String(error) },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

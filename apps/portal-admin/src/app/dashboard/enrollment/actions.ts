@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 function isValidStatusTransition(
   fromStatus: CictEnrollmentStatus,
-  toStatus: CictEnrollmentStatus
+  toStatus: CictEnrollmentStatus,
 ) {
   const allowed: Record<CictEnrollmentStatus, CictEnrollmentStatus[]> = {
     SUBMITTED: ["APPROVED", "REJECTED"],
@@ -19,7 +19,9 @@ function isValidStatusTransition(
 
 export async function updateEnrollmentStatusAction(formData: FormData) {
   const enrollmentId = String(formData.get("enrollmentId") || "").trim();
-  const newStatus = String(formData.get("newStatus") || "").trim() as CictEnrollmentStatus;
+  const newStatus = String(
+    formData.get("newStatus") || "",
+  ).trim() as CictEnrollmentStatus;
   const section = String(formData.get("section") || "").trim();
 
   if (!enrollmentId || !newStatus) return;

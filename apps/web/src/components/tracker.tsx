@@ -1,7 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Clock, FileText, Settings, ShieldCheck, UserCheck, AlertCircle, FileSearch, Send, Sparkles } from "lucide-react";
+import {
+  Check,
+  Clock,
+  FileText,
+  Settings,
+  ShieldCheck,
+  UserCheck,
+  AlertCircle,
+  FileSearch,
+  Send,
+  Sparkles,
+} from "lucide-react";
 import { cn } from "@ictirc/ui";
 
 interface PublicTrackerProps {
@@ -9,13 +20,49 @@ interface PublicTrackerProps {
 }
 
 const STEPS = [
-  { id: 1, label: "Submission Received", icon: Send, description: "Your manuscript has been successfully uploaded to our secure vault." },
-  { id: 2, label: "Initial Screening", icon: ShieldCheck, description: "Our team is performing technical and plagiarism checks." },
-  { id: 3, label: "Manuscript ID Assigned", icon: FileText, description: "A unique identifier has been generated for tracking." },
-  { id: 4, label: "Editorial Review", icon: FileSearch, description: "Your paper is under peer review by subject matter experts." },
-  { id: 5, label: "Decision Notification", icon: AlertCircle, description: "The editorial board is preparing the final decision." },
-  { id: 6, label: "Author Formalities", icon: Settings, description: "Processing copyright and final publishing agreements." },
-  { id: 7, label: "Published", icon: Sparkles, description: "Your research is now live and indexed on IRJICT." },
+  {
+    id: 1,
+    label: "Submission Received",
+    icon: Send,
+    description:
+      "Your manuscript has been successfully uploaded to our secure vault.",
+  },
+  {
+    id: 2,
+    label: "Initial Screening",
+    icon: ShieldCheck,
+    description: "Our team is performing technical and plagiarism checks.",
+  },
+  {
+    id: 3,
+    label: "Manuscript ID Assigned",
+    icon: FileText,
+    description: "A unique identifier has been generated for tracking.",
+  },
+  {
+    id: 4,
+    label: "Editorial Review",
+    icon: FileSearch,
+    description: "Your paper is under peer review by subject matter experts.",
+  },
+  {
+    id: 5,
+    label: "Decision Notification",
+    icon: AlertCircle,
+    description: "The editorial board is preparing the final decision.",
+  },
+  {
+    id: 6,
+    label: "Author Formalities",
+    icon: Settings,
+    description: "Processing copyright and final publishing agreements.",
+  },
+  {
+    id: 7,
+    label: "Published",
+    icon: Sparkles,
+    description: "Your research is now live and indexed on IRJICT.",
+  },
 ];
 
 export function PublicTracker({ currentStep }: PublicTrackerProps) {
@@ -39,7 +86,7 @@ export function PublicTracker({ currentStep }: PublicTrackerProps) {
                 transition={{ delay: idx * 0.1, duration: 0.5 }}
                 className={cn(
                   "flex gap-6 group relative",
-                  isFuture && "opacity-50 grayscale"
+                  isFuture && "opacity-50 grayscale",
                 )}
               >
                 {/* Step Indicator */}
@@ -47,16 +94,20 @@ export function PublicTracker({ currentStep }: PublicTrackerProps) {
                   <div
                     className={cn(
                       "w-16 h-16 rounded-2xl flex items-center justify-center border-2 transition-all duration-500 shadow-sm relative z-10",
-                      isCompleted ? "bg-maroon border-maroon text-white" :
-                      isCurrent ? "bg-white border-maroon text-maroon shadow-[0_0_20px_rgba(128,0,0,0.2)]" :
-                      "bg-white border-gray-200 text-gray-300"
+                      isCompleted
+                        ? "bg-maroon border-maroon text-white"
+                        : isCurrent
+                          ? "bg-white border-maroon text-maroon shadow-[0_0_20px_rgba(128,0,0,0.2)]"
+                          : "bg-white border-gray-200 text-gray-300",
                     )}
                   >
-                    <s.icon className={cn("w-7 h-7", isCurrent && "animate-pulse")} />
-                    
+                    <s.icon
+                      className={cn("w-7 h-7", isCurrent && "animate-pulse")}
+                    />
+
                     {/* Current Step Ping Effect */}
                     {isCurrent && (
-                        <span className="absolute -inset-1 rounded-2xl bg-maroon opacity-20 animate-ping" />
+                      <span className="absolute -inset-1 rounded-2xl bg-maroon opacity-20 animate-ping" />
                     )}
                   </div>
                 </div>
@@ -64,10 +115,14 @@ export function PublicTracker({ currentStep }: PublicTrackerProps) {
                 {/* Content */}
                 <div className="pt-2">
                   <div className="flex items-center gap-3 mb-1">
-                    <h3 className={cn(
-                      "text-lg font-bold transition-colors",
-                      (isCompleted || isCurrent) ? "text-gray-900" : "text-gray-400"
-                    )}>
+                    <h3
+                      className={cn(
+                        "text-lg font-bold transition-colors",
+                        isCompleted || isCurrent
+                          ? "text-gray-900"
+                          : "text-gray-400",
+                      )}
+                    >
                       {s.label}
                     </h3>
                     {isCurrent && (
@@ -75,7 +130,7 @@ export function PublicTracker({ currentStep }: PublicTrackerProps) {
                         In Progress
                       </span>
                     )}
-                     {isCompleted && (
+                    {isCompleted && (
                       <span className="text-maroon">
                         <Check className="w-5 h-5" />
                       </span>

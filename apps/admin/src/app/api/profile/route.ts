@@ -13,10 +13,7 @@ export async function PUT(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { name, position } = await request.json();
@@ -35,7 +32,7 @@ export async function PUT(request: NextRequest) {
     console.error("[Admin Profile API] Error:", error);
     return NextResponse.json(
       { error: "Failed to update profile" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

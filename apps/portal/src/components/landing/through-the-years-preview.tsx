@@ -179,11 +179,11 @@ export default function ThroughTheYearsPreview({
               end: "top 60%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       });
     },
-    { scope: sectionRef, dependencies: [terms] }
+    { scope: sectionRef, dependencies: [terms] },
   );
 
   let cardIndex = 0;
@@ -240,8 +240,7 @@ export default function ThroughTheYearsPreview({
                 {termData.highlights
                   .filter((h) => h.is_featured)
                   .map((highlight) => {
-                    const IconComponent =
-                      iconMap[highlight.icon] || Star;
+                    const IconComponent = iconMap[highlight.icon] || Star;
                     const colors =
                       colorMap[highlight.accent_color] || colorMap.gold;
                     const currentIndex = cardIndex++;
@@ -257,9 +256,7 @@ export default function ThroughTheYearsPreview({
                         <div
                           className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4 ${colors.bg} ${colors.border} border`}
                         >
-                          <IconComponent
-                            className={`w-6 h-6 ${colors.text}`}
-                          />
+                          <IconComponent className={`w-6 h-6 ${colors.text}`} />
                         </div>
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-3 ${colors.bg} ${colors.text}`}

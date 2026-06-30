@@ -41,8 +41,8 @@ module.exports = {
         display: ["var(--font-oswald)", "system-ui", "sans-serif"],
       },
       animation: {
-        "ticker": "ticker 60s linear infinite",
-        "float": "float 6s ease-in-out infinite",
+        ticker: "ticker 60s linear infinite",
+        float: "float 6s ease-in-out infinite",
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
       },
       keyframes: {

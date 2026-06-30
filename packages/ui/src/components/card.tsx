@@ -24,7 +24,7 @@ const cardVariants = cva(
       variant: "default",
       padding: "md",
     },
-  }
+  },
 );
 
 export interface CardProps
@@ -44,12 +44,15 @@ function CardHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return <div className={cn("mb-4", className)} {...props} />;
 }
 
-function CardTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) {
+function CardTitle({
+  className,
+  ...props
+}: HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h3
       className={cn(
         "text-lg font-semibold text-gray-900 tracking-tight",
-        className
+        className,
       )}
       {...props}
     />

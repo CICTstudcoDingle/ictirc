@@ -1,8 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Database, Cloud, Download, Loader2, HardDrive, RefreshCw } from "lucide-react";
-import { Button, Card, CardHeader, CardTitle, CardDescription, CardContent } from "@ictirc/ui";
+import {
+  Database,
+  Cloud,
+  Download,
+  Loader2,
+  HardDrive,
+  RefreshCw,
+} from "lucide-react";
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@ictirc/ui";
 import { toast } from "sonner";
 
 interface BackupFile {
@@ -59,7 +73,7 @@ export default function BackupSettingsPage() {
       }
 
       toast.success("Database backup created successfully");
-      
+
       if (data.driveUpload?.success) {
         toast.success("Uploaded to Google Drive");
       } else if (uploadToGdrive && data.driveUpload?.error) {
@@ -150,7 +164,9 @@ export default function BackupSettingsPage() {
                 onClick={loadBackups}
                 disabled={loading}
               >
-                <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+                <RefreshCw
+                  className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
+                />
               </Button>
             </div>
           </CardHeader>

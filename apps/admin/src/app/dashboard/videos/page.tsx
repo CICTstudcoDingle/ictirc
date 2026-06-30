@@ -1,7 +1,15 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Upload, Trash2, Video, Film, Eye, EyeOff, Loader2 } from "lucide-react";
+import {
+  Upload,
+  Trash2,
+  Video,
+  Film,
+  Eye,
+  EyeOff,
+  Loader2,
+} from "lucide-react";
 import { cn } from "@ictirc/ui";
 
 interface VideoRecord {
@@ -29,7 +37,9 @@ export default function VideosPage() {
   // Form state
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [videoType, setVideoType] = useState<"promotional" | "teaser">("promotional");
+  const [videoType, setVideoType] = useState<"promotional" | "teaser">(
+    "promotional",
+  );
   const [editorName, setEditorName] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -190,7 +200,8 @@ export default function VideosPage() {
 
   const formatFileSize = (bytes: number) => {
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    if (bytes < 1024 * 1024 * 1024)
+      return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
     return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
   };
 
@@ -200,7 +211,8 @@ export default function VideosPage() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Promotional Videos</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Upload and manage promotional videos for CICT and IT Week event teasers.
+          Upload and manage promotional videos for CICT and IT Week event
+          teasers.
         </p>
       </div>
 
@@ -208,13 +220,23 @@ export default function VideosPage() {
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
           {error}
-          <button onClick={() => setError(null)} className="float-right font-bold">&times;</button>
+          <button
+            onClick={() => setError(null)}
+            className="float-right font-bold"
+          >
+            &times;
+          </button>
         </div>
       )}
       {success && (
         <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
           {success}
-          <button onClick={() => setSuccess(null)} className="float-right font-bold">&times;</button>
+          <button
+            onClick={() => setSuccess(null)}
+            className="float-right font-bold"
+          >
+            &times;
+          </button>
         </div>
       )}
 
@@ -286,7 +308,7 @@ export default function VideosPage() {
                     "flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 text-sm font-medium transition-all",
                     videoType === "promotional"
                       ? "border-maroon bg-maroon/5 text-maroon"
-                      : "border-gray-200 text-gray-500 hover:border-gray-300"
+                      : "border-gray-200 text-gray-500 hover:border-gray-300",
                   )}
                 >
                   <Film className="w-4 h-4" />
@@ -299,7 +321,7 @@ export default function VideosPage() {
                     "flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 text-sm font-medium transition-all",
                     videoType === "teaser"
                       ? "border-maroon bg-maroon/5 text-maroon"
-                      : "border-gray-200 text-gray-500 hover:border-gray-300"
+                      : "border-gray-200 text-gray-500 hover:border-gray-300",
                   )}
                 >
                   <Video className="w-4 h-4" />
@@ -353,7 +375,7 @@ export default function VideosPage() {
               "w-full md:w-auto px-6 py-2.5 rounded-md text-sm font-semibold text-white transition-all",
               uploading || !selectedFile
                 ? "bg-gray-300 cursor-not-allowed"
-                : "bg-maroon hover:shadow-[4px_4px_0px_0px_rgba(212,175,55,1)]"
+                : "bg-maroon hover:shadow-[4px_4px_0px_0px_rgba(212,175,55,1)]",
             )}
           >
             {uploading ? (
@@ -374,7 +396,9 @@ export default function VideosPage() {
       {/* Video List */}
       <div className="bg-white border border-gray-200 rounded-xl shadow-sm">
         <div className="p-6 border-b border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900">Uploaded Videos</h2>
+          <h2 className="text-lg font-semibold text-gray-900">
+            Uploaded Videos
+          </h2>
         </div>
 
         {loading ? (
@@ -389,7 +413,10 @@ export default function VideosPage() {
         ) : (
           <div className="divide-y divide-gray-100">
             {videos.map((video) => (
-              <div key={video.id} className="p-4 md:p-6 flex flex-col md:flex-row md:items-center gap-4">
+              <div
+                key={video.id}
+                className="p-4 md:p-6 flex flex-col md:flex-row md:items-center gap-4"
+              >
                 {/* Video Preview */}
                 <div className="w-full md:w-48 flex-shrink-0">
                   {video.streamUrl ? (
@@ -409,16 +436,20 @@ export default function VideosPage() {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-semibold text-gray-900 truncate">{video.title}</h3>
+                    <h3 className="font-semibold text-gray-900 truncate">
+                      {video.title}
+                    </h3>
                     <span
                       className={cn(
                         "inline-flex px-2 py-0.5 rounded-full text-xs font-medium",
                         video.type === "PROMOTIONAL"
                           ? "bg-maroon/10 text-maroon"
-                          : "bg-amber-100 text-amber-700"
+                          : "bg-amber-100 text-amber-700",
                       )}
                     >
-                      {video.type === "PROMOTIONAL" ? "CICT Promo" : "IT Week Teaser"}
+                      {video.type === "PROMOTIONAL"
+                        ? "CICT Promo"
+                        : "IT Week Teaser"}
                     </span>
                     {!video.isPublished && (
                       <span className="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
@@ -427,7 +458,9 @@ export default function VideosPage() {
                     )}
                   </div>
                   {video.description && (
-                    <p className="text-sm text-gray-500 line-clamp-1 mb-1">{video.description}</p>
+                    <p className="text-sm text-gray-500 line-clamp-1 mb-1">
+                      {video.description}
+                    </p>
                   )}
                   <p className="text-xs text-gray-400 font-mono">
                     Edited by {video.editorName} &middot;{" "}

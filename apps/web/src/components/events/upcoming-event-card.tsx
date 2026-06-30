@@ -39,10 +39,10 @@ export async function UpcomingEventCard() {
   const eventStartDate = new Date(upcomingEvent.startDate);
   const isUpcoming = eventStartDate >= now;
   const daysUntil = Math.ceil(
-    (eventStartDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+    (eventStartDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
   );
   const daysSince = Math.ceil(
-    (now.getTime() - eventStartDate.getTime()) / (1000 * 60 * 60 * 24)
+    (now.getTime() - eventStartDate.getTime()) / (1000 * 60 * 60 * 24),
   );
 
   // Serialize the conference data for client component

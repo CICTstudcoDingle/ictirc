@@ -13,7 +13,15 @@ interface StatsCounterProps {
   className?: string;
 }
 
-function AnimatedNumber({ value, suffix = "", prefix = "" }: { value: number; suffix?: string; prefix?: string }) {
+function AnimatedNumber({
+  value,
+  suffix = "",
+  prefix = "",
+}: {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+}) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const hasAnimated = useRef(false);
@@ -48,7 +56,7 @@ function AnimatedNumber({ value, suffix = "", prefix = "" }: { value: number; su
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
 
     observer.observe(element);
@@ -56,21 +64,32 @@ function AnimatedNumber({ value, suffix = "", prefix = "" }: { value: number; su
   }, [value]);
 
   return (
-    <div ref={ref} className="text-4xl md:text-5xl lg:text-6xl font-bold text-maroon tabular-nums">
-      {prefix}{count.toLocaleString()}{suffix}
+    <div
+      ref={ref}
+      className="text-4xl md:text-5xl lg:text-6xl font-bold text-maroon tabular-nums"
+    >
+      {prefix}
+      {count.toLocaleString()}
+      {suffix}
     </div>
   );
 }
 
 export function StatsCounter({ stats, className }: StatsCounterProps) {
   return (
-    <div className={cn("grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6", className)}>
+    <div
+      className={cn(
+        "grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6",
+        className,
+      )}
+    >
       {stats.map((stat, index) => (
-        <div
-          key={stat.label}
-          className="stat-card group"
-        >
-          <AnimatedNumber value={stat.value} suffix={stat.suffix} prefix={stat.prefix} />
+        <div key={stat.label} className="stat-card group">
+          <AnimatedNumber
+            value={stat.value}
+            suffix={stat.suffix}
+            prefix={stat.prefix}
+          />
           <p className="text-sm md:text-base text-gray-500 font-medium mt-2 group-hover:text-maroon transition-colors">
             {stat.label}
           </p>

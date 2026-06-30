@@ -10,7 +10,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Conferences & Events | ICTIRC",
-  description: "Academic conferences and events hosted by the ISUFST College of Information and Computing Technology.",
+  description:
+    "Academic conferences and events hosted by the ISUFST College of Information and Computing Technology.",
 };
 
 interface Conference {
@@ -35,19 +36,27 @@ function formatDate(date: Date): string {
 function formatDateRange(startDate: Date, endDate: Date | null): string {
   const start = formatDate(startDate);
   if (!endDate) return start;
-  
+
   const end = formatDate(endDate);
   if (start === end) return start;
-  
+
   return `${start} - ${end}`;
 }
 
 function getDaysUntil(date: Date): number {
   const now = new Date();
-  return Math.ceil((new Date(date).getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  return Math.ceil(
+    (new Date(date).getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+  );
 }
 
-function ConferenceCard({ conference, isPast }: { conference: Conference; isPast: boolean }) {
+function ConferenceCard({
+  conference,
+  isPast,
+}: {
+  conference: Conference;
+  isPast: boolean;
+}) {
   const daysUntil = getDaysUntil(conference.startDate);
   const showCountdown = !isPast && daysUntil > 0 && daysUntil <= 30;
 
@@ -85,7 +94,9 @@ function ConferenceCard({ conference, isPast }: { conference: Conference; isPast
             </div>
           )}
 
-          <h3 className={`text-xl font-bold mb-2 group-hover:text-maroon transition-colors ${isPast ? "text-gray-600" : "text-gray-900"}`}>
+          <h3
+            className={`text-xl font-bold mb-2 group-hover:text-maroon transition-colors ${isPast ? "text-gray-600" : "text-gray-900"}`}
+          >
             {conference.name}
           </h3>
 
@@ -103,7 +114,9 @@ function ConferenceCard({ conference, isPast }: { conference: Conference; isPast
           </div>
 
           {conference.description && (
-            <p className={`line-clamp-2 mb-4 ${isPast ? "text-gray-500" : "text-gray-600"}`}>
+            <p
+              className={`line-clamp-2 mb-4 ${isPast ? "text-gray-500" : "text-gray-600"}`}
+            >
               {conference.description}
             </p>
           )}
@@ -128,9 +141,14 @@ export default async function ConferencesPage() {
 
   const upcoming = conferences
     .filter((conference) => new Date(conference.startDate) >= now)
-    .sort((a: Conference, b: Conference) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    .sort(
+      (a: Conference, b: Conference) =>
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+    );
 
-  const past = conferences.filter((conference) => new Date(conference.startDate) < now);
+  const past = conferences.filter(
+    (conference) => new Date(conference.startDate) < now,
+  );
 
   return (
     <div className="pt-14 md:pt-16 min-h-screen bg-gray-50">
@@ -143,7 +161,8 @@ export default async function ConferencesPage() {
               Conferences & <span className="text-gold">Events</span>
             </h1>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Join us at academic conferences and events hosted by the ISUFST College of Information and Communications Technology.
+              Join us at academic conferences and events hosted by the ISUFST
+              College of Information and Communications Technology.
             </p>
           </ScrollAnimation>
         </div>
@@ -156,7 +175,9 @@ export default async function ConferencesPage() {
           <section className="mb-16">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-4 h-4 rounded-full bg-gold animate-pulse" />
-              <h2 className="text-2xl font-bold text-gray-900">Upcoming Events</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Upcoming Events
+              </h2>
               <span className="bg-gold/20 text-amber-800 px-2 py-0.5 rounded-full text-sm font-medium">
                 {upcoming.length}
               </span>
@@ -164,7 +185,11 @@ export default async function ConferencesPage() {
 
             <div className="relative pl-8 border-l-2 border-gold/30 space-y-8">
               {upcoming.map((conference: Conference, index: number) => (
-                <ScrollAnimation key={conference.id} direction="up" staggerIndex={index}>
+                <ScrollAnimation
+                  key={conference.id}
+                  direction="up"
+                  staggerIndex={index}
+                >
                   <div className="relative">
                     <div className="absolute -left-[2.45rem] w-4 h-4 rounded-full bg-gold border-4 border-white" />
                     <ConferenceCard conference={conference} isPast={false} />
@@ -188,7 +213,11 @@ export default async function ConferencesPage() {
 
             <div className="relative pl-8 border-l-2 border-gray-200 space-y-8">
               {past.map((conference: Conference, index: number) => (
-                <ScrollAnimation key={conference.id} direction="up" staggerIndex={index}>
+                <ScrollAnimation
+                  key={conference.id}
+                  direction="up"
+                  staggerIndex={index}
+                >
                   <div className="relative">
                     <div className="absolute -left-[2.45rem] w-4 h-4 rounded-full bg-gray-300 border-4 border-white" />
                     <ConferenceCard conference={conference} isPast={true} />
@@ -203,7 +232,9 @@ export default async function ConferencesPage() {
         {conferences.length === 0 && (
           <div className="text-center py-16">
             <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">No Events Yet</h3>
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">
+              No Events Yet
+            </h3>
             <p className="text-gray-500 mb-6">
               Check back soon for upcoming conferences and events.
             </p>

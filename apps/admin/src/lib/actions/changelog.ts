@@ -70,7 +70,7 @@ export async function createRelease(formData: FormData, userId: string) {
 export async function updateRelease(
   releaseId: string,
   formData: FormData,
-  userId: string
+  userId: string,
 ) {
   try {
     const data = {
@@ -151,7 +151,10 @@ export async function addChangelogEntry(releaseId: string, formData: FormData) {
   }
 }
 
-export async function updateChangelogEntry(entryId: string, formData: FormData) {
+export async function updateChangelogEntry(
+  entryId: string,
+  formData: FormData,
+) {
   try {
     const data = {
       title: formData.get("title") as string,

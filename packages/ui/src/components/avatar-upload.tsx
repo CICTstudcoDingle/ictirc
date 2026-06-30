@@ -95,7 +95,7 @@ export function AvatarUpload({
 
       onFileSelect(file);
     },
-    [onFileSelect, maxSizeBytes]
+    [onFileSelect, maxSizeBytes],
   );
 
   const onDragOver = (e: React.DragEvent) => {
@@ -160,7 +160,7 @@ export function AvatarUpload({
           isDragOver
             ? "border-maroon ring-4 ring-maroon/20"
             : "border-gray-200 hover:border-maroon/30",
-          isUploading && "pointer-events-none"
+          isUploading && "pointer-events-none",
         )}
       >
         {/* Avatar Image or Fallback */}
@@ -186,7 +186,7 @@ export function AvatarUpload({
         <div
           className={cn(
             "absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity",
-            isUploading ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+            isUploading ? "opacity-100" : "opacity-0 group-hover:opacity-100",
           )}
         >
           {isUploading ? (

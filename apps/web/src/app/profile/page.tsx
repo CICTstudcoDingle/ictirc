@@ -18,7 +18,8 @@ export default function ProfilePage() {
             Welcome to ICTIRC
           </h1>
           <p className="text-gray-600 mb-8">
-            Sign in to submit your research, track submissions, and manage your profile.
+            Sign in to submit your research, track submissions, and manage your
+            profile.
           </p>
 
           <div className="space-y-3">
@@ -38,7 +39,14 @@ export default function ProfilePage() {
 
           <p className="text-sm text-gray-500 mt-8">
             Are you an admin?{" "}
-            <Link href={process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'https://admin.irjict.isufstcict.com'} className="text-maroon hover:underline">
+            <Link
+              href={
+                process.env.NODE_ENV === "development"
+                  ? "http://localhost:3001"
+                  : "https://admin.irjict.isufstcict.com"
+              }
+              className="text-maroon hover:underline"
+            >
               Go to Admin Portal
             </Link>
           </p>
@@ -81,7 +89,9 @@ export default function ProfilePage() {
             <Settings className="w-5 h-5 text-gray-600" />
             <div>
               <p className="font-medium text-gray-900">Account Settings</p>
-              <p className="text-sm text-gray-500">Profile, password, notifications</p>
+              <p className="text-sm text-gray-500">
+                Profile, password, notifications
+              </p>
             </div>
           </Link>
         </div>

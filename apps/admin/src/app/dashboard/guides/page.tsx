@@ -11,7 +11,9 @@ export default async function GuidesPage() {
     getGuides(),
   ]);
 
-  const categories = categoriesResult.success ? categoriesResult.categories : [];
+  const categories = categoriesResult.success
+    ? categoriesResult.categories
+    : [];
   const guides = guidesResult.success ? guidesResult.guides : [];
 
   return (

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { CheckCircle, Loader2, Upload, AlertCircle, X } from 'lucide-react';
-import { publishPaper } from '@/app/dashboard/papers/[id]/actions';
+import { useState } from "react";
+import { CheckCircle, Loader2, Upload, AlertCircle, X } from "lucide-react";
+import { publishPaper } from "@/app/dashboard/papers/[id]/actions";
 
 interface PublishButtonProps {
   paperId: string;
@@ -10,14 +10,24 @@ interface PublishButtonProps {
   isDocx: boolean;
 }
 
-export function PublishButton({ paperId, hasFile, isDocx }: PublishButtonProps) {
+export function PublishButton({
+  paperId,
+  hasFile,
+  isDocx,
+}: PublishButtonProps) {
   const [showModal, setShowModal] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
-  const [progress, setProgress] = useState<'converting' | 'uploading' | 'finalizing' | null>(null);
+  const [progress, setProgress] = useState<
+    "converting" | "uploading" | "finalizing" | null
+  >(null);
   const [showToast, setShowToast] = useState(false);
-  const [toastData, setToastData] = useState<{ success: boolean; message: string; doi?: string }>({
+  const [toastData, setToastData] = useState<{
+    success: boolean;
+    message: string;
+    doi?: string;
+  }>({
     success: false,
-    message: '',
+    message: "",
   });
 
   const handlePublish = async () => {
@@ -27,7 +37,7 @@ export function PublishButton({ paperId, hasFile, isDocx }: PublishButtonProps) 
     try {
       // Show conversion progress if DOCX
       if (isDocx) {
-        setProgress('converting');
+        setProgress("converting");
         await new Promise((resolve) => setTimeout(resolve, 500)); // Small delay to show state
       }
 
@@ -35,17 +45,17 @@ export function PublishButton({ paperId, hasFile, isDocx }: PublishButtonProps) 
       const result = await publishPaper(paperId);
 
       if (isDocx) {
-        setProgress('uploading');
+        setProgress("uploading");
         await new Promise((resolve) => setTimeout(resolve, 500));
       }
 
-      setProgress('finalizing');
+      setProgress("finalizing");
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       if (result.success) {
         setToastData({
           success: true,
-          message: 'Paper published successfully!',
+          message: "Paper published successfully!",
           doi: result.doi,
         });
         setShowToast(true);
@@ -57,7 +67,7 @@ export function PublishButton({ paperId, hasFile, isDocx }: PublishButtonProps) 
       } else {
         setToastData({
           success: false,
-          message: result.error || 'Failed to publish paper',
+          message: result.error || "Failed to publish paper",
         });
         setShowToast(true);
         setTimeout(() => setShowToast(false), 5000);
@@ -65,7 +75,7 @@ export function PublishButton({ paperId, hasFile, isDocx }: PublishButtonProps) 
     } catch (error) {
       setToastData({
         success: false,
-        message: 'An unexpected error occurred',
+        message: "An unexpected error occurred",
       });
       setShowToast(true);
       setTimeout(() => setShowToast(false), 5000);
@@ -117,14 +127,18 @@ export function PublishButton({ paperId, hasFile, isDocx }: PublishButtonProps) 
                 <AlertCircle className="w-6 h-6 text-blue-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Publish Paper?</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Publish Paper?
+                </h3>
                 <p className="text-gray-600 mb-2">
-                  This will publish the paper and make it publicly available in the archive.
+                  This will publish the paper and make it publicly available in
+                  the archive.
                 </p>
                 {isDocx && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
                     <p className="text-sm text-blue-800">
-                      ℹ️ The DOCX file will be automatically converted to PDF before publishing.
+                      ℹ️ The DOCX file will be automatically converted to PDF
+                      before publishing.
                     </p>
                   </div>
                 )}
@@ -161,9 +175,9 @@ export function PublishButton({ paperId, hasFile, isDocx }: PublishButtonProps) 
             <div className="text-center">
               <Loader2 className="w-12 h-12 mx-auto mb-4 text-blue-600 animate-spin" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {progress === 'converting' && 'Converting DOCX to PDF...'}
-                {progress === 'uploading' && 'Uploading PDF...'}
-                {progress === 'finalizing' && 'Finalizing Publication...'}
+                {progress === "converting" && "Converting DOCX to PDF..."}
+                {progress === "uploading" && "Uploading PDF..."}
+                {progress === "finalizing" && "Finalizing Publication..."}
               </h3>
               <p className="text-gray-600 text-sm">
                 Please wait while we process your paper.
@@ -171,11 +185,11 @@ export function PublishButton({ paperId, hasFile, isDocx }: PublishButtonProps) 
               <div className="mt-4 w-full bg-gray-200 rounded-full h-2">
                 <div
                   className={`bg-blue-600 h-2 rounded-full transition-all duration-500 ${
-                    progress === 'converting'
-                      ? 'w-1/3'
-                      : progress === 'uploading'
-                      ? 'w-2/3'
-                      : 'w-full'
+                    progress === "converting"
+                      ? "w-1/3"
+                      : progress === "uploading"
+                        ? "w-2/3"
+                        : "w-full"
                   }`}
                 />
               </div>
@@ -189,7 +203,9 @@ export function PublishButton({ paperId, hasFile, isDocx }: PublishButtonProps) 
         <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-5">
           <div className="bg-white rounded-lg shadow-xl border border-gray-200 p-4 max-w-md">
             <div className="flex items-start gap-3">
-              <div className={`p-1 rounded-full ${toastData.success ? 'bg-green-100' : 'bg-red-100'}`}>
+              <div
+                className={`p-1 rounded-full ${toastData.success ? "bg-green-100" : "bg-red-100"}`}
+              >
                 {toastData.success ? (
                   <CheckCircle className="w-5 h-5 text-green-600" />
                 ) : (
@@ -199,7 +215,9 @@ export function PublishButton({ paperId, hasFile, isDocx }: PublishButtonProps) 
               <div className="flex-1">
                 <p className="font-medium text-gray-900">{toastData.message}</p>
                 {toastData.doi && (
-                  <p className="text-sm text-gray-600 mt-1 font-mono">DOI: {toastData.doi}</p>
+                  <p className="text-sm text-gray-600 mt-1 font-mono">
+                    DOI: {toastData.doi}
+                  </p>
                 )}
               </div>
               <button

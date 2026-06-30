@@ -22,23 +22,25 @@ interface CitationModalProps {
 export function CitationModal({ isOpen, onClose, paper }: CitationModalProps) {
   const [copiedFormat, setCopiedFormat] = useState<string | null>(null);
 
-  const year = paper.publishedAt ? paper.publishedAt.getFullYear() : new Date().getFullYear();
+  const year = paper.publishedAt
+    ? paper.publishedAt.getFullYear()
+    : new Date().getFullYear();
   const authorNames = paper.authors.map((a) => a.name).join(", ");
   const firstAuthorLast = paper.authors[0]?.name.split(" ").pop() || "Author";
-  
+
   // Formatters
   const formats = {
     APA: `${authorNames} (${year}). ${paper.title}. International Research Journal on Information and Communications Technology.${paper.volume ? ` ${paper.volume}(${paper.issue}),` : ""} ${paper.doi ? ` https://doi.org/${paper.doi}` : ""}`,
     MLA: `${authorNames}. "${paper.title}." International Research Journal on Information and Communications Technology, ${paper.volume ? `vol. ${paper.volume}, no. ${paper.issue}, ` : ""}${year}${paper.doi ? `, doi:${paper.doi}` : ""}.`,
     BibTeX: `@article{${firstAuthorLast.toLowerCase()}${year},
   title={${paper.title}},
-  author={${paper.authors.map(a => a.name).join(" and ")}},
+  author={${paper.authors.map((a) => a.name).join(" and ")}},
   journal={International Research Journal on Information and Communications Technology},
   ${paper.volume ? `volume={${paper.volume}},` : ""}
   ${paper.issue ? `number={${paper.issue}},` : ""}
   year={${year}},
   ${paper.doi ? `doi={${paper.doi}}` : ""}
-}`
+}`,
   };
 
   const copyToClipboard = (text: string, format: string) => {
@@ -73,13 +75,18 @@ export function CitationModal({ isOpen, onClose, paper }: CitationModalProps) {
 
             {/* Content */}
             <div className="p-6 space-y-6">
-              <p className="text-sm text-gray-600 font-medium"> Select a citation style to copy:</p>
-              
+              <p className="text-sm text-gray-600 font-medium">
+                {" "}
+                Select a citation style to copy:
+              </p>
+
               <div className="space-y-4">
                 {Object.entries(formats).map(([name, citation]) => (
                   <div key={name} className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-maroon uppercase tracking-widest">{name}</span>
+                      <span className="text-xs font-bold text-maroon uppercase tracking-widest">
+                        {name}
+                      </span>
                       <button
                         onClick={() => copyToClipboard(citation, name)}
                         className="text-xs flex items-center gap-1.5 text-gray-500 hover:text-maroon transition-colors font-medium"

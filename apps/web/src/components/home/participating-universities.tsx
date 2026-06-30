@@ -93,9 +93,7 @@ export function ParticipatingUniversities() {
   return (
     <section className="py-12 bg-white border-b border-gray-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center">
-        <h3 className="text-xl font-bold text-gray-900">
-          In Cooperation With
-        </h3>
+        <h3 className="text-xl font-bold text-gray-900">In Cooperation With</h3>
         <p className="text-sm text-gray-500 mt-1">
           Leading academic institutions participating in the research consortium
         </p>
@@ -136,7 +134,7 @@ function UniversityItem({ university }: { university: University }) {
       <div
         className={cn(
           "relative shrink-0 flex items-center justify-center transition-all duration-300",
-          isIsufst ? "w-32 h-32" : "w-24 h-24"
+          isIsufst ? "w-32 h-32" : "w-24 h-24",
         )}
       >
         <Image
@@ -146,17 +144,21 @@ function UniversityItem({ university }: { university: University }) {
           height={isIsufst ? 140 : 100}
           className={cn(
             "object-contain w-full h-full drop-shadow-md group-hover:scale-110 transition-transform duration-300",
-            isIsufst && "scale-125" // Initial scale boost for ISUFST
+            isIsufst && "scale-125", // Initial scale boost for ISUFST
           )}
         />
       </div>
-      
+
       {/* Text Info */}
       <div className="flex flex-col">
-        <h4 className={cn(
-          "text-sm font-bold leading-tight mb-1 transition-colors line-clamp-2",
-          isIsufst ? "text-maroon text-base" : "text-maroon group-hover:text-maroon-600"
-        )}>
+        <h4
+          className={cn(
+            "text-sm font-bold leading-tight mb-1 transition-colors line-clamp-2",
+            isIsufst
+              ? "text-maroon text-base"
+              : "text-maroon group-hover:text-maroon-600",
+          )}
+        >
           {university.name}
           {university.badge && (
             <span

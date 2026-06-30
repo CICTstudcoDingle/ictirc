@@ -17,7 +17,9 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params;
   const speaker = await prisma.keynoteSpeaker.findUnique({
     where: { id },
@@ -166,9 +168,7 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
                 </div>
               </>
             ) : (
-              <p className="text-gray-400 text-center py-8">
-                Bio coming soon.
-              </p>
+              <p className="text-gray-400 text-center py-8">Bio coming soon.</p>
             )}
 
             {/* Navigation */}

@@ -19,18 +19,18 @@ export async function middleware(request: NextRequest) {
             name: string;
             value: string;
             options: CookieOptions;
-          }[]
+          }[],
         ) {
           cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
+            request.cookies.set(name, value),
           );
           supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, options),
           );
         },
       },
-    }
+    },
   );
 
   const {
@@ -38,9 +38,14 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Protected routes — redirect to login if not authenticated
-  const protectedPaths = ["/dashboard", "/profile", "/enrollment", "/events/my"];
+  const protectedPaths = [
+    "/dashboard",
+    "/profile",
+    "/enrollment",
+    "/events/my",
+  ];
   const isProtected = protectedPaths.some((path) =>
-    request.nextUrl.pathname.startsWith(path)
+    request.nextUrl.pathname.startsWith(path),
   );
 
   if (isProtected && !user) {

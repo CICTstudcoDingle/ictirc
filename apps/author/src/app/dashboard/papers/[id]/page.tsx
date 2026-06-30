@@ -18,7 +18,9 @@ interface PaperDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function PaperDetailPage({ params }: PaperDetailPageProps) {
+export default async function PaperDetailPage({
+  params,
+}: PaperDetailPageProps) {
   const { id } = await params;
   const supabase = await createClient();
   const {
@@ -51,7 +53,7 @@ export default async function PaperDetailPage({ params }: PaperDetailPageProps) 
 
   // Check if user is an author on this paper
   const userAuthorEntry = paper.authors.find(
-    (a) => a.author.email === user.email
+    (a) => a.author.email === user.email,
   );
 
   if (!userAuthorEntry) {
@@ -64,7 +66,10 @@ export default async function PaperDetailPage({ params }: PaperDetailPageProps) 
   const getStatusBadge = (status: string) => {
     const badges: Record<string, { class: string; label: string }> = {
       SUBMITTED: { class: "status-badge status-submitted", label: "Submitted" },
-      UNDER_REVIEW: { class: "status-badge status-review", label: "Under Review" },
+      UNDER_REVIEW: {
+        class: "status-badge status-review",
+        label: "Under Review",
+      },
       ACCEPTED: { class: "status-badge status-accepted", label: "Accepted" },
       REJECTED: { class: "status-badge status-rejected", label: "Rejected" },
       PUBLISHED: { class: "status-badge status-published", label: "Published" },
@@ -114,8 +119,9 @@ export default async function PaperDetailPage({ params }: PaperDetailPageProps) 
         <Card className="bg-yellow-50 border-yellow-200">
           <CardContent className="py-4">
             <p className="text-sm text-yellow-800">
-              <strong>View Only:</strong> As a co-author, you can view this paper but 
-              cannot make edits. Contact the corresponding author to request changes.
+              <strong>View Only:</strong> As a co-author, you can view this
+              paper but cannot make edits. Contact the corresponding author to
+              request changes.
             </p>
           </CardContent>
         </Card>
@@ -175,7 +181,9 @@ export default async function PaperDetailPage({ params }: PaperDetailPageProps) 
                     <FileText className="w-6 h-6 text-maroon" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">Download Manuscript</p>
+                    <p className="font-medium text-gray-900">
+                      Download Manuscript
+                    </p>
                     <p className="text-sm text-gray-500">PDF/DOCX</p>
                   </div>
                   <Download className="w-5 h-5 text-gray-400" />

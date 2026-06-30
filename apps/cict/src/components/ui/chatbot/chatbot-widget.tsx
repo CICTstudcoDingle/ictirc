@@ -122,8 +122,8 @@ export function ChatbotWidget() {
           prev.map((m) =>
             m.id === assistantId
               ? { ...m, content: accumulated, streaming: true }
-              : m
-          )
+              : m,
+          ),
         );
       }
 
@@ -132,8 +132,8 @@ export function ChatbotWidget() {
         prev.map((m) =>
           m.id === assistantId
             ? { ...m, content: accumulated, streaming: false }
-            : m
-        )
+            : m,
+        ),
       );
     } catch (err) {
       if ((err as Error).name === "AbortError") return;
@@ -142,11 +142,12 @@ export function ChatbotWidget() {
           m.id === assistantId
             ? {
                 ...m,
-                content: "Sorry, I couldn't process your request. Please try again.",
+                content:
+                  "Sorry, I couldn't process your request. Please try again.",
                 streaming: false,
               }
-            : m
-        )
+            : m,
+        ),
       );
     } finally {
       setIsStreaming(false);
@@ -179,8 +180,12 @@ export function ChatbotWidget() {
                 <Bot className="w-4 h-4 text-white" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-white leading-tight">CICT Assistant</p>
-                <p className="text-[10px] text-white/60 leading-tight">Powered by Gemini</p>
+                <p className="text-sm font-semibold text-white leading-tight">
+                  CICT Assistant
+                </p>
+                <p className="text-[10px] text-white/60 leading-tight">
+                  Powered by Gemini
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-1">
@@ -221,7 +226,8 @@ export function ChatbotWidget() {
                   Hi! I&apos;m the CICT Assistant
                 </p>
                 <p className="text-xs text-gray-400 mb-5">
-                  Ask me anything about CICT programs, enrollment, or announcements.
+                  Ask me anything about CICT programs, enrollment, or
+                  announcements.
                 </p>
                 <div className="grid grid-cols-1 gap-2 w-full">
                   {STARTER_QUESTIONS.map((q) => (

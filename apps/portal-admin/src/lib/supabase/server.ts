@@ -17,17 +17,17 @@ export async function createClient() {
             name: string;
             value: string;
             options: CookieOptions;
-          }[]
+          }[],
         ) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
+              cookieStore.set(name, value, options),
             );
           } catch {
             // Ignore - called from Server Component
           }
         },
       },
-    }
+    },
   );
 }

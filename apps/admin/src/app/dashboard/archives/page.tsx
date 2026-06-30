@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { prisma } from "@ictirc/database";
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ictirc/ui";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@ictirc/ui";
 import { BookOpen, FileText, Calendar, Upload } from "lucide-react";
 
 export const metadata = {
@@ -9,32 +16,33 @@ export const metadata = {
 };
 
 async function getArchiveStats() {
-  const [volumeCount, issueCount, paperCount, recentUploads] = await Promise.all([
-    prisma.volume.count(),
-    prisma.issue.count(),
-    prisma.archivedPaper.count(),
-    prisma.archivedPaper.findMany({
-      take: 5,
-      orderBy: { uploadedAt: "desc" },
-      include: {
-        authors: {
-          orderBy: { order: "asc" },
-          take: 1,
-        },
-        issue: {
-          include: {
-            volume: true,
+  const [volumeCount, issueCount, paperCount, recentUploads] =
+    await Promise.all([
+      prisma.volume.count(),
+      prisma.issue.count(),
+      prisma.archivedPaper.count(),
+      prisma.archivedPaper.findMany({
+        take: 5,
+        orderBy: { uploadedAt: "desc" },
+        include: {
+          authors: {
+            orderBy: { order: "asc" },
+            take: 1,
+          },
+          issue: {
+            include: {
+              volume: true,
+            },
+          },
+          uploader: {
+            select: {
+              name: true,
+              email: true,
+            },
           },
         },
-        uploader: {
-          select: {
-            name: true,
-            email: true,
-          },
-        },
-      },
-    }),
-  ]);
+      }),
+    ]);
 
   return {
     volumeCount,
@@ -67,9 +75,7 @@ export default async function ArchiveDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.volumeCount}</div>
-            <p className="text-xs text-muted-foreground">
-              Publication volumes
-            </p>
+            <p className="text-xs text-muted-foreground">Publication volumes</p>
           </CardContent>
         </Card>
 
@@ -80,15 +86,15 @@ export default async function ArchiveDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.issueCount}</div>
-            <p className="text-xs text-muted-foreground">
-              Published issues
-            </p>
+            <p className="text-xs text-muted-foreground">Published issues</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Archived Papers</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Archived Papers
+            </CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -111,9 +117,7 @@ export default async function ArchiveDashboardPage() {
             <div className="text-2xl font-bold">
               {stats.issueCount > 0 ? "Active" : "None"}
             </div>
-            <p className="text-xs text-muted-foreground">
-              Archive status
-            </p>
+            <p className="text-xs text-muted-foreground">Archive status</p>
           </CardContent>
         </Card>
       </div>
@@ -158,17 +162,20 @@ export default async function ArchiveDashboardPage() {
       <Card>
         <CardHeader>
           <CardTitle>Recent Uploads</CardTitle>
-          <CardDescription>
-            Recently uploaded archived papers
-          </CardDescription>
+          <CardDescription>Recently uploaded archived papers</CardDescription>
         </CardHeader>
         <CardContent>
           {stats.recentUploads.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No papers uploaded yet.</p>
+            <p className="text-sm text-muted-foreground">
+              No papers uploaded yet.
+            </p>
           ) : (
             <div className="space-y-4">
               {stats.recentUploads.map((paper) => (
-                <div key={paper.id} className="flex items-start justify-between border-b pb-4 last:border-0 last:pb-0">
+                <div
+                  key={paper.id}
+                  className="flex items-start justify-between border-b pb-4 last:border-0 last:pb-0"
+                >
                   <div className="flex-1 space-y-1">
                     <Link
                       href={`/dashboard/archives/papers/${paper.id}`}
@@ -178,11 +185,13 @@ export default async function ArchiveDashboardPage() {
                     </Link>
                     <p className="text-sm text-muted-foreground">
                       {paper.authors[0]?.name}
-                      {paper.authors.length > 1 && ` + ${paper.authors.length - 1} more`}
+                      {paper.authors.length > 1 &&
+                        ` + ${paper.authors.length - 1} more`}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Volume {paper.issue.volume.volumeNumber}, Issue {paper.issue.issueNumber} •
-                      Uploaded by {paper.uploader.name} •
+                      Volume {paper.issue.volume.volumeNumber}, Issue{" "}
+                      {paper.issue.issueNumber} • Uploaded by{" "}
+                      {paper.uploader.name} •
                       {new Date(paper.uploadedAt).toLocaleDateString()}
                     </p>
                   </div>
@@ -202,9 +211,7 @@ export default async function ArchiveDashboardPage() {
                 <BookOpen className="mr-2 h-5 w-5" />
                 Volumes
               </CardTitle>
-              <CardDescription>
-                Manage publication volumes
-              </CardDescription>
+              <CardDescription>Manage publication volumes</CardDescription>
             </CardHeader>
           </Card>
         </Link>
@@ -216,9 +223,7 @@ export default async function ArchiveDashboardPage() {
                 <Calendar className="mr-2 h-5 w-5" />
                 Issues
               </CardTitle>
-              <CardDescription>
-                Manage journal issues
-              </CardDescription>
+              <CardDescription>Manage journal issues</CardDescription>
             </CardHeader>
           </Card>
         </Link>
@@ -244,9 +249,7 @@ export default async function ArchiveDashboardPage() {
                 <FileText className="mr-2 h-5 w-5" />
                 Conferences
               </CardTitle>
-              <CardDescription>
-                Manage conference metadata
-              </CardDescription>
+              <CardDescription>Manage conference metadata</CardDescription>
             </CardHeader>
           </Card>
         </Link>

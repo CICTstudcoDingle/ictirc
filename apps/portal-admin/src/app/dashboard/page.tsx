@@ -1,5 +1,11 @@
 import { prisma } from "@ictirc/database";
-import { Users, GraduationCap, Briefcase, Megaphone, Calendar } from "lucide-react";
+import {
+  Users,
+  GraduationCap,
+  Briefcase,
+  Megaphone,
+  Calendar,
+} from "lucide-react";
 
 export const metadata = {
   title: "Dashboard",

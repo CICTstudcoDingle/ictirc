@@ -51,7 +51,9 @@ export default function ProgramsPage() {
                       <span className="text-sm font-mono font-bold text-gold bg-gold/10 px-3 py-1 rounded-full">
                         {program.code}
                       </span>
-                      <span className="text-sm text-gray-500 font-mono">{program.duration}</span>
+                      <span className="text-sm text-gray-500 font-mono">
+                        {program.duration}
+                      </span>
                     </div>
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                       {program.fullName}
@@ -74,9 +76,16 @@ export default function ProgramsPage() {
                   </h3>
                   <div className="grid sm:grid-cols-3 gap-6">
                     {program.specializations.map((spec) => (
-                      <div key={spec.name} className="p-5 rounded-xl border border-gold/20 bg-gold/5 hover:border-gold/40 transition-colors">
-                        <h4 className="font-bold text-gray-900 mb-2 font-mono text-sm uppercase tracking-wider">{spec.name}</h4>
-                        <p className="text-xs text-gray-600 leading-relaxed">{spec.description}</p>
+                      <div
+                        key={spec.name}
+                        className="p-5 rounded-xl border border-gold/20 bg-gold/5 hover:border-gold/40 transition-colors"
+                      >
+                        <h4 className="font-bold text-gray-900 mb-2 font-mono text-sm uppercase tracking-wider">
+                          {spec.name}
+                        </h4>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          {spec.description}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -91,7 +100,10 @@ export default function ProgramsPage() {
                     </h3>
                     <ul className="space-y-3">
                       {program.highlights.map((highlight) => (
-                        <li key={highlight} className="flex items-start gap-3 text-sm text-gray-600">
+                        <li
+                          key={highlight}
+                          className="flex items-start gap-3 text-sm text-gray-600"
+                        >
                           <ArrowRight className="w-4 h-4 text-gold mt-0.5 flex-shrink-0" />
                           <span>{highlight}</span>
                         </li>
@@ -119,14 +131,26 @@ export default function ProgramsPage() {
                     {/* Enrollment stats */}
                     <div className="mt-8 grid grid-cols-2 gap-4">
                       <div className="bg-maroon/5 rounded-xl p-4 text-center border border-maroon/10">
-                        <p className="text-3xl font-bold text-maroon">{totalEnrolled}</p>
-                        <p className="text-xs text-gray-500 mt-1">Students Enrolled</p>
-                        <p className="text-[10px] font-mono text-gray-400">AY 2025-2026</p>
+                        <p className="text-3xl font-bold text-maroon">
+                          {totalEnrolled}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Students Enrolled
+                        </p>
+                        <p className="text-[10px] font-mono text-gray-400">
+                          AY 2025-2026
+                        </p>
                       </div>
                       <div className="bg-gold/10 rounded-xl p-4 text-center border border-gold/20">
-                        <p className="text-3xl font-bold text-amber-700">{totalSections}</p>
-                        <p className="text-xs text-gray-500 mt-1">Active Sections</p>
-                        <p className="text-[10px] font-mono text-gray-400">1A–4B</p>
+                        <p className="text-3xl font-bold text-amber-700">
+                          {totalSections}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Active Sections
+                        </p>
+                        <p className="text-[10px] font-mono text-gray-400">
+                          1A–4B
+                        </p>
                       </div>
                     </div>
                   </div>

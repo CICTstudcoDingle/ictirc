@@ -35,10 +35,10 @@ export interface SubmitPaperResult {
 
 /**
  * Submit a new paper to the repository
- * 
+ *
  * @param formData - FormData containing paper details, authors, and file
  * @param uploadFile - Function to upload file to storage (injected by app)
- * 
+ *
  * Flow:
  * 1. Validate input data
  * 2. Upload file using provided storage function
@@ -47,7 +47,10 @@ export interface SubmitPaperResult {
  */
 export async function submitPaper(
   formData: FormData,
-  uploadFile: (file: File, paperId: string) => Promise<{ success: boolean; url?: string; error?: string }>
+  uploadFile: (
+    file: File,
+    paperId: string,
+  ) => Promise<{ success: boolean; url?: string; error?: string }>,
 ): Promise<SubmitPaperResult> {
   try {
     // Extract and validate form data
@@ -59,7 +62,7 @@ export async function submitPaper(
         .map((k) => k.trim())
         .filter(Boolean),
       categoryId: formData.get("categoryId") as string,
-      authors: JSON.parse(formData.get("authors") as string || "[]"),
+      authors: JSON.parse((formData.get("authors") as string) || "[]"),
     };
 
     const file = formData.get("file") as File | null;
@@ -189,7 +192,8 @@ export async function submitPaper(
     console.error("[submitPaper] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "An unexpected error occurred",
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
     };
   }
 }
@@ -212,7 +216,11 @@ export async function getCategories() {
     return { success: true, categories };
   } catch (error) {
     console.error("[getCategories] Error:", error);
-    return { success: false, categories: [], error: "Failed to fetch categories" };
+    return {
+      success: false,
+      categories: [],
+      error: "Failed to fetch categories",
+    };
   }
 }
 

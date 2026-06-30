@@ -1,6 +1,7 @@
 # Missing Dependencies - Installation Required
 
 ## Overview
+
 The archive system implementation is complete, but some UI components require additional dependencies that aren't currently installed.
 
 ## Required Installations
@@ -15,8 +16,9 @@ pnpm add react-hook-form @hookform/resolvers
 ```
 
 These packages are needed for:
+
 - `volume-form.tsx` - Volume creation/editing
-- `issue-form.tsx` - Issue creation/editing  
+- `issue-form.tsx` - Issue creation/editing
 - `conference-form.tsx` - Conference creation/editing
 
 ### 2. UI Package - Form Components
@@ -63,6 +65,7 @@ export { Label } from "./components/label";
 **Option B: Create simple versions manually**
 
 If you don't want to use shadcn/ui, you'll need to create simple implementations of:
+
 - Form wrapper components
 - Select dropdown
 - Textarea
@@ -73,11 +76,13 @@ If you don't want to use shadcn/ui, you'll need to create simple implementations
 The `toast` function is imported but needs to be configured properly. Check if `apps/admin/src/lib/toast.tsx` exports the toast function correctly.
 
 Current import in forms:
+
 ```typescript
 import { toast } from "@/lib/toast";
 ```
 
 Make sure the toast.tsx file exports it:
+
 ```typescript
 export function toast({ title, description, variant }: ToastProps) {
   // Implementation
@@ -98,7 +103,7 @@ This function needs to be implemented in `packages/storage/src/index.ts`:
 export async function uploadFile(
   file: File,
   path: string,
-  bucket?: string
+  bucket?: string,
 ): Promise<{ success: boolean; url?: string; error?: string }> {
   // Implementation for Cloudflare R2 or Supabase Storage
 }
@@ -116,11 +121,13 @@ Current build will fail with these errors:
 ## Quick Fix Steps
 
 1. Install dependencies:
+
    ```bash
    pnpm add -D react-hook-form @hookform/resolvers --filter @ictirc/admin
    ```
 
 2. Add form components to UI package (using shadcn/ui):
+
    ```bash
    cd packages/ui
    npx shadcn@latest init
@@ -139,12 +146,14 @@ Current build will fail with these errors:
 ## Current Status
 
 ✅ **Working without dependencies:**
+
 - Archive dashboard (read-only views)
 - Volume/Issue/Conference list pages (display only)
 - Public archive pages
 - All server actions (backend logic)
 
 ❌ **Requires dependencies to work:**
+
 - Creating/editing volumes
 - Creating/editing issues
 - Creating/editing conferences
@@ -153,6 +162,7 @@ Current build will fail with these errors:
 ## Workaround (Temporary)
 
 If you want to test the system immediately, you can:
+
 1. Use Prisma Studio to manually create test data
 2. View it through the list pages and public archive page
 3. Install dependencies later when ready to use the forms
@@ -163,6 +173,7 @@ pnpm prisma studio
 ```
 
 Then manually create:
+
 - A Volume record
 - An Issue record (linked to the volume)
 - A Conference record (optional)

@@ -9,13 +9,14 @@ This workflow ensures database migrations don't wipe production/development data
 ## Rules for Schema Changes
 
 1. **New columns MUST be optional or have defaults**
+
    ```prisma
    // GOOD - Optional
    avatarUrl String?
-   
+
    // GOOD - Has default
    isActive Boolean @default(true)
-   
+
    // BAD - Required without default (will fail or prompt reset)
    avatarUrl String
    ```
@@ -33,6 +34,7 @@ This workflow ensures database migrations don't wipe production/development data
 // turbo-all
 
 1. First, generate migration file WITHOUT applying:
+
 ```bash
 cd packages/database
 npx prisma migrate dev --create-only --name your_migration_name
@@ -41,11 +43,13 @@ npx prisma migrate dev --create-only --name your_migration_name
 2. Review the generated SQL in `prisma/migrations/[timestamp]_your_migration_name/migration.sql`
 
 3. If SQL looks safe (only ADD COLUMN, no DROP), apply manually:
+
 ```bash
 npx prisma migrate deploy
 ```
 
 4. Regenerate Prisma Client:
+
 ```bash
 npx prisma generate
 ```

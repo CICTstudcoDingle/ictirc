@@ -3,7 +3,12 @@
 import { useState, useRef } from "react";
 import { submitFeedbackAction, type FeedbackActionResult } from "./actions";
 import {
-  MessageSquare, Send, Star, CheckCircle, AlertCircle, Loader2,
+  MessageSquare,
+  Send,
+  Star,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
 } from "lucide-react";
 
 const CATEGORIES = ["General", "Suggestion", "Bug Report", "Concern"] as const;
@@ -87,13 +92,16 @@ export default function FeedbackPage() {
         <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
             <MessageSquare className="w-4 h-4 text-gold" />
-            <span className="text-sm text-gray-200 font-medium">Public Feedback</span>
+            <span className="text-sm text-gray-200 font-medium">
+              Public Feedback
+            </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
             Share Your <span className="text-gold">Feedback</span>
           </h1>
           <p className="text-base text-gray-300 max-w-xl mx-auto">
-            Help us improve CICT. Your feedback is anonymous unless you choose to share your details.
+            Help us improve CICT. Your feedback is anonymous unless you choose
+            to share your details.
           </p>
         </div>
       </section>
@@ -108,9 +116,12 @@ export default function FeedbackPage() {
                 <CheckCircle className="w-8 h-8 text-emerald-600" />
               </div>
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Thank you for your feedback!</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              Thank you for your feedback!
+            </h2>
             <p className="text-gray-500 text-sm mb-6">
-              Your response has been recorded. We read every submission and use them to make CICT better.
+              Your response has been recorded. We read every submission and use
+              them to make CICT better.
             </p>
             <button
               onClick={() => setResult(null)}
@@ -123,11 +134,20 @@ export default function FeedbackPage() {
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
             {/* Card header */}
             <div className="border-l-4 border-maroon px-6 py-4 bg-gray-50/50 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-900">Feedback Form</h2>
-              <p className="text-sm text-gray-500 mt-0.5">All fields marked optional are truly optional — anonymous responses welcome.</p>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Feedback Form
+              </h2>
+              <p className="text-sm text-gray-500 mt-0.5">
+                All fields marked optional are truly optional — anonymous
+                responses welcome.
+              </p>
             </div>
 
-            <form ref={formRef} onSubmit={handleSubmit} className="p-6 space-y-5">
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="p-6 space-y-5"
+            >
               {/* Global error */}
               {result && !result.success && result.error && (
                 <div className="flex items-center gap-3 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
@@ -139,8 +159,14 @@ export default function FeedbackPage() {
               {/* Name + Email */}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="feedback-name" className="block text-sm font-medium text-gray-700 mb-1.5">
-                    Name <span className="text-gray-400 font-normal">(optional)</span>
+                  <label
+                    htmlFor="feedback-name"
+                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                  >
+                    Name{" "}
+                    <span className="text-gray-400 font-normal">
+                      (optional)
+                    </span>
                   </label>
                   <input
                     id="feedback-name"
@@ -151,8 +177,14 @@ export default function FeedbackPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="feedback-email" className="block text-sm font-medium text-gray-700 mb-1.5">
-                    Email <span className="text-gray-400 font-normal">(optional)</span>
+                  <label
+                    htmlFor="feedback-email"
+                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                  >
+                    Email{" "}
+                    <span className="text-gray-400 font-normal">
+                      (optional)
+                    </span>
                   </label>
                   <input
                     id="feedback-email"
@@ -160,11 +192,15 @@ export default function FeedbackPage() {
                     type="email"
                     placeholder="you@example.com"
                     className={`w-full px-3.5 py-2.5 rounded-lg border bg-gray-50 text-sm font-mono focus:outline-none focus:ring-1 transition-colors ${
-                      fieldErrors.email ? "border-red-400 focus:border-red-400 focus:ring-red-100" : "border-gray-300 focus:border-maroon focus:ring-maroon/20"
+                      fieldErrors.email
+                        ? "border-red-400 focus:border-red-400 focus:ring-red-100"
+                        : "border-gray-300 focus:border-maroon focus:ring-maroon/20"
                     }`}
                   />
                   {fieldErrors.email && (
-                    <p className="mt-1 text-xs text-red-600">{fieldErrors.email[0]}</p>
+                    <p className="mt-1 text-xs text-red-600">
+                      {fieldErrors.email[0]}
+                    </p>
                   )}
                 </div>
               </div>
@@ -172,7 +208,10 @@ export default function FeedbackPage() {
               {/* Category + Subject */}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="feedback-category" className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label
+                    htmlFor="feedback-category"
+                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                  >
                     Category
                   </label>
                   <select
@@ -182,13 +221,21 @@ export default function FeedbackPage() {
                     className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 bg-gray-50 text-sm focus:outline-none focus:border-maroon focus:ring-1 focus:ring-maroon/20 transition-colors"
                   >
                     {CATEGORIES.map((c) => (
-                      <option key={c} value={c}>{c}</option>
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="feedback-subject" className="block text-sm font-medium text-gray-700 mb-1.5">
-                    Subject <span className="text-gray-400 font-normal">(optional)</span>
+                  <label
+                    htmlFor="feedback-subject"
+                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                  >
+                    Subject{" "}
+                    <span className="text-gray-400 font-normal">
+                      (optional)
+                    </span>
                   </label>
                   <input
                     id="feedback-subject"
@@ -202,7 +249,10 @@ export default function FeedbackPage() {
 
               {/* Message */}
               <div>
-                <label htmlFor="feedback-message" className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label
+                  htmlFor="feedback-message"
+                  className="block text-sm font-medium text-gray-700 mb-1.5"
+                >
                   Message <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -211,18 +261,23 @@ export default function FeedbackPage() {
                   rows={5}
                   placeholder="Share your thoughts, suggestions, or concerns about CICT..."
                   className={`w-full px-3.5 py-2.5 rounded-lg border bg-gray-50 text-sm font-mono resize-none focus:outline-none focus:ring-1 transition-colors ${
-                    fieldErrors.message ? "border-red-400 focus:border-red-400 focus:ring-red-100" : "border-gray-300 focus:border-maroon focus:ring-maroon/20"
+                    fieldErrors.message
+                      ? "border-red-400 focus:border-red-400 focus:ring-red-100"
+                      : "border-gray-300 focus:border-maroon focus:ring-maroon/20"
                   }`}
                 />
                 {fieldErrors.message && (
-                  <p className="mt-1 text-xs text-red-600">{fieldErrors.message[0]}</p>
+                  <p className="mt-1 text-xs text-red-600">
+                    {fieldErrors.message[0]}
+                  </p>
                 )}
               </div>
 
               {/* Rating */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Overall Rating <span className="text-gray-400 font-normal">(optional)</span>
+                  Overall Rating{" "}
+                  <span className="text-gray-400 font-normal">(optional)</span>
                 </label>
                 <StarPicker value={rating} onChange={setRating} />
               </div>
@@ -230,7 +285,8 @@ export default function FeedbackPage() {
               {/* Submit */}
               <div className="pt-2 flex items-center justify-between gap-4">
                 <p className="text-xs text-gray-400">
-                  Your response is anonymous by default. We may use feedback to improve our services.
+                  Your response is anonymous by default. We may use feedback to
+                  improve our services.
                 </p>
                 <button
                   type="submit"
@@ -238,9 +294,13 @@ export default function FeedbackPage() {
                   className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-maroon text-white text-sm font-medium rounded-lg hover:bg-maroon/90 transition-all shadow-[4px_4px_0px_0px_rgba(212,175,55,1)] hover:shadow-[2px_2px_0px_0px_rgba(212,175,55,1)] hover:translate-x-[2px] hover:translate-y-[2px] disabled:opacity-60 disabled:cursor-not-allowed disabled:shadow-none"
                 >
                   {isPending ? (
-                    <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</>
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" /> Sending...
+                    </>
                   ) : (
-                    <><Send className="w-4 h-4" /> Submit Feedback</>
+                    <>
+                      <Send className="w-4 h-4" /> Submit Feedback
+                    </>
                   )}
                 </button>
               </div>

@@ -2,7 +2,14 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Calendar, MapPin, ArrowLeft, Clock, ExternalLink, Mic2 } from "lucide-react";
+import {
+  Calendar,
+  MapPin,
+  ArrowLeft,
+  Clock,
+  ExternalLink,
+  Mic2,
+} from "lucide-react";
 import { prisma } from "@ictirc/database";
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { ShareButton } from "@/components/events/share-button";
@@ -11,7 +18,9 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params;
   const conference = await prisma.conference.findUnique({
     where: { id },
@@ -74,7 +83,9 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
   const now = new Date();
   const startDate = new Date(conference.startDate);
   const isUpcoming = startDate >= now;
-  const daysUntil = Math.ceil((startDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  const daysUntil = Math.ceil(
+    (startDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+  );
   const showCountdown = isUpcoming && daysUntil > 0 && daysUntil <= 30;
 
   return (
@@ -121,7 +132,9 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
           <div className="flex flex-wrap gap-6 text-gray-300 mb-6">
             <div className="flex items-center gap-2">
               <Calendar className="w-5 h-5 text-gold" />
-              <span>{formatDateRange(conference.startDate, conference.endDate)}</span>
+              <span>
+                {formatDateRange(conference.startDate, conference.endDate)}
+              </span>
             </div>
             {conference.location && (
               <div className="flex items-center gap-2">
@@ -134,9 +147,11 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
           {/* Share Button */}
           <div className="mb-8">
             <ShareButton
-              url={`${process.env.NEXT_PUBLIC_APP_URL || 'https://ictirc.com'}/conferences/${conference.id}`}
+              url={`${process.env.NEXT_PUBLIC_APP_URL || "https://ictirc.com"}/conferences/${conference.id}`}
               title={conference.name}
-              description={conference.description?.slice(0, 160) || conference.name}
+              description={
+                conference.description?.slice(0, 160) || conference.name
+              }
             />
           </div>
         </div>
@@ -148,7 +163,9 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
           {/* Description */}
           {conference.description && (
             <div className="prose prose-lg max-w-none">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">About This Event</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                About This Event
+              </h2>
               <div className="text-gray-600 whitespace-pre-wrap leading-relaxed">
                 {conference.description}
               </div>
@@ -156,32 +173,46 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
           )}
 
           {/* Event Details */}
-          <div className={conference.description ? "mt-10 space-y-6" : "space-y-6"}>
+          <div
+            className={conference.description ? "mt-10 space-y-6" : "space-y-6"}
+          >
             {conference.venue && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Venue</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Venue
+                </h3>
                 <p className="text-gray-600">{conference.venue}</p>
               </div>
             )}
 
             {conference.theme && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Theme</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Theme
+                </h3>
                 <p className="text-gray-600">{conference.theme}</p>
               </div>
             )}
 
             {conference.organizers && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Organizers</h3>
-                <p className="text-gray-600 whitespace-pre-wrap">{conference.organizers}</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Organizers
+                </h3>
+                <p className="text-gray-600 whitespace-pre-wrap">
+                  {conference.organizers}
+                </p>
               </div>
             )}
 
             {conference.partners && (
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Partners</h3>
-                <p className="text-gray-600 whitespace-pre-wrap">{conference.partners}</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Partners
+                </h3>
+                <p className="text-gray-600 whitespace-pre-wrap">
+                  {conference.partners}
+                </p>
               </div>
             )}
 
@@ -216,7 +247,9 @@ export default async function ConferenceDetailPage({ params }: PageProps) {
           {/* Event Image (if exists, show full size) */}
           {conference.imageUrl && (
             <div className="mt-10">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Event Banner</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Event Banner
+              </h3>
               <div className="relative w-full aspect-video rounded-lg overflow-hidden">
                 <Image
                   src={conference.imageUrl}

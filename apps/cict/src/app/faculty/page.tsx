@@ -31,7 +31,6 @@ export default function FacultyPage() {
 
       <section className="py-16 md:py-20">
         <div className="max-w-5xl mx-auto px-4 space-y-14">
-
           {/* Dean */}
           {dean && (
             <ScrollAnimation direction="up">
@@ -49,7 +48,9 @@ export default function FacultyPage() {
                       <p className="text-xs font-mono font-bold text-gold bg-gold/10 inline-block px-3 py-1 rounded-full mb-2">
                         {dean.position}
                       </p>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-1">{dean.name}</h3>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                        {dean.name}
+                      </h3>
                       <p className="text-sm text-gray-500 mb-3">{dean.title}</p>
                       {dean.email && (
                         <a
@@ -83,7 +84,9 @@ export default function FacultyPage() {
                     <div className="w-16 h-16 bg-gradient-to-br from-maroon/20 to-gold/20 rounded-full flex items-center justify-center mb-4">
                       <User className="w-8 h-8 text-maroon/60" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-1">{member.name}</h3>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      {member.name}
+                    </h3>
                     <p className="text-xs font-mono text-gold bg-gold/10 inline-block px-2 py-0.5 rounded mb-1">
                       {member.title}
                     </p>
@@ -111,7 +114,9 @@ export default function FacultyPage() {
                       <User className="w-6 h-6 text-gray-400" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">{member.name}</h3>
+                      <h3 className="font-semibold text-gray-900">
+                        {member.name}
+                      </h3>
                       <p className="text-xs text-gray-500">{member.position}</p>
                     </div>
                   </div>
@@ -119,7 +124,6 @@ export default function FacultyPage() {
               </div>
             </div>
           </ScrollAnimation>
-
         </div>
       </section>
     </div>

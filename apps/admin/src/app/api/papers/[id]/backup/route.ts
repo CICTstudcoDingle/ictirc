@@ -10,17 +10,16 @@ import { backupPaperToR2 } from "@ictirc/storage";
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Check user role
@@ -32,7 +31,7 @@ export async function POST(
     if (!dbUser || !["EDITOR", "DEAN"].includes(dbUser.role)) {
       return NextResponse.json(
         { error: "Insufficient permissions. Editor or Dean role required." },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -52,10 +51,7 @@ export async function POST(
     });
 
     if (!paper) {
-      return NextResponse.json(
-        { error: "Paper not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Paper not found" }, { status: 404 });
     }
 
     // Get the file URL to backup (prefer pdfUrl, fallback to rawFileUrl)
@@ -64,25 +60,21 @@ export async function POST(
     if (!fileUrl) {
       return NextResponse.json(
         { error: "No file available to backup" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Perform backup to R2
-    const result = await backupPaperToR2(
-      paper.id,
-      fileUrl,
-      {
-        title: paper.title,
-        originalName: `${paper.title.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`,
-        uploadedBy: dbUser.name || user.email || "admin",
-      }
-    );
+    const result = await backupPaperToR2(paper.id, fileUrl, {
+      title: paper.title,
+      originalName: `${paper.title.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`,
+      uploadedBy: dbUser.name || user.email || "admin",
+    });
 
     if (!result.success) {
       return NextResponse.json(
         { error: result.error || "Backup failed" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -105,7 +97,7 @@ export async function POST(
     console.error("[Backup API] Error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -116,17 +108,16 @@ export async function POST(
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { id } = await params;
@@ -141,10 +132,7 @@ export async function GET(
     });
 
     if (!paper) {
-      return NextResponse.json(
-        { error: "Paper not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Paper not found" }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -156,7 +144,7 @@ export async function GET(
     console.error("[Backup API] Error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

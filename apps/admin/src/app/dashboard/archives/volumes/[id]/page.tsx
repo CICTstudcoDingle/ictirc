@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   return {
-    title: `Edit Volume ${result.data?.volumeNumber || ''}`,
+    title: `Edit Volume ${result.data?.volumeNumber || ""}`,
     description: `Edit volume details`,
   };
 }
@@ -45,9 +45,7 @@ export default async function EditVolumePage({ params }: PageProps) {
         <h1 className="text-3xl font-bold">
           Edit Volume {result.data?.volumeNumber}
         </h1>
-        <p className="text-muted-foreground mt-1">
-          Update volume details
-        </p>
+        <p className="text-muted-foreground mt-1">Update volume details</p>
       </div>
 
       <VolumeForm volume={result.data} />

@@ -2,7 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { Card, Button } from "@ictirc/ui";
-import { RefreshCw, Filter, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  RefreshCw,
+  Filter,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 interface AuditLog {
   id: string;
@@ -144,7 +150,10 @@ export default function AuditLogsPage() {
               className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon text-sm"
             >
               {actionTypes.map((action) => (
-                <option key={action} value={action === "All Actions" ? "" : action}>
+                <option
+                  key={action}
+                  value={action === "All Actions" ? "" : action}
+                >
                   {action}
                 </option>
               ))}
@@ -179,7 +188,10 @@ export default function AuditLogsPage() {
             <tbody className="divide-y divide-gray-100">
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                  <td
+                    colSpan={5}
+                    className="px-4 py-8 text-center text-gray-500"
+                  >
                     <div className="flex items-center justify-center gap-2">
                       <RefreshCw className="w-4 h-4 animate-spin" />
                       Loading audit logs...
@@ -188,23 +200,31 @@ export default function AuditLogsPage() {
                 </tr>
               ) : logs.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                  <td
+                    colSpan={5}
+                    className="px-4 py-8 text-center text-gray-500"
+                  >
                     No audit logs found
                   </td>
                 </tr>
               ) : (
                 logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-gray-50 transition-colors">
+                  <tr
+                    key={log.id}
+                    className="hover:bg-gray-50 transition-colors"
+                  >
                     <td className="px-4 py-3 text-sm font-mono text-gray-600 whitespace-nowrap">
                       {formatDate(log.createdAt)}
                     </td>
                     <td className="px-4 py-3 text-sm">
-                      <span className="text-gray-900">{log.actorEmail || "System"}</span>
+                      <span className="text-gray-900">
+                        {log.actorEmail || "System"}
+                      </span>
                     </td>
                     <td className="px-4 py-3">
                       <span
                         className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${getActionColor(
-                          log.action
+                          log.action,
                         )}`}
                       >
                         {log.action}

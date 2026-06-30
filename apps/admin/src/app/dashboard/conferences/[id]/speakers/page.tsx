@@ -33,7 +33,9 @@ export default async function SpeakersManagementPage({ params }: PageProps) {
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Keynote Speakers</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Keynote Speakers
+            </h1>
             <p className="text-sm text-gray-500 mt-1">{conference.name}</p>
           </div>
         </div>
@@ -41,7 +43,9 @@ export default async function SpeakersManagementPage({ params }: PageProps) {
 
       {/* Add Speaker Form */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Add Keynote Speaker</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          Add Keynote Speaker
+        </h2>
         <AddSpeakerForm conferenceId={id} />
       </div>
 
@@ -78,13 +82,19 @@ export default async function SpeakersManagementPage({ params }: PageProps) {
                     </div>
                   )}
                   <div>
-                    <p className="font-semibold text-gray-900">{speaker.name}</p>
+                    <p className="font-semibold text-gray-900">
+                      {speaker.name}
+                    </p>
                     <p className="text-sm text-gray-600">{speaker.position}</p>
                     {speaker.affiliation && (
-                      <p className="text-sm text-gray-500">{speaker.affiliation}</p>
+                      <p className="text-sm text-gray-500">
+                        {speaker.affiliation}
+                      </p>
                     )}
                     {speaker.location && (
-                      <p className="text-xs text-gray-400">{speaker.location}</p>
+                      <p className="text-xs text-gray-400">
+                        {speaker.location}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -113,9 +123,7 @@ export default async function SpeakersManagementPage({ params }: PageProps) {
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               No keynote speakers yet
             </h3>
-            <p className="text-gray-500">
-              Add speakers using the form above
-            </p>
+            <p className="text-gray-500">Add speakers using the form above</p>
           </div>
         )}
       </div>

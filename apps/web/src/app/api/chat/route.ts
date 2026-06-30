@@ -15,8 +15,8 @@ interface RateLimitEntry {
 
 // ─── Rate Limiter (in-memory, per browser session) ────────────────────────────
 
-const RATE_LIMIT = 5;          // max requests
-const WINDOW_MS = 60 * 1000;  // per 60 seconds
+const RATE_LIMIT = 5; // max requests
+const WINDOW_MS = 60 * 1000; // per 60 seconds
 
 const rateLimitMap = new Map<string, RateLimitEntry>();
 
@@ -100,7 +100,10 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { messages, sessionId }: { messages: ChatMessage[]; sessionId: string } = body;
+    const {
+      messages,
+      sessionId,
+    }: { messages: ChatMessage[]; sessionId: string } = body;
 
     if (!sessionId || typeof sessionId !== "string") {
       return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
@@ -113,8 +116,11 @@ export async function POST(req: NextRequest) {
     // Rate limit check
     if (isRateLimited(sessionId)) {
       return NextResponse.json(
-        { error: "Too many messages. Please wait a moment before sending again." },
-        { status: 429 }
+        {
+          error:
+            "Too many messages. Please wait a moment before sending again.",
+        },
+        { status: 429 },
       );
     }
 
@@ -164,7 +170,7 @@ export async function POST(req: NextRequest) {
     console.error("[/api/chat] Error:", error);
     return NextResponse.json(
       { error: "An internal error occurred. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

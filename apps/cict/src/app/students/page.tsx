@@ -65,10 +65,10 @@ export default function StudentsPage() {
             {Object.entries(enrollmentByYear).map(([year, count], index) => (
               <ScrollAnimation key={year} direction="up" staggerIndex={index}>
                 <button
-                  onClick={() => setActiveYear(index + 1 as 1 | 2 | 3 | 4)}
+                  onClick={() => setActiveYear((index + 1) as 1 | 2 | 3 | 4)}
                   className={cn(
                     "w-full stat-card cursor-pointer text-left transition-all",
-                    activeYear === index + 1 && "ring-2 ring-maroon shadow-lg"
+                    activeYear === index + 1 && "ring-2 ring-maroon shadow-lg",
                   )}
                 >
                   <p className="text-xs font-mono text-gray-400 mb-1">{year}</p>
@@ -98,7 +98,7 @@ export default function StudentsPage() {
                     "px-4 py-2 rounded-lg text-sm font-medium transition-all",
                     activeYear === tab.value
                       ? "bg-maroon text-white shadow-md"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200",
                   )}
                 >
                   {tab.label}
@@ -110,8 +110,12 @@ export default function StudentsPage() {
           {/* Sections Accordion */}
           <div className="space-y-3">
             {filteredSections.map((section) => {
-              const maleCount = section.students.filter((s) => s.gender === "M").length;
-              const femaleCount = section.students.filter((s) => s.gender === "F").length;
+              const maleCount = section.students.filter(
+                (s) => s.gender === "M",
+              ).length;
+              const femaleCount = section.students.filter(
+                (s) => s.gender === "F",
+              ).length;
               const isExpanded = expandedSection === section.section;
 
               return (
@@ -121,7 +125,9 @@ export default function StudentsPage() {
                 >
                   {/* Section Header */}
                   <button
-                    onClick={() => setExpandedSection(isExpanded ? null : section.section)}
+                    onClick={() =>
+                      setExpandedSection(isExpanded ? null : section.section)
+                    }
                     className="w-full flex items-center justify-between p-4 md:p-5 bg-white hover:bg-gray-50 transition-colors"
                   >
                     <div className="flex items-center gap-4">
@@ -129,7 +135,9 @@ export default function StudentsPage() {
                         <GraduationCap className="w-5 h-5 text-maroon" />
                       </div>
                       <div className="text-left">
-                        <h3 className="font-bold text-gray-900 font-mono">{section.section}</h3>
+                        <h3 className="font-bold text-gray-900 font-mono">
+                          {section.section}
+                        </h3>
                         <div className="flex items-center gap-3 mt-0.5">
                           <span className="text-xs text-gray-500 font-mono">
                             {section.count} students total
@@ -146,7 +154,7 @@ export default function StudentsPage() {
                     <ChevronDown
                       className={cn(
                         "w-5 h-5 text-gray-400 transition-transform flex-shrink-0",
-                        isExpanded && "rotate-180"
+                        isExpanded && "rotate-180",
                       )}
                     />
                   </button>
@@ -210,16 +218,22 @@ export default function StudentsPage() {
             <div className="bg-maroon/5 border-2 border-maroon/20 rounded-xl p-4 md:p-6 flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500">
-                  {activeYear === "all" ? "Grand Total" : `${yearTabs.find((t) => t.value === activeYear)?.label} Total`}
+                  {activeYear === "all"
+                    ? "Grand Total"
+                    : `${yearTabs.find((t) => t.value === activeYear)?.label} Total`}
                 </p>
                 <p className="text-2xl font-bold text-maroon">
-                  {filteredSections.reduce((sum, s) => sum + s.count, 0)} students
+                  {filteredSections.reduce((sum, s) => sum + s.count, 0)}{" "}
+                  students
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-xs font-mono text-gray-400">BSIT — AY {academicYear}</p>
+                <p className="text-xs font-mono text-gray-400">
+                  BSIT — AY {academicYear}
+                </p>
                 <p className="text-sm font-semibold text-gray-700">
-                  {filteredSections.length} section{filteredSections.length > 1 ? "s" : ""}
+                  {filteredSections.length} section
+                  {filteredSections.length > 1 ? "s" : ""}
                 </p>
               </div>
             </div>

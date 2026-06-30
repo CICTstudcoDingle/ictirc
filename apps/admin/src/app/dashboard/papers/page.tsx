@@ -3,8 +3,18 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
-  Plus, Search, Eye, Trash2, ExternalLink, Archive,
-  BookOpen, FileText, Edit2, ChevronDown, Filter, X,
+  Plus,
+  Search,
+  Eye,
+  Trash2,
+  ExternalLink,
+  Archive,
+  BookOpen,
+  FileText,
+  Edit2,
+  ChevronDown,
+  Filter,
+  X,
 } from "lucide-react";
 import { Button, Input, Badge } from "@ictirc/ui";
 import { useToastActions } from "@/lib/toast";
@@ -38,7 +48,11 @@ interface UnifiedPaper {
   pageEnd?: number | null;
   category: { id: string; name: string } | null;
   issue?: IssueInfo | null;
-  authors: Array<{ author: Author; order: number; affiliation?: string | null }>;
+  authors: Array<{
+    author: Author;
+    order: number;
+    affiliation?: string | null;
+  }>;
   uploader?: { name: string | null; email: string } | null;
   uploadedAt?: string | null;
   // Discriminator
@@ -57,7 +71,13 @@ const STATUS_COLORS: Record<string, string> = {
   REJECTED: "bg-red-100 text-red-700",
 };
 
-const CURRENT_STATUSES = ["SUBMITTED", "UNDER_REVIEW", "ACCEPTED", "PUBLISHED", "REJECTED"];
+const CURRENT_STATUSES = [
+  "SUBMITTED",
+  "UNDER_REVIEW",
+  "ACCEPTED",
+  "PUBLISHED",
+  "REJECTED",
+];
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -69,7 +89,9 @@ export default function PapersPage() {
   const [loading, setLoading] = useState(true);
 
   // Filters
-  const [activeTab, setActiveTab] = useState<"all" | "current" | "archived">("all");
+  const [activeTab, setActiveTab] = useState<"all" | "current" | "archived">(
+    "all",
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -140,7 +162,12 @@ export default function PapersPage() {
 
   async function handleDelete(paper: UnifiedPaper) {
     const label = paper._source === "archived" ? "archived paper" : "paper";
-    if (!confirm(`Are you sure you want to delete this ${label}?\n"${paper.title}"`)) return;
+    if (
+      !confirm(
+        `Are you sure you want to delete this ${label}?\n"${paper.title}"`,
+      )
+    )
+      return;
 
     try {
       const url =
@@ -254,22 +281,32 @@ export default function PapersPage() {
       {/* ─── Stats ─── */}
       <div className="grid grid-cols-3 gap-4">
         <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Total Papers</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
+            Total Papers
+          </p>
           <p className="text-2xl font-bold text-gray-900 mt-1">{stats.total}</p>
         </div>
         <div className="bg-white border border-gray-200 rounded-lg p-4">
           <div className="flex items-center gap-2">
             <FileText className="w-4 h-4 text-blue-500" />
-            <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Submissions</p>
+            <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
+              Submissions
+            </p>
           </div>
-          <p className="text-2xl font-bold text-gray-900 mt-1">{stats.current}</p>
+          <p className="text-2xl font-bold text-gray-900 mt-1">
+            {stats.current}
+          </p>
         </div>
         <div className="bg-white border border-gray-200 rounded-lg p-4">
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-orange-500" />
-            <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Archived</p>
+            <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
+              Archived
+            </p>
           </div>
-          <p className="text-2xl font-bold text-gray-900 mt-1">{stats.archived}</p>
+          <p className="text-2xl font-bold text-gray-900 mt-1">
+            {stats.archived}
+          </p>
         </div>
       </div>
 
@@ -280,13 +317,21 @@ export default function PapersPage() {
           {(["all", "current", "archived"] as const).map((tab) => (
             <button
               key={tab}
-              onClick={() => { setActiveTab(tab); setStatusFilter("all"); }}
-              className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === tab
+              onClick={() => {
+                setActiveTab(tab);
+                setStatusFilter("all");
+              }}
+              className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
+                activeTab === tab
                   ? "bg-white text-gray-900 shadow-sm"
                   : "text-gray-500 hover:text-gray-700"
-                }`}
+              }`}
             >
-              {tab === "all" ? "All Papers" : tab === "current" ? "Submissions" : "Archived"}
+              {tab === "all"
+                ? "All Papers"
+                : tab === "current"
+                  ? "Submissions"
+                  : "Archived"}
             </button>
           ))}
         </div>
@@ -326,9 +371,15 @@ export default function PapersPage() {
           )}
 
           {/* Clear filters */}
-          {(searchTerm || statusFilter !== "all" || categoryFilter !== "all") && (
+          {(searchTerm ||
+            statusFilter !== "all" ||
+            categoryFilter !== "all") && (
             <button
-              onClick={() => { setSearchTerm(""); setStatusFilter("all"); setCategoryFilter("all"); }}
+              onClick={() => {
+                setSearchTerm("");
+                setStatusFilter("all");
+                setCategoryFilter("all");
+              }}
               className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 px-2"
             >
               <X className="w-3 h-3" /> Clear filters
@@ -355,7 +406,10 @@ export default function PapersPage() {
                   : "No papers submitted yet"}
             </p>
             {activeTab === "archived" && !searchTerm && (
-              <Link href="/dashboard/archives/upload" className="mt-4 inline-block">
+              <Link
+                href="/dashboard/archives/upload"
+                className="mt-4 inline-block"
+              >
                 <Button variant="outline" size="sm">
                   <Archive className="w-4 h-4 mr-2" />
                   Upload Archived Papers
@@ -377,32 +431,34 @@ export default function PapersPage() {
                   Status
                 </th>
                 <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Issue / Volume
-                    </th>
-                    <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Issue / Volume
+                </th>
+                <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                   DOI
                 </th>
-                    <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Date
-                    </th>
-                    <th className="w-28 text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {displayedPapers.map((paper) => {
-                    const isArchived = paper._source === "archived";
-                    const authorNames = paper.authors
-                      .map((a) => a.author.name)
-                      .join(", ");
-                    const issueLabel =
-                      paper.issue
-                        ? `Vol.${paper.issue.volume?.volumeNumber ?? "?"} No.${paper.issue.issueNumber}${paper.issue.volume?.year ? ` (${paper.issue.volume.year})` : ""
-                        }`
-                        : null;
+                <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Date
+                </th>
+                <th className="w-28 text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {displayedPapers.map((paper) => {
+                const isArchived = paper._source === "archived";
+                const authorNames = paper.authors
+                  .map((a) => a.author.name)
+                  .join(", ");
+                const issueLabel = paper.issue
+                  ? `Vol.${paper.issue.volume?.volumeNumber ?? "?"} No.${paper.issue.issueNumber}${
+                      paper.issue.volume?.year
+                        ? ` (${paper.issue.volume.year})`
+                        : ""
+                    }`
+                  : null;
 
-                    return (
+                return (
                   <tr
                     key={`${isArchived ? "arch-" : ""}${paper.id}`}
                     className={`hover:bg-gray-50 ${isArchived ? "bg-orange-50/30" : ""}`}
@@ -438,19 +494,23 @@ export default function PapersPage() {
                           ARCHIVED
                         </span>
                       ) : (
-                          <select
-                            value={paper.status}
-                            onChange={(e) => handleStatusChange(paper, e.target.value)}
-                            aria-label="Change paper status"
-                            className={`text-xs px-2 py-1 rounded-full border-0 font-medium cursor-pointer ${STATUS_COLORS[paper.status] ?? "bg-gray-100 text-gray-700"
-                              }`}
-                          >
-                            {CURRENT_STATUSES.map((s) => (
-                              <option key={s} value={s}>
-                                {s.replace("_", " ")}
-                              </option>
-                            ))}
-                          </select>
+                        <select
+                          value={paper.status}
+                          onChange={(e) =>
+                            handleStatusChange(paper, e.target.value)
+                          }
+                          aria-label="Change paper status"
+                          className={`text-xs px-2 py-1 rounded-full border-0 font-medium cursor-pointer ${
+                            STATUS_COLORS[paper.status] ??
+                            "bg-gray-100 text-gray-700"
+                          }`}
+                        >
+                          {CURRENT_STATUSES.map((s) => (
+                            <option key={s} value={s}>
+                              {s.replace("_", " ")}
+                            </option>
+                          ))}
+                        </select>
                       )}
                     </td>
                     <td className="px-6 py-4">
@@ -525,8 +585,8 @@ export default function PapersPage() {
                   </tr>
                 );
               })}
-                </tbody>
-              </table>
+            </tbody>
+          </table>
         )}
       </div>
 
@@ -537,7 +597,9 @@ export default function PapersPage() {
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
               <div>
                 <h2 className="text-lg font-bold text-gray-900">
-                  {editingPaper._source === "archived" ? "Edit Archived Paper" : "Edit Paper"}
+                  {editingPaper._source === "archived"
+                    ? "Edit Archived Paper"
+                    : "Edit Paper"}
                 </h2>
                 <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">
                   {editingPaper.title}
@@ -558,7 +620,9 @@ export default function PapersPage() {
                 </label>
                 <Input
                   value={editFields.title}
-                  onChange={(e) => setEditFields((f) => ({ ...f, title: e.target.value }))}
+                  onChange={(e) =>
+                    setEditFields((f) => ({ ...f, title: e.target.value }))
+                  }
                   className="w-full"
                 />
               </div>
@@ -570,7 +634,9 @@ export default function PapersPage() {
                 </label>
                 <textarea
                   value={editFields.abstract}
-                  onChange={(e) => setEditFields((f) => ({ ...f, abstract: e.target.value }))}
+                  onChange={(e) =>
+                    setEditFields((f) => ({ ...f, abstract: e.target.value }))
+                  }
                   rows={5}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-maroon focus:border-transparent resize-y"
                 />
@@ -583,7 +649,9 @@ export default function PapersPage() {
                 </label>
                 <Input
                   value={editFields.doi}
-                  onChange={(e) => setEditFields((f) => ({ ...f, doi: e.target.value }))}
+                  onChange={(e) =>
+                    setEditFields((f) => ({ ...f, doi: e.target.value }))
+                  }
                   placeholder="e.g. 10.1234/ictirc.v1.123"
                   className="w-full font-mono text-sm"
                 />
@@ -597,7 +665,9 @@ export default function PapersPage() {
                   </label>
                   <select
                     value={editFields.status}
-                    onChange={(e) => setEditFields((f) => ({ ...f, status: e.target.value }))}
+                    onChange={(e) =>
+                      setEditFields((f) => ({ ...f, status: e.target.value }))
+                    }
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-maroon focus:border-transparent"
                   >
                     {CURRENT_STATUSES.map((s) => (
@@ -618,7 +688,12 @@ export default function PapersPage() {
                   <Input
                     type="date"
                     value={editFields.publishedAt}
-                    onChange={(e) => setEditFields((f) => ({ ...f, publishedAt: e.target.value }))}
+                    onChange={(e) =>
+                      setEditFields((f) => ({
+                        ...f,
+                        publishedAt: e.target.value,
+                      }))
+                    }
                     className="w-full"
                   />
                 </div>
@@ -632,8 +707,8 @@ export default function PapersPage() {
                 </p>
                 {editingPaper.issue && (
                   <p className="text-xs text-gray-500">
-                    <span className="font-medium">Issue:</span>{" "}
-                    Vol.{editingPaper.issue.volume?.volumeNumber} No.
+                    <span className="font-medium">Issue:</span> Vol.
+                    {editingPaper.issue.volume?.volumeNumber} No.
                     {editingPaper.issue.issueNumber}
                     {editingPaper.issue.volume?.year
                       ? ` (${editingPaper.issue.volume.year})`

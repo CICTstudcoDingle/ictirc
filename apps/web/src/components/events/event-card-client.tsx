@@ -27,7 +27,12 @@ function formatDate(dateString: string): string {
   });
 }
 
-export function EventCardClient({ event, isUpcoming, daysUntil, daysSince }: EventCardClientProps) {
+export function EventCardClient({
+  event,
+  isUpcoming,
+  daysUntil,
+  daysSince,
+}: EventCardClientProps) {
   return (
     <>
       {/* Desktop Card */}
@@ -101,7 +106,9 @@ export function EventCardClient({ event, isUpcoming, daysUntil, daysSince }: Eve
                         <Clock className="w-3 h-3" />
                         {daysUntil}d
                       </span>
-                      <span className="text-xs text-gray-400">Upcoming Event</span>
+                      <span className="text-xs text-gray-400">
+                        Upcoming Event
+                      </span>
                     </>
                   ) : (
                     <>

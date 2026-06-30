@@ -30,7 +30,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             "transition-colors duration-200",
             "focus:outline-none focus:border-maroon focus:bg-white",
             error && "border-red-500 focus:border-red-500",
-            className
+            className,
           )}
           ref={ref}
           {...props}
@@ -38,7 +38,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
       </div>
     );
-  }
+  },
 );
 Input.displayName = "Input";
 

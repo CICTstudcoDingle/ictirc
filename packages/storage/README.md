@@ -31,15 +31,25 @@ pnpm install
 ### Supabase Storage (Hot)
 
 ```typescript
-import { uploadToHotStorage, getHotStorageSignedUrl } from "@ictirc/storage/supabase";
+import {
+  uploadToHotStorage,
+  getHotStorageSignedUrl,
+} from "@ictirc/storage/supabase";
 
 // Upload a file
-const result = await uploadToHotStorage(fileBuffer, "papers/paper-id/manuscript.pdf", {
-  contentType: "application/pdf",
-});
+const result = await uploadToHotStorage(
+  fileBuffer,
+  "papers/paper-id/manuscript.pdf",
+  {
+    contentType: "application/pdf",
+  },
+);
 
 // Get signed URL (1 hour expiry)
-const urlResult = await getHotStorageSignedUrl("papers/paper-id/manuscript.pdf", 3600);
+const urlResult = await getHotStorageSignedUrl(
+  "papers/paper-id/manuscript.pdf",
+  3600,
+);
 ```
 
 ### Cloudflare R2 (Cold)
@@ -50,7 +60,7 @@ import { uploadToR2, copyToR2ColdStorage } from "@ictirc/storage/r2";
 // Backup to R2 cold storage
 const backupResult = await copyToR2ColdStorage(
   fileBuffer,
-  "backups/2026/paper-id.pdf"
+  "backups/2026/paper-id.pdf",
 );
 
 // Get R2 signed URL
@@ -73,6 +83,7 @@ const path = generateFilePath("paper-id", "manuscript.pdf", "raw");
 ## Environment Variables
 
 ### Supabase (Hot Storage)
+
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
@@ -80,6 +91,7 @@ NEXT_PUBLIC_SUPABASE_BUCKET_HOT=manuscripts
 ```
 
 ### Cloudflare R2 (Cold Storage)
+
 ```env
 R2_ACCOUNT_ID=your_cloudflare_account_id
 R2_ACCESS_KEY_ID=your_r2_access_key_id

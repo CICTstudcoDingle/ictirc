@@ -175,10 +175,7 @@ export async function getIssue(id: string) {
               },
             },
           },
-          orderBy: [
-            { pageStart: "asc" },
-            { createdAt: "asc" },
-          ],
+          orderBy: [{ pageStart: "asc" }, { createdAt: "asc" }],
         },
       },
     });
@@ -212,10 +209,7 @@ export async function listIssues(volumeId?: string) {
           },
         },
       },
-      orderBy: [
-        { publishedDate: "desc" },
-        { issueNumber: "desc" },
-      ],
+      orderBy: [{ publishedDate: "desc" }, { issueNumber: "desc" }],
     });
 
     return { success: true, data: issues };

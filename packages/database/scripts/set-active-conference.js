@@ -3,12 +3,14 @@ const { PrismaClient } = require("@prisma/client");
 
 async function main() {
   const prisma = new PrismaClient();
-  
+
   try {
     // Find all conferences
     const conferences = await prisma.conference.findMany();
     console.log("Found", conferences.length, "conferences:");
-    conferences.forEach(c => console.log(`  - ${c.id}: ${c.name} (isActive: ${c.isActive})`));
+    conferences.forEach((c) =>
+      console.log(`  - ${c.id}: ${c.name} (isActive: ${c.isActive})`),
+    );
 
     if (conferences.length > 0) {
       // Set the first one as active

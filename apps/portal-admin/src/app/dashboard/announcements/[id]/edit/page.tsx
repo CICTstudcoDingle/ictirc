@@ -34,8 +34,12 @@ export default async function EditAnnouncementPage({
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Edit Announcement</h1>
-          <p className="text-sm text-gray-500 mt-0.5 font-mono">/{announcement.slug}</p>
+          <h1 className="text-2xl font-bold text-gray-900">
+            Edit Announcement
+          </h1>
+          <p className="text-sm text-gray-500 mt-0.5 font-mono">
+            /{announcement.slug}
+          </p>
         </div>
       </div>
 
@@ -46,7 +50,10 @@ export default async function EditAnnouncementPage({
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-5">
           {/* Title */}
           <div>
-            <label htmlFor="edit-title" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="edit-title"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Title <span className="text-red-500">*</span>
             </label>
             <input
@@ -61,7 +68,10 @@ export default async function EditAnnouncementPage({
 
           {/* Excerpt */}
           <div>
-            <label htmlFor="edit-excerpt" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="edit-excerpt"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Excerpt
             </label>
             <textarea
@@ -75,7 +85,10 @@ export default async function EditAnnouncementPage({
 
           {/* Content */}
           <div>
-            <label htmlFor="edit-content" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="edit-content"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Content <span className="text-red-500">*</span>
             </label>
             <textarea
@@ -90,7 +103,10 @@ export default async function EditAnnouncementPage({
 
           {/* Cover Image */}
           <div>
-            <label htmlFor="edit-cover" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="edit-cover"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Cover Image URL
             </label>
             <input
@@ -106,10 +122,15 @@ export default async function EditAnnouncementPage({
 
         {/* Options */}
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-4">
-          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">Publish Options</h3>
+          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">
+            Publish Options
+          </h3>
 
           <div>
-            <label htmlFor="edit-status" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="edit-status"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Status
             </label>
             <select
@@ -134,7 +155,9 @@ export default async function EditAnnouncementPage({
             />
             <div className="flex items-center gap-2">
               <Pin className="w-4 h-4 text-gold" />
-              <span className="text-sm font-medium text-gray-700">Pin this announcement</span>
+              <span className="text-sm font-medium text-gray-700">
+                Pin this announcement
+              </span>
             </div>
           </label>
         </div>

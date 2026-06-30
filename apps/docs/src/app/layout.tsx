@@ -4,14 +4,15 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const jetbrainsMono = JetBrains_Mono({ 
-  subsets: ["latin"], 
-  variable: "--font-jetbrains" 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
 });
 
 export const metadata: Metadata = {
   title: "ICTIRC Documentation",
-  description: "Official documentation for the ICTIRC platform - ISUFST College of Information and Computing Technology",
+  description:
+    "Official documentation for the ICTIRC platform - ISUFST College of Information and Computing Technology",
 };
 
 export default function RootLayout({

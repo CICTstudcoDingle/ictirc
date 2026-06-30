@@ -17,7 +17,7 @@ async function buildSystemPrompt(): Promise<string> {
   try {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     );
 
     const [announcements, { count }] = await Promise.all([
@@ -36,7 +36,7 @@ async function buildSystemPrompt(): Promise<string> {
       announcementsText = announcements
         .map(
           (a) =>
-            `- "${a.title}"${a.excerpt ? `: ${a.excerpt}` : ""}${a.publishedAt ? ` (${a.publishedAt.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })})` : ""}`
+            `- "${a.title}"${a.excerpt ? `: ${a.excerpt}` : ""}${a.publishedAt ? ` (${a.publishedAt.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })})` : ""}`,
         )
         .join("\n");
     }
@@ -105,18 +105,16 @@ export async function POST(request: NextRequest) {
     }
 
     const systemPrompt = await buildSystemPrompt();
-    const model = genAI.getGenerativeModel({ 
+    const model = genAI.getGenerativeModel({
       model: "gemini-2.0-flash",
       systemInstruction: systemPrompt,
     });
 
     // Build history in Gemini format
-    const history = messages
-      .slice(0, -1)
-      .map((m) => ({
-        role: m.role,
-        parts: [{ text: m.content }],
-      }));
+    const history = messages.slice(0, -1).map((m) => ({
+      role: m.role,
+      parts: [{ text: m.content }],
+    }));
 
     const lastMessage = messages[messages.length - 1];
 
@@ -165,7 +163,7 @@ export async function POST(request: NextRequest) {
     console.error("[Chat API Error]", error);
     return new Response(
       JSON.stringify({ error: "Failed to process your request." }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }

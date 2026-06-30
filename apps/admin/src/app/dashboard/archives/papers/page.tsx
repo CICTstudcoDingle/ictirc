@@ -2,7 +2,13 @@ import Link from "next/link";
 import { prisma } from "@ictirc/database";
 import { Button } from "@ictirc/ui";
 import {
-  ArrowLeft, BookOpen, Upload, Eye, Edit, Search, BookMarked,
+  ArrowLeft,
+  BookOpen,
+  Upload,
+  Eye,
+  Edit,
+  Search,
+  BookMarked,
 } from "lucide-react";
 import { DeleteArchivedPaperButton } from "@/components/archives/delete-archived-paper-button";
 
@@ -51,10 +57,7 @@ async function getArchivedPapers(filters: SearchParams) {
         },
       },
     },
-    orderBy: [
-      { issue: { publishedDate: "desc" } },
-      { pageStart: "asc" },
-    ],
+    orderBy: [{ issue: { publishedDate: "desc" } }, { pageStart: "asc" }],
   });
 }
 
@@ -63,7 +66,10 @@ export default async function ArchivedPapersPage({ searchParams }: PageProps) {
 
   const [papers, categories, issues] = await Promise.all([
     getArchivedPapers(params),
-    prisma.category.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } }),
+    prisma.category.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, name: true },
+    }),
     prisma.issue.findMany({
       include: { volume: { select: { volumeNumber: true, year: true } } },
       orderBy: [{ volume: { year: "desc" } }, { issueNumber: "asc" }],
@@ -157,9 +163,14 @@ export default async function ArchivedPapersPage({ searchParams }: PageProps) {
         {papers.length === 0 ? (
           <div className="py-16 text-center">
             <BookOpen className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500 font-medium">No archived papers found</p>
+            <p className="text-gray-500 font-medium">
+              No archived papers found
+            </p>
             {!params.search && !params.category && !params.issueId && (
-              <Link href="/dashboard/archives/upload" className="mt-4 inline-block">
+              <Link
+                href="/dashboard/archives/upload"
+                className="mt-4 inline-block"
+              >
                 <Button variant="outline" size="sm">
                   <Upload className="w-4 h-4 mr-2" />
                   Upload First Paper
@@ -194,12 +205,15 @@ export default async function ArchivedPapersPage({ searchParams }: PageProps) {
             <tbody className="divide-y divide-gray-100">
               {papers.map((paper) => {
                 const authors = paper.authors.map((a) => a.name).join(", ");
-                const moreAuthors = paper.authors.length > 3
-                  ? ` +${paper.authors.length - 3} more`
-                  : "";
+                const moreAuthors =
+                  paper.authors.length > 3
+                    ? ` +${paper.authors.length - 3} more`
+                    : "";
                 const issueLabel = paper.issue
                   ? `Vol.${paper.issue.volume?.volumeNumber ?? "?"} No.${paper.issue.issueNumber}${
-                      paper.issue.volume?.year ? ` (${paper.issue.volume.year})` : ""
+                      paper.issue.volume?.year
+                        ? ` (${paper.issue.volume.year})`
+                        : ""
                     }`
                   : "—";
 
@@ -213,7 +227,8 @@ export default async function ArchivedPapersPage({ searchParams }: PageProps) {
                             {paper.title}
                           </p>
                           <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">
-                            {authors}{moreAuthors}
+                            {authors}
+                            {moreAuthors}
                           </p>
                         </div>
                       </div>
@@ -237,11 +252,14 @@ export default async function ArchivedPapersPage({ searchParams }: PageProps) {
                     </td>
                     <td className="px-6 py-4">
                       <span className="text-xs text-gray-500">
-                        {new Date(paper.publishedDate).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
+                        {new Date(paper.publishedDate).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          },
+                        )}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">

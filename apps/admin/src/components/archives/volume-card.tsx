@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ictirc/ui";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@ictirc/ui";
 import { BookOpen, FileText } from "lucide-react";
 
 interface VolumeCardProps {
@@ -23,7 +29,7 @@ interface VolumeCardProps {
 export function VolumeCard({ volume }: VolumeCardProps) {
   const totalPapers = volume.issues.reduce(
     (sum, issue) => sum + (issue._count?.papers || 0),
-    0
+    0,
   );
 
   return (
@@ -45,7 +51,8 @@ export function VolumeCard({ volume }: VolumeCardProps) {
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <FileText className="h-4 w-4" />
-              {volume.issues.length} issue{volume.issues.length !== 1 ? "s" : ""}
+              {volume.issues.length} issue
+              {volume.issues.length !== 1 ? "s" : ""}
             </div>
             <div>
               {totalPapers} paper{totalPapers !== 1 ? "s" : ""}

@@ -17,7 +17,10 @@ import { prisma } from "@ictirc/database";
 
 export default async function UploadPage() {
   const supabase = await createClient();
-  const { data: { user }, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
 
   if (error || !user) {
     redirect("/auth/login");
@@ -56,7 +59,9 @@ export default async function UploadPage() {
         </div>
 
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-yellow-900">No Issues Available</h3>
+          <h3 className="text-lg font-semibold text-yellow-900">
+            No Issues Available
+          </h3>
           <p className="text-yellow-800 mt-2">
             You need to create at least one issue before you can upload papers.
           </p>

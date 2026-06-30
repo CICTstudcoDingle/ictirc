@@ -65,7 +65,13 @@ export async function middleware(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
+        setAll(
+          cookiesToSet: {
+            name: string;
+            value: string;
+            options: CookieOptions;
+          }[],
+        ) {
           cookiesToSet.forEach(({ name, value }) => {
             request.cookies.set(name, value);
           });
@@ -79,7 +85,7 @@ export async function middleware(request: NextRequest) {
           });
         },
       },
-    }
+    },
   );
 
   const {
@@ -117,7 +123,7 @@ export async function middleware(request: NextRequest) {
             persistSession: false,
             autoRefreshToken: false,
           },
-        }
+        },
       );
 
       const { data: dbUser, error } = await adminSupabase
@@ -154,7 +160,7 @@ export async function middleware(request: NextRequest) {
       const requiredRoles = getRequiredRoles(pathname);
       if (requiredRoles && !hasAllowedRole(typedUser.role, requiredRoles)) {
         console.warn(
-          `[RBAC] User ${authUser.email} (${typedUser.role}) denied access to ${pathname}`
+          `[RBAC] User ${authUser.email} (${typedUser.role}) denied access to ${pathname}`,
         );
         const url = request.nextUrl.clone();
         url.pathname = "/unauthorized";
@@ -167,15 +173,16 @@ export async function middleware(request: NextRequest) {
       response.headers.set("x-user-role", typedUser.role);
     } catch (error) {
       console.error("[RBAC] Database error:", error);
-    // On database error, allow through but log
-    // Production should handle this more gracefully
+      // On database error, allow through but log
+      // Production should handle this more gracefully
     }
   }
 
   // Redirect authenticated users from /login to /dashboard
   if (pathname === "/login") {
     if (authUser) {
-      const redirectTo = request.nextUrl.searchParams.get("redirect") || "/dashboard";
+      const redirectTo =
+        request.nextUrl.searchParams.get("redirect") || "/dashboard";
       const url = request.nextUrl.clone();
       url.pathname = redirectTo;
       url.searchParams.delete("redirect");

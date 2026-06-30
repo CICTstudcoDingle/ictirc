@@ -141,13 +141,7 @@ const fallbackYears: AcademicYear[] = [
   },
 ];
 
-function YearSection({
-  year,
-  index,
-}: {
-  year: AcademicYear;
-  index: number;
-}) {
+function YearSection({ year, index }: { year: AcademicYear; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const isEven = index % 2 === 0;
 
@@ -165,7 +159,7 @@ function YearSection({
           start: "top 85%",
           toggleActions: "play none none reverse",
         },
-      }
+      },
     );
   });
 
@@ -245,9 +239,7 @@ function YearSection({
                 <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-gold-400/20 to-maroon-600/20 flex items-center justify-center">
                   <GraduationCap className="w-10 h-10 text-white/20" />
                 </div>
-                <p className="text-white/20 font-mono text-xs">
-                  Photo Gallery
-                </p>
+                <p className="text-white/20 font-mono text-xs">Photo Gallery</p>
                 <p className="text-gold-500/30 text-[10px] mt-2">
                   [Images of {year.year_start} Events]
                 </p>

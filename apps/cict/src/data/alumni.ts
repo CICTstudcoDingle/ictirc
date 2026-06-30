@@ -59,12 +59,14 @@ export const alumniTestimonials: AlumniTestimonial[] = [
   },
 ];
 
-export const totalAlumni = alumniBatches.reduce((sum, b) => sum + b.graduates, 0);
-
-export const alumniByYear: Record<number, number> = alumniBatches.reduce<Record<number, number>>(
-  (acc, batch) => {
-    acc[batch.year] = batch.graduates;
-    return acc;
-  },
-  {}
+export const totalAlumni = alumniBatches.reduce(
+  (sum, b) => sum + b.graduates,
+  0,
 );
+
+export const alumniByYear: Record<number, number> = alumniBatches.reduce<
+  Record<number, number>
+>((acc, batch) => {
+  acc[batch.year] = batch.graduates;
+  return acc;
+}, {});

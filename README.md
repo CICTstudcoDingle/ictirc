@@ -58,12 +58,14 @@ The platform emphasizes **security**, **scalability**, and **user experience** w
 ## ✨ Features
 
 ### 🔐 **Multi-Tier RBAC System**
+
 - 4-tier role hierarchy: **DEAN** → **EDITOR** → **REVIEWER** → **AUTHOR**
 - Database-backed permission enforcement
 - Route-level middleware protection
 - Fine-grained access control for sensitive operations
 
 ### 📄 **Paper Management**
+
 - Streamlined submission workflow with file uploads
 - DOI assignment and metadata management
 - Status tracking (DRAFT → UNDER_REVIEW → ACCEPTED → PUBLISHED → REJECTED)
@@ -71,30 +73,35 @@ The platform emphasizes **security**, **scalability**, and **user experience** w
 - Full-text search and filtering
 
 ### 💾 **Dual Storage Architecture**
+
 - **Hot Storage**: Supabase for active manuscripts (fast retrieval)
 - **Cold Storage**: Cloudflare R2 for archival (cost-efficient)
 - Automatic tier migration based on access patterns
 - Pre-signed URL generation for secure downloads
 
 ### 🎪 **Conference Management**
+
 - Event creation with timeline visualization
 - Registration system with QR code generation
 - Upcoming event cards with countdown timers
 - Dynamic metadata for SEO optimization
 
 ### 📊 **Admin Dashboard**
+
 - Real-time statistics and analytics
 - User management with invite token system
 - Audit logging for compliance
 - System settings and configuration
 
 ### 🌐 **Public Interface**
+
 - Browse research archive with advanced filters
 - Responsive design (desktop, tablet, mobile)
 - Accessibility-compliant (WCAG 2.1 AA)
 - SEO-optimized with automatic sitemap/robots.txt
 
 ### 🔒 **Security & Compliance**
+
 - Supabase Auth with SSR support
 - Row-Level Security (RLS) policies
 - Input validation with Zod schemas
@@ -106,6 +113,7 @@ The platform emphasizes **security**, **scalability**, and **user experience** w
 ## 🛠️ Tech Stack
 
 ### **Frontend**
+
 - **Framework**: [Next.js 16.2.0-canary.21](https://nextjs.org/) (App Router)
 - **UI Library**: [React 19](https://react.dev/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) with custom design tokens
@@ -113,6 +121,7 @@ The platform emphasizes **security**, **scalability**, and **user experience** w
 - **Components**: Custom UI library (`@ictirc/ui`)
 
 ### **Backend**
+
 - **Runtime**: [Node.js](https://nodejs.org/) (v20+)
 - **Database**: [PostgreSQL](https://www.postgresql.org/) (via Supabase)
 - **ORM**: [Prisma 6.x](https://www.prisma.io/)
@@ -120,6 +129,7 @@ The platform emphasizes **security**, **scalability**, and **user experience** w
 - **File Storage**: Supabase Storage + [Cloudflare R2](https://www.cloudflare.com/products/r2/)
 
 ### **Developer Experience**
+
 - **Language**: [TypeScript 5.7.3](https://www.typescriptlang.org/)
 - **Package Manager**: [pnpm 9.1.0](https://pnpm.io/) (workspace protocol)
 - **Monorepo**: [Turborepo](https://turbo.build/)
@@ -127,6 +137,7 @@ The platform emphasizes **security**, **scalability**, and **user experience** w
 - **Formatting**: [Prettier](https://prettier.io/) (via ESLint plugin)
 
 ### **Infrastructure**
+
 - **Hosting**: [Vercel](https://vercel.com/) (with standalone output)
 - **CDN**: Cloudflare (R2 storage)
 - **Email**: [Resend](https://resend.com/) (transactional emails)
@@ -144,6 +155,7 @@ Before you begin, ensure you have the following installed:
 - **Git** ([Download](https://git-scm.com/))
 
 ### **Required Accounts**
+
 - [Supabase](https://supabase.com/) (free tier available)
 - [Cloudflare](https://cloudflare.com/) (for R2 storage)
 - [Resend](https://resend.com/) (for email notifications)
@@ -390,19 +402,23 @@ The database uses **Prisma ORM** with PostgreSQL (hosted on Supabase).
 #### **Core Models**
 
 - **User**: Stores user accounts with role-based permissions
+
   - `id`, `email`, `name`, `role` (DEAN, EDITOR, REVIEWER, AUTHOR)
   - `created_at`, `updated_at`
 
 - **Paper**: Research paper submissions
+
   - `id`, `title`, `abstract`, `keywords`, `authors`
   - `status` (DRAFT, UNDER_REVIEW, ACCEPTED, PUBLISHED, REJECTED)
   - `doi`, `file_url`, `submitted_at`, `published_at`
 
 - **Event**: Conference and workshop events
+
   - `id`, `title`, `description`, `start_date`, `end_date`
   - `location`, `registration_url`, `max_attendees`
 
 - **AuditLog**: Comprehensive audit trail
+
   - `id`, `user_id`, `action`, `resource`, `metadata`
   - `ip_address`, `timestamp`
 
@@ -431,6 +447,7 @@ pnpm db:seed
 ```
 
 Seeds include:
+
 - Sample users (one per role)
 - 10+ research papers
 - Upcoming/past events
@@ -445,11 +462,13 @@ Seeds include:
 ICTIRC implements a **hot/cold storage strategy** for cost optimization:
 
 #### **Hot Storage (Supabase)**
+
 - **Purpose**: Active manuscripts (recently uploaded, frequently accessed)
 - **TTL**: Papers accessed within last 90 days
 - **Advantages**: Fast retrieval, CDN integration, RLS policies
 
 #### **Cold Storage (Cloudflare R2)**
+
 - **Purpose**: Archived papers (older, infrequently accessed)
 - **TTL**: Papers older than 90 days with low access count
 - **Advantages**: S3-compatible, $0.015/GB/month, no egress fees
@@ -457,34 +476,35 @@ ICTIRC implements a **hot/cold storage strategy** for cost optimization:
 ### **Storage Package API**
 
 ```typescript
-import { 
-  uploadToHotStorage, 
-  uploadToR2, 
-  getR2SignedUrl 
-} from '@ictirc/storage';
+import {
+  uploadToHotStorage,
+  uploadToR2,
+  getR2SignedUrl,
+} from "@ictirc/storage";
 
 // Upload to Supabase (hot)
 const result = await uploadToHotStorage({
   file: manuscriptFile,
-  bucket: 'manuscripts',
-  path: 'papers/2026/paper-123.pdf',
-  userId: 'user-id'
+  bucket: "manuscripts",
+  path: "papers/2026/paper-123.pdf",
+  userId: "user-id",
 });
 
 // Archive to R2 (cold)
 await uploadToR2({
   file: manuscriptFile,
-  key: 'archive/2025/paper-123.pdf',
-  metadata: { doi: '10.1234/ictirc.2025.123' }
+  key: "archive/2025/paper-123.pdf",
+  metadata: { doi: "10.1234/ictirc.2025.123" },
 });
 
 // Generate pre-signed URL (valid for 1 hour)
-const url = await getR2SignedUrl('archive/2025/paper-123.pdf', 3600);
+const url = await getR2SignedUrl("archive/2025/paper-123.pdf", 3600);
 ```
 
 ### **Migration Strategy**
 
 Automatic migration from hot → cold storage based on:
+
 1. **Age**: Papers published >90 days ago
 2. **Access Frequency**: <10 downloads per month
 3. **User Role**: Papers from non-active authors
@@ -520,38 +540,41 @@ AUTHOR (Level 0)
 Permissions are enforced at **three levels**:
 
 #### **1. Middleware (Route-Level)**
+
 ```typescript
 // apps/admin/middleware.ts
 export async function middleware(request: NextRequest) {
   const user = await getCurrentUser();
-  
-  if (request.nextUrl.pathname.startsWith('/dashboard/system')) {
-    return requireRole(user, 'DEAN');
+
+  if (request.nextUrl.pathname.startsWith("/dashboard/system")) {
+    return requireRole(user, "DEAN");
   }
-  
-  if (request.nextUrl.pathname.startsWith('/dashboard/users')) {
-    return requireRole(user, 'EDITOR');
+
+  if (request.nextUrl.pathname.startsWith("/dashboard/users")) {
+    return requireRole(user, "EDITOR");
   }
-  
+
   // ...
 }
 ```
 
 #### **2. Server Actions (Operation-Level)**
+
 ```typescript
 // apps/admin/src/app/dashboard/papers/actions.ts
 export async function updatePaperStatus(paperId: string, status: string) {
   const user = await getCurrentUser();
-  
-  if (!hasPermission(user, 'papers.update')) {
-    throw new Error('Insufficient permissions');
+
+  if (!hasPermission(user, "papers.update")) {
+    throw new Error("Insufficient permissions");
   }
-  
+
   // ...
 }
 ```
 
 #### **3. Database (Row-Level Security)**
+
 ```sql
 -- Supabase RLS policy
 CREATE POLICY "Users can only view their own papers"
@@ -647,7 +670,7 @@ pnpm install
 - **TypeScript**: Strict mode enabled, no implicit any
 - **Components**: Prefer Server Components unless client interactivity needed
 - **Imports**: Use `@` alias for app imports, full package names for monorepo
-- **Naming**: 
+- **Naming**:
   - Components: `PascalCase`
   - Files: `kebab-case.tsx`
   - Functions: `camelCase`
@@ -660,6 +683,7 @@ pnpm install
 ### **Vercel (Recommended)**
 
 #### **1. Connect Repository**
+
 - Go to [Vercel Dashboard](https://vercel.com/dashboard)
 - Click "New Project" → Import Git Repository
 - Select `CICTstudcoDingle/ictirc`
@@ -667,6 +691,7 @@ pnpm install
 #### **2. Configure Projects**
 
 **Web App (`apps/web`)**
+
 ```
 Framework Preset: Next.js
 Root Directory: apps/web
@@ -676,6 +701,7 @@ Install Command: pnpm install
 ```
 
 **Admin App (`apps/admin`)**
+
 ```
 Framework Preset: Next.js
 Root Directory: apps/admin
@@ -687,6 +713,7 @@ Install Command: pnpm install
 #### **3. Set Environment Variables**
 
 Add all variables from `.env.local` files to Vercel:
+
 - Navigate to Project Settings → Environment Variables
 - Add each variable from [Environment Setup](#-environment-setup)
 - Select environment: Production, Preview, Development
@@ -724,13 +751,16 @@ DATABASE_URL="your-production-url" pnpm db:migrate:deploy
 ### **Public API Routes**
 
 #### **GET `/api/events`**
+
 Fetch upcoming and past events.
 
 **Query Parameters:**
+
 - `status` (optional): `upcoming` | `past` | `all`
 - `limit` (optional): Number of results (default: 10)
 
 **Response:**
+
 ```json
 {
   "upcoming": [
@@ -748,9 +778,11 @@ Fetch upcoming and past events.
 ```
 
 #### **GET `/api/guides`**
+
 Fetch research guides.
 
 **Response:**
+
 ```json
 {
   "guides": [
@@ -768,12 +800,15 @@ Fetch research guides.
 ### **Admin API Routes** (Requires Authentication)
 
 #### **GET `/api/dashboard`**
+
 Fetch dashboard statistics.
 
 **Headers:**
+
 - `Authorization`: Bearer token from Supabase Auth
 
 **Response:**
+
 ```json
 {
   "stats": {
@@ -786,9 +821,11 @@ Fetch dashboard statistics.
 ```
 
 #### **POST `/api/users` (EDITOR+ only)**
+
 Create a new user.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -798,6 +835,7 @@ Create a new user.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -812,11 +850,13 @@ Create a new user.
 ### **Server Actions**
 
 #### **`submitPaper(formData: FormData)`**
+
 Submit a new research paper.
 
 **Location:** `apps/web/src/app/submit/actions/submit-paper.ts`
 
 **Fields:**
+
 - `title`: string (required)
 - `abstract`: string (required, min 150 chars)
 - `keywords`: string (comma-separated)
@@ -824,6 +864,7 @@ Submit a new research paper.
 - `manuscript`: File (PDF, max 10MB)
 
 **Returns:**
+
 ```typescript
 {
   success: boolean;
@@ -841,26 +882,31 @@ We welcome contributions from the community! Here's how you can help:
 ### **Getting Started**
 
 1. **Fork the repository**
+
    ```bash
    gh repo fork CICTstudcoDingle/ictirc
    ```
 
 2. **Create a feature branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
 3. **Make your changes**
+
    - Follow the [Code Style Guidelines](#development)
    - Add tests (when testing framework is set up)
    - Update documentation if needed
 
 4. **Commit your changes**
+
    ```bash
    git commit -m "feat: add your feature description"
    ```
-   
+
    Use [Conventional Commits](https://www.conventionalcommits.org/):
+
    - `feat:` New feature
    - `fix:` Bug fix
    - `docs:` Documentation changes
@@ -870,6 +916,7 @@ We welcome contributions from the community! Here's how you can help:
    - `chore:` Maintenance tasks
 
 5. **Push to your fork**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -927,7 +974,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - **Email**: cict@ub.ac.id
 - **Website**: https://ictirc.cict.ub.ac.id
 - **GitHub Issues**: [Report a bug](https://github.com/CICTstudcoDingle/ictirc/issues)
-- **Documentation**: [Full Docs](https://docs.ictirc.cict.ub.ac.id) *(coming soon)*
+- **Documentation**: [Full Docs](https://docs.ictirc.cict.ub.ac.id) _(coming soon)_
 
 ---
 

@@ -23,9 +23,7 @@ export default function MiniCalendarWidget({ events = [] }: Props) {
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
     return {
-      month: date
-        .toLocaleString("default", { month: "short" })
-        .toUpperCase(),
+      month: date.toLocaleString("default", { month: "short" }).toUpperCase(),
       day: date.getDate(),
     };
   };

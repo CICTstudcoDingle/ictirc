@@ -93,7 +93,9 @@ export async function updateAnnouncementAction(formData: FormData) {
     isPinned: formData.get("isPinned") === "true",
   };
 
-  const existing = await prisma.portalAnnouncement.findUnique({ where: { id } });
+  const existing = await prisma.portalAnnouncement.findUnique({
+    where: { id },
+  });
   if (!existing) return;
 
   const wasPublished = existing.status === "PUBLISHED";

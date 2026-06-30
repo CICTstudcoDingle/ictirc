@@ -15,7 +15,9 @@ import { requireRole } from "@/lib/rbac";
 export async function getRoles() {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -46,7 +48,9 @@ export async function createRole(data: {
 }) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -94,11 +98,13 @@ export async function updateRole(
     displayName?: string;
     description?: string;
     permissions?: string[];
-  }
+  },
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -139,7 +145,9 @@ export async function updateRole(
 export async function deleteRole(id: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -182,7 +190,9 @@ export async function deleteRole(id: string) {
 export async function initializeSystemRoles() {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -209,7 +219,13 @@ export async function initializeSystemRoles() {
         name: "EDITOR",
         displayName: "Editor",
         description: "Can manage papers, assign reviewers, invite users",
-        permissions: ["paper:read", "paper:update", "paper:assign", "user:read", "user:invite"],
+        permissions: [
+          "paper:read",
+          "paper:update",
+          "paper:assign",
+          "user:read",
+          "user:invite",
+        ],
         isSystem: true,
       },
       {
@@ -241,7 +257,10 @@ export async function initializeSystemRoles() {
     console.error("[initializeSystemRoles] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to initialize system roles",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to initialize system roles",
     };
   }
 }

@@ -1,4 +1,12 @@
-import { Calendar, MapPin, Users, Video, Mail, Award, Building2 } from "lucide-react";
+import {
+  Calendar,
+  MapPin,
+  Users,
+  Video,
+  Mail,
+  Award,
+  Building2,
+} from "lucide-react";
 import { prisma } from "@ictirc/database";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
 
@@ -22,16 +30,18 @@ export async function VenueSection() {
   });
 
   // Fallback to latest published conference if none active
-  const data: ConferenceData | null = conference || await prisma.conference.findFirst({
-    where: { isPublished: true },
-    orderBy: { startDate: "desc" },
-    select: {
-      venue: true,
-      location: true,
-      startDate: true,
-      endDate: true,
-    },
-  });
+  const data: ConferenceData | null =
+    conference ||
+    (await prisma.conference.findFirst({
+      where: { isPublished: true },
+      orderBy: { startDate: "desc" },
+      select: {
+        venue: true,
+        location: true,
+        startDate: true,
+        endDate: true,
+      },
+    }));
 
   if (!data) {
     return null;
@@ -40,16 +50,16 @@ export async function VenueSection() {
   // Format dates
   const startDate = new Date(data.startDate);
   const endDate = data.endDate ? new Date(data.endDate) : null;
-  
+
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString("en-US", { 
-      month: "long", 
-      day: "numeric", 
-      year: "numeric" 
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
-  const dateString = endDate 
+  const dateString = endDate
     ? `${formatDate(startDate).replace(`, ${startDate.getFullYear()}`, "")} – ${formatDate(endDate)}`
     : formatDate(startDate);
 
@@ -68,47 +78,51 @@ export async function VenueSection() {
               {data.venue || "Knowledge Hub Center"}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Iloilo State University of Fisheries Science and Technology – Dingle Campus
+              Iloilo State University of Fisheries Science and Technology –
+              Dingle Campus
             </p>
-            <p className="text-lg text-gray-500 mt-2">
-              {dateString}
-            </p>
+            <p className="text-lg text-gray-500 mt-2">{dateString}</p>
           </div>
         </ScrollAnimation>
 
         <ScrollAnimation direction="up" delay={0.2}>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-12 h-12 bg-maroon/10 rounded-xl flex items-center justify-center">
-              <MapPin className="w-6 h-6 text-maroon" />
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-12 h-12 bg-maroon/10 rounded-xl flex items-center justify-center">
+                <MapPin className="w-6 h-6 text-maroon" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-1">Location</h3>
+                <p className="text-gray-600">
+                  {data.location || "Dingle, Iloilo, Philippines"}
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-1">Location</h3>
-              <p className="text-gray-600">{data.location || "Dingle, Iloilo, Philippines"}</p>
-            </div>
-          </div>
 
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-12 h-12 bg-maroon/10 rounded-xl flex items-center justify-center">
-              <Users className="w-6 h-6 text-maroon" />
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-12 h-12 bg-maroon/10 rounded-xl flex items-center justify-center">
+                <Users className="w-6 h-6 text-maroon" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-1">Format</h3>
+                <p className="text-gray-600">Hybrid (In-person & Virtual)</p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-1">Format</h3>
-              <p className="text-gray-600">Hybrid (In-person & Virtual)</p>
-            </div>
-          </div>
 
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-12 h-12 bg-maroon/10 rounded-xl flex items-center justify-center">
-              <Mail className="w-6 h-6 text-maroon" />
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 w-12 h-12 bg-maroon/10 rounded-xl flex items-center justify-center">
+                <Mail className="w-6 h-6 text-maroon" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-1">Contact</h3>
+                <a
+                  href="mailto:irjict@gmail.com"
+                  className="text-maroon hover:underline"
+                >
+                  irjict@gmail.com
+                </a>
+              </div>
             </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-1">Contact</h3>
-              <a href="mailto:irjict@gmail.com" className="text-maroon hover:underline">
-                irjict@gmail.com
-              </a>
-            </div>
-          </div>
           </div>
         </ScrollAnimation>
       </div>

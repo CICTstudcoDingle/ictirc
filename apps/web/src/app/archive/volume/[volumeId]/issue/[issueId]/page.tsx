@@ -1,7 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, FileText, BookOpen } from "lucide-react";
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, CircuitBackground } from "@ictirc/ui";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CircuitBackground,
+} from "@ictirc/ui";
 import { prisma } from "@ictirc/database";
 import { IssuePapersFilter } from "@/components/archive/issue-papers-filter";
 
@@ -42,10 +50,7 @@ export default async function IssueDetailPage({ params }: PageProps) {
             orderBy: { order: "asc" },
           },
         },
-        orderBy: [
-          { pageStart: "asc" },
-          { createdAt: "asc" },
-        ],
+        orderBy: [{ pageStart: "asc" }, { createdAt: "asc" }],
       },
     },
   });
@@ -61,7 +66,11 @@ export default async function IssueDetailPage({ params }: PageProps) {
         <CircuitBackground variant="subtle" animated />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link href="/archive">
-            <Button variant="ghost" size="sm" className="mb-4 text-white hover:text-gold">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mb-4 text-white hover:text-gold"
+            >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Archive
             </Button>
@@ -91,7 +100,9 @@ export default async function IssueDetailPage({ params }: PageProps) {
                 <CardContent>
                   <p className="text-lg">{issue.theme}</p>
                   {issue.description && (
-                    <p className="text-muted-foreground mt-2">{issue.description}</p>
+                    <p className="text-muted-foreground mt-2">
+                      {issue.description}
+                    </p>
                   )}
                 </CardContent>
               </Card>
@@ -104,17 +115,23 @@ export default async function IssueDetailPage({ params }: PageProps) {
               <CardContent className="space-y-2">
                 <div className="flex items-center gap-2 text-sm">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
-                  Published: {new Date(issue.publishedDate).toLocaleDateString()}
+                  Published:{" "}
+                  {new Date(issue.publishedDate).toLocaleDateString()}
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <FileText className="h-4 w-4 text-muted-foreground" />
-                  {issue.archivedPapers.length} paper{issue.archivedPapers.length !== 1 ? "s" : ""}
+                  {issue.archivedPapers.length} paper
+                  {issue.archivedPapers.length !== 1 ? "s" : ""}
                 </div>
                 {issue.conference && (
                   <div className="pt-2 border-t">
-                    <p className="text-sm font-semibold">{issue.conference.name}</p>
+                    <p className="text-sm font-semibold">
+                      {issue.conference.name}
+                    </p>
                     {issue.conference.location && (
-                      <p className="text-sm text-muted-foreground">{issue.conference.location}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {issue.conference.location}
+                      </p>
                     )}
                   </div>
                 )}
@@ -130,23 +147,25 @@ export default async function IssueDetailPage({ params }: PageProps) {
               <Card>
                 <CardContent className="py-12 text-center">
                   <FileText className="mx-auto h-12 w-12 text-muted-foreground/50 mb-4" />
-                  <p className="text-muted-foreground">No papers published in this issue yet.</p>
+                  <p className="text-muted-foreground">
+                    No papers published in this issue yet.
+                  </p>
                 </CardContent>
               </Card>
             ) : (
-                <IssuePapersFilter
-                  papers={issue.archivedPapers.map((paper: any) => ({
-                    id: paper.id,
-                    title: paper.title,
-                    abstract: paper.abstract,
-                    authors: paper.authors,
-                    category: paper.category,
-                    doi: paper.doi,
-                    pdfUrl: paper.pdfUrl,
-                    pageStart: paper.pageStart,
-                    pageEnd: paper.pageEnd,
-                  }))}
-                />
+              <IssuePapersFilter
+                papers={issue.archivedPapers.map((paper: any) => ({
+                  id: paper.id,
+                  title: paper.title,
+                  abstract: paper.abstract,
+                  authors: paper.authors,
+                  category: paper.category,
+                  doi: paper.doi,
+                  pdfUrl: paper.pdfUrl,
+                  pageStart: paper.pageStart,
+                  pageEnd: paper.pageEnd,
+                }))}
+              />
             )}
           </div>
         </div>

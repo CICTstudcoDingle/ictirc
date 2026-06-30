@@ -44,13 +44,10 @@ function generateFineShards(count: number = 80) {
       const shardCenterX = (baseX + nextX) / 2;
       const shardCenterY = (baseY + nextY) / 2;
 
-      const angle = Math.atan2(
-        shardCenterY - centerY,
-        shardCenterX - centerX
-      );
+      const angle = Math.atan2(shardCenterY - centerY, shardCenterX - centerX);
       const distFromCenter = Math.sqrt(
         Math.pow(shardCenterX - centerX, 2) * 2 +
-          Math.pow(shardCenterY - centerY, 2)
+          Math.pow(shardCenterY - centerY, 2),
       );
       const force = 300 + distFromCenter * 15 + Math.random() * 300;
 
@@ -104,8 +101,7 @@ export default function BrokenGlassText({
       if (scrollTrigger) {
         const tl = gsap.timeline({
           scrollTrigger: {
-            trigger:
-              scrollTrigger.triggerRef?.current || document.body,
+            trigger: scrollTrigger.triggerRef?.current || document.body,
             start: scrollTrigger.start || "top top",
             end: scrollTrigger.end || "+=1000",
             scrub: 0.5,
@@ -118,8 +114,7 @@ export default function BrokenGlassText({
           const element = shardsRef.current[i];
           if (element) {
             const distFromCenter = Math.abs(i - shards.length / 2);
-            const stagger =
-              distFromCenter * 0.005 + Math.random() * 0.05;
+            const stagger = distFromCenter * 0.005 + Math.random() * 0.05;
 
             tl.to(
               element,
@@ -133,7 +128,7 @@ export default function BrokenGlassText({
                 duration: durationRatio * 0.8,
                 ease: "power4.out",
               },
-              delayRatio + stagger
+              delayRatio + stagger,
             );
           }
         });
@@ -144,17 +139,17 @@ export default function BrokenGlassText({
         tl.to(
           fullTextRef.current,
           { opacity: 1, duration: 0.1, ease: "none" },
-          swapTime
+          swapTime,
         );
 
         tl.to(
           shardsContainerRef.current,
           { opacity: 0, duration: 0.1, ease: "none" },
-          swapTime
+          swapTime,
         );
       }
     },
-    { scope: containerRef, dependencies: [delayRatio, durationRatio] }
+    { scope: containerRef, dependencies: [delayRatio, durationRatio] },
   );
 
   const glassStyle = {

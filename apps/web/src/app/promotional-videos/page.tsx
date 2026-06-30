@@ -33,7 +33,7 @@ export default async function PromotionalVideosPage() {
 
   // Generate stream URLs server-side
   const videosWithUrls: VideoWithUrl[] = await Promise.all(
-    videos.map(async (video: typeof videos[number]) => {
+    videos.map(async (video: (typeof videos)[number]) => {
       const streamResult = await getVideoStreamUrl(video.r2Key, 86400);
       return {
         id: video.id,
@@ -44,11 +44,15 @@ export default async function PromotionalVideosPage() {
         editorName: video.editorName,
         uploadDate: video.uploadDate.toISOString(),
       };
-    })
+    }),
   );
 
-  const promoVideos = videosWithUrls.filter((v: VideoWithUrl) => v.type === "PROMOTIONAL");
-  const teaserVideos = videosWithUrls.filter((v: VideoWithUrl) => v.type === "TEASER");
+  const promoVideos = videosWithUrls.filter(
+    (v: VideoWithUrl) => v.type === "PROMOTIONAL",
+  );
+  const teaserVideos = videosWithUrls.filter(
+    (v: VideoWithUrl) => v.type === "TEASER",
+  );
 
   return (
     <div className="pt-14 md:pt-16">
@@ -62,7 +66,8 @@ export default async function PromotionalVideosPage() {
             </h1>
             <p className="text-base md:text-lg text-gray-300 max-w-2xl">
               Watch the latest promotional materials from the College of
-              Information and Computing Technology and event teasers for IT Week.
+              Information and Computing Technology and event teasers for IT
+              Week.
             </p>
           </ScrollAnimation>
         </div>
@@ -135,9 +140,7 @@ export default async function PromotionalVideosPage() {
             <ScrollAnimation direction="up" delay={0.2}>
               <div className="bg-white border border-gray-200 rounded-xl p-12 text-center">
                 <Video className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500">
-                  No event teasers available yet.
-                </p>
+                <p className="text-gray-500">No event teasers available yet.</p>
               </div>
             </ScrollAnimation>
           ) : (

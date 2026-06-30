@@ -3,7 +3,10 @@ import { randomUUID } from "node:crypto";
 import { resolve } from "node:path";
 import { PrismaClient } from "@prisma/client";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
-import { academicYear, enrollmentData } from "../../../apps/cict/src/data/students";
+import {
+  academicYear,
+  enrollmentData,
+} from "../../../apps/cict/src/data/students";
 
 function loadEnvFile(filePath: string) {
   if (!existsSync(filePath)) {
@@ -19,7 +22,10 @@ function loadEnvFile(filePath: string) {
 
     const equalsIndex = line.indexOf("=");
     const key = line.slice(0, equalsIndex).trim();
-    const value = line.slice(equalsIndex + 1).trim().replace(/^['\"]|['\"]$/g, "");
+    const value = line
+      .slice(equalsIndex + 1)
+      .trim()
+      .replace(/^['\"]|['\"]$/g, "");
 
     if (key && process.env[key] === undefined) {
       process.env[key] = value;
@@ -69,7 +75,11 @@ function normalizeSection(section: string) {
   return section.replace(/\s+/g, "").toUpperCase();
 }
 
-function buildStudentNumber(programCode: string, section: string, sequence: number) {
+function buildStudentNumber(
+  programCode: string,
+  section: string,
+  sequence: number,
+) {
   return `AY${academicYear.replace(/-/g, "")}-${programCode}-${normalizeSection(section)}-${String(sequence).padStart(3, "0")}`;
 }
 
@@ -92,11 +102,14 @@ function chunkArray<T>(items: T[], size: number) {
 }
 
 async function ensureDemoAuthUser(account: DemoAccount) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  const supabaseUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceRoleKey) {
-    console.log(`  - Skipping Supabase Auth seeding for ${account.email}; service role env vars are missing.`);
+    console.log(
+      `  - Skipping Supabase Auth seeding for ${account.email}; service role env vars are missing.`,
+    );
     return `demo-${account.role.toLowerCase()}`;
   }
 
@@ -107,16 +120,21 @@ async function ensureDemoAuthUser(account: DemoAccount) {
     },
   });
 
-  const { data: usersData, error: listError } = await supabase.auth.admin.listUsers({
-    page: 1,
-    perPage: 1000,
-  });
+  const { data: usersData, error: listError } =
+    await supabase.auth.admin.listUsers({
+      page: 1,
+      perPage: 1000,
+    });
 
   if (listError) {
-    throw new Error(`Unable to inspect Supabase Auth users for ${account.email}: ${listError.message}`);
+    throw new Error(
+      `Unable to inspect Supabase Auth users for ${account.email}: ${listError.message}`,
+    );
   }
 
-  const existingUser = usersData.users.find((user) => user.email?.toLowerCase() === account.email.toLowerCase());
+  const existingUser = usersData.users.find(
+    (user) => user.email?.toLowerCase() === account.email.toLowerCase(),
+  );
   if (existingUser) {
     return existingUser.id;
   }
@@ -132,7 +150,9 @@ async function ensureDemoAuthUser(account: DemoAccount) {
   });
 
   if (error || !data.user) {
-    throw new Error(`Unable to create Supabase Auth user for ${account.email}: ${error?.message || "unknown error"}`);
+    throw new Error(
+      `Unable to create Supabase Auth user for ${account.email}: ${error?.message || "unknown error"}`,
+    );
   }
 
   return data.user.id;
@@ -143,7 +163,8 @@ async function seedCategories() {
     {
       name: "Information and Communications Technology",
       slug: "ict",
-      description: "Broad field covering all aspects of managing and processing information.",
+      description:
+        "Broad field covering all aspects of managing and processing information.",
       children: [
         { name: "AI and Robotics", slug: "ai-robotics" },
         { name: "Web and Mobile", slug: "web-mobile" },
@@ -156,7 +177,8 @@ async function seedCategories() {
     {
       name: "Computer Science and Engineering",
       slug: "cse",
-      description: "Theoretical and practical approach to computation and its applications.",
+      description:
+        "Theoretical and practical approach to computation and its applications.",
       children: [
         { name: "Electronics & Communications Engineering", slug: "ece" },
         { name: "Mathematics", slug: "math" },
@@ -165,8 +187,11 @@ async function seedCategories() {
     {
       name: "Industrial Technology",
       slug: "ind-tech",
-      description: "Field concerned with the application of engineering and manufacturing technology.",
-      children: [{ name: "General Industrial Technology", slug: "gen-ind-tech" }],
+      description:
+        "Field concerned with the application of engineering and manufacturing technology.",
+      children: [
+        { name: "General Industrial Technology", slug: "gen-ind-tech" },
+      ],
     },
   ];
 
@@ -284,7 +309,9 @@ async function seedCictData() {
   });
 
   if (existingSeededEnrollment) {
-    console.log(`  - CICT roster already seeded for ${termLabel}; skipping enrollment import.`);
+    console.log(
+      `  - CICT roster already seeded for ${termLabel}; skipping enrollment import.`,
+    );
     return;
   }
 
@@ -301,7 +328,11 @@ async function seedCictData() {
       const enrollmentId = randomUUID();
       const paymentId = randomUUID();
       const receiptId = randomUUID();
-      const studentNumber = buildStudentNumber(program.code, section.section, sequence);
+      const studentNumber = buildStudentNumber(
+        program.code,
+        section.section,
+        sequence,
+      );
       const referenceNumber = buildReferenceNumber(section.section, sequence);
       const receiptNo = buildReceiptNo(sequence);
       const now = new Date();
@@ -383,31 +414,55 @@ async function seedCictData() {
   }
 
   for (const [index, chunk] of chunkArray(enrollments, 100).entries()) {
-    await prisma.cictEnrollment.createMany({ data: chunk, skipDuplicates: true });
-    console.log(`  - Enrollments seeded: ${Math.min((index + 1) * 100, enrollments.length)}/${enrollments.length}`);
+    await prisma.cictEnrollment.createMany({
+      data: chunk,
+      skipDuplicates: true,
+    });
+    console.log(
+      `  - Enrollments seeded: ${Math.min((index + 1) * 100, enrollments.length)}/${enrollments.length}`,
+    );
   }
 
   for (const [index, chunk] of chunkArray(paymentRows, 100).entries()) {
-    await prisma.cictCashierPayment.createMany({ data: chunk, skipDuplicates: true });
-    console.log(`  - Payments seeded: ${Math.min((index + 1) * 100, paymentRows.length)}/${paymentRows.length}`);
+    await prisma.cictCashierPayment.createMany({
+      data: chunk,
+      skipDuplicates: true,
+    });
+    console.log(
+      `  - Payments seeded: ${Math.min((index + 1) * 100, paymentRows.length)}/${paymentRows.length}`,
+    );
   }
 
   for (const [index, chunk] of chunkArray(receiptRows, 100).entries()) {
     await prisma.cictReceipt.createMany({ data: chunk, skipDuplicates: true });
-    console.log(`  - Receipts seeded: ${Math.min((index + 1) * 100, receiptRows.length)}/${receiptRows.length}`);
+    console.log(
+      `  - Receipts seeded: ${Math.min((index + 1) * 100, receiptRows.length)}/${receiptRows.length}`,
+    );
   }
 
   for (const [index, chunk] of chunkArray(historyRows, 100).entries()) {
-    await prisma.cictEnrollmentStatusHistory.createMany({ data: chunk, skipDuplicates: true });
-    console.log(`  - Status history seeded: ${Math.min((index + 1) * 100, historyRows.length)}/${historyRows.length}`);
+    await prisma.cictEnrollmentStatusHistory.createMany({
+      data: chunk,
+      skipDuplicates: true,
+    });
+    console.log(
+      `  - Status history seeded: ${Math.min((index + 1) * 100, historyRows.length)}/${historyRows.length}`,
+    );
   }
 
   for (const [index, chunk] of chunkArray(auditRows, 100).entries()) {
-    await prisma.cictAuditEvent.createMany({ data: chunk, skipDuplicates: true });
-    console.log(`  - Audit events seeded: ${Math.min((index + 1) * 100, auditRows.length)}/${auditRows.length}`);
+    await prisma.cictAuditEvent.createMany({
+      data: chunk,
+      skipDuplicates: true,
+    });
+    console.log(
+      `  - Audit events seeded: ${Math.min((index + 1) * 100, auditRows.length)}/${auditRows.length}`,
+    );
   }
 
-  console.log(`  - Seeded ${enrollments.length} CICT enrollments for ${termLabel}`);
+  console.log(
+    `  - Seeded ${enrollments.length} CICT enrollments for ${termLabel}`,
+  );
 }
 
 async function main() {

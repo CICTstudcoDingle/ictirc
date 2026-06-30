@@ -1,5 +1,3 @@
-/* eslint-disable react/forbid-component-props */
-/* eslint-disable @next/next/no-img-element */
 // NOTE: next/og ImageResponse uses Satori under the hood, which ONLY supports
 // inline styles. External CSS or Tailwind classes are NOT supported here.
 import { ImageResponse } from "next/og";
@@ -22,7 +20,8 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #800000 0%, #4a0000 60%, #1a0000 100%)",
+          background:
+            "linear-gradient(135deg, #800000 0%, #4a0000 60%, #1a0000 100%)",
           position: "relative",
           overflow: "hidden",
         }}
@@ -181,6 +180,6 @@ export default function OpenGraphImage() {
         </div>
       </div>
     ),
-    { ...size }
+    { ...size },
   );
 }

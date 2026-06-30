@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     console.error("Failed to fetch invites:", error);
     return NextResponse.json(
       { error: "Failed to fetch invites" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -32,10 +32,7 @@ export async function POST(request: Request) {
     const { email, role } = body;
 
     if (!email) {
-      return NextResponse.json(
-        { error: "Email is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
     // Generate expiry date (7 days from now)
@@ -53,7 +50,7 @@ export async function POST(request: Request) {
     // TODO: Send email via Resend when configured
     // For now, return token for manual copying
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       token: invite.token,
       expiresAt: invite.expiresAt,
     });
@@ -61,7 +58,7 @@ export async function POST(request: Request) {
     console.error("Failed to create invite:", error);
     return NextResponse.json(
       { error: "Failed to create invite" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

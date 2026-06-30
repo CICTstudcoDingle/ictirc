@@ -15,27 +15,34 @@ const Tabs = React.forwardRef<
     value?: string;
     onValueChange?: (value: string) => void;
   }
->(({ className, defaultValue, value, onValueChange, children, ...props }, ref) => {
-  const [selectedValue, setSelectedValue] = React.useState(
-    value || defaultValue || ""
-  );
+>(
+  (
+    { className, defaultValue, value, onValueChange, children, ...props },
+    ref,
+  ) => {
+    const [selectedValue, setSelectedValue] = React.useState(
+      value || defaultValue || "",
+    );
 
-  const handleValueChange = React.useCallback(
-    (newValue: string) => {
-      setSelectedValue(newValue);
-      onValueChange?.(newValue);
-    },
-    [onValueChange]
-  );
+    const handleValueChange = React.useCallback(
+      (newValue: string) => {
+        setSelectedValue(newValue);
+        onValueChange?.(newValue);
+      },
+      [onValueChange],
+    );
 
-  return (
-    <TabsContext.Provider value={{ value: selectedValue, onValueChange: handleValueChange }}>
-      <div ref={ref} className={cn("w-full", className)} {...props}>
-        {children}
-      </div>
-    </TabsContext.Provider>
-  );
-});
+    return (
+      <TabsContext.Provider
+        value={{ value: selectedValue, onValueChange: handleValueChange }}
+      >
+        <div ref={ref} className={cn("w-full", className)} {...props}>
+          {children}
+        </div>
+      </TabsContext.Provider>
+    );
+  },
+);
 Tabs.displayName = "Tabs";
 
 const TabsList = React.forwardRef<
@@ -46,7 +53,7 @@ const TabsList = React.forwardRef<
     ref={ref}
     className={cn(
       "inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1 text-gray-500",
-      className
+      className,
     )}
     {...props}
   />
@@ -69,7 +76,7 @@ const TabsTrigger = React.forwardRef<
         isSelected
           ? "bg-white text-gray-950 shadow-sm"
           : "hover:bg-gray-200/50 hover:text-gray-900",
-        className
+        className,
       )}
       onClick={() => context?.onValueChange(value)}
       {...props}
@@ -92,7 +99,7 @@ const TabsContent = React.forwardRef<
       ref={ref}
       className={cn(
         "mt-2 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2",
-        className
+        className,
       )}
       {...props}
     />

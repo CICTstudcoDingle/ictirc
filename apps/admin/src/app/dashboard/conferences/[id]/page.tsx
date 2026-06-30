@@ -31,7 +31,9 @@ export default async function EditConferencePage({ params }: PageProps) {
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Edit Conference</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Edit Conference
+            </h1>
             <p className="text-sm text-gray-500 mt-1">{conference.name}</p>
           </div>
         </div>

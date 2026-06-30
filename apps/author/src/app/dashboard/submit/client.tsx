@@ -2,7 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { SubmissionWizard, type SubmissionWizardProps } from "@ictirc/submission-form";
+import {
+  SubmissionWizard,
+  type SubmissionWizardProps,
+} from "@ictirc/submission-form";
 import { submitPaperAction } from "./actions";
 
 interface SubmitPageClientProps {
@@ -15,7 +18,10 @@ interface SubmitPageClientProps {
   categories: SubmissionWizardProps["categories"];
 }
 
-export function SubmitPageClient({ currentUser, categories }: SubmitPageClientProps) {
+export function SubmitPageClient({
+  currentUser,
+  categories,
+}: SubmitPageClientProps) {
   const router = useRouter();
 
   const handleSubmit = async (formData: FormData) => {

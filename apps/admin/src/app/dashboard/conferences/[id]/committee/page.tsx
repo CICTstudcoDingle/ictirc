@@ -22,12 +22,15 @@ export default async function CommitteeManagementPage({ params }: PageProps) {
   const committee = conference.committee || [];
 
   // Group by position
-  const groupedMembers = committee.reduce((acc: Record<string, typeof committee>, member) => {
-    const position = member.position || "Other";
-    if (!acc[position]) acc[position] = [];
-    acc[position].push(member);
-    return acc;
-  }, {});
+  const groupedMembers = committee.reduce(
+    (acc: Record<string, typeof committee>, member) => {
+      const position = member.position || "Other";
+      if (!acc[position]) acc[position] = [];
+      acc[position].push(member);
+      return acc;
+    },
+    {},
+  );
 
   return (
     <div className="space-y-6">
@@ -41,7 +44,9 @@ export default async function CommitteeManagementPage({ params }: PageProps) {
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Committee Members</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Committee Members
+            </h1>
             <p className="text-sm text-gray-500 mt-1">{conference.name}</p>
           </div>
         </div>
@@ -49,7 +54,9 @@ export default async function CommitteeManagementPage({ params }: PageProps) {
 
       {/* Add Member Form */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Add New Member</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          Add New Member
+        </h2>
         <AddMemberForm conferenceId={id} />
       </div>
 
@@ -92,9 +99,13 @@ export default async function CommitteeManagementPage({ params }: PageProps) {
                           </div>
                         )}
                         <div>
-                          <p className="font-medium text-gray-900">{member.name}</p>
+                          <p className="font-medium text-gray-900">
+                            {member.name}
+                          </p>
                           {member.affiliation && (
-                            <p className="text-sm text-gray-500">{member.affiliation}</p>
+                            <p className="text-sm text-gray-500">
+                              {member.affiliation}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -102,7 +113,9 @@ export default async function CommitteeManagementPage({ params }: PageProps) {
                         action={async () => {
                           "use server";
                           await deleteCommitteeMember(member.id);
-                          revalidatePath(`/dashboard/conferences/${id}/committee`);
+                          revalidatePath(
+                            `/dashboard/conferences/${id}/committee`,
+                          );
                         }}
                       >
                         <Button
@@ -126,9 +139,7 @@ export default async function CommitteeManagementPage({ params }: PageProps) {
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               No committee members yet
             </h3>
-            <p className="text-gray-500">
-              Add members using the form above
-            </p>
+            <p className="text-gray-500">Add members using the form above</p>
           </div>
         )}
       </div>

@@ -1,6 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, GraduationCap, Lightbulb, Users, Laptop, Trophy, ExternalLink, Globe, Store, BookOpen, MessageSquare } from "lucide-react";
+import {
+  ArrowRight,
+  GraduationCap,
+  Lightbulb,
+  Users,
+  Laptop,
+  Trophy,
+  ExternalLink,
+  Globe,
+  Store,
+  BookOpen,
+  MessageSquare,
+} from "lucide-react";
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
 import { StatsCounter } from "@/components/home/stats-counter";
@@ -38,22 +50,22 @@ export default async function HomePage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
-    "name": "College of Information and Communication Technology",
-    "alternateName": "CICT",
-    "url": "https://isufstcict.com",
-    "parentOrganization": {
+    name: "College of Information and Communication Technology",
+    alternateName: "CICT",
+    url: "https://isufstcict.com",
+    parentOrganization: {
       "@type": "CollegeOrUniversity",
-      "name": "Iloilo State University of Fisheries Science and Technology",
-      "alternateName": "ISUFST",
-      "url": "https://isufst.edu.ph",
+      name: "Iloilo State University of Fisheries Science and Technology",
+      alternateName: "ISUFST",
+      url: "https://isufst.edu.ph",
     },
-    "address": {
+    address: {
       "@type": "PostalAddress",
-      "streetAddress": "San Matias",
-      "addressLocality": "Dingle",
-      "addressRegion": "Iloilo",
-      "postalCode": "5035",
-      "addressCountry": "PH",
+      streetAddress: "San Matias",
+      addressLocality: "Dingle",
+      addressRegion: "Iloilo",
+      postalCode: "5035",
+      addressCountry: "PH",
     },
   };
 
@@ -89,7 +101,6 @@ export default async function HomePage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            
             {/* Left Column - Main Details */}
             <div className="lg:col-span-7">
               {/* Logos Row */}
@@ -111,7 +122,9 @@ export default async function HomePage() {
                   />
                   <div className="hidden sm:block">
                     <p className="text-lg font-bold text-gold">ISUFST — CICT</p>
-                    <p className="text-sm text-gray-400">Dingle Campus, Iloilo</p>
+                    <p className="text-sm text-gray-400">
+                      Dingle Campus, Iloilo
+                    </p>
                   </div>
                 </div>
               </ScrollAnimation>
@@ -125,8 +138,9 @@ export default async function HomePage() {
                 </ScrollAnimation>
                 <ScrollAnimation direction="up" delay={0.6}>
                   <p className="text-base md:text-lg text-gray-300 mb-6 md:mb-8 max-w-2xl">
-                    Empowering the next generation of IT professionals through cutting-edge education,
-                    research, and innovation. Join the premier ICT department at ISUFST Dingle Campus.
+                    Empowering the next generation of IT professionals through
+                    cutting-edge education, research, and innovation. Join the
+                    premier ICT department at ISUFST Dingle Campus.
                   </p>
                 </ScrollAnimation>
 
@@ -140,7 +154,11 @@ export default async function HomePage() {
                       </Button>
                     </Link>
                     <Link href="/about">
-                      <Button variant="secondary" size="lg" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+                      <Button
+                        variant="secondary"
+                        size="lg"
+                        className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                      >
                         About CICT
                       </Button>
                     </Link>
@@ -167,12 +185,12 @@ export default async function HomePage() {
                 <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
                   <div className="absolute bottom-0 left-0 w-32 h-32 bg-maroon/20 rounded-full blur-3xl -ml-16 -mb-16 pointer-events-none"></div>
-                  
+
                   <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2 relative z-10">
                     <div className="w-2 h-6 bg-gold rounded-full"></div>
                     Quick Portals
                   </h3>
-                  
+
                   <div className="space-y-3 relative z-10">
                     <a
                       href="https://portal.isufstcict.com/"
@@ -185,8 +203,12 @@ export default async function HomePage() {
                           <Globe className="w-5 h-5 text-gray-300 group-hover:text-gold transition-colors" />
                         </div>
                         <div>
-                          <p className="font-semibold text-white group-hover:text-gold transition-colors">CICT Tech Portal</p>
-                          <p className="text-xs text-gray-400">Main student & faculty portal</p>
+                          <p className="font-semibold text-white group-hover:text-gold transition-colors">
+                            CICT Tech Portal
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            Main student & faculty portal
+                          </p>
                         </div>
                       </div>
                       <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-gold transition-colors" />
@@ -203,8 +225,12 @@ export default async function HomePage() {
                           <Store className="w-5 h-5 text-gray-300 group-hover:text-gold transition-colors" />
                         </div>
                         <div>
-                          <p className="font-semibold text-white group-hover:text-gold transition-colors">CICT Store</p>
-                          <p className="text-xs text-gray-400">Merchandise & uniforms</p>
+                          <p className="font-semibold text-white group-hover:text-gold transition-colors">
+                            CICT Store
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            Merchandise & uniforms
+                          </p>
                         </div>
                       </div>
                       <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-gold transition-colors" />
@@ -221,8 +247,12 @@ export default async function HomePage() {
                           <GraduationCap className="w-5 h-5 text-gray-300 group-hover:text-gold transition-colors" />
                         </div>
                         <div>
-                          <p className="font-semibold text-white group-hover:text-gold transition-colors">Grade Portal</p>
-                          <p className="text-xs text-gray-400">Student academic records</p>
+                          <p className="font-semibold text-white group-hover:text-gold transition-colors">
+                            Grade Portal
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            Student academic records
+                          </p>
                         </div>
                       </div>
                       <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-gold transition-colors" />
@@ -239,8 +269,12 @@ export default async function HomePage() {
                           <BookOpen className="w-5 h-5 text-gray-300 group-hover:text-gold transition-colors" />
                         </div>
                         <div>
-                          <p className="font-semibold text-white group-hover:text-gold transition-colors">IRJICT</p>
-                          <p className="text-xs text-gray-400">Research Journal</p>
+                          <p className="font-semibold text-white group-hover:text-gold transition-colors">
+                            IRJICT
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            Research Journal
+                          </p>
                         </div>
                       </div>
                       <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-gold transition-colors" />
@@ -249,7 +283,6 @@ export default async function HomePage() {
                 </div>
               </ScrollAnimation>
             </div>
-
           </div>
         </div>
       </section>
@@ -285,7 +318,8 @@ export default async function HomePage() {
               Why Choose CICT?
             </h2>
             <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
-              Discover what makes the College of ICT at ISUFST Dingle Campus the right choice for your future
+              Discover what makes the College of ICT at ISUFST Dingle Campus the
+              right choice for your future
             </p>
           </ScrollAnimation>
 
@@ -294,39 +328,54 @@ export default async function HomePage() {
               {
                 icon: <Laptop className="w-6 h-6 md:w-7 md:h-7 text-maroon" />,
                 title: "Industry-Ready Skills",
-                description: "Curriculum aligned with industry standards and hands-on training with modern technologies",
+                description:
+                  "Curriculum aligned with industry standards and hands-on training with modern technologies",
                 accent: "maroon",
               },
               {
-                icon: <Lightbulb className="w-6 h-6 md:w-7 md:h-7 text-amber-700" />,
+                icon: (
+                  <Lightbulb className="w-6 h-6 md:w-7 md:h-7 text-amber-700" />
+                ),
                 title: "Research-Driven",
-                description: "Active research culture with opportunities to publish in our own IRJICT research journal",
+                description:
+                  "Active research culture with opportunities to publish in our own IRJICT research journal",
                 accent: "gold",
               },
               {
                 icon: <Users className="w-6 h-6 md:w-7 md:h-7 text-maroon" />,
                 title: "Expert Faculty",
-                description: "Learn from experienced educators with advanced degrees and industry experience",
+                description:
+                  "Learn from experienced educators with advanced degrees and industry experience",
                 accent: "maroon",
               },
               {
-                icon: <Trophy className="w-6 h-6 md:w-7 md:h-7 text-amber-700" />,
+                icon: (
+                  <Trophy className="w-6 h-6 md:w-7 md:h-7 text-amber-700" />
+                ),
                 title: "Proven Track Record",
-                description: "Graduates excelling in top tech companies and pursuing advanced studies worldwide",
+                description:
+                  "Graduates excelling in top tech companies and pursuing advanced studies worldwide",
                 accent: "gold",
               },
             ].map((feature, index) => (
-              <ScrollAnimation key={feature.title} direction="up" staggerIndex={index} className="h-full">
-                <div className={`paper-card p-5 md:p-6 text-center hover:shadow-lg transition-all ${feature.accent === "gold" ? "hover:border-gold/40" : "hover:border-maroon/30"} h-full`}>
-                  <div className={`w-12 h-12 md:w-14 md:h-14 ${feature.accent === "gold" ? "bg-gold/20" : "bg-maroon/10"} rounded-full flex items-center justify-center mx-auto mb-4`}>
+              <ScrollAnimation
+                key={feature.title}
+                direction="up"
+                staggerIndex={index}
+                className="h-full"
+              >
+                <div
+                  className={`paper-card p-5 md:p-6 text-center hover:shadow-lg transition-all ${feature.accent === "gold" ? "hover:border-gold/40" : "hover:border-maroon/30"} h-full`}
+                >
+                  <div
+                    className={`w-12 h-12 md:w-14 md:h-14 ${feature.accent === "gold" ? "bg-gold/20" : "bg-maroon/10"} rounded-full flex items-center justify-center mx-auto mb-4`}
+                  >
                     {feature.icon}
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2 text-base md:text-lg">
                     {feature.title}
                   </h3>
-                  <p className="text-sm text-gray-600">
-                    {feature.description}
-                  </p>
+                  <p className="text-sm text-gray-600">{feature.description}</p>
                 </div>
               </ScrollAnimation>
             ))}
@@ -346,8 +395,9 @@ export default async function HomePage() {
               Start Your Journey in ICT
             </h2>
             <p className="text-sm md:text-base text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto">
-              Join hundreds of students who are building their future in Information and Communication Technology
-              at ISUFST CICT. Explore our programs and discover your path.
+              Join hundreds of students who are building their future in
+              Information and Communication Technology at ISUFST CICT. Explore
+              our programs and discover your path.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/programs">
@@ -357,12 +407,20 @@ export default async function HomePage() {
                 </Button>
               </Link>
               <Link href="/announcements">
-                <Button variant="secondary" size="lg" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                >
                   Announcements
                 </Button>
               </Link>
               <Link href="/feedback">
-                <Button variant="secondary" size="lg" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                >
                   <MessageSquare className="w-4 h-4" />
                   Feedback
                 </Button>

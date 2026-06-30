@@ -2,7 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, Home, Info, BookOpen, Users, GraduationCap, Building, Monitor, Award, Megaphone, MessageSquare } from "lucide-react";
+import {
+  X,
+  Home,
+  Info,
+  BookOpen,
+  Users,
+  GraduationCap,
+  Building,
+  Monitor,
+  Award,
+  Megaphone,
+  MessageSquare,
+} from "lucide-react";
 import { cn } from "@ictirc/ui";
 
 interface MobileNavProps {
@@ -39,7 +51,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-[70] w-72 bg-white shadow-2xl md:hidden transform transition-transform duration-300 ease-in-out",
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex flex-col h-full">
@@ -96,10 +108,15 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                       "flex items-center gap-4 px-4 py-3 rounded-xl text-base font-medium transition-all duration-200",
                       isActive
                         ? "bg-maroon text-white shadow-md shadow-maroon/20"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-maroon"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-maroon",
                     )}
                   >
-                    <item.icon className={cn("w-5 h-5", isActive ? "text-white" : "text-current")} />
+                    <item.icon
+                      className={cn(
+                        "w-5 h-5",
+                        isActive ? "text-white" : "text-current",
+                      )}
+                    />
                     <span>{item.label}</span>
                   </Link>
                 </div>
@@ -127,9 +144,9 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
               College of ICT
             </p>
             <p className="text-[10px] text-gray-400 text-center leading-relaxed">
-              Iloilo State University of Fisheries Science and Technology — Dingle Campus
-              <br />
-              © {new Date().getFullYear()} ISUFST
+              Iloilo State University of Fisheries Science and Technology —
+              Dingle Campus
+              <br />© {new Date().getFullYear()} ISUFST
             </p>
           </div>
         </div>

@@ -68,7 +68,7 @@ export function ScrollAnimation({
             start: "top 85%", // Trigger when top of element hits 85% of viewport
             once: true, // Only animate once
           },
-        }
+        },
       );
     });
 

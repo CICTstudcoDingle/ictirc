@@ -24,7 +24,10 @@ function buildReceiptNo() {
 
 const FIXED_DEPARTMENT_FEE = 50;
 
-function isValidStatusTransition(fromStatus: CictEnrollmentStatus, toStatus: CictEnrollmentStatus) {
+function isValidStatusTransition(
+  fromStatus: CictEnrollmentStatus,
+  toStatus: CictEnrollmentStatus,
+) {
   const allowed: Record<CictEnrollmentStatus, CictEnrollmentStatus[]> = {
     SUBMITTED: ["APPROVED", "REJECTED"],
     APPROVED: ["REJECTED"],
@@ -74,7 +77,11 @@ export async function createDepartmentWithFeeAction(formData: FormData) {
 }
 
 export async function createEnrollmentAction(formData: FormData) {
-  const { profile } = await requireCictAccess(["ADMIN", "FACULTY", "OFFICER"] as CictAdminRole[]);
+  const { profile } = await requireCictAccess([
+    "ADMIN",
+    "FACULTY",
+    "OFFICER",
+  ] as CictAdminRole[]);
 
   const studentName = String(formData.get("studentName") || "").trim();
   const studentNumber = String(formData.get("studentNumber") || "").trim();
@@ -84,7 +91,14 @@ export async function createEnrollmentAction(formData: FormData) {
   const academicYear = String(formData.get("academicYear") || "").trim();
   const remarks = String(formData.get("remarks") || "").trim() || null;
 
-  if (!studentName || !studentNumber || !program || !yearLevel || !departmentId || !academicYear) {
+  if (
+    !studentName ||
+    !studentNumber ||
+    !program ||
+    !yearLevel ||
+    !departmentId ||
+    !academicYear
+  ) {
     return;
   }
 
@@ -139,10 +153,15 @@ export async function createEnrollmentAction(formData: FormData) {
 }
 
 export async function updateEnrollmentStatusAction(formData: FormData) {
-  const { profile } = await requireCictAccess(["ADMIN", "FACULTY"] as CictAdminRole[]);
+  const { profile } = await requireCictAccess([
+    "ADMIN",
+    "FACULTY",
+  ] as CictAdminRole[]);
 
   const enrollmentId = String(formData.get("enrollmentId") || "").trim();
-  const status = String(formData.get("status") || "").trim() as CictEnrollmentStatus;
+  const status = String(
+    formData.get("status") || "",
+  ).trim() as CictEnrollmentStatus;
   const sectionName = String(formData.get("sectionName") || "").trim() || null;
   const note = String(formData.get("note") || "").trim() || null;
 
@@ -150,7 +169,9 @@ export async function updateEnrollmentStatusAction(formData: FormData) {
     return;
   }
 
-  const existing = await prisma.cictEnrollment.findUnique({ where: { id: enrollmentId } });
+  const existing = await prisma.cictEnrollment.findUnique({
+    where: { id: enrollmentId },
+  });
   if (!existing) {
     return;
   }
@@ -178,7 +199,10 @@ export async function updateEnrollmentStatusAction(formData: FormData) {
         status,
         approvedAt: status === "APPROVED" ? now : existing.approvedAt,
         sectionName: status === "ENROLLED" ? sectionName : existing.sectionName,
-        sectionAssignedAt: status === "ENROLLED" && sectionName ? now : existing.sectionAssignedAt,
+        sectionAssignedAt:
+          status === "ENROLLED" && sectionName
+            ? now
+            : existing.sectionAssignedAt,
         enrolledAt: status === "ENROLLED" ? now : existing.enrolledAt,
       },
     });
@@ -209,7 +233,10 @@ export async function updateEnrollmentStatusAction(formData: FormData) {
 }
 
 export async function postCashierPaymentAction(formData: FormData) {
-  const { profile } = await requireCictAccess(["ADMIN", "OFFICER"] as CictAdminRole[]);
+  const { profile } = await requireCictAccess([
+    "ADMIN",
+    "OFFICER",
+  ] as CictAdminRole[]);
 
   const enrollmentId = String(formData.get("enrollmentId") || "").trim();
   const referenceNumber = String(formData.get("referenceNumber") || "").trim();
@@ -219,12 +246,15 @@ export async function postCashierPaymentAction(formData: FormData) {
     return;
   }
 
-  const enrollment = await prisma.cictEnrollment.findUnique({ where: { id: enrollmentId } });
+  const enrollment = await prisma.cictEnrollment.findUnique({
+    where: { id: enrollmentId },
+  });
   if (!enrollment || enrollment.status !== "APPROVED") {
     return;
   }
 
-  const requiredAmount = Number(enrollment.departmentFee) - Number(enrollment.paidAmount);
+  const requiredAmount =
+    Number(enrollment.departmentFee) - Number(enrollment.paidAmount);
   if (requiredAmount !== FIXED_DEPARTMENT_FEE) {
     return;
   }

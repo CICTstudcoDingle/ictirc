@@ -2,13 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import {
-  ArrowLeft,
-  MapPin,
-  Mic2,
-  Calendar,
-  ArrowRight,
-} from "lucide-react";
+import { ArrowLeft, MapPin, Mic2, Calendar, ArrowRight } from "lucide-react";
 import { prisma } from "@ictirc/database";
 import { CircuitBackground } from "@ictirc/ui";
 
@@ -16,7 +10,9 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params;
   const conference = await prisma.conference.findUnique({
     where: { id, isPublished: true },

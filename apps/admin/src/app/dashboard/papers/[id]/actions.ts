@@ -1,14 +1,14 @@
-'use server';
+"use server";
 
-import { prisma, PlagiarismStatus } from '@ictirc/database';
-import { revalidatePath } from 'next/cache';
-import { convertDocxToPdf } from '@/lib/cloudconvert';
-import { generateDoi } from '@/lib/doi';
-import { createClient } from '@supabase/supabase-js';
+import { prisma, PlagiarismStatus } from "@ictirc/database";
+import { revalidatePath } from "next/cache";
+import { convertDocxToPdf } from "@/lib/cloudconvert";
+import { generateDoi } from "@/lib/doi";
+import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 );
 
 interface PublishResult {
@@ -26,21 +26,21 @@ export async function publishPaper(paperId: string): Promise<PublishResult> {
       include: {
         authors: {
           include: { author: true },
-          orderBy: { order: 'asc' },
+          orderBy: { order: "asc" },
         },
       },
     });
 
     if (!paper) {
-      return { success: false, error: 'Paper not found' };
+      return { success: false, error: "Paper not found" };
     }
 
-    if (paper.status === 'PUBLISHED') {
-      return { success: false, error: 'Paper is already published' };
+    if (paper.status === "PUBLISHED") {
+      return { success: false, error: "Paper is already published" };
     }
 
     if (!paper.rawFileUrl) {
-      return { success: false, error: 'No file uploaded' };
+      return { success: false, error: "No file uploaded" };
     }
 
     let pdfUrl = paper.rawFileUrl;
@@ -52,23 +52,25 @@ export async function publishPaper(paperId: string): Promise<PublishResult> {
         // Convert using CloudConvert
         const conversionResult = await convertDocxToPdf(
           paper.rawFileUrl,
-          `${paper.title}.docx`
+          `${paper.title}.docx`,
         );
 
         // Download the converted PDF
         const pdfResponse = await fetch(conversionResult.url);
         if (!pdfResponse.ok) {
-          throw new Error('Failed to download converted PDF');
+          throw new Error("Failed to download converted PDF");
         }
 
         const pdfBlob = await pdfResponse.blob();
-        const pdfFile = new File([pdfBlob], `${paper.id}.pdf`, { type: 'application/pdf' });
+        const pdfFile = new File([pdfBlob], `${paper.id}.pdf`, {
+          type: "application/pdf",
+        });
 
         // Upload to Supabase storage
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from(process.env.NEXT_PUBLIC_SUPABASE_BUCKET_HOT!)
           .upload(`papers/${paper.id}.pdf`, pdfFile, {
-            contentType: 'application/pdf',
+            contentType: "application/pdf",
             upsert: true,
           });
 
@@ -83,10 +85,10 @@ export async function publishPaper(paperId: string): Promise<PublishResult> {
 
         pdfUrl = urlData.publicUrl;
       } catch (conversionError) {
-        console.error('Conversion error:', conversionError);
+        console.error("Conversion error:", conversionError);
         return {
           success: false,
-          error: `Conversion failed: ${conversionError instanceof Error ? conversionError.message : 'Unknown error'}`,
+          error: `Conversion failed: ${conversionError instanceof Error ? conversionError.message : "Unknown error"}`,
         };
       }
     }
@@ -98,7 +100,7 @@ export async function publishPaper(paperId: string): Promise<PublishResult> {
     const updatedPaper = await prisma.paper.update({
       where: { id: paperId },
       data: {
-        status: 'PUBLISHED',
+        status: "PUBLISHED",
         pdfUrl,
         doi,
         publishedAt: new Date(),
@@ -108,11 +110,11 @@ export async function publishPaper(paperId: string): Promise<PublishResult> {
     // Create audit log
     await prisma.auditLog.create({
       data: {
-        actorId: 'admin-system',
-        actorEmail: 'admin@ictirc.com',
-        action: 'PUBLISH_PAPER',
+        actorId: "admin-system",
+        actorEmail: "admin@ictirc.com",
+        action: "PUBLISH_PAPER",
         targetId: paperId,
-        targetType: 'Paper',
+        targetType: "Paper",
         metadata: {
           doi,
           pdfUrl,
@@ -122,8 +124,8 @@ export async function publishPaper(paperId: string): Promise<PublishResult> {
     });
 
     revalidatePath(`/dashboard/papers/${paperId}`);
-    revalidatePath('/dashboard/papers');
-    revalidatePath('/archive');
+    revalidatePath("/dashboard/papers");
+    revalidatePath("/archive");
 
     return {
       success: true,
@@ -131,15 +133,19 @@ export async function publishPaper(paperId: string): Promise<PublishResult> {
       pdfUrl: updatedPaper.pdfUrl || undefined,
     };
   } catch (error) {
-    console.error('Publish error:', error);
+    console.error("Publish error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to publish paper',
+      error: error instanceof Error ? error.message : "Failed to publish paper",
     };
   }
 }
 
-export async function updatePublicationStep(paperId: string, step: number, note?: string) {
+export async function updatePublicationStep(
+  paperId: string,
+  step: number,
+  note?: string,
+) {
   try {
     const updatedPaper = await prisma.paper.update({
       where: { id: paperId },
@@ -152,10 +158,10 @@ export async function updatePublicationStep(paperId: string, step: number, note?
     // Create log
     await prisma.auditLog.create({
       data: {
-        actorId: 'admin-system', // Should be current user, but context limitations. Acceptable for now.
-        action: 'UPDATE_PUBLICATION_STEP',
+        actorId: "admin-system", // Should be current user, but context limitations. Acceptable for now.
+        action: "UPDATE_PUBLICATION_STEP",
         targetId: paperId,
-        targetType: 'Paper',
+        targetType: "Paper",
         metadata: {
           step,
           note,
@@ -167,10 +173,13 @@ export async function updatePublicationStep(paperId: string, step: number, note?
     revalidatePath(`/track/${paperId}`); // Revalidate public tracking page
     return { success: true, paper: updatedPaper };
   } catch (error) {
-    console.error('Error updating step:', error);
+    console.error("Error updating step:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to update publication step',
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update publication step",
     };
   }
 }
@@ -186,15 +195,15 @@ export async function updatePublicationStep(paperId: string, step: number, note?
  * - Over 25%: Auto-REJECTED (Dean can override)
  */
 function determinePlagiarismStatus(score: number): PlagiarismStatus {
-  if (score < 15) return 'PASS';
-  if (score <= 25) return 'FLAGGED';
-  return 'REJECTED';
+  if (score < 15) return "PASS";
+  if (score <= 25) return "FLAGGED";
+  return "REJECTED";
 }
 
 interface RecordPlagiarismInput {
   paperId: string;
-  score: number;        // 0-100
-  notes?: string;       // e.g., "Checked via Turnitin on 2026-03-01"
+  score: number; // 0-100
+  notes?: string; // e.g., "Checked via Turnitin on 2026-03-01"
   checkedByUserId: string;
 }
 
@@ -208,13 +217,13 @@ export async function recordPlagiarismCheck(input: RecordPlagiarismInput) {
 
     // Validate score range
     if (score < 0 || score > 100) {
-      return { success: false, error: 'Score must be between 0 and 100' };
+      return { success: false, error: "Score must be between 0 and 100" };
     }
 
     // Verify the paper exists
     const paper = await prisma.paper.findUnique({ where: { id: paperId } });
     if (!paper) {
-      return { success: false, error: 'Paper not found' };
+      return { success: false, error: "Paper not found" };
     }
 
     // Determine status based on thresholds
@@ -239,9 +248,9 @@ export async function recordPlagiarismCheck(input: RecordPlagiarismInput) {
     await prisma.auditLog.create({
       data: {
         actorId: checkedByUserId,
-        action: 'RECORD_PLAGIARISM_CHECK',
+        action: "RECORD_PLAGIARISM_CHECK",
         targetId: paperId,
-        targetType: 'Paper',
+        targetType: "Paper",
         metadata: {
           score,
           status,
@@ -251,23 +260,27 @@ export async function recordPlagiarismCheck(input: RecordPlagiarismInput) {
     });
 
     revalidatePath(`/dashboard/papers/${paperId}`);
-    revalidatePath('/dashboard/papers');
+    revalidatePath("/dashboard/papers");
 
     return {
       success: true,
       paper: updatedPaper,
       status,
-      message: status === 'PASS'
-        ? `Score ${score}% — Auto-passed (under 15%)`
-        : status === 'FLAGGED'
-        ? `Score ${score}% — Flagged for editor review (15-25%)`
-        : `Score ${score}% — Auto-rejected (over 25%). Dean can override.`,
+      message:
+        status === "PASS"
+          ? `Score ${score}% — Auto-passed (under 15%)`
+          : status === "FLAGGED"
+            ? `Score ${score}% — Flagged for editor review (15-25%)`
+            : `Score ${score}% — Auto-rejected (over 25%). Dean can override.`,
     };
   } catch (error) {
-    console.error('[recordPlagiarismCheck] Error:', error);
+    console.error("[recordPlagiarismCheck] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to record plagiarism check',
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to record plagiarism check",
     };
   }
 }
@@ -275,34 +288,41 @@ export async function recordPlagiarismCheck(input: RecordPlagiarismInput) {
 interface OverridePlagiarismInput {
   paperId: string;
   overriddenByUserId: string;
-  overrideNote: string;     // Required: Dean must provide a reason
+  overrideNote: string; // Required: Dean must provide a reason
 }
 
 /**
  * Dean-only: Override a plagiarism rejection.
  * Changes status from REJECTED → OVERRIDDEN.
  */
-export async function overridePlagiarismRejection(input: OverridePlagiarismInput) {
+export async function overridePlagiarismRejection(
+  input: OverridePlagiarismInput,
+) {
   try {
     const { paperId, overriddenByUserId, overrideNote } = input;
 
     if (!overrideNote.trim()) {
-      return { success: false, error: 'Override reason is required' };
+      return { success: false, error: "Override reason is required" };
     }
 
     // Verify the user is a Dean
-    const user = await prisma.user.findUnique({ where: { id: overriddenByUserId } });
-    if (!user || user.role !== 'DEAN') {
-      return { success: false, error: 'Only the Dean can override plagiarism rejections' };
+    const user = await prisma.user.findUnique({
+      where: { id: overriddenByUserId },
+    });
+    if (!user || user.role !== "DEAN") {
+      return {
+        success: false,
+        error: "Only the Dean can override plagiarism rejections",
+      };
     }
 
     // Get current paper
     const paper = await prisma.paper.findUnique({ where: { id: paperId } });
     if (!paper) {
-      return { success: false, error: 'Paper not found' };
+      return { success: false, error: "Paper not found" };
     }
 
-    if (paper.plagiarismStatus !== 'REJECTED') {
+    if (paper.plagiarismStatus !== "REJECTED") {
       return {
         success: false,
         error: `Cannot override: current plagiarism status is ${paper.plagiarismStatus}, not REJECTED`,
@@ -313,7 +333,7 @@ export async function overridePlagiarismRejection(input: OverridePlagiarismInput
     const updatedPaper = await prisma.paper.update({
       where: { id: paperId },
       data: {
-        plagiarismStatus: 'OVERRIDDEN',
+        plagiarismStatus: "OVERRIDDEN",
         plagiarismOverriddenBy: overriddenByUserId,
         plagiarismOverrideNote: overrideNote,
       },
@@ -324,9 +344,9 @@ export async function overridePlagiarismRejection(input: OverridePlagiarismInput
       data: {
         actorId: overriddenByUserId,
         actorEmail: user.email,
-        action: 'OVERRIDE_PLAGIARISM_REJECTION',
+        action: "OVERRIDE_PLAGIARISM_REJECTION",
         targetId: paperId,
-        targetType: 'Paper',
+        targetType: "Paper",
         metadata: {
           previousScore: paper.plagiarismScore,
           overrideNote,
@@ -335,7 +355,7 @@ export async function overridePlagiarismRejection(input: OverridePlagiarismInput
     });
 
     revalidatePath(`/dashboard/papers/${paperId}`);
-    revalidatePath('/dashboard/papers');
+    revalidatePath("/dashboard/papers");
 
     return {
       success: true,
@@ -343,10 +363,13 @@ export async function overridePlagiarismRejection(input: OverridePlagiarismInput
       message: `Plagiarism rejection overridden by Dean. Reason: ${overrideNote}`,
     };
   } catch (error) {
-    console.error('[overridePlagiarismRejection] Error:', error);
+    console.error("[overridePlagiarismRejection] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to override plagiarism rejection',
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to override plagiarism rejection",
     };
   }
 }

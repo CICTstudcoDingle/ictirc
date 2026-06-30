@@ -102,12 +102,12 @@ export function VolumeForm({ volume }: VolumeFormProps) {
                     type="number"
                     {...field}
                     value={field.value || ""}
-                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                    onChange={(e) =>
+                      field.onChange(parseInt(e.target.value) || 0)
+                    }
                   />
                 </FormControl>
-                <FormDescription>
-                  The sequential volume number
-                </FormDescription>
+                <FormDescription>The sequential volume number</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -124,7 +124,9 @@ export function VolumeForm({ volume }: VolumeFormProps) {
                     type="number"
                     {...field}
                     value={field.value || ""}
-                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                    onChange={(e) =>
+                      field.onChange(parseInt(e.target.value) || 0)
+                    }
                   />
                 </FormControl>
                 <FormDescription>Publication year</FormDescription>
@@ -179,15 +181,15 @@ export function VolumeForm({ volume }: VolumeFormProps) {
         />
 
         <div className="flex justify-end gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.back()}
-          >
+          <Button type="button" variant="outline" onClick={() => router.back()}>
             Cancel
           </Button>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Creating..." : volume ? "Update Volume" : "Create Volume"}
+            {isSubmitting
+              ? "Creating..."
+              : volume
+                ? "Update Volume"
+                : "Create Volume"}
           </Button>
         </div>
       </form>

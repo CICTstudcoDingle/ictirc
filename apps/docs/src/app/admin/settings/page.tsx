@@ -5,28 +5,34 @@ export default function SettingsGuidePage() {
     <DocsLayout>
       <article className="prose prose-blue max-w-none">
         <h1>God Mode Settings</h1>
-        
+
         <p className="lead">
-          God Mode provides corporate-level system oversight with comprehensive tools for monitoring, 
-          managing, and controlling all aspects of the ICTIRC platform.
+          God Mode provides corporate-level system oversight with comprehensive
+          tools for monitoring, managing, and controlling all aspects of the
+          ICTIRC platform.
         </p>
 
         <div className="not-prose bg-yellow-50 border border-yellow-200 rounded-lg p-4 my-6">
           <p className="text-sm text-yellow-800 font-medium">
-            ⚠️ <strong>Access Restricted:</strong> God Mode is only accessible to users with DEAN role. 
-            Exercise caution when making system-wide changes.
+            ⚠️ <strong>Access Restricted:</strong> God Mode is only accessible
+            to users with DEAN role. Exercise caution when making system-wide
+            changes.
           </p>
         </div>
 
         <h2>Overview Tab</h2>
-        <p>
-          The Overview tab provides a comprehensive system summary:
-        </p>
-        
+        <p>The Overview tab provides a comprehensive system summary:</p>
+
         <h3>Dual-App Monitoring</h3>
         <ul>
-          <li><strong>Web Portal Status:</strong> Public website health and metrics</li>
-          <li><strong>Admin Portal Status:</strong> Administrative dashboard status</li>
+          <li>
+            <strong>Web Portal Status:</strong> Public website health and
+            metrics
+          </li>
+          <li>
+            <strong>Admin Portal Status:</strong> Administrative dashboard
+            status
+          </li>
           <li>Real-time uptime monitoring</li>
           <li>Last deployment information</li>
           <li>Environment indicators (production/development)</li>
@@ -43,9 +49,7 @@ export default function SettingsGuidePage() {
         </ul>
 
         <h2>System Health Tab</h2>
-        <p>
-          Monitor critical system components:
-        </p>
+        <p>Monitor critical system components:</p>
 
         <h3>Database Health</h3>
         <ul>
@@ -80,9 +84,7 @@ export default function SettingsGuidePage() {
         </ul>
 
         <h2>Content Management Tab</h2>
-        <p>
-          Manage platform content and configuration:
-        </p>
+        <p>Manage platform content and configuration:</p>
 
         <h3>Guides Management</h3>
         <ul>
@@ -101,13 +103,14 @@ export default function SettingsGuidePage() {
         </ul>
 
         <h2>Security Tab</h2>
-        <p>
-          System-wide security controls:
-        </p>
+        <p>System-wide security controls:</p>
 
         <h3>System Lock</h3>
         <ul>
-          <li><strong>Emergency Shutdown:</strong> Lock entire system for maintenance</li>
+          <li>
+            <strong>Emergency Shutdown:</strong> Lock entire system for
+            maintenance
+          </li>
           <li>Display maintenance message to users</li>
           <li>Preserve admin access during lockdown</li>
           <li>Schedule maintenance windows</li>
@@ -115,8 +118,9 @@ export default function SettingsGuidePage() {
 
         <div className="not-prose bg-red-50 border border-red-200 rounded-lg p-4 my-6">
           <p className="text-sm text-red-800 font-medium">
-            ⚠️ <strong>Warning:</strong> System Lock will make the entire platform inaccessible to regular users. 
-            Use only for critical maintenance or security incidents.
+            ⚠️ <strong>Warning:</strong> System Lock will make the entire
+            platform inaccessible to regular users. Use only for critical
+            maintenance or security incidents.
           </p>
         </div>
 
@@ -137,9 +141,7 @@ export default function SettingsGuidePage() {
         </ul>
 
         <h2>Analytics Tab</h2>
-        <p>
-          Comprehensive platform analytics:
-        </p>
+        <p>Comprehensive platform analytics:</p>
 
         <h3>Usage Analytics</h3>
         <ul>

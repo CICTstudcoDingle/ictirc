@@ -29,10 +29,7 @@ export default async function ChangelogPage() {
   const releases = await prisma.release.findMany({
     include: {
       entries: {
-        orderBy: [
-          { order: "asc" },
-          { createdAt: "desc" },
-        ],
+        orderBy: [{ order: "asc" }, { createdAt: "desc" }],
       },
       creator: {
         select: {
@@ -98,9 +95,7 @@ export default async function ChangelogPage() {
             <GitBranch className="h-4 w-4" />
             <span className="text-sm font-medium">Latest Version</span>
           </div>
-          <p className="text-2xl font-bold">
-            {releases[0]?.version || "N/A"}
-          </p>
+          <p className="text-2xl font-bold">{releases[0]?.version || "N/A"}</p>
         </div>
       </div>
 

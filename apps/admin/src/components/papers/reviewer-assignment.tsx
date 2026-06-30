@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Users, X, Plus } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Users, X, Plus } from "lucide-react";
 
 interface Reviewer {
   id: string;
@@ -26,7 +26,10 @@ interface ReviewerAssignmentProps {
   currentReviewers: Reviewer[];
 }
 
-export function ReviewerAssignment({ paperId, currentReviewers }: ReviewerAssignmentProps) {
+export function ReviewerAssignment({
+  paperId,
+  currentReviewers,
+}: ReviewerAssignmentProps) {
   const [reviewers, setReviewers] = useState(currentReviewers);
   const [availableUsers, setAvailableUsers] = useState<User[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -38,13 +41,13 @@ export function ReviewerAssignment({ paperId, currentReviewers }: ReviewerAssign
 
   const fetchAvailableReviewers = async () => {
     try {
-      const response = await fetch('/api/users?role=REVIEWER,EDITOR');
+      const response = await fetch("/api/users?role=REVIEWER,EDITOR");
       if (response.ok) {
         const users = await response.json();
         setAvailableUsers(users);
       }
     } catch (error) {
-      console.error('Error fetching reviewers:', error);
+      console.error("Error fetching reviewers:", error);
     }
   };
 
@@ -52,45 +55,47 @@ export function ReviewerAssignment({ paperId, currentReviewers }: ReviewerAssign
     setIsLoading(true);
     try {
       const response = await fetch(`/api/papers/${paperId}/reviewers`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ reviewerId: userId }),
       });
 
-      if (!response.ok) throw new Error('Failed to assign reviewer');
+      if (!response.ok) throw new Error("Failed to assign reviewer");
 
       const newAssignment = await response.json();
       setReviewers((prev) => [...prev, newAssignment]);
       setShowAddModal(false);
     } catch (error) {
-      console.error('Error assigning reviewer:', error);
-      alert('Failed to assign reviewer. Please try again.');
+      console.error("Error assigning reviewer:", error);
+      alert("Failed to assign reviewer. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleRemove = async (assignmentId: string) => {
-    if (!confirm('Remove this reviewer?')) return;
+    if (!confirm("Remove this reviewer?")) return;
 
     try {
       const response = await fetch(`/api/papers/${paperId}/reviewers`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ assignmentId }),
       });
 
-      if (!response.ok) throw new Error('Failed to remove reviewer');
+      if (!response.ok) throw new Error("Failed to remove reviewer");
 
       setReviewers((prev) => prev.filter((r) => r.id !== assignmentId));
     } catch (error) {
-      console.error('Error removing reviewer:', error);
-      alert('Failed to remove reviewer. Please try again.');
+      console.error("Error removing reviewer:", error);
+      alert("Failed to remove reviewer. Please try again.");
     }
   };
 
   const assignedUserIds = reviewers.map((r) => r.reviewer.id);
-  const unassignedUsers = availableUsers.filter((u) => !assignedUserIds.includes(u.id));
+  const unassignedUsers = availableUsers.filter(
+    (u) => !assignedUserIds.includes(u.id),
+  );
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-6">
@@ -124,7 +129,7 @@ export function ReviewerAssignment({ paperId, currentReviewers }: ReviewerAssign
                   {assignment.reviewer.name || assignment.reviewer.email}
                 </p>
                 <p className="text-xs text-gray-500">
-                  {assignment.reviewer.role} • Assigned{' '}
+                  {assignment.reviewer.role} • Assigned{" "}
                   {new Date(assignment.assignedAt).toLocaleDateString()}
                 </p>
               </div>

@@ -35,12 +35,14 @@ export interface SubmitPaperResult {
  * This action is called by authenticated users only
  */
 export async function submitPaperAction(
-  formData: FormData
+  formData: FormData,
 ): Promise<SubmitPaperResult> {
   try {
     // Verify authentication
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return {
@@ -58,7 +60,7 @@ export async function submitPaperAction(
         .map((k) => k.trim())
         .filter(Boolean),
       categoryId: formData.get("categoryId") as string,
-      authors: JSON.parse(formData.get("authors") as string || "[]"),
+      authors: JSON.parse((formData.get("authors") as string) || "[]"),
     };
 
     const file = formData.get("file") as File | null;
@@ -194,7 +196,8 @@ export async function submitPaperAction(
     console.error("[submitPaperAction] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "An unexpected error occurred",
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
     };
   }
 }

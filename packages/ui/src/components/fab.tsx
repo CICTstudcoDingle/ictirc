@@ -26,16 +26,12 @@ export function FloatingActionButton({
     "hover:shadow-[4px_4px_0px_0px_rgba(212,175,55,1)]",
     "hover:scale-105 active:scale-95",
     "safe-area-right",
-    className
+    className,
   );
 
   if (onClick) {
     return (
-      <button
-        onClick={onClick}
-        className={buttonClasses}
-        aria-label={label}
-      >
+      <button onClick={onClick} className={buttonClasses} aria-label={label}>
         <Plus className="w-7 h-7" strokeWidth={2.5} />
       </button>
     );

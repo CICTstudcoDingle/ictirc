@@ -16,7 +16,10 @@ export async function submitFeedback(data: FeedbackInput) {
   try {
     // Basic validation
     if (!data.message || data.message.trim().length < 10) {
-      return { success: false, error: "Message must be at least 10 characters" };
+      return {
+        success: false,
+        error: "Message must be at least 10 characters",
+      };
     }
 
     if (data.message.length > 5000) {
@@ -31,7 +34,13 @@ export async function submitFeedback(data: FeedbackInput) {
       return { success: false, error: "Rating must be between 1 and 5" };
     }
 
-    const validCategories = ["General", "Bug Report", "Feature Request", "Content", "Other"];
+    const validCategories = [
+      "General",
+      "Bug Report",
+      "Feature Request",
+      "Content",
+      "Other",
+    ];
     if (!validCategories.includes(data.category)) {
       return { success: false, error: "Invalid category" };
     }
@@ -55,6 +64,9 @@ export async function submitFeedback(data: FeedbackInput) {
     return { success: true };
   } catch (error) {
     console.error("Failed to submit feedback:", error);
-    return { success: false, error: "Failed to submit feedback. Please try again." };
+    return {
+      success: false,
+      error: "Failed to submit feedback. Please try again.",
+    };
   }
 }

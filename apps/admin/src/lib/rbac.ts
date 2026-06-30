@@ -146,14 +146,20 @@ export function hasRole(userRole: UserRole, requiredRole: UserRole): boolean {
 /**
  * Check if user has any of the allowed roles
  */
-export function hasAnyRole(userRole: UserRole, allowedRoles: UserRole[]): boolean {
+export function hasAnyRole(
+  userRole: UserRole,
+  allowedRoles: UserRole[],
+): boolean {
   return allowedRoles.includes(userRole);
 }
 
 /**
  * Check if user has a specific permission
  */
-export function hasPermission(userRole: UserRole, permission: Permission): boolean {
+export function hasPermission(
+  userRole: UserRole,
+  permission: Permission,
+): boolean {
   return ROLE_PERMISSIONS[userRole].includes(permission);
 }
 
@@ -179,7 +185,7 @@ export function canAccessRoute(userRole: UserRole, pathname: string): boolean {
  */
 export async function requirePermission(
   supabaseId: string,
-  permission: Permission
+  permission: Permission,
 ): Promise<User> {
   const user = await getUserById(supabaseId);
 
@@ -203,7 +209,7 @@ export async function requirePermission(
  */
 export async function requireRole(
   supabaseId: string,
-  requiredRole: UserRole
+  requiredRole: UserRole,
 ): Promise<User> {
   const user = await getUserById(supabaseId);
 

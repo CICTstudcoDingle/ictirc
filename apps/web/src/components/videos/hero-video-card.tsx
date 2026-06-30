@@ -28,7 +28,7 @@ export async function HeroVideoCard() {
         editorName: video.editorName,
         uploadDate: video.uploadDate.toISOString(),
       };
-    })
+    }),
   );
 
   // Filter out videos without stream URLs

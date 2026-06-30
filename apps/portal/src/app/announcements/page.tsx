@@ -136,9 +136,7 @@ export default function AnnouncementsPage() {
               className={`rounded-2xl border p-6 backdrop-blur-sm hover:bg-white/[0.06] transition-all ${priorityStyles[item.priority] || priorityStyles.medium}`}
             >
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-xl">
-                  {typeIcons[item.type] || "📢"}
-                </span>
+                <span className="text-xl">{typeIcons[item.type] || "📢"}</span>
                 <span className="text-xs font-medium text-white/50 uppercase tracking-wider">
                   {item.type}
                 </span>

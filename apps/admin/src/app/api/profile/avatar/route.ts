@@ -14,10 +14,7 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get form data with file
@@ -25,17 +22,14 @@ export async function POST(request: NextRequest) {
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json(
-        { error: "No file provided" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
     // Validate file type
     if (!file.type.startsWith("image/")) {
       return NextResponse.json(
         { error: "File must be an image" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -47,7 +41,7 @@ export async function POST(request: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { error: result.error || "Upload failed" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -65,7 +59,7 @@ export async function POST(request: NextRequest) {
     console.error("[Admin Avatar API] Upload error:", error);
     return NextResponse.json(
       { error: "Failed to upload avatar" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -81,10 +75,7 @@ export async function DELETE(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Delete from storage
@@ -93,7 +84,7 @@ export async function DELETE(request: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { error: result.error || "Delete failed" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -108,7 +99,7 @@ export async function DELETE(request: NextRequest) {
     console.error("[Admin Avatar API] Delete error:", error);
     return NextResponse.json(
       { error: "Failed to delete avatar" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

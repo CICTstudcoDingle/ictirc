@@ -90,11 +90,11 @@ export default function FeaturesSection() {
               end: "top 40%",
               scrub: 0.5,
             },
-          }
+          },
         );
       });
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   return (

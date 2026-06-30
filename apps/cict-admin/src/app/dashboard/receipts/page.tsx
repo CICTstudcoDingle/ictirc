@@ -21,7 +21,9 @@ export default async function ReceiptsPage() {
     <section className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-maroon">Receipts</h1>
-        <p className="mt-1 text-sm text-gray-600">Issued receipts from manual cashier postings.</p>
+        <p className="mt-1 text-sm text-gray-600">
+          Issued receipts from manual cashier postings.
+        </p>
       </div>
 
       <div className="panel overflow-hidden">
@@ -40,15 +42,27 @@ export default async function ReceiptsPage() {
             <tbody>
               {receipts.map((receipt) => (
                 <tr key={receipt.id} className="border-t border-gray-200">
-                  <td className="px-4 py-3 font-semibold">{receipt.receiptNo}</td>
+                  <td className="px-4 py-3 font-semibold">
+                    {receipt.receiptNo}
+                  </td>
                   <td className="px-4 py-3">
                     <p>{receipt.payerName}</p>
-                    <p className="text-xs text-gray-500">{receipt.payment.enrollment.studentNumber}</p>
+                    <p className="text-xs text-gray-500">
+                      {receipt.payment.enrollment.studentNumber}
+                    </p>
                   </td>
-                  <td className="px-4 py-3">PHP {Number(receipt.payment.amount).toFixed(2)}</td>
-                  <td className="px-4 py-3">{receipt.payment.referenceNumber}</td>
-                  <td className="px-4 py-3">{receipt.issuedBy.name || receipt.issuedBy.email}</td>
-                  <td className="px-4 py-3">{new Date(receipt.issuedAt).toLocaleString()}</td>
+                  <td className="px-4 py-3">
+                    PHP {Number(receipt.payment.amount).toFixed(2)}
+                  </td>
+                  <td className="px-4 py-3">
+                    {receipt.payment.referenceNumber}
+                  </td>
+                  <td className="px-4 py-3">
+                    {receipt.issuedBy.name || receipt.issuedBy.email}
+                  </td>
+                  <td className="px-4 py-3">
+                    {new Date(receipt.issuedAt).toLocaleString()}
+                  </td>
                 </tr>
               ))}
             </tbody>

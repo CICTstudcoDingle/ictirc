@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Card, CardContent, CardHeader, CardTitle } from "@ictirc/ui";
+import {
+  Button,
+  Input,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@ictirc/ui";
 import { Lock, Loader2, Eye, EyeOff, Key } from "lucide-react";
 import { toast } from "sonner";
 
@@ -51,7 +58,9 @@ export function SettingsClient({ userEmail }: SettingsClientProps) {
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to change password");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to change password",
+      );
     } finally {
       setSaving(false);
     }
@@ -91,7 +100,11 @@ export function SettingsClient({ userEmail }: SettingsClientProps) {
                 onClick={() => setShowCurrent(!showCurrent)}
                 className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
               >
-                {showCurrent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showCurrent ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
 
@@ -109,11 +122,13 @@ export function SettingsClient({ userEmail }: SettingsClientProps) {
                 onClick={() => setShowNew(!showNew)}
                 className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
               >
-                {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showNew ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
-              <p className="text-xs text-gray-500 mt-1">
-                Minimum 6 characters
-              </p>
+              <p className="text-xs text-gray-500 mt-1">Minimum 6 characters</p>
             </div>
 
             <div className="relative">
@@ -130,7 +145,11 @@ export function SettingsClient({ userEmail }: SettingsClientProps) {
                 onClick={() => setShowConfirm(!showConfirm)}
                 className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
               >
-                {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showConfirm ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
 

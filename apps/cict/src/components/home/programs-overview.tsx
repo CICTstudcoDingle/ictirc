@@ -15,7 +15,8 @@ export function ProgramsOverview() {
             Our Academic Program
           </h2>
           <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
-            A rigorous four-year degree designed to produce industry-ready IT professionals
+            A rigorous four-year degree designed to produce industry-ready IT
+            professionals
           </p>
         </ScrollAnimation>
 
@@ -36,7 +37,9 @@ export function ProgramsOverview() {
                   <span className="text-sm font-mono font-bold text-gold bg-gold/10 px-3 py-1 rounded-full">
                     {program.code}
                   </span>
-                  <span className="text-sm text-gray-500 font-mono">{program.duration}</span>
+                  <span className="text-sm text-gray-500 font-mono">
+                    {program.duration}
+                  </span>
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
                   {program.fullName}
@@ -53,7 +56,10 @@ export function ProgramsOverview() {
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {program.specializations.map((s) => (
-                        <span key={s.name} className="px-3 py-1 bg-maroon/5 text-maroon text-xs font-bold rounded-full border border-maroon/10">
+                        <span
+                          key={s.name}
+                          className="px-3 py-1 bg-maroon/5 text-maroon text-xs font-bold rounded-full border border-maroon/10"
+                        >
                           {s.name}
                         </span>
                       ))}
@@ -65,7 +71,10 @@ export function ProgramsOverview() {
                     </h4>
                     <div className="grid grid-cols-2 gap-2">
                       {program.highlights.slice(0, 4).map((h) => (
-                        <div key={h} className="flex items-center gap-2 text-xs text-gray-600">
+                        <div
+                          key={h}
+                          className="flex items-center gap-2 text-xs text-gray-600"
+                        >
                           <div className="w-1.5 h-1.5 bg-gold rounded-full flex-shrink-0" />
                           <span className="truncate">{h}</span>
                         </div>

@@ -4,12 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { gsap } from "@/lib/gsap";
 import MiniCalendarWidget from "./mini-calendar-widget";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Trophy,
-  ShoppingBag,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Trophy, ShoppingBag } from "lucide-react";
 
 interface RetractableWidgetPanelProps {
   upcomingEvents?: any[];
@@ -159,7 +154,8 @@ export default function RetractableWidgetPanel({
                     CICT Shop
                   </h3>
                   <p className="text-sm text-white/60 mb-3 leading-relaxed">
-                    Order customized merchandise—apparels, cups, mugs &amp; more.
+                    Order customized merchandise—apparels, cups, mugs &amp;
+                    more.
                   </p>
                   <div className="flex items-center gap-2 text-gold-400 font-semibold text-sm group-hover:gap-3 transition-all duration-300">
                     <span>Order Now</span>

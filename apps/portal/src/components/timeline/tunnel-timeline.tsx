@@ -1,11 +1,6 @@
 "use client";
 
-import React, {
-  useRef,
-  useMemo,
-  useState,
-  useLayoutEffect,
-} from "react";
+import React, { useRef, useMemo, useState, useLayoutEffect } from "react";
 import Link from "next/link";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { ArrowLeft, Home, ArrowRight } from "lucide-react";
@@ -205,17 +200,14 @@ const GridRunners = React.memo(function GridRunners({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const runners = useMemo(() => {
-    const seed = instanceId
-      .split("")
-      .reduce((a, c) => a + c.charCodeAt(0), 0);
+    const seed = instanceId.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
     return Array.from({ length: count }).map((_, i) => {
       const pr = ((seed + i * 7919) % 1000) / 1000;
       const cr = ((seed + i * 6971) % 1000) / 1000;
       return {
         id: `${instanceId}-${i}`,
         crossPos: Math.floor(pr * (cross / 100)) * 100,
-        color:
-          cr > 0.66 ? "gold" : cr > 0.33 ? "maroon" : ("white" as string),
+        color: cr > 0.66 ? "gold" : cr > 0.33 ? "maroon" : ("white" as string),
         speed: pr * 10 + 10,
         delay: pr * 10,
         trailLength: pr * 300 + 200,
@@ -314,13 +306,11 @@ export default function TunnelTimeline({ highlights }: TunnelTimelineProps) {
       title: h.title,
       description: h.description,
       type: h.type,
-      color: (
-        h.color === "gold" || h.color === "maroon" || h.color === "white"
-          ? h.color
-          : h.is_featured
-            ? "gold"
-            : "maroon"
-      ) as "gold" | "maroon" | "white",
+      color: (h.color === "gold" || h.color === "maroon" || h.color === "white"
+        ? h.color
+        : h.is_featured
+          ? "gold"
+          : "maroon") as "gold" | "maroon" | "white",
       president: h.president,
     }));
   }, [highlights]);
@@ -338,13 +328,13 @@ export default function TunnelTimeline({ highlights }: TunnelTimelineProps) {
 
   const totalDepth = useMemo(
     () => timelineEvents.length * CARD_SPACING + RUNWAY_BUFFER,
-    [timelineEvents.length]
+    [timelineEvents.length],
   );
   const vhPerCard = 150;
   const scrollHeight = `${100 + timelineEvents.length * vhPerCard}vh`;
   const gridLength = useMemo(
     () => Math.max(15000, totalDepth + 5000),
-    [totalDepth]
+    [totalDepth],
   );
 
   useLayoutEffect(() => {

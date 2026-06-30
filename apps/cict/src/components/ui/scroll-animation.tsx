@@ -67,7 +67,7 @@ export function ScrollAnimation({
             start: "top 85%",
             once: true,
           },
-        }
+        },
       );
     });
 

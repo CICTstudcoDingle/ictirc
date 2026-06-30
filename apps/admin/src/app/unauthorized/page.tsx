@@ -6,28 +6,29 @@ import Link from "next/link";
 import { ShieldX, ArrowLeft, LogOut } from "lucide-react";
 import { Button } from "@ictirc/ui";
 
-const REASON_MESSAGES: Record<string, { title: string; description: string }> = {
-  no_account: {
-    title: "Account Not Found",
-    description:
-      "Your account has not been set up in the system. Please contact the administrator to request access.",
-  },
-  deactivated: {
-    title: "Account Deactivated",
-    description:
-      "Your account has been deactivated. Please contact the Dean or system administrator for assistance.",
-  },
-  insufficient_role: {
-    title: "Access Denied",
-    description:
-      "You do not have sufficient permissions to access this resource. Contact your administrator if you believe this is an error.",
-  },
-  default: {
-    title: "Unauthorized",
-    description:
-      "You are not authorized to access this page. Please log in with an authorized account.",
-  },
-};
+const REASON_MESSAGES: Record<string, { title: string; description: string }> =
+  {
+    no_account: {
+      title: "Account Not Found",
+      description:
+        "Your account has not been set up in the system. Please contact the administrator to request access.",
+    },
+    deactivated: {
+      title: "Account Deactivated",
+      description:
+        "Your account has been deactivated. Please contact the Dean or system administrator for assistance.",
+    },
+    insufficient_role: {
+      title: "Access Denied",
+      description:
+        "You do not have sufficient permissions to access this resource. Contact your administrator if you believe this is an error.",
+    },
+    default: {
+      title: "Unauthorized",
+      description:
+        "You are not authorized to access this page. Please log in with an authorized account.",
+    },
+  };
 
 function UnauthorizedContent() {
   const searchParams = useSearchParams();
@@ -99,4 +100,3 @@ export default function UnauthorizedPage() {
     </div>
   );
 }
-

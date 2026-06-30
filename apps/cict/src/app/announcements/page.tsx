@@ -36,8 +36,10 @@ function groupByMonth(items: Announcement[]) {
 }
 
 export default async function AnnouncementsPage() {
-  let pinned: Awaited<ReturnType<typeof prisma.portalAnnouncement.findMany>> = [];
-  let regular: Awaited<ReturnType<typeof prisma.portalAnnouncement.findMany>> = [];
+  let pinned: Awaited<ReturnType<typeof prisma.portalAnnouncement.findMany>> =
+    [];
+  let regular: Awaited<ReturnType<typeof prisma.portalAnnouncement.findMany>> =
+    [];
 
   try {
     const all = await prisma.portalAnnouncement.findMany({
@@ -62,13 +64,16 @@ export default async function AnnouncementsPage() {
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
             <Megaphone className="w-4 h-4 text-gold" />
-            <span className="text-sm text-gray-200 font-medium">Official Updates</span>
+            <span className="text-sm text-gray-200 font-medium">
+              Official Updates
+            </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
             CICT <span className="text-gold">Announcements</span>
           </h1>
           <p className="text-base text-gray-300 max-w-xl mx-auto">
-            Stay informed with the latest news and updates from the College of Information and Communication Technology.
+            Stay informed with the latest news and updates from the College of
+            Information and Communication Technology.
           </p>
         </div>
       </section>
@@ -79,7 +84,9 @@ export default async function AnnouncementsPage() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Pin className="w-4 h-4 text-gold" />
-              <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Pinned</h2>
+              <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                Pinned
+              </h2>
             </div>
             <div className="space-y-3">
               {pinned.map((a) => (
@@ -94,7 +101,9 @@ export default async function AnnouncementsPage() {
           <div className="text-center py-20 text-gray-400">
             <Megaphone className="w-10 h-10 mx-auto mb-4 opacity-40" />
             <p className="text-base font-medium">No announcements yet.</p>
-            <p className="text-sm mt-1">Check back soon for updates from CICT.</p>
+            <p className="text-sm mt-1">
+              Check back soon for updates from CICT.
+            </p>
           </div>
         ) : (
           Object.entries(grouped).map(([month, items]) => (
@@ -140,14 +149,20 @@ function AnnouncementCard({
     <details className="group bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden open:border-maroon/30 transition-colors">
       <summary className="flex items-start gap-4 px-5 py-4 cursor-pointer select-none list-none hover:bg-gray-50/50 transition-colors">
         {/* Left accent */}
-        <div className={`w-1 self-stretch rounded-full shrink-0 ${pinned ? "bg-gold" : "bg-maroon"}`} />
+        <div
+          className={`w-1 self-stretch rounded-full shrink-0 ${pinned ? "bg-gold" : "bg-maroon"}`}
+        />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5 flex-wrap">
             {pinned && <Pin className="w-3.5 h-3.5 text-gold shrink-0" />}
-            <h3 className="font-semibold text-gray-900 text-base leading-snug">{announcement.title}</h3>
+            <h3 className="font-semibold text-gray-900 text-base leading-snug">
+              {announcement.title}
+            </h3>
           </div>
           {announcement.excerpt && (
-            <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">{announcement.excerpt}</p>
+            <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">
+              {announcement.excerpt}
+            </p>
           )}
           <div className="flex items-center gap-3 mt-2">
             <span className="text-xs text-gray-400 font-mono">

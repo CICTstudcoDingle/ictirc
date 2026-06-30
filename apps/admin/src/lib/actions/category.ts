@@ -29,7 +29,8 @@ export async function listCategories() {
     console.error("Error listing categories:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to list categories",
+      error:
+        error instanceof Error ? error.message : "Failed to list categories",
       data: [],
     };
   }
@@ -72,7 +73,8 @@ export async function getCategory(id: string) {
     console.error("Error fetching category:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to fetch category",
+      error:
+        error instanceof Error ? error.message : "Failed to fetch category",
     };
   }
 }

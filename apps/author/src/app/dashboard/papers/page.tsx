@@ -3,7 +3,14 @@ import { prisma } from "@ictirc/database";
 import { redirect } from "next/navigation";
 import { FileText, Search, Filter } from "lucide-react";
 import Link from "next/link";
-import { Button, Card, CardContent, CardHeader, CardTitle, Input } from "@ictirc/ui";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+} from "@ictirc/ui";
 
 export default async function MyPapersPage() {
   const supabase = await createClient();
@@ -45,7 +52,10 @@ export default async function MyPapersPage() {
   const getStatusBadge = (status: string) => {
     const badges: Record<string, { class: string; label: string }> = {
       SUBMITTED: { class: "status-badge status-submitted", label: "Submitted" },
-      UNDER_REVIEW: { class: "status-badge status-review", label: "Under Review" },
+      UNDER_REVIEW: {
+        class: "status-badge status-review",
+        label: "Under Review",
+      },
       ACCEPTED: { class: "status-badge status-accepted", label: "Accepted" },
       REJECTED: { class: "status-badge status-rejected", label: "Rejected" },
       PUBLISHED: { class: "status-badge status-published", label: "Published" },
@@ -84,7 +94,8 @@ export default async function MyPapersPage() {
                 No papers yet
               </h3>
               <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                Start your research journey by submitting your first paper to ICTIRC.
+                Start your research journey by submitting your first paper to
+                ICTIRC.
               </p>
               <Link href="/dashboard/submit">
                 <Button>Submit Your First Paper</Button>
@@ -95,10 +106,12 @@ export default async function MyPapersPage() {
               {papers.map((paper) => {
                 const badge = getStatusBadge(paper.status);
                 const userAuthorEntry = paper.authors.find(
-                  (a) => a.author.email === user.email
+                  (a) => a.author.email === user.email,
                 );
                 const isCorresponding = userAuthorEntry?.isCorrespondingAuthor;
-                const allAuthors = paper.authors.map((a) => a.author.name).join(", ");
+                const allAuthors = paper.authors
+                  .map((a) => a.author.name)
+                  .join(", ");
 
                 return (
                   <Link
@@ -120,7 +133,8 @@ export default async function MyPapersPage() {
                           </span>
                           <span>•</span>
                           <span>
-                            Submitted {new Date(paper.createdAt).toLocaleDateString()}
+                            Submitted{" "}
+                            {new Date(paper.createdAt).toLocaleDateString()}
                           </span>
                         </div>
                       </div>
@@ -153,11 +167,14 @@ export default async function MyPapersPage() {
               <FileText className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <h4 className="font-medium text-blue-900">Email-Based Matching</h4>
+              <h4 className="font-medium text-blue-900">
+                Email-Based Matching
+              </h4>
               <p className="text-sm text-blue-700 mt-1">
-                Papers are automatically matched to your account based on the email address 
-                used during submission. If you were listed as a co-author on a paper before 
-                creating your account, those papers will appear here automatically.
+                Papers are automatically matched to your account based on the
+                email address used during submission. If you were listed as a
+                co-author on a paper before creating your account, those papers
+                will appear here automatically.
               </p>
             </div>
           </div>

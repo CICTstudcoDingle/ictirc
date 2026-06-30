@@ -30,7 +30,12 @@ export default async function ReceiptsPage() {
         payment: {
           include: {
             enrollment: {
-              select: { studentName: true, yearLevel: true, program: true, sectionName: true },
+              select: {
+                studentName: true,
+                yearLevel: true,
+                program: true,
+                sectionName: true,
+              },
             },
           },
         },
@@ -77,12 +82,19 @@ export default async function ReceiptsPage() {
             <tbody className="divide-y divide-gray-50">
               {receipts.map((r) => (
                 <tr key={r.id} className="hover:bg-gray-50/50">
-                  <td className="px-6 py-4 font-mono text-xs font-semibold text-gray-700">{r.receiptNo}</td>
+                  <td className="px-6 py-4 font-mono text-xs font-semibold text-gray-700">
+                    {r.receiptNo}
+                  </td>
                   <td className="px-6 py-4">
-                    <p className="font-medium text-gray-900">{r.payment.enrollment.studentName}</p>
+                    <p className="font-medium text-gray-900">
+                      {r.payment.enrollment.studentName}
+                    </p>
                     <p className="text-[10px] text-gray-400 font-mono">
-                      {r.payment.enrollment.program} Year {r.payment.enrollment.yearLevel}
-                      {r.payment.enrollment.sectionName ? ` § ${r.payment.enrollment.sectionName}` : ""}
+                      {r.payment.enrollment.program} Year{" "}
+                      {r.payment.enrollment.yearLevel}
+                      {r.payment.enrollment.sectionName
+                        ? ` § ${r.payment.enrollment.sectionName}`
+                        : ""}
                     </p>
                   </td>
                   <td className="px-6 py-4 font-semibold text-maroon font-mono">

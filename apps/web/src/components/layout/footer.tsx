@@ -1,6 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, ExternalLink, Store, GraduationCap, Mail, Phone, Globe, Linkedin, Youtube } from "lucide-react";
+import {
+  Facebook,
+  ExternalLink,
+  Store,
+  GraduationCap,
+  Mail,
+  Phone,
+  Globe,
+  Linkedin,
+  Youtube,
+} from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -47,14 +57,18 @@ export function Footer() {
                 className="w-12 h-12 md:w-14 md:h-14"
               />
               <div>
-                <h3 className="font-bold text-white text-lg leading-tight">IRJICT</h3>
+                <h3 className="font-bold text-white text-lg leading-tight">
+                  IRJICT
+                </h3>
                 <p className="text-xs text-white/70">
                   Intl. Research Journal on ICT
                 </p>
               </div>
             </div>
             <p className="text-sm text-gray-100 max-w-sm mb-2">
-              International Research Journal on Information and Communications Technology (IRJICT) - A scholarly publication platform by ISUFST-CICT.
+              International Research Journal on Information and Communications
+              Technology (IRJICT) - A scholarly publication platform by
+              ISUFST-CICT.
             </p>
             <p className="text-xs font-mono text-white/60 mb-4">
               ISSN No.: 2960-3773
@@ -115,17 +129,27 @@ export function Footer() {
             <ul className="space-y-2.5 text-sm text-gray-200 mb-4">
               <li className="flex items-start gap-2">
                 <GraduationCap className="w-4 h-4 shrink-0 mt-0.5 text-gold" />
-                <span>ISUFST - CICT Department<br />Dingle Campus, Iloilo</span>
+                <span>
+                  ISUFST - CICT Department
+                  <br />
+                  Dingle Campus, Iloilo
+                </span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 shrink-0 text-gold" />
-                <a href="mailto:irjict@isufst.edu.ph" className="hover:text-white transition-colors font-mono text-xs">
+                <a
+                  href="mailto:irjict@isufst.edu.ph"
+                  className="hover:text-white transition-colors font-mono text-xs"
+                >
                   irjict@isufst.edu.ph
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 shrink-0 text-gold" />
-                <a href="mailto:cict_dingle@isufst.edu.ph" className="hover:text-white transition-colors font-mono text-xs">
+                <a
+                  href="mailto:cict_dingle@isufst.edu.ph"
+                  className="hover:text-white transition-colors font-mono text-xs"
+                >
                   cict_dingle@isufst.edu.ph
                 </a>
               </li>
@@ -135,7 +159,12 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Globe className="w-4 h-4 shrink-0 text-gold" />
-                <a href="https://isufst.edu.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors text-xs">
+                <a
+                  href="https://isufst.edu.ph"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors text-xs"
+                >
                   isufst.edu.ph
                 </a>
               </li>
@@ -191,7 +220,13 @@ export function Footer() {
             Disclaimer
           </h5>
           <p className="text-[11px] leading-relaxed text-white/50 font-light italic max-w-5xl">
-            The information presented on this website is intended for educational and informational purposes. While we strive for accuracy, the organizers reserve the right to modify the conference program, dates, venue, or other details as required. We encourage attendees to monitor the website for updates. The organizers assume no liability for any expenses incurred due to cancellations or modifications beyond our reasonable control.
+            The information presented on this website is intended for
+            educational and informational purposes. While we strive for
+            accuracy, the organizers reserve the right to modify the conference
+            program, dates, venue, or other details as required. We encourage
+            attendees to monitor the website for updates. The organizers assume
+            no liability for any expenses incurred due to cancellations or
+            modifications beyond our reasonable control.
           </p>
         </div>
 
@@ -215,14 +250,16 @@ export function Footer() {
             >
               <span className="font-semibold">v1.1.0-beta</span>
               <span className="opacity-50">•</span>
-              <span className="opacity-70">git-{process.env.NEXT_PUBLIC_GIT_COMMIT_HASH || 'dev'}</span>
+              <span className="opacity-70">
+                git-{process.env.NEXT_PUBLIC_GIT_COMMIT_HASH || "dev"}
+              </span>
             </Link>
 
             {/* Main attribution */}
             <div className="px-3 py-1.5 bg-white/10 text-white rounded-full text-xs font-medium border border-white/10">
               Powered by CICT-ISUFST Dingle Campus
             </div>
-            
+
             {/* Secondary tech credit */}
             <a
               href="https://prism.jeffdev.studio/"
@@ -256,7 +293,14 @@ export function Footer() {
                   strokeLinejoin="round"
                 />
                 <defs>
-                  <linearGradient id="prism-gradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                  <linearGradient
+                    id="prism-gradient"
+                    x1="2"
+                    y1="2"
+                    x2="22"
+                    y2="22"
+                    gradientUnits="userSpaceOnUse"
+                  >
                     <stop stopColor="#a855f7" />
                     <stop offset="0.5" stopColor="#ec4899" />
                     <stop offset="1" stopColor="#f97316" />

@@ -69,12 +69,10 @@ export function FeedbackSection() {
           Thank You for Your Feedback!
         </h3>
         <p className="text-gray-600 mb-6">
-          Your feedback helps us improve IRJICT. We appreciate your time and input.
+          Your feedback helps us improve IRJICT. We appreciate your time and
+          input.
         </p>
-        <Button
-          variant="outline"
-          onClick={() => setIsSubmitted(false)}
-        >
+        <Button variant="outline" onClick={() => setIsSubmitted(false)}>
           Submit Another Response
         </Button>
       </div>
@@ -142,7 +140,8 @@ export function FeedbackSection() {
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Subject <span className="text-gray-400 text-xs">(optional)</span>
+                Subject{" "}
+                <span className="text-gray-400 text-xs">(optional)</span>
               </label>
               <input
                 type="text"

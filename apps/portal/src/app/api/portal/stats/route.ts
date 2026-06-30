@@ -41,7 +41,7 @@ export async function GET() {
     console.error("Failed to fetch portal stats:", error);
     return NextResponse.json(
       { students: 0, faculty: 0, alumni: 0, updatedAt: null },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

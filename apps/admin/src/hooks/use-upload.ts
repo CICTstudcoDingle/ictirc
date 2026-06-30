@@ -17,7 +17,10 @@ export function useUpload(options: UseUploadOptions = {}) {
   const [error, setError] = useState<string | null>(null);
 
   const supabase = createClient();
-  const bucket = options.bucket || process.env.NEXT_PUBLIC_SUPABASE_BUCKET_EVENTS || "event-images";
+  const bucket =
+    options.bucket ||
+    process.env.NEXT_PUBLIC_SUPABASE_BUCKET_EVENTS ||
+    "event-images";
   const folder = options.folder || "";
 
   const uploadFile = async (file: File) => {

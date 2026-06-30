@@ -84,7 +84,10 @@ export function AiChatWidget() {
 
     try {
       const allMessages = [
-        ...messages.map((m) => ({ role: m.role === "assistant" ? "model" : "user" as const, content: m.content })),
+        ...messages.map((m) => ({
+          role: m.role === "assistant" ? "model" : ("user" as const),
+          content: m.content,
+        })),
         { role: "user" as const, content: text },
       ];
 
@@ -121,8 +124,8 @@ export function AiChatWidget() {
         accumulated += decoder.decode(value, { stream: true });
         setMessages((prev) =>
           prev.map((m) =>
-            m.id === assistantId ? { ...m, content: accumulated } : m
-          )
+            m.id === assistantId ? { ...m, content: accumulated } : m,
+          ),
         );
       }
     } catch {
@@ -153,7 +156,7 @@ export function AiChatWidget() {
             "w-[calc(100vw-2rem)] max-w-sm",
             "bg-white rounded-2xl shadow-2xl border border-gray-200",
             "overflow-hidden",
-            "animate-in slide-in-from-bottom-4 fade-in duration-200"
+            "animate-in slide-in-from-bottom-4 fade-in duration-200",
           )}
           style={{ height: "min(520px, calc(100dvh - 8rem))" }}
         >
@@ -170,7 +173,9 @@ export function AiChatWidget() {
                 />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900 leading-none">IRJICT Assistant</p>
+                <p className="text-sm font-semibold text-gray-900 leading-none">
+                  IRJICT Assistant
+                </p>
                 <p className="text-xs text-emerald-500 mt-0.5">● Online</p>
               </div>
             </div>
@@ -183,7 +188,10 @@ export function AiChatWidget() {
                 <Minus className="w-4 h-4" />
               </button>
               <button
-                onClick={() => { setIsOpen(false); setHasAccepted(false); }}
+                onClick={() => {
+                  setIsOpen(false);
+                  setHasAccepted(false);
+                }}
                 className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
                 aria-label="Close chat"
               >
@@ -205,11 +213,16 @@ export function AiChatWidget() {
                 />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">IRJICT AI Assistant</h3>
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  IRJICT AI Assistant
+                </h3>
                 <p className="text-sm text-gray-500 leading-relaxed">
                   This assistant is powered by{" "}
-                  <span className="font-medium text-gray-700">Google Gemini AI</span>.
-                  Responses may not always be accurate — contact us directly when in doubt.
+                  <span className="font-medium text-gray-700">
+                    Google Gemini AI
+                  </span>
+                  . Responses may not always be accurate — contact us directly
+                  when in doubt.
                 </p>
               </div>
               <button
@@ -225,7 +238,9 @@ export function AiChatWidget() {
               <div className="flex-1 overflow-y-auto px-4 py-4 bg-gray-50/50">
                 {messages.length === 0 && (
                   <div className="text-center py-6">
-                    <p className="text-xs text-gray-400 mb-3">Ask me anything about IRJICT</p>
+                    <p className="text-xs text-gray-400 mb-3">
+                      Ask me anything about IRJICT
+                    </p>
                     <div className="flex flex-wrap gap-2 justify-center">
                       {[
                         "How do I submit a paper?",
@@ -234,7 +249,10 @@ export function AiChatWidget() {
                       ].map((suggestion) => (
                         <button
                           key={suggestion}
-                          onClick={() => { setInputValue(suggestion); inputRef.current?.focus(); }}
+                          onClick={() => {
+                            setInputValue(suggestion);
+                            inputRef.current?.focus();
+                          }}
                           className="text-xs bg-white border border-gray-200 text-gray-600 rounded-full px-3 py-1.5 hover:border-maroon/30 hover:text-maroon transition-colors"
                         >
                           {suggestion}
@@ -248,7 +266,12 @@ export function AiChatWidget() {
                     key={msg.id}
                     role={msg.role}
                     content={msg.content}
-                    isStreaming={isLoading && i === messages.length - 1 && msg.role === "assistant" && msg.content === ""}
+                    isStreaming={
+                      isLoading &&
+                      i === messages.length - 1 &&
+                      msg.role === "assistant" &&
+                      msg.content === ""
+                    }
                   />
                 ))}
 
@@ -257,7 +280,10 @@ export function AiChatWidget() {
                   <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg px-3 py-2 mt-2">
                     <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
                     <span>{error}</span>
-                    <button onClick={() => setError(null)} className="ml-auto text-red-400 hover:text-red-600">
+                    <button
+                      onClick={() => setError(null)}
+                      className="ml-auto text-red-400 hover:text-red-600"
+                    >
                       <X className="w-3 h-3" />
                     </button>
                   </div>
@@ -292,7 +318,10 @@ export function AiChatWidget() {
                 {/* Bottom Disclaimer */}
                 <p className="mt-2 text-center text-[10px] text-gray-400 leading-tight">
                   ⚡ Powered by Gemini AI · Verify important info with{" "}
-                  <a href="mailto:cict_dingle@isufst.edu.ph" className="underline hover:text-maroon">
+                  <a
+                    href="mailto:cict_dingle@isufst.edu.ph"
+                    className="underline hover:text-maroon"
+                  >
                     cict_dingle@isufst.edu.ph
                   </a>
                 </p>
@@ -312,7 +341,7 @@ export function AiChatWidget() {
           "bg-maroon text-white",
           "hover:shadow-[0_0_0_4px_rgba(212,175,55,0.35)]",
           "transition-all duration-200 active:scale-95",
-          isOpen && "ring-2 ring-gold ring-offset-2"
+          isOpen && "ring-2 ring-gold ring-offset-2",
         )}
         aria-label={isOpen ? "Close AI Assistant" : "Open AI Assistant"}
       >

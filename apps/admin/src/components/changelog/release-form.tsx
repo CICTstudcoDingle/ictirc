@@ -28,10 +28,16 @@ export function ReleaseForm({ userId, release }: ReleaseFormProps) {
     setLoading(false);
 
     if (result.success) {
-      toast.success("Release created", "The release has been created successfully");
+      toast.success(
+        "Release created",
+        "The release has been created successfully",
+      );
       router.push("/dashboard/changelog");
     } else {
-      toast.error("Creation failed", result.error || "Failed to create release");
+      toast.error(
+        "Creation failed",
+        result.error || "Failed to create release",
+      );
     }
   };
 
@@ -61,7 +67,10 @@ export function ReleaseForm({ userId, release }: ReleaseFormProps) {
           </div>
 
           <div>
-            <label htmlFor="versionType" className="block text-sm font-medium mb-2">
+            <label
+              htmlFor="versionType"
+              className="block text-sm font-medium mb-2"
+            >
               Version Type <span className="text-red-500">*</span>
             </label>
             <select
@@ -96,7 +105,10 @@ export function ReleaseForm({ userId, release }: ReleaseFormProps) {
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-sm font-medium mb-2">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium mb-2"
+          >
             Description
           </label>
           <textarea
@@ -110,14 +122,21 @@ export function ReleaseForm({ userId, release }: ReleaseFormProps) {
         </div>
 
         <div>
-          <label htmlFor="releaseDate" className="block text-sm font-medium mb-2">
+          <label
+            htmlFor="releaseDate"
+            className="block text-sm font-medium mb-2"
+          >
             Release Date <span className="text-red-500">*</span>
           </label>
           <input
             id="releaseDate"
             type="date"
             name="releaseDate"
-            defaultValue={release?.releaseDate ? new Date(release.releaseDate).toISOString().split('T')[0] : today}
+            defaultValue={
+              release?.releaseDate
+                ? new Date(release.releaseDate).toISOString().split("T")[0]
+                : today
+            }
             required
             className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
@@ -128,7 +147,10 @@ export function ReleaseForm({ userId, release }: ReleaseFormProps) {
           <h3 className="font-semibold mb-4">Git Information (Optional)</h3>
           <div className="grid gap-6 md:grid-cols-2">
             <div>
-              <label htmlFor="gitCommitHash" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="gitCommitHash"
+                className="block text-sm font-medium mb-2"
+              >
                 Git Commit Hash
               </label>
               <input
@@ -142,7 +164,10 @@ export function ReleaseForm({ userId, release }: ReleaseFormProps) {
             </div>
 
             <div>
-              <label htmlFor="gitTag" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="gitTag"
+                className="block text-sm font-medium mb-2"
+              >
                 Git Tag
               </label>
               <input
@@ -160,7 +185,7 @@ export function ReleaseForm({ userId, release }: ReleaseFormProps) {
         {/* Flags */}
         <div className="border-t pt-6 space-y-4">
           <h3 className="font-semibold mb-4">Release Options</h3>
-          
+
           <div className="flex items-center gap-3">
             <input
               type="checkbox"

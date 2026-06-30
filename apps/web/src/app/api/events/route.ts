@@ -14,17 +14,26 @@ export async function GET() {
     });
 
     // Separate into upcoming and past conferences
-    const upcoming = conferences.filter((conference) => new Date(conference.startDate) >= now);
-    const past = conferences.filter((conference) => new Date(conference.startDate) < now);
+    const upcoming = conferences.filter(
+      (conference) => new Date(conference.startDate) >= now,
+    );
+    const past = conferences.filter(
+      (conference) => new Date(conference.startDate) < now,
+    );
 
     // Sort upcoming by startDate ascending (nearest first)
-    upcoming.sort((a: any, b: any) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    upcoming.sort(
+      (a: any, b: any) =>
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+    );
 
     // Format conferences with additional computed fields
-    const formatEvent = (conference: typeof conferences[0]) => {
+    const formatEvent = (conference: (typeof conferences)[0]) => {
       const startDate = new Date(conference.startDate);
-      const daysUntil = Math.ceil((startDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-      
+      const daysUntil = Math.ceil(
+        (startDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+      );
+
       return {
         ...conference,
         isUpcoming: startDate >= now,
@@ -42,7 +51,7 @@ export async function GET() {
     console.error("[Events API] Error:", error);
     return NextResponse.json(
       { error: "Failed to fetch events" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

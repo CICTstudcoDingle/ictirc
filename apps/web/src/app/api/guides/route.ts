@@ -20,7 +20,7 @@ export async function GET() {
         acc[category].push(guide);
         return acc;
       },
-      {} as Record<string, typeof guides>
+      {} as Record<string, typeof guides>,
     );
 
     return NextResponse.json({ guides, groupedGuides });
@@ -28,7 +28,7 @@ export async function GET() {
     console.error("Failed to fetch research guides:", error);
     return NextResponse.json(
       { error: "Failed to fetch research guides" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

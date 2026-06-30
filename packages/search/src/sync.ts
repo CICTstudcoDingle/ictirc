@@ -1,35 +1,35 @@
-import { createAdminClient, INDICES } from './client'
-import { prisma } from '@ictirc/database'
+import { createAdminClient, INDICES } from "./client";
+import { prisma } from "@ictirc/database";
 
-const db = prisma
+const db = prisma;
 
 // Sync all data from database to Algolia
 export async function syncAllData() {
-  console.log('🔄 Starting full Algolia data sync...')
-  
+  console.log("🔄 Starting full Algolia data sync...");
+
   try {
-    await syncPapers()
-    await syncArchives()
-    await syncAuthors()
-    await syncConferences()
-    console.log('✅ Full Algolia sync completed successfully!')
+    await syncPapers();
+    await syncArchives();
+    await syncAuthors();
+    await syncConferences();
+    console.log("✅ Full Algolia sync completed successfully!");
   } catch (error) {
-    console.error('❌ Full sync failed:', error)
-    throw error
+    console.error("❌ Full sync failed:", error);
+    throw error;
   }
 }
 
 // ─── Paper sync ───────────────────────────────────────────────────────────────
 // Schema: Paper → PaperAuthor → Author, Paper → Category, Paper → Issue → Conference
 export async function syncPapers() {
-  console.log('📄 Syncing papers to Algolia...')
+  console.log("📄 Syncing papers to Algolia...");
 
   const papers = await db.paper.findMany({
-    where: { status: { in: ['PUBLISHED', 'ACCEPTED'] } },
+    where: { status: { in: ["PUBLISHED", "ACCEPTED"] } },
     include: {
       authors: {
         include: { author: true },
-        orderBy: { order: 'asc' },
+        orderBy: { order: "asc" },
       },
       category: true,
       issue: {
@@ -39,29 +39,32 @@ export async function syncPapers() {
         },
       },
     },
-  })
+  });
 
   if (papers.length === 0) {
-    console.log('⚠️  No published papers to sync')
-    return
+    console.log("⚠️  No published papers to sync");
+    return;
   }
 
-  const client = createAdminClient()
-  const index = client.initIndex(INDICES.PAPERS)
+  const client = createAdminClient();
+  const index = client.initIndex(INDICES.PAPERS);
 
-  const objects = papers.map(paper => ({
+  const objects = papers.map((paper) => ({
     objectID: paper.id,
-    type: 'paper',
+    type: "paper",
     title: paper.title,
     description: paper.abstract,
     abstract: paper.abstract,
     url: `/archive/${paper.id}`,
-    authors: paper.authors.map(a => a.author.name),
-    authorIds: paper.authors.map(a => a.author.id),
+    authors: paper.authors.map((a) => a.author.name),
+    authorIds: paper.authors.map((a) => a.author.id),
     keywords: paper.keywords,
     category: paper.category.name,
     status: paper.status,
-    year: paper.issue?.volume?.year ?? paper.publishedAt?.getFullYear() ?? new Date().getFullYear(),
+    year:
+      paper.issue?.volume?.year ??
+      paper.publishedAt?.getFullYear() ??
+      new Date().getFullYear(),
     volume: paper.issue?.volume?.volumeNumber,
     issue: paper.issue?.issueNumber,
     conferenceId: paper.issue?.conference?.id,
@@ -70,20 +73,20 @@ export async function syncPapers() {
     pdfUrl: paper.pdfUrl,
     createdAt: paper.createdAt.toISOString(),
     updatedAt: paper.updatedAt.toISOString(),
-  }))
+  }));
 
-  await index.saveObjects(objects)
-  console.log(`✅ Synced ${objects.length} papers to Algolia`)
+  await index.saveObjects(objects);
+  console.log(`✅ Synced ${objects.length} papers to Algolia`);
 }
 
 // ─── ArchivedPaper sync ───────────────────────────────────────────────────────
 // Schema: ArchivedPaper → ArchivedPaperAuthor (embedded names), ArchivedPaper → Category, → Issue → Volume/Conference
 export async function syncArchives() {
-  console.log('📚 Syncing archived papers to Algolia...')
+  console.log("📚 Syncing archived papers to Algolia...");
 
   const archives = await db.archivedPaper.findMany({
     include: {
-      authors: { orderBy: { order: 'asc' } },
+      authors: { orderBy: { order: "asc" } },
       category: true,
       issue: {
         include: {
@@ -92,24 +95,24 @@ export async function syncArchives() {
         },
       },
     },
-  })
+  });
 
   if (archives.length === 0) {
-    console.log('⚠️  No archived papers to sync')
-    return
+    console.log("⚠️  No archived papers to sync");
+    return;
   }
 
-  const client = createAdminClient()
-  const index = client.initIndex(INDICES.ARCHIVES)
+  const client = createAdminClient();
+  const index = client.initIndex(INDICES.ARCHIVES);
 
-  const objects = archives.map(archive => ({
+  const objects = archives.map((archive) => ({
     objectID: archive.id,
-    type: 'archive',
+    type: "archive",
     title: archive.title,
     description: archive.abstract,
     abstract: archive.abstract,
     url: `/archive/${archive.id}`,
-    authors: archive.authors.map(a => a.name),
+    authors: archive.authors.map((a) => a.name),
     keywords: archive.keywords,
     category: archive.category.name,
     volume: archive.issue?.volume?.volumeNumber,
@@ -121,34 +124,34 @@ export async function syncArchives() {
     pdfUrl: archive.pdfUrl,
     createdAt: archive.createdAt.toISOString(),
     updatedAt: archive.updatedAt.toISOString(),
-  }))
+  }));
 
-  await index.saveObjects(objects)
-  console.log(`✅ Synced ${objects.length} archived papers to Algolia`)
+  await index.saveObjects(objects);
+  console.log(`✅ Synced ${objects.length} archived papers to Algolia`);
 }
 
 // ─── Author sync ──────────────────────────────────────────────────────────────
 // Schema: Author → PaperAuthor → Paper (count via _count or manual count)
 export async function syncAuthors() {
-  console.log('👥 Syncing authors to Algolia...')
+  console.log("👥 Syncing authors to Algolia...");
 
   const authors = await db.author.findMany({
     include: {
       papers: true, // PaperAuthor join table
     },
-  })
+  });
 
   if (authors.length === 0) {
-    console.log('⚠️  No authors to sync')
-    return
+    console.log("⚠️  No authors to sync");
+    return;
   }
 
-  const client = createAdminClient()
-  const index = client.initIndex(INDICES.AUTHORS)
+  const client = createAdminClient();
+  const index = client.initIndex(INDICES.AUTHORS);
 
-  const objects = authors.map(author => ({
+  const objects = authors.map((author) => ({
     objectID: author.id,
-    type: 'author',
+    type: "author",
     title: author.name,
     name: author.name,
     description: null,
@@ -158,16 +161,16 @@ export async function syncAuthors() {
     paperCount: author.papers.length,
     createdAt: author.createdAt.toISOString(),
     updatedAt: author.updatedAt.toISOString(),
-  }))
+  }));
 
-  await index.saveObjects(objects)
-  console.log(`✅ Synced ${objects.length} authors to Algolia`)
+  await index.saveObjects(objects);
+  console.log(`✅ Synced ${objects.length} authors to Algolia`);
 }
 
 // ─── Conference sync ──────────────────────────────────────────────────────────
 // Schema: Conference → Issue (count papers via issues.papers)
 export async function syncConferences() {
-  console.log('📅 Syncing conferences to Algolia...')
+  console.log("📅 Syncing conferences to Algolia...");
 
   const conferences = await db.conference.findMany({
     where: { isPublished: true },
@@ -178,23 +181,26 @@ export async function syncConferences() {
         },
       },
     },
-  })
+  });
 
   if (conferences.length === 0) {
-    console.log('⚠️  No conferences to sync')
-    return
+    console.log("⚠️  No conferences to sync");
+    return;
   }
 
-  const client = createAdminClient()
-  const index = client.initIndex(INDICES.CONFERENCES)
+  const client = createAdminClient();
+  const index = client.initIndex(INDICES.CONFERENCES);
 
-  const objects = conferences.map(conf => {
-    const paperCount = conf.issues.reduce((sum, issue) => sum + issue.papers.length, 0)
-    const year = conf.startDate.getFullYear()
+  const objects = conferences.map((conf) => {
+    const paperCount = conf.issues.reduce(
+      (sum, issue) => sum + issue.papers.length,
+      0,
+    );
+    const year = conf.startDate.getFullYear();
 
     return {
       objectID: conf.id,
-      type: 'conference',
+      type: "conference",
       title: conf.name,
       name: conf.name,
       description: conf.description,
@@ -203,17 +209,21 @@ export async function syncConferences() {
       location: conf.location,
       startDate: conf.startDate.toISOString(),
       endDate: conf.endDate?.toISOString() ?? conf.startDate.toISOString(),
-      organizer: conf.organizers?.[0] ?? 'ICTIRC',
+      organizer: conf.organizers?.[0] ?? "ICTIRC",
       website: conf.websiteUrl,
       paperCount,
-      status: conf.isActive ? 'ongoing' : (new Date() > conf.startDate ? 'completed' : 'upcoming'),
+      status: conf.isActive
+        ? "ongoing"
+        : new Date() > conf.startDate
+          ? "completed"
+          : "upcoming",
       createdAt: conf.createdAt.toISOString(),
       updatedAt: conf.updatedAt.toISOString(),
-    }
-  })
+    };
+  });
 
-  await index.saveObjects(objects)
-  console.log(`✅ Synced ${objects.length} conferences to Algolia`)
+  await index.saveObjects(objects);
+  console.log(`✅ Synced ${objects.length} conferences to Algolia`);
 }
 
 // ─── Individual entity sync ───────────────────────────────────────────────────
@@ -224,58 +234,58 @@ export async function syncPaper(paperId: string) {
     include: {
       authors: {
         include: { author: true },
-        orderBy: { order: 'asc' },
+        orderBy: { order: "asc" },
       },
       category: true,
       issue: {
         include: { volume: true, conference: true },
       },
     },
-  })
+  });
 
-  if (!paper) return
+  if (!paper) return;
 
-  const client = createAdminClient()
-  const index = client.initIndex(INDICES.PAPERS)
+  const client = createAdminClient();
+  const index = client.initIndex(INDICES.PAPERS);
 
   await index.partialUpdateObject({
     objectID: paper.id,
     title: paper.title,
     abstract: paper.abstract,
-    authors: paper.authors.map(a => a.author.name),
+    authors: paper.authors.map((a) => a.author.name),
     keywords: paper.keywords,
     category: paper.category.name,
     status: paper.status,
     year: paper.issue?.volume?.year ?? paper.publishedAt?.getFullYear(),
     doi: paper.doi,
     updatedAt: paper.updatedAt.toISOString(),
-  })
+  });
 }
 
 export async function deletePaperFromSearch(paperId: string) {
-  const client = createAdminClient()
-  await client.initIndex(INDICES.PAPERS).deleteObject(paperId)
+  const client = createAdminClient();
+  await client.initIndex(INDICES.PAPERS).deleteObject(paperId);
 }
 
 export async function deleteAuthorFromSearch(authorId: string) {
-  const client = createAdminClient()
-  await client.initIndex(INDICES.AUTHORS).deleteObject(authorId)
+  const client = createAdminClient();
+  await client.initIndex(INDICES.AUTHORS).deleteObject(authorId);
 }
 
 export async function syncAuthor(authorId: string) {
   const author = await db.author.findUnique({
     where: { id: authorId },
     include: { papers: true },
-  })
+  });
 
-  if (!author) return
+  if (!author) return;
 
-  const client = createAdminClient()
+  const client = createAdminClient();
   await client.initIndex(INDICES.AUTHORS).partialUpdateObject({
     objectID: author.id,
     name: author.name,
     affiliation: author.affiliation,
     paperCount: author.papers.length,
     updatedAt: author.updatedAt.toISOString(),
-  })
+  });
 }

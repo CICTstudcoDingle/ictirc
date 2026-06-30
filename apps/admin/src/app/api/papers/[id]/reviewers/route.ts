@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@ictirc/database';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@ictirc/database";
 
 interface RouteContext {
   params: Promise<{ id: string }>;
@@ -12,7 +12,10 @@ export async function POST(request: NextRequest, context: RouteContext) {
     const { reviewerId } = body;
 
     if (!reviewerId) {
-      return NextResponse.json({ error: 'Reviewer ID is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Reviewer ID is required" },
+        { status: 400 },
+      );
     }
 
     // Check if reviewer exists and has appropriate role
@@ -20,8 +23,11 @@ export async function POST(request: NextRequest, context: RouteContext) {
       where: { id: reviewerId },
     });
 
-    if (!reviewer || (reviewer.role !== 'REVIEWER' && reviewer.role !== 'EDITOR')) {
-      return NextResponse.json({ error: 'Invalid reviewer' }, { status: 400 });
+    if (
+      !reviewer ||
+      (reviewer.role !== "REVIEWER" && reviewer.role !== "EDITOR")
+    ) {
+      return NextResponse.json({ error: "Invalid reviewer" }, { status: 400 });
     }
 
     // Check if already assigned
@@ -35,7 +41,10 @@ export async function POST(request: NextRequest, context: RouteContext) {
     });
 
     if (existing) {
-      return NextResponse.json({ error: 'Reviewer already assigned' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Reviewer already assigned" },
+        { status: 400 },
+      );
     }
 
     const assignment = await prisma.paperReviewer.create({
@@ -50,8 +59,11 @@ export async function POST(request: NextRequest, context: RouteContext) {
 
     return NextResponse.json(assignment);
   } catch (error) {
-    console.error('Error assigning reviewer:', error);
-    return NextResponse.json({ error: 'Failed to assign reviewer' }, { status: 500 });
+    console.error("Error assigning reviewer:", error);
+    return NextResponse.json(
+      { error: "Failed to assign reviewer" },
+      { status: 500 },
+    );
   }
 }
 
@@ -61,7 +73,10 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     const { assignmentId } = body;
 
     if (!assignmentId) {
-      return NextResponse.json({ error: 'Assignment ID is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Assignment ID is required" },
+        { status: 400 },
+      );
     }
 
     await prisma.paperReviewer.delete({
@@ -70,8 +85,11 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error removing reviewer:', error);
-    return NextResponse.json({ error: 'Failed to remove reviewer' }, { status: 500 });
+    console.error("Error removing reviewer:", error);
+    return NextResponse.json(
+      { error: "Failed to remove reviewer" },
+      { status: 500 },
+    );
   }
 }
 
@@ -85,13 +103,16 @@ export async function GET(request: NextRequest, context: RouteContext) {
         reviewer: true,
       },
       orderBy: {
-        assignedAt: 'desc',
+        assignedAt: "desc",
       },
     });
 
     return NextResponse.json(reviewers);
   } catch (error) {
-    console.error('Error fetching reviewers:', error);
-    return NextResponse.json({ error: 'Failed to fetch reviewers' }, { status: 500 });
+    console.error("Error fetching reviewers:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch reviewers" },
+      { status: 500 },
+    );
   }
 }

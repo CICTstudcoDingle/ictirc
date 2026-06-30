@@ -41,7 +41,7 @@ export default function NewRolePage() {
     setSelectedPermissions((prev) =>
       prev.includes(permission)
         ? prev.filter((p) => p !== permission)
-        : [...prev, permission]
+        : [...prev, permission],
     );
   };
 
@@ -56,7 +56,7 @@ export default function NewRolePage() {
       const result = await createRole({
         name: formData.get("name") as string,
         displayName: formData.get("displayName") as string,
-        description: formData.get("description") as string || undefined,
+        description: (formData.get("description") as string) || undefined,
         permissions: selectedPermissions,
       });
 
@@ -92,7 +92,10 @@ export default function NewRolePage() {
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-xl border border-gray-200 p-6 space-y-6"
+      >
         {error && (
           <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
             {error}
@@ -101,8 +104,10 @@ export default function NewRolePage() {
 
         {/* Basic Info */}
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Role Information</h2>
-          
+          <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">
+            Role Information
+          </h2>
+
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="name">System Name *</Label>
@@ -114,7 +119,9 @@ export default function NewRolePage() {
                 title="Use uppercase letters and underscores only"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">Uppercase letters and underscores only</p>
+              <p className="text-xs text-gray-500 mt-1">
+                Uppercase letters and underscores only
+              </p>
             </div>
             <div>
               <Label htmlFor="displayName">Display Name *</Label>
@@ -144,7 +151,7 @@ export default function NewRolePage() {
           <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">
             Permissions ({selectedPermissions.length} selected)
           </h2>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {availablePermissions.map((permission) => (
               <label
@@ -170,7 +177,9 @@ export default function NewRolePage() {
         {/* Submit */}
         <div className="flex items-center justify-end gap-4 pt-4 border-t">
           <Link href="/dashboard/settings/roles">
-            <Button variant="outline" type="button">Cancel</Button>
+            <Button variant="outline" type="button">
+              Cancel
+            </Button>
           </Link>
           <Button type="submit" disabled={loading}>
             {loading ? (

@@ -31,7 +31,7 @@ function CounterItem({ icon, label, count, color }: CounterItemProps) {
       onUpdate: () => {
         if (numberRef.current) {
           numberRef.current.textContent = Math.round(
-            countRef.current.value
+            countRef.current.value,
           ).toLocaleString();
         }
       },
@@ -89,8 +89,7 @@ export default function LiveCounter({
             Our Growing Community
           </h2>
           <p className="text-white/50 mt-3 max-w-md mx-auto">
-            Real-time count of the CICT family — students, faculty, and
-            alumni.
+            Real-time count of the CICT family — students, faculty, and alumni.
           </p>
         </div>
 

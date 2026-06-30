@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { Upload, X, FileText, Loader2, Image as ImageIcon, CheckCircle } from "lucide-react";
+import {
+  Upload,
+  X,
+  FileText,
+  Loader2,
+  Image as ImageIcon,
+  CheckCircle,
+} from "lucide-react";
 import { cn } from "../lib/utils";
 
 export interface FileUploadProps {
@@ -123,7 +130,7 @@ export function FileUpload({
     }
 
     setInternalError(null);
-    
+
     // Create preview for images
     if (file.type.startsWith("image/")) {
       const reader = new FileReader();
@@ -206,8 +213,8 @@ export function FileUpload({
             <div className="absolute inset-0 bg-white/80 flex flex-col items-center justify-center">
               <Loader2 className="w-8 h-8 text-maroon animate-spin mb-2" />
               <div className="w-48 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-maroon transition-all duration-300" 
+                <div
+                  className="h-full bg-maroon transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -222,26 +229,28 @@ export function FileUpload({
           onClick={() => fileInputRef.current?.click()}
           className={cn(
             "relative flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-8 transition-all cursor-pointer",
-            isDragOver 
-              ? "border-maroon bg-maroon/5 ring-4 ring-maroon/5" 
+            isDragOver
+              ? "border-maroon bg-maroon/5 ring-4 ring-maroon/5"
               : "border-gray-200 hover:border-maroon/30 hover:bg-gray-50/50",
             error ? "border-red-300 bg-red-50" : "",
-            isUploading ? "pointer-events-none opacity-50" : ""
+            isUploading ? "pointer-events-none opacity-50" : "",
           )}
         >
           {isUploading ? (
             <div className="flex flex-col items-center">
               <Loader2 className="w-10 h-10 text-maroon animate-spin mb-3" />
-              <p className="text-sm font-medium text-gray-600">Uploading {progress}%</p>
+              <p className="text-sm font-medium text-gray-600">
+                Uploading {progress}%
+              </p>
             </div>
-            ) : hasFile ? (
+          ) : hasFile ? (
             <div className="flex flex-col items-center w-full">
               <div className="flex items-center gap-3 p-3 bg-green-50 border border-green-200 rounded-lg w-full max-w-sm">
                 <FileText className="w-6 h-6 text-green-600" />
                 <div className="flex-1 truncate">
-                      <p className="text-sm font-medium text-green-900 truncate">
-                        {fileName || "File Attached"}
-                      </p>
+                  <p className="text-sm font-medium text-green-900 truncate">
+                    {fileName || "File Attached"}
+                  </p>
                   <p className="text-xs text-green-700">Click to replace</p>
                 </div>
                 <button
@@ -270,7 +279,8 @@ export function FileUpload({
                   {description || `Drag and drop or click to browse`}
                 </p>
                 <p className="mt-2 text-xs font-medium text-gray-400 uppercase tracking-widest">
-                  {accept.replace(/\//g, "").replace(/\./g, "").toUpperCase()} • MAX {maxSizeMB}MB
+                  {accept.replace(/\//g, "").replace(/\./g, "").toUpperCase()} •
+                  MAX {maxSizeMB}MB
                 </p>
               </div>
             </>

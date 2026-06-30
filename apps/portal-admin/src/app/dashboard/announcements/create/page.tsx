@@ -30,7 +30,10 @@ export default function CreateAnnouncementPage() {
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-5">
           {/* Title */}
           <div>
-            <label htmlFor="ann-title" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="ann-title"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Title <span className="text-red-500">*</span>
             </label>
             <input
@@ -45,8 +48,14 @@ export default function CreateAnnouncementPage() {
 
           {/* Slug */}
           <div>
-            <label htmlFor="ann-slug" className="block text-sm font-medium text-gray-700 mb-1.5">
-              Slug <span className="text-gray-400 font-normal">(auto-generated if blank)</span>
+            <label
+              htmlFor="ann-slug"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
+              Slug{" "}
+              <span className="text-gray-400 font-normal">
+                (auto-generated if blank)
+              </span>
             </label>
             <input
               id="ann-slug"
@@ -59,8 +68,14 @@ export default function CreateAnnouncementPage() {
 
           {/* Excerpt */}
           <div>
-            <label htmlFor="ann-excerpt" className="block text-sm font-medium text-gray-700 mb-1.5">
-              Excerpt <span className="text-gray-400 font-normal">(short preview text)</span>
+            <label
+              htmlFor="ann-excerpt"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
+              Excerpt{" "}
+              <span className="text-gray-400 font-normal">
+                (short preview text)
+              </span>
             </label>
             <textarea
               id="ann-excerpt"
@@ -73,7 +88,10 @@ export default function CreateAnnouncementPage() {
 
           {/* Content */}
           <div>
-            <label htmlFor="ann-content" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="ann-content"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Content <span className="text-red-500">*</span>
             </label>
             <textarea
@@ -88,8 +106,12 @@ export default function CreateAnnouncementPage() {
 
           {/* Cover Image */}
           <div>
-            <label htmlFor="ann-cover" className="block text-sm font-medium text-gray-700 mb-1.5">
-              Cover Image URL <span className="text-gray-400 font-normal">(optional)</span>
+            <label
+              htmlFor="ann-cover"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
+              Cover Image URL{" "}
+              <span className="text-gray-400 font-normal">(optional)</span>
             </label>
             <input
               id="ann-cover"
@@ -103,11 +125,16 @@ export default function CreateAnnouncementPage() {
 
         {/* Options */}
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-4">
-          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">Publish Options</h3>
+          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">
+            Publish Options
+          </h3>
 
           {/* Status */}
           <div>
-            <label htmlFor="ann-status" className="block text-sm font-medium text-gray-700 mb-1.5">
+            <label
+              htmlFor="ann-status"
+              className="block text-sm font-medium text-gray-700 mb-1.5"
+            >
               Status
             </label>
             <select
@@ -123,11 +150,7 @@ export default function CreateAnnouncementPage() {
 
           {/* isPinned */}
           <label className="flex items-center gap-3 cursor-pointer group">
-            <input
-              type="hidden"
-              name="isPinned"
-              value="false"
-            />
+            <input type="hidden" name="isPinned" value="false" />
             <input
               type="checkbox"
               name="isPinned"
@@ -136,9 +159,13 @@ export default function CreateAnnouncementPage() {
             />
             <div className="flex items-center gap-2">
               <Pin className="w-4 h-4 text-gold" />
-              <span className="text-sm font-medium text-gray-700">Pin this announcement</span>
+              <span className="text-sm font-medium text-gray-700">
+                Pin this announcement
+              </span>
             </div>
-            <span className="text-xs text-gray-400">Appears at the top of all lists</span>
+            <span className="text-xs text-gray-400">
+              Appears at the top of all lists
+            </span>
           </label>
         </div>
 

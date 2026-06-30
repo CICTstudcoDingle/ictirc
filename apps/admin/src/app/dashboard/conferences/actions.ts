@@ -15,7 +15,9 @@ import { requireRole } from "@/lib/rbac";
 export async function getConferences() {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -35,7 +37,8 @@ export async function getConferences() {
     console.error("[getConferences] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to fetch conferences",
+      error:
+        error instanceof Error ? error.message : "Failed to fetch conferences",
     };
   }
 }
@@ -66,7 +69,8 @@ export async function getConference(id: string) {
     console.error("[getConference] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to fetch conference",
+      error:
+        error instanceof Error ? error.message : "Failed to fetch conference",
     };
   }
 }
@@ -91,7 +95,9 @@ export async function createConference(data: {
 }) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -114,7 +120,8 @@ export async function createConference(data: {
     console.error("[createConference] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to create conference",
+      error:
+        error instanceof Error ? error.message : "Failed to create conference",
     };
   }
 }
@@ -139,11 +146,13 @@ export async function updateConference(
     imageUrl?: string;
     websiteUrl?: string;
     isPublished?: boolean;
-  }
+  },
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -164,7 +173,8 @@ export async function updateConference(
     console.error("[updateConference] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update conference",
+      error:
+        error instanceof Error ? error.message : "Failed to update conference",
     };
   }
 }
@@ -175,7 +185,9 @@ export async function updateConference(
 export async function deleteConference(id: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -194,7 +206,8 @@ export async function deleteConference(id: string) {
     console.error("[deleteConference] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to delete conference",
+      error:
+        error instanceof Error ? error.message : "Failed to delete conference",
     };
   }
 }
@@ -205,7 +218,9 @@ export async function deleteConference(id: string) {
 export async function setActiveConference(id: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -232,7 +247,10 @@ export async function setActiveConference(id: string) {
     console.error("[setActiveConference] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to set active conference",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to set active conference",
     };
   }
 }
@@ -255,7 +273,9 @@ export async function addCommitteeMember(data: {
 }) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -275,7 +295,10 @@ export async function addCommitteeMember(data: {
     console.error("[addCommitteeMember] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to add committee member",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to add committee member",
     };
   }
 }
@@ -292,11 +315,13 @@ export async function updateCommitteeMember(
     email?: string;
     photoUrl?: string;
     displayOrder?: number;
-  }
+  },
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -317,7 +342,10 @@ export async function updateCommitteeMember(
     console.error("[updateCommitteeMember] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update committee member",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update committee member",
     };
   }
 }
@@ -328,7 +356,9 @@ export async function updateCommitteeMember(
 export async function deleteCommitteeMember(id: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -348,7 +378,10 @@ export async function deleteCommitteeMember(id: string) {
     console.error("[deleteCommitteeMember] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to delete committee member",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to delete committee member",
     };
   }
 }
@@ -358,11 +391,13 @@ export async function deleteCommitteeMember(id: string) {
  */
 export async function reorderCommitteeMembers(
   conferenceId: string,
-  orderedIds: string[]
+  orderedIds: string[],
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -376,8 +411,8 @@ export async function reorderCommitteeMembers(
         prisma.committeeMember.update({
           where: { id },
           data: { displayOrder: index },
-        })
-      )
+        }),
+      ),
     );
 
     revalidatePath(`/dashboard/conferences/${conferenceId}`);
@@ -388,7 +423,10 @@ export async function reorderCommitteeMembers(
     console.error("[reorderCommitteeMembers] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to reorder committee members",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to reorder committee members",
     };
   }
 }
@@ -413,7 +451,9 @@ export async function addKeynoteSpeaker(data: {
 }) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -434,7 +474,10 @@ export async function addKeynoteSpeaker(data: {
     console.error("[addKeynoteSpeaker] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to add keynote speaker",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to add keynote speaker",
     };
   }
 }
@@ -453,11 +496,13 @@ export async function updateKeynoteSpeaker(
     bio?: string;
     photoUrl?: string;
     displayOrder?: number;
-  }
+  },
 ) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -479,7 +524,10 @@ export async function updateKeynoteSpeaker(
     console.error("[updateKeynoteSpeaker] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update keynote speaker",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update keynote speaker",
     };
   }
 }
@@ -490,7 +538,9 @@ export async function updateKeynoteSpeaker(
 export async function deleteKeynoteSpeaker(id: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -511,7 +561,10 @@ export async function deleteKeynoteSpeaker(id: string) {
     console.error("[deleteKeynoteSpeaker] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to delete keynote speaker",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to delete keynote speaker",
     };
   }
 }
@@ -522,7 +575,9 @@ export async function deleteKeynoteSpeaker(id: string) {
 export async function updateSpeakerPhoto(speakerId: string, photoUrl: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       return { success: false, error: "Unauthorized" };
@@ -543,7 +598,10 @@ export async function updateSpeakerPhoto(speakerId: string, photoUrl: string) {
     console.error("[updateSpeakerPhoto] Error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update speaker photo",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update speaker photo",
     };
   }
 }

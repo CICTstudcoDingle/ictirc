@@ -2,7 +2,12 @@
 
 import { useState, useTransition } from "react";
 import { Eye, EyeOff, Archive, Trash2, Star, Mail, Clock } from "lucide-react";
-import { markFeedbackAsRead, markFeedbackAsUnread, archiveFeedback, deleteFeedback } from "@/app/actions/feedback";
+import {
+  markFeedbackAsRead,
+  markFeedbackAsUnread,
+  archiveFeedback,
+  deleteFeedback,
+} from "@/app/actions/feedback";
 
 interface FeedbackItem {
   id: string;
@@ -31,7 +36,11 @@ const categoryColors: Record<string, string> = {
   Other: "bg-gray-100 text-gray-800",
 };
 
-export function FeedbackTable({ initialFeedback, totalPages, currentPage }: FeedbackTableProps) {
+export function FeedbackTable({
+  initialFeedback,
+  totalPages,
+  currentPage,
+}: FeedbackTableProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -65,8 +74,12 @@ export function FeedbackTable({ initialFeedback, totalPages, currentPage }: Feed
     return (
       <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
         <Mail className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-gray-900 mb-1">No Feedback Yet</h3>
-        <p className="text-sm text-gray-500">Feedback submissions will appear here</p>
+        <h3 className="text-lg font-semibold text-gray-900 mb-1">
+          No Feedback Yet
+        </h3>
+        <p className="text-sm text-gray-500">
+          Feedback submissions will appear here
+        </p>
       </div>
     );
   }
@@ -84,19 +97,27 @@ export function FeedbackTable({ initialFeedback, totalPages, currentPage }: Feed
             {/* Row Summary */}
             <div
               className="flex items-center gap-4 px-6 py-4 cursor-pointer hover:bg-gray-50 transition-colors"
-              onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}
+              onClick={() =>
+                setExpandedId(expandedId === item.id ? null : item.id)
+              }
             >
               {/* Unread indicator */}
-              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${!item.isRead ? "bg-maroon" : "bg-transparent"}`} />
+              <div
+                className={`w-2 h-2 rounded-full flex-shrink-0 ${!item.isRead ? "bg-maroon" : "bg-transparent"}`}
+              />
 
               {/* Category badge */}
-              <span className={`text-xs font-medium px-2.5 py-1 rounded-full flex-shrink-0 ${categoryColors[item.category] || categoryColors.Other}`}>
+              <span
+                className={`text-xs font-medium px-2.5 py-1 rounded-full flex-shrink-0 ${categoryColors[item.category] || categoryColors.Other}`}
+              >
                 {item.category}
               </span>
 
               {/* Subject / Message preview */}
               <div className="flex-1 min-w-0">
-                <p className={`text-sm truncate ${!item.isRead ? "font-semibold text-gray-900" : "text-gray-700"}`}>
+                <p
+                  className={`text-sm truncate ${!item.isRead ? "font-semibold text-gray-900" : "text-gray-700"}`}
+                >
                   {item.subject || item.message.substring(0, 80)}
                 </p>
                 <p className="text-xs text-gray-400 mt-0.5 flex items-center gap-2">
@@ -136,7 +157,10 @@ export function FeedbackTable({ initialFeedback, totalPages, currentPage }: Feed
                   {item.email && (
                     <div>
                       <p className="text-xs text-gray-400 mb-1">Email</p>
-                      <a href={`mailto:${item.email}`} className="text-sm text-maroon hover:underline">
+                      <a
+                        href={`mailto:${item.email}`}
+                        className="text-sm text-maroon hover:underline"
+                      >
                         {item.email}
                       </a>
                     </div>
@@ -161,7 +185,9 @@ export function FeedbackTable({ initialFeedback, totalPages, currentPage }: Feed
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                  <p className="text-sm text-gray-700 whitespace-pre-wrap">{item.message}</p>
+                  <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                    {item.message}
+                  </p>
                 </div>
 
                 {/* Actions */}

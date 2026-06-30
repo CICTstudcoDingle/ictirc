@@ -48,7 +48,8 @@ export async function KeynoteSpeakers() {
             Distinguished <span className="text-gold">Speakers</span>
           </h2>
           <p className="text-sm md:text-base text-gray-500 max-w-2xl mx-auto">
-            Leading experts sharing insights and innovations in Information and Communications Technology
+            Leading experts sharing insights and innovations in Information and
+            Communications Technology
           </p>
         </ScrollAnimation>
 
@@ -62,7 +63,8 @@ export async function KeynoteSpeakers() {
             >
               <Link
                 href={`/speakers/${speaker.id}`}
-                className="group relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-maroon/20 transition-all duration-300 overflow-hidden h-full flex flex-col">
+                className="group relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-maroon/20 transition-all duration-300 overflow-hidden h-full flex flex-col"
+              >
                 {/* Photo Section */}
                 <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-maroon/5 to-gold/5 overflow-hidden">
                   {speaker.photoUrl ? (

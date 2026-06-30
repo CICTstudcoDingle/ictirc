@@ -8,12 +8,7 @@ import ThroughTheYearsPreview from "./through-the-years-preview";
 import RetractableWidgetPanel from "./retractable-widget-panel";
 import PublicNavbar from "../layout/public-navbar";
 import Link from "next/link";
-import {
-  BookOpen,
-  GraduationCap,
-  LogIn,
-  ExternalLink,
-} from "lucide-react";
+import { BookOpen, GraduationCap, LogIn, ExternalLink } from "lucide-react";
 
 const IRJICT_URL = "https://irjict.isufstcict.com/";
 const GRADE_PORTAL_URL = "https://gradeportal.isufstcict.com/";
@@ -111,8 +106,8 @@ export function LandingPage({ isLoggedIn }: LandingPageProps) {
                     Enter Student Portal
                   </h3>
                   <p className="mt-2 text-sm text-white/50">
-                    Sign in to access your dashboard, event registrations,
-                    and student services.
+                    Sign in to access your dashboard, event registrations, and
+                    student services.
                   </p>
                 </div>
               </Link>
@@ -133,8 +128,8 @@ export function LandingPage({ isLoggedIn }: LandingPageProps) {
               Ready to Get Started?
             </h2>
             <p className="text-white/50 mb-10 max-w-lg mx-auto">
-              Join the CICT community and access all your student services
-              in one place.
+              Join the CICT community and access all your student services in
+              one place.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               {isLoggedIn ? (
@@ -170,8 +165,8 @@ export function LandingPage({ isLoggedIn }: LandingPageProps) {
                 CICT Tech Portal
               </div>
               <p className="text-white/40 text-sm mt-1">
-                Iloilo State University of Fisheries Science and Technology
-                — Dingle Campus
+                Iloilo State University of Fisheries Science and Technology —
+                Dingle Campus
               </p>
             </div>
             <div className="flex items-center gap-6 text-sm text-white/40">
@@ -213,8 +208,8 @@ export function LandingPage({ isLoggedIn }: LandingPageProps) {
           </div>
           <div className="max-w-6xl mx-auto mt-8 pt-6 border-t border-white/5 text-center">
             <p className="metadata-text">
-              © {new Date().getFullYear()} CICT Student Council. All
-              rights reserved.
+              © {new Date().getFullYear()} CICT Student Council. All rights
+              reserved.
             </p>
           </div>
         </footer>

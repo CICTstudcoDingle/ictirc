@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   return {
-    title: `Edit Issue ${result.data?.issueNumber || ''}`,
+    title: `Edit Issue ${result.data?.issueNumber || ""}`,
 
     description: `Edit issue details`,
   };
@@ -46,9 +46,7 @@ export default async function EditIssuePage({ params }: PageProps) {
         <h1 className="text-3xl font-bold">
           Edit Issue {result.data?.issueNumber}
         </h1>
-        <p className="text-muted-foreground mt-1">
-          Update issue details
-        </p>
+        <p className="text-muted-foreground mt-1">Update issue details</p>
       </div>
 
       <IssueForm issue={result.data} />

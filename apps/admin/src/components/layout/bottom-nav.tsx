@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, Users, Calendar, BookOpen } from "lucide-react";
+import {
+  LayoutDashboard,
+  FileText,
+  Users,
+  Calendar,
+  BookOpen,
+} from "lucide-react";
 import { cn } from "@ictirc/ui";
 
 const quickActions = [
@@ -29,22 +35,20 @@ export function AdminBottomNav() {
               href={item.href}
               className={cn(
                 "flex flex-col items-center justify-center flex-1 h-full gap-1 transition-colors",
-                isActive
-                  ? "text-maroon"
-                  : "text-gray-400 hover:text-gray-600"
+                isActive ? "text-maroon" : "text-gray-400 hover:text-gray-600",
               )}
             >
               <item.icon
                 className={cn(
                   "w-6 h-6 transition-all",
-                  isActive && "scale-110"
+                  isActive && "scale-110",
                 )}
                 strokeWidth={isActive ? 2.5 : 2}
               />
               <span
                 className={cn(
                   "text-xs font-medium",
-                  isActive && "font-semibold"
+                  isActive && "font-semibold",
                 )}
               >
                 {item.label}

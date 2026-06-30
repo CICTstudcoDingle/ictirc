@@ -11,7 +11,7 @@ import { createClient } from "@supabase/supabase-js";
 /**
  * Universal file upload function for different Supabase buckets
  * Supports event-images, archive, and research guides buckets
- * 
+ *
  * @param file - The file to upload
  * @param path - The path within the bucket (can include subfolders)
  * @param bucket - The bucket name (defaults to "archive")
@@ -19,7 +19,7 @@ import { createClient } from "@supabase/supabase-js";
 export async function uploadFile(
   file: File,
   path: string,
-  bucket?: string
+  bucket?: string,
 ): Promise<{ success: boolean; url?: string; error?: string }> {
   try {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

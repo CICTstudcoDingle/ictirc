@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import { CheckCircle, XCircle, AlertCircle, Info, X } from "lucide-react";
 import { cn } from "../lib/utils";
 
@@ -32,22 +38,41 @@ export function useToast() {
 // Convenience methods
 export function useToastActions() {
   const { addToast } = useToast();
-  return useMemo(() => ({
-    success: (title: string, description?: string) => addToast("success", title, description),
-    error: (title: string, description?: string) => addToast("error", title, description),
-    warning: (title: string, description?: string) => addToast("warning", title, description),
-    info: (title: string, description?: string) => addToast("info", title, description),
-  }), [addToast]);
+  return useMemo(
+    () => ({
+      success: (title: string, description?: string) =>
+        addToast("success", title, description),
+      error: (title: string, description?: string) =>
+        addToast("error", title, description),
+      warning: (title: string, description?: string) =>
+        addToast("warning", title, description),
+      info: (title: string, description?: string) =>
+        addToast("info", title, description),
+    }),
+    [addToast],
+  );
 }
 
 // Global toast function for use in forms (non-hook context)
-let globalAddToast: ((type: ToastType, title: string, description?: string) => void) | null = null;
+let globalAddToast:
+  | ((type: ToastType, title: string, description?: string) => void)
+  | null = null;
 
-export function setGlobalToast(addToastFn: (type: ToastType, title: string, description?: string) => void) {
+export function setGlobalToast(
+  addToastFn: (type: ToastType, title: string, description?: string) => void,
+) {
   globalAddToast = addToastFn;
 }
 
-export function toast({ title, description, variant }: { title: string; description?: string; variant?: "default" | "destructive" }) {
+export function toast({
+  title,
+  description,
+  variant,
+}: {
+  title: string;
+  description?: string;
+  variant?: "default" | "destructive";
+}) {
   if (globalAddToast) {
     const type = variant === "destructive" ? "error" : "success";
     globalAddToast(type, title, description);
@@ -73,16 +98,19 @@ const bgColors: Record<ToastType, string> = {
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const addToast = useCallback((type: ToastType, title: string, description?: string) => {
-    const id = Math.random().toString(36).substr(2, 9);
-    const newToast = { id, type, title, description };
-    setToasts((prev) => [...prev, newToast]);
+  const addToast = useCallback(
+    (type: ToastType, title: string, description?: string) => {
+      const id = Math.random().toString(36).substr(2, 9);
+      const newToast = { id, type, title, description };
+      setToasts((prev) => [...prev, newToast]);
 
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 5000);
-  }, []);
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        setToasts((prev) => prev.filter((t) => t.id !== id));
+      }, 5000);
+    },
+    [],
+  );
 
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -104,14 +132,16 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             key={toast.id}
             className={cn(
               "pointer-events-auto flex items-start gap-3 p-4 rounded-lg border shadow-lg min-w-[320px] max-w-[420px] animate-in slide-in-from-right-5 fade-in duration-200",
-              bgColors[toast.type]
+              bgColors[toast.type],
             )}
           >
             <div className="flex-shrink-0">{icons[toast.type]}</div>
             <div className="flex-1 min-w-0">
               <p className="font-medium text-gray-900 text-sm">{toast.title}</p>
               {toast.description && (
-                <p className="text-sm text-gray-600 mt-0.5">{toast.description}</p>
+                <p className="text-sm text-gray-600 mt-0.5">
+                  {toast.description}
+                </p>
               )}
             </div>
             <button

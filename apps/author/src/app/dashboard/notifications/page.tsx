@@ -23,8 +23,9 @@ export default function NotificationsPage() {
               Coming Soon
             </h3>
             <p className="text-gray-600 max-w-md mx-auto">
-              Email notifications for paper status updates, reviewer feedback, and 
-              publication announcements will be available in a future update.
+              Email notifications for paper status updates, reviewer feedback,
+              and publication announcements will be available in a future
+              update.
             </p>
           </div>
         </CardContent>
@@ -38,7 +39,7 @@ export default function NotificationsPage() {
             <div>
               <h4 className="font-medium text-blue-900">In the meantime</h4>
               <p className="text-sm text-blue-700 mt-1">
-                Check your paper status in the &quot;My Papers&quot; section. 
+                Check your paper status in the &quot;My Papers&quot; section.
                 Status updates are reflected in real-time.
               </p>
             </div>

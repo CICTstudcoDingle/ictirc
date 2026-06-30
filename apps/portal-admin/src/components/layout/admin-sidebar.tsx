@@ -21,14 +21,16 @@ import { createClient } from "@/lib/supabase/client";
 const sidebarLinks = [
   {
     section: "Overview",
-    items: [
-      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    ],
+    items: [{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard }],
   },
   {
     section: "Content",
     items: [
-      { href: "/dashboard/announcements", label: "Announcements", icon: Megaphone },
+      {
+        href: "/dashboard/announcements",
+        label: "Announcements",
+        icon: Megaphone,
+      },
       { href: "/dashboard/events", label: "Events", icon: Calendar },
     ],
   },
@@ -36,8 +38,16 @@ const sidebarLinks = [
     section: "Enrollment",
     items: [
       { href: "/dashboard/enrollment", label: "Queue", icon: GraduationCap },
-      { href: "/dashboard/enrollment/cashier", label: "Cashier", icon: CreditCard },
-      { href: "/dashboard/enrollment/receipts", label: "Receipts", icon: Receipt },
+      {
+        href: "/dashboard/enrollment/cashier",
+        label: "Cashier",
+        icon: CreditCard,
+      },
+      {
+        href: "/dashboard/enrollment/receipts",
+        label: "Receipts",
+        icon: Receipt,
+      },
     ],
   },
   {

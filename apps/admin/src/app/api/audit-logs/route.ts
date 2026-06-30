@@ -38,7 +38,7 @@ export async function GET(request: Request) {
     console.error("Failed to fetch audit logs:", error);
     return NextResponse.json(
       { error: "Failed to fetch audit logs" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

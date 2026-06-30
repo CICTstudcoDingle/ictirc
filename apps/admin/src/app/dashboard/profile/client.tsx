@@ -1,8 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, AvatarUpload } from "@ictirc/ui";
-import { User, Save, Loader2, Lock, Eye, EyeOff, Key, Briefcase } from "lucide-react";
+import {
+  Button,
+  Input,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  AvatarUpload,
+} from "@ictirc/ui";
+import {
+  User,
+  Save,
+  Loader2,
+  Lock,
+  Eye,
+  EyeOff,
+  Key,
+  Briefcase,
+} from "lucide-react";
 import { toast } from "sonner";
 
 interface ProfileClientProps {
@@ -20,7 +37,9 @@ interface ProfileClientProps {
 export function ProfileClient({ user }: ProfileClientProps) {
   const [name, setName] = useState(user.name);
   const [position, setPosition] = useState(user.position);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(user.avatarUrl || null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(
+    user.avatarUrl || null,
+  );
   const [saving, setSaving] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
@@ -73,7 +92,9 @@ export function ProfileClient({ user }: ProfileClientProps) {
       setAvatarUrl(data.avatarUrl);
       toast.success("Avatar uploaded successfully");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to upload avatar");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to upload avatar",
+      );
     } finally {
       setUploadingAvatar(false);
     }
@@ -131,7 +152,9 @@ export function ProfileClient({ user }: ProfileClientProps) {
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to change password");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to change password",
+      );
     } finally {
       setChangingPassword(false);
     }
@@ -255,7 +278,11 @@ export function ProfileClient({ user }: ProfileClientProps) {
                 onClick={() => setShowCurrent(!showCurrent)}
                 className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
               >
-                {showCurrent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showCurrent ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
 
@@ -273,7 +300,11 @@ export function ProfileClient({ user }: ProfileClientProps) {
                 onClick={() => setShowNew(!showNew)}
                 className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
               >
-                {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showNew ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
             </div>
 
@@ -289,7 +320,11 @@ export function ProfileClient({ user }: ProfileClientProps) {
             </div>
 
             <div className="pt-2">
-              <Button type="submit" variant="secondary" disabled={changingPassword}>
+              <Button
+                type="submit"
+                variant="secondary"
+                disabled={changingPassword}
+              >
                 {changingPassword ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin mr-2" />

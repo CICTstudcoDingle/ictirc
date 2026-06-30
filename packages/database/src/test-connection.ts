@@ -1,4 +1,3 @@
-
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -20,7 +19,10 @@ async function main() {
     const result = await prisma.$queryRaw`SELECT soundex('Hello') as s`;
     console.log(`✅ Soundex working! Result:`, result);
   } catch (e) {
-    console.error("❌ Soundex query failed (Extension 'fuzzystrmatch' might be missing):", e);
+    console.error(
+      "❌ Soundex query failed (Extension 'fuzzystrmatch' might be missing):",
+      e,
+    );
     process.exit(1);
   }
 }

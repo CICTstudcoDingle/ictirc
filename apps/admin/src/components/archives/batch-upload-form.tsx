@@ -102,7 +102,9 @@ export function BatchUploadForm({ issues }: BatchUploadFormProps) {
         <div className="space-y-6">
           {/* Download Template */}
           <div className="bg-muted p-4 rounded-lg">
-            <h3 className="font-semibold mb-2">Step 1: Download CSV Template</h3>
+            <h3 className="font-semibold mb-2">
+              Step 1: Download CSV Template
+            </h3>
             <p className="text-sm text-muted-foreground mb-4">
               Download the template, fill in your paper metadata, and save it.
             </p>
@@ -125,7 +127,8 @@ export function BatchUploadForm({ issues }: BatchUploadFormProps) {
                 <SelectContent>
                   {issues.map((issue) => (
                     <SelectItem key={issue.id} value={issue.id}>
-                      Volume {issue.volume.volumeNumber}, Issue {issue.issueNumber} ({issue.volume.year})
+                      Volume {issue.volume.volumeNumber}, Issue{" "}
+                      {issue.issueNumber} ({issue.volume.year})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -163,7 +166,9 @@ export function BatchUploadForm({ issues }: BatchUploadFormProps) {
                   type="file"
                   accept=".pdf"
                   multiple
-                  onChange={(e) => setPdfFiles(Array.from(e.target.files || []))}
+                  onChange={(e) =>
+                    setPdfFiles(Array.from(e.target.files || []))
+                  }
                   className="hidden"
                   id="pdfFiles"
                 />
@@ -181,7 +186,9 @@ export function BatchUploadForm({ issues }: BatchUploadFormProps) {
               </div>
               {pdfFiles.length > 0 && (
                 <div className="mt-2 max-h-32 overflow-y-auto">
-                  <p className="text-xs text-muted-foreground mb-1">Selected files:</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Selected files:
+                  </p>
                   <ul className="text-xs space-y-1">
                     {pdfFiles.map((file, idx) => (
                       <li key={idx} className="text-muted-foreground">
@@ -214,8 +221,8 @@ export function BatchUploadForm({ issues }: BatchUploadFormProps) {
 
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
               <p className="text-sm text-amber-800">
-                <strong>Important:</strong> Make sure the PDF filenames in your CSV exactly match
-                the uploaded files.
+                <strong>Important:</strong> Make sure the PDF filenames in your
+                CSV exactly match the uploaded files.
               </p>
             </div>
 

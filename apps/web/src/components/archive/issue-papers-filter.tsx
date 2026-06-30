@@ -1,24 +1,24 @@
-'use client'
+"use client";
 
-import { useState, useMemo } from 'react'
-import Link from 'next/link'
-import { Search, Filter, X, ChevronDown } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle, Button } from '@ictirc/ui'
+import { useState, useMemo } from "react";
+import Link from "next/link";
+import { Search, Filter, X, ChevronDown } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, Button } from "@ictirc/ui";
 
 interface Paper {
-  id: string
-  title: string
-  abstract: string | null
-  authors: { name: string; order: number }[]
-  category: { name: string }
-  doi: string | null
-  pdfUrl: string | null
-  pageStart: number | null
-  pageEnd: number | null
+  id: string;
+  title: string;
+  abstract: string | null;
+  authors: { name: string; order: number }[];
+  category: { name: string };
+  doi: string | null;
+  pdfUrl: string | null;
+  pageStart: number | null;
+  pageEnd: number | null;
 }
 
 interface IssuePapersFilterProps {
-  papers: Paper[]
+  papers: Paper[];
 }
 
 // NOTE: Defined at module-level (outside the component) to prevent React from
@@ -41,15 +41,19 @@ function renderPapers(list: Paper[]) {
                   </Link>
                 </CardTitle>
                 <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-                  <span>{paper.authors.map((a) => a.name).join(', ')}</span>
+                  <span>{paper.authors.map((a) => a.name).join(", ")}</span>
                   {paper.pageStart && paper.pageEnd && (
                     <>
                       <span>•</span>
-                      <span>Pages {paper.pageStart}-{paper.pageEnd}</span>
+                      <span>
+                        Pages {paper.pageStart}-{paper.pageEnd}
+                      </span>
                     </>
                   )}
                   <span>•</span>
-                  <span className="text-maroon font-medium">{paper.category.name}</span>
+                  <span className="text-maroon font-medium">
+                    {paper.category.name}
+                  </span>
                 </div>
               </div>
               {paper.doi && (
@@ -72,10 +76,16 @@ function renderPapers(list: Paper[]) {
             </p>
             <div className="mt-4 flex gap-2">
               <Link href={`/archive/${paper.id}`}>
-                <Button size="sm" variant="outline">View Details</Button>
+                <Button size="sm" variant="outline">
+                  View Details
+                </Button>
               </Link>
               {paper.pdfUrl && (
-                <a href={paper.pdfUrl} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={paper.pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Button size="sm">Download PDF</Button>
                 </a>
               )}
@@ -84,44 +94,45 @@ function renderPapers(list: Paper[]) {
         </Card>
       ))}
     </div>
-  )
+  );
 }
 
 export function IssuePapersFilter({ papers }: IssuePapersFilterProps) {
-  const [query, setQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  const [showFilters, setShowFilters] = useState(false)
+  const [query, setQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [showFilters, setShowFilters] = useState(false);
 
   // Extract unique categories
   const categories = useMemo(() => {
-    const cats = Array.from(new Set(papers.map(p => p.category.name)))
-    return cats.sort()
-  }, [papers])
+    const cats = Array.from(new Set(papers.map((p) => p.category.name)));
+    return cats.sort();
+  }, [papers]);
 
   // Filter papers
   const filteredPapers = useMemo(() => {
-    let filtered = papers
+    let filtered = papers;
 
     if (query.trim()) {
-      const q = query.toLowerCase()
-      filtered = filtered.filter(p =>
-        p.title.toLowerCase().includes(q) ||
-        (p.abstract && p.abstract.toLowerCase().includes(q)) ||
-        p.authors.some(a => a.name.toLowerCase().includes(q))
-      )
+      const q = query.toLowerCase();
+      filtered = filtered.filter(
+        (p) =>
+          p.title.toLowerCase().includes(q) ||
+          (p.abstract && p.abstract.toLowerCase().includes(q)) ||
+          p.authors.some((a) => a.name.toLowerCase().includes(q)),
+      );
     }
 
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(p => p.category.name === selectedCategory)
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter((p) => p.category.name === selectedCategory);
     }
 
-    return filtered
-  }, [papers, query, selectedCategory])
+    return filtered;
+  }, [papers, query, selectedCategory]);
 
-  const hasActiveFilters = query.trim() || selectedCategory !== 'all'
+  const hasActiveFilters = query.trim() || selectedCategory !== "all";
 
   if (papers.length <= 1) {
-    return <>{renderPapers(papers)}</>
+    return <>{renderPapers(papers)}</>;
   }
 
   return (
@@ -147,7 +158,7 @@ export function IssuePapersFilter({ papers }: IssuePapersFilterProps) {
           />
           {query && (
             <button
-              onClick={() => setQuery('')}
+              onClick={() => setQuery("")}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
               <X className="w-4 h-4" />
@@ -172,8 +183,10 @@ export function IssuePapersFilter({ papers }: IssuePapersFilterProps) {
                 "
               >
                 <option value="all">All Categories</option>
-                {categories.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
                 ))}
               </select>
               <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
@@ -186,8 +199,10 @@ export function IssuePapersFilter({ papers }: IssuePapersFilterProps) {
             >
               <Filter className="w-4 h-4" />
               Filter
-              {selectedCategory !== 'all' && (
-                <span className="bg-[#800000] text-white text-xs px-1.5 py-0.5 rounded-full">1</span>
+              {selectedCategory !== "all" && (
+                <span className="bg-[#800000] text-white text-xs px-1.5 py-0.5 rounded-full">
+                  1
+                </span>
               )}
             </button>
           </>
@@ -196,7 +211,10 @@ export function IssuePapersFilter({ papers }: IssuePapersFilterProps) {
         {/* Clear */}
         {hasActiveFilters && (
           <button
-            onClick={() => { setQuery(''); setSelectedCategory('all') }}
+            onClick={() => {
+              setQuery("");
+              setSelectedCategory("all");
+            }}
             className="hidden sm:flex items-center gap-1 text-xs text-gray-500 hover:text-[#800000] font-medium px-2"
           >
             <X className="w-3 h-3" />
@@ -209,19 +227,29 @@ export function IssuePapersFilter({ papers }: IssuePapersFilterProps) {
       {showFilters && categories.length > 1 && (
         <div className="sm:hidden mb-4 bg-white border border-gray-200 rounded-lg p-2 space-y-1">
           <button
-            onClick={() => { setSelectedCategory('all'); setShowFilters(false) }}
+            onClick={() => {
+              setSelectedCategory("all");
+              setShowFilters(false);
+            }}
             className={`w-full text-left px-3 py-2 rounded-md text-sm ${
-              selectedCategory === 'all' ? 'bg-[#800000]/5 text-[#800000] font-medium' : 'text-gray-600 hover:bg-gray-50'
+              selectedCategory === "all"
+                ? "bg-[#800000]/5 text-[#800000] font-medium"
+                : "text-gray-600 hover:bg-gray-50"
             }`}
           >
             All Categories
           </button>
-          {categories.map(cat => (
+          {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => { setSelectedCategory(cat); setShowFilters(false) }}
+              onClick={() => {
+                setSelectedCategory(cat);
+                setShowFilters(false);
+              }}
               className={`w-full text-left px-3 py-2 rounded-md text-sm ${
-                selectedCategory === cat ? 'bg-[#800000]/5 text-[#800000] font-medium' : 'text-gray-600 hover:bg-gray-50'
+                selectedCategory === cat
+                  ? "bg-[#800000]/5 text-[#800000] font-medium"
+                  : "text-gray-600 hover:bg-gray-50"
               }`}
             >
               {cat}
@@ -233,10 +261,20 @@ export function IssuePapersFilter({ papers }: IssuePapersFilterProps) {
       {/* Results info */}
       {hasActiveFilters && (
         <p className="text-xs text-gray-500 mb-4">
-          Showing <span className="font-medium text-gray-900">{filteredPapers.length}</span> of{' '}
-          <span className="font-medium text-gray-900">{papers.length}</span> papers
-          {selectedCategory !== 'all' && (
-            <span> in <span className="text-[#800000] font-medium">{selectedCategory}</span></span>
+          Showing{" "}
+          <span className="font-medium text-gray-900">
+            {filteredPapers.length}
+          </span>{" "}
+          of <span className="font-medium text-gray-900">{papers.length}</span>{" "}
+          papers
+          {selectedCategory !== "all" && (
+            <span>
+              {" "}
+              in{" "}
+              <span className="text-[#800000] font-medium">
+                {selectedCategory}
+              </span>
+            </span>
           )}
         </p>
       )}
@@ -250,7 +288,10 @@ export function IssuePapersFilter({ papers }: IssuePapersFilterProps) {
           <Search className="w-10 h-10 text-gray-300 mx-auto mb-2" />
           <p className="text-gray-500 text-sm">No papers match your search</p>
           <button
-            onClick={() => { setQuery(''); setSelectedCategory('all') }}
+            onClick={() => {
+              setQuery("");
+              setSelectedCategory("all");
+            }}
             className="mt-2 text-sm text-[#800000] hover:underline"
           >
             Clear filters
@@ -258,6 +299,5 @@ export function IssuePapersFilter({ papers }: IssuePapersFilterProps) {
         </div>
       )}
     </div>
-  )
-
+  );
 }

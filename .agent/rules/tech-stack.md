@@ -6,7 +6,7 @@ trigger: always_on
 Directive: "Bleeding Edge, but Bulletproof." Enforcement: pnpm only. npm and yarn are banned via .npmrc. Synchronization: syncpack is the law. Versions must match across all apps.
 
 1. THE CORE ENGINE (BLEEDING EDGE)
-Framework: Next.js 16 (Canary)
+   Framework: Next.js 16 (Canary)
 
 Rule: Use next@canary to access latest Server Actions & RSC features.
 
@@ -23,11 +23,11 @@ Strictness: strict: true is non-negotiable in tsconfig.json.
 No Any: usage of any triggers a build failure. Use unknown or Zod schemas.
 
 2. THE PACKAGE MANAGER (PNPM)
-Engine: pnpm (Performant NPM).
+   Engine: pnpm (Performant NPM).
 
-Workspace Protocol: Internal packages must use the workspace:* protocol.
+Workspace Protocol: Internal packages must use the workspace:\* protocol.
 
-Correct: "@jeffdev/ui": "workspace:*"
+Correct: "@jeffdev/ui": "workspace:\*"
 
 Incorrect: "@jeffdev/ui": "1.0.0"
 
@@ -36,10 +36,9 @@ Engine Strictness (.npmrc):
 Ini, TOML
 engine-strict=true
 auto-install-peers=true
-public-hoist-pattern[]=*types*
-public-hoist-pattern[]=*eslint*
-node-linker=hoisted
-3. DEPENDENCY GOVERNANCE (SYNCPACK)
+public-hoist-pattern[]=_types_
+public-hoist-pattern[]=_eslint_
+node-linker=hoisted 3. DEPENDENCY GOVERNANCE (SYNCPACK)
 The Law: "One Version to Rule Them All." You cannot have react@19.0.1 in apps/web and react@18.2 in apps/admin.
 
 A. Configuration (.syncpackrc.json)
@@ -47,38 +46,38 @@ Place this at the root. It enforces exact version matching and prioritizes local
 
 JSON
 {
-  "dependencyTypes": ["dev", "prod", "peer", "overrides"],
-  "source": ["package.json", "apps/*/package.json", "packages/*/package.json"],
-  "indent": "  ",
-  "versionGroups": [
-    {
-      "label": "Internal Workspace Packages",
-      "packages": ["**"],
-      "dependencies": ["@jeffdev/**"],
-      "dependencyTypes": ["dev", "prod"],
-      "pinVersion": "workspace:*"
-    },
-    {
-      "label": "React Core (Enforce RC)",
-      "packages": ["**"],
-      "dependencies": ["react", "react-dom"],
-      "pinVersion": "19.0.0-rc-*"
-    },
-    {
-      "label": "Global External Consistency",
-      "dependencies": ["**"],
-      "packages": ["**"],
-      "dependencyTypes": ["dev", "prod"],
-      "isIgnored": false
-    }
-  ],
-  "semverGroups": [
-    {
-      "range": "",
-      "dependencies": ["**"],
-      "packages": ["**"]
-    }
-  ]
+"dependencyTypes": ["dev", "prod", "peer", "overrides"],
+"source": ["package.json", "apps/*/package.json", "packages/*/package.json"],
+"indent": " ",
+"versionGroups": [
+{
+"label": "Internal Workspace Packages",
+"packages": ["**"],
+"dependencies": ["@jeffdev/**"],
+"dependencyTypes": ["dev", "prod"],
+"pinVersion": "workspace:_"
+},
+{
+"label": "React Core (Enforce RC)",
+"packages": ["**"],
+"dependencies": ["react", "react-dom"],
+"pinVersion": "19.0.0-rc-_"
+},
+{
+"label": "Global External Consistency",
+"dependencies": ["**"],
+"packages": ["**"],
+"dependencyTypes": ["dev", "prod"],
+"isIgnored": false
+}
+],
+"semverGroups": [
+{
+"range": "",
+"dependencies": ["**"],
+"packages": ["**"]
+}
+]
 }
 B. Audit Workflow
 Check Command: pnpm syncpack list-mismatches (Runs in CI).
@@ -86,7 +85,7 @@ Check Command: pnpm syncpack list-mismatches (Runs in CI).
 Fix Command: pnpm syncpack fix-mismatches (Runs locally before commit).
 
 4. DATA & INFRASTRUCTURE STACK
-Database: PostgreSQL (Supabase/Neon).
+   Database: PostgreSQL (Supabase/Neon).
 
 ORM: Prisma 6.x (Latest).
 
@@ -99,7 +98,7 @@ Auth: Supabase Auth (@supabase/ssr).
 Validation: Zod 3.x.
 
 5. UI & STYLING STACK
-Engine: Tailwind CSS v4.0 (Alpha/Beta).
+   Engine: Tailwind CSS v4.0 (Alpha/Beta).
 
 Reasoning: Native CSS variables, rust-based compiler for speed.
 

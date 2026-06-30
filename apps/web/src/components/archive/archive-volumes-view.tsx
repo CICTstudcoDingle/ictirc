@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ictirc/ui";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@ictirc/ui";
 import { BookOpen, FileText, Calendar } from "lucide-react";
 import { prisma } from "@ictirc/database";
 
@@ -20,10 +26,7 @@ export async function ArchiveVolumesView() {
         },
       },
     },
-    orderBy: [
-      { year: "desc" },
-      { volumeNumber: "desc" },
-    ],
+    orderBy: [{ year: "desc" }, { volumeNumber: "desc" }],
   });
 
   if (volumes.length === 0) {
@@ -50,7 +53,9 @@ export async function ArchiveVolumesView() {
                 Volume {volume.volumeNumber} ({volume.year})
               </h2>
               {volume.description && (
-                <p className="text-muted-foreground text-sm">{volume.description}</p>
+                <p className="text-muted-foreground text-sm">
+                  {volume.description}
+                </p>
               )}
             </div>
           </div>
@@ -75,7 +80,9 @@ export async function ArchiveVolumesView() {
                   </CardHeader>
                   <CardContent className="space-y-2">
                     {issue.theme && (
-                      <p className="text-sm font-medium line-clamp-2">{issue.theme}</p>
+                      <p className="text-sm font-medium line-clamp-2">
+                        {issue.theme}
+                      </p>
                     )}
                     {issue.conference && (
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -84,7 +91,8 @@ export async function ArchiveVolumesView() {
                       </div>
                     )}
                     <div className="text-sm text-muted-foreground">
-                      {issue._count.archivedPapers} paper{issue._count.archivedPapers !== 1 ? "s" : ""}
+                      {issue._count.archivedPapers} paper
+                      {issue._count.archivedPapers !== 1 ? "s" : ""}
                     </div>
                   </CardContent>
                 </Card>

@@ -26,7 +26,7 @@ export function DeleteArchivedPaperButton({
   async function handleDelete() {
     if (
       !confirm(
-        `Are you sure you want to permanently delete this archived paper?\n\n"${paperTitle}"\n\nThis action cannot be undone.`
+        `Are you sure you want to permanently delete this archived paper?\n\n"${paperTitle}"\n\nThis action cannot be undone.`,
       )
     )
       return;
@@ -77,4 +77,3 @@ export function DeleteArchivedPaperButton({
     </Button>
   );
 }
-

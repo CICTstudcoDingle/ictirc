@@ -2,7 +2,7 @@
 
 /**
  * GSAP Exports for Next.js
- * 
+ *
  * Centralizes GSAP imports and plugin registration.
  * Components should import from this file instead of importing gsap directly.
  */

@@ -89,7 +89,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
       abstract: "",
       keywords: "",
       doi: "",
-      publishedDate: new Date().toISOString().split('T')[0],
+      publishedDate: new Date().toISOString().split("T")[0],
       authors: [{ name: "", email: "", affiliation: "" }],
     },
   });
@@ -127,12 +127,15 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
 
         if (metadata.authors && metadata.authors.length > 0) {
           // Replace current authors with extracted ones
-          form.setValue("authors", metadata.authors.map(a => ({
-            name: a.name,
-            email: "",
-            affiliation: a.affiliation || "",
-            isCorresponding: false // defaulting to false, subsequent logic handles 1st author
-          })));
+          form.setValue(
+            "authors",
+            metadata.authors.map((a) => ({
+              name: a.name,
+              email: "",
+              affiliation: a.affiliation || "",
+              isCorresponding: false, // defaulting to false, subsequent logic handles 1st author
+            })),
+          );
         }
 
         toast({
@@ -143,7 +146,8 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
         console.error("Autofill error:", error);
         toast({
           title: "Autofill Warning",
-          description: "Could not extract metadata automatically. Please fill fields manually.",
+          description:
+            "Could not extract metadata automatically. Please fill fields manually.",
           variant: "default",
         });
       } finally {
@@ -157,7 +161,11 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
 
     try {
       if (!pdfFile) {
-        toast({ title: "Error", description: "PDF file is required", variant: "destructive" });
+        toast({
+          title: "Error",
+          description: "PDF file is required",
+          variant: "destructive",
+        });
         setIsUploading(false);
         return;
       }
@@ -166,7 +174,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
       const timestamp = Date.now();
       const pdfPath = `papers/${timestamp}-${pdfFile.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
       const pdfUpload = await uploadFile(pdfFile, pdfPath, "archive");
-      
+
       if (!pdfUpload.success || !pdfUpload.url) {
         throw new Error(`Failed to upload PDF: ${pdfUpload.error}`);
       }
@@ -187,7 +195,10 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
         categoryId: data.categoryId,
         title: data.title,
         abstract: data.abstract,
-        keywords: data.keywords.split(/[;,]/).map(k => k.trim()).filter(Boolean),
+        keywords: data.keywords
+          .split(/[;,]/)
+          .map((k) => k.trim())
+          .filter(Boolean),
         doi: data.doi || undefined,
         pageStart: data.pageStart,
         pageEnd: data.pageEnd,
@@ -198,8 +209,8 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
           ...a,
           order: index,
           // First author is corresponding by default logic for now, or add checkbox
-          isCorresponding: index === 0
-        }))
+          isCorresponding: index === 0,
+        })),
       };
 
       const result = await createArchivedPaper(payload, userId);
@@ -209,12 +220,19 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
         router.push("/dashboard/archives");
         router.refresh();
       } else {
-        toast({ title: "Error", description: result.error, variant: "destructive" });
+        toast({
+          title: "Error",
+          description: result.error,
+          variant: "destructive",
+        });
       }
-
     } catch (error) {
       console.error(error);
-      toast({ title: "Error", description: "Failed to create paper", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to create paper",
+        variant: "destructive",
+      });
     } finally {
       setIsUploading(false);
     }
@@ -231,13 +249,14 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-
             {/* File Upload Section - First because it drives autofill */}
             <div className="grid gap-6 md:grid-cols-2 p-4 bg-muted/20 rounded-lg">
               <div className="space-y-2">
                 <FormLabel className="flex items-center gap-2">
                   PDF File *
-                  {isProcessingPdf && <Loader2 className="h-3 w-3 animate-spin" />}
+                  {isProcessingPdf && (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  )}
                 </FormLabel>
                 <FileUpload
                   accept=".pdf"
@@ -270,12 +289,15 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Issue *</FormLabel>
-                    <Select onValueChange={field.onChange} value={String(field.value || "")}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={String(field.value || "")}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select an issue">
-                            {issues.find(i => i.id === field.value)
-                              ? `Volume ${issues.find(i => i.id === field.value)?.volume.volumeNumber}, Issue ${issues.find(i => i.id === field.value)?.issueNumber} (${issues.find(i => i.id === field.value)?.volume.year})`
+                            {issues.find((i) => i.id === field.value)
+                              ? `Volume ${issues.find((i) => i.id === field.value)?.volume.volumeNumber}, Issue ${issues.find((i) => i.id === field.value)?.issueNumber} (${issues.find((i) => i.id === field.value)?.volume.year})`
                               : "Select an Issue"}
                           </SelectValue>
                         </SelectTrigger>
@@ -283,7 +305,8 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                       <SelectContent>
                         {issues.map((issue) => (
                           <SelectItem key={issue.id} value={issue.id}>
-                            Volume {issue.volume.volumeNumber}, Issue {issue.issueNumber} ({issue.volume.year})
+                            Volume {issue.volume.volumeNumber}, Issue{" "}
+                            {issue.issueNumber} ({issue.volume.year})
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -299,11 +322,15 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category *</FormLabel>
-                    <Select onValueChange={field.onChange} value={String(field.value || "")}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={String(field.value || "")}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select Category">
-                            {categories.find(c => c.id === field.value)?.name || "Select Category"}
+                            {categories.find((c) => c.id === field.value)
+                              ?.name || "Select Category"}
                           </SelectValue>
                         </SelectTrigger>
                       </FormControl>
@@ -328,7 +355,11 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 <FormItem>
                   <FormLabel>Title *</FormLabel>
                   <FormControl>
-                    <Input placeholder="Paper Title" {...field} value={String(field.value || "")} />
+                    <Input
+                      placeholder="Paper Title"
+                      {...field}
+                      value={String(field.value || "")}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -342,7 +373,12 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 <FormItem>
                   <FormLabel>Abstract *</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Paper Abstract..." rows={5} {...field} value={String(field.value || "")} />
+                    <Textarea
+                      placeholder="Paper Abstract..."
+                      rows={5}
+                      {...field}
+                      value={String(field.value || "")}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -356,7 +392,11 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 <FormItem>
                   <FormLabel>Keywords *</FormLabel>
                   <FormControl>
-                    <Input placeholder="AI; Machine Learning; Education" {...field} value={String(field.value || "")} />
+                    <Input
+                      placeholder="AI; Machine Learning; Education"
+                      {...field}
+                      value={String(field.value || "")}
+                    />
                   </FormControl>
                   <FormDescription>Semi-colon separated</FormDescription>
                   <FormMessage />
@@ -371,10 +411,15 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                 <FormItem>
                   <FormLabel>DOI (Optional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="10.xxxxx/xxxxx" {...field} value={String(field.value || "")} />
+                    <Input
+                      placeholder="10.xxxxx/xxxxx"
+                      {...field}
+                      value={String(field.value || "")}
+                    />
                   </FormControl>
                   <FormDescription>
-                    Digital Object Identifier - Leave empty if not yet registered
+                    Digital Object Identifier - Leave empty if not yet
+                    registered
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -389,7 +434,14 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => append({ name: "", email: "", affiliation: "", isCorresponding: false })}
+                  onClick={() =>
+                    append({
+                      name: "",
+                      email: "",
+                      affiliation: "",
+                      isCorresponding: false,
+                    })
+                  }
                 >
                   <Plus className="h-4 w-4 mr-2" /> Add Author
                 </Button>
@@ -407,7 +459,11 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                             <FormItem>
                               <FormLabel>Name *</FormLabel>
                               <FormControl>
-                                <Input placeholder="Full Name" {...field} value={String(field.value || "")} />
+                                <Input
+                                  placeholder="Full Name"
+                                  {...field}
+                                  value={String(field.value || "")}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -420,7 +476,11 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                             <FormItem>
                               <FormLabel>Email</FormLabel>
                               <FormControl>
-                                <Input placeholder="Optional" {...field} value={String(field.value || "")} />
+                                <Input
+                                  placeholder="Optional"
+                                  {...field}
+                                  value={String(field.value || "")}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -433,7 +493,11 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                             <FormItem>
                               <FormLabel>Affiliation</FormLabel>
                               <FormControl>
-                                <Input placeholder="Institution" {...field} value={String(field.value || "")} />
+                                <Input
+                                  placeholder="Institution"
+                                  {...field}
+                                  value={String(field.value || "")}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -469,8 +533,16 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                       <Input
                         type="number"
                         {...field}
-                        value={field.value !== undefined ? String(field.value) : ""}
-                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                        value={
+                          field.value !== undefined ? String(field.value) : ""
+                        }
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value === ""
+                              ? undefined
+                              : Number(e.target.value),
+                          )
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -487,8 +559,16 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                       <Input
                         type="number"
                         {...field}
-                        value={field.value !== undefined ? String(field.value) : ""}
-                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : Number(e.target.value))}
+                        value={
+                          field.value !== undefined ? String(field.value) : ""
+                        }
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value === ""
+                              ? undefined
+                              : Number(e.target.value),
+                          )
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -505,7 +585,9 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
                       <Input
                         type="date"
                         {...field}
-                        value={typeof field.value === 'string' ? field.value : ''}
+                        value={
+                          typeof field.value === "string" ? field.value : ""
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -515,17 +597,21 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
             </div>
 
             <div className="flex justify-end">
-              <Button type="submit" disabled={isUploading} className="w-full md:w-auto min-w-[200px]">
+              <Button
+                type="submit"
+                disabled={isUploading}
+                className="w-full md:w-auto min-w-[200px]"
+              >
                 {isUploading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Uploading Paper...
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Uploading
+                    Paper...
                   </>
                 ) : (
                   "Upload Paper"
                 )}
               </Button>
             </div>
-
           </form>
         </Form>
       </CardContent>

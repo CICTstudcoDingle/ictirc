@@ -12,7 +12,7 @@ export default function PortalAdminLoginPage() {
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -87,9 +87,8 @@ export default function PortalAdminLoginPage() {
           </h1>
 
           <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-            Manage announcements, events, users, and content for the College
-            of Information and Communications Technology (CICT) Student
-            Portal.
+            Manage announcements, events, users, and content for the College of
+            Information and Communications Technology (CICT) Student Portal.
           </p>
 
           <div className="flex gap-4 text-sm font-mono text-gray-400">

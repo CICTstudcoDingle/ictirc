@@ -1,6 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, BookOpen, Users, Award, FileCheck, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Users,
+  Award,
+  FileCheck,
+  Zap,
+} from "lucide-react";
 import { Button, CircuitBackground } from "@ictirc/ui";
 import { UpcomingEventCard } from "@/components/events/upcoming-event-card";
 import { HeroVideoCard } from "@/components/videos/hero-video-card";
@@ -18,29 +25,30 @@ export default function HomePage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Event",
-    "name": "2nd ICT International Research Conference",
-    "startDate": "2026-03-03T08:00:00+08:00",
-    "endDate": "2026-03-05T17:00:00+08:00",
-    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-    "eventStatus": "https://schema.org/EventScheduled",
-    "location": {
+    name: "2nd ICT International Research Conference",
+    startDate: "2026-03-03T08:00:00+08:00",
+    endDate: "2026-03-05T17:00:00+08:00",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    location: {
       "@type": "Place",
-      "name": "Knowledge Management Hub, ISUFST Dingle Campus",
-      "address": {
+      name: "Knowledge Management Hub, ISUFST Dingle Campus",
+      address: {
         "@type": "PostalAddress",
-        "streetAddress": "San Matias",
-        "addressLocality": "Dingle",
-        "addressRegion": "Iloilo",
-        "postalCode": "5035",
-        "addressCountry": "PH"
-      }
+        streetAddress: "San Matias",
+        addressLocality: "Dingle",
+        addressRegion: "Iloilo",
+        postalCode: "5035",
+        addressCountry: "PH",
+      },
     },
-    "description": "The 2nd ICT International Research Conference 2026 organized by the College of Information and Computing Technology.",
-    "organizer": {
+    description:
+      "The 2nd ICT International Research Conference 2026 organized by the College of Information and Computing Technology.",
+    organizer: {
       "@type": "Organization",
-      "name": "ISUFST - College of Information and Computing Technology",
-      "url": "https://ictirc.isufst.edu.ph"
-    }
+      name: "ISUFST - College of Information and Computing Technology",
+      url: "https://ictirc.isufst.edu.ph",
+    },
   };
 
   return (
@@ -91,7 +99,9 @@ export default function HomePage() {
                 className="w-10 h-10 md:w-16 md:h-16 lg:w-20 lg:h-20 object-contain"
               />
               <div className="hidden sm:block">
-                <p className="text-xs font-medium text-gold">Partner University</p>
+                <p className="text-xs font-medium text-gold">
+                  Partner University
+                </p>
                 <p className="text-base text-gray-400">Universitas Brawijaya</p>
               </div>
             </div>
@@ -100,14 +110,17 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <ScrollAnimation direction="up" delay={0.4}>
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-4 md:mb-6">
-                International Research Journal on <span className="text-gold">Information and Communications Technology</span>
+                International Research Journal on{" "}
+                <span className="text-gold">
+                  Information and Communications Technology
+                </span>
               </h1>
             </ScrollAnimation>
             <ScrollAnimation direction="up" delay={0.6}>
               <p className="text-base md:text-lg text-gray-300 mb-6 md:mb-8 max-w-2xl">
-                A scholarly publication platform dedicated to advancing ICT research
-                and innovation. Browse peer-reviewed papers, submit your research,
-                and join our academic community.
+                A scholarly publication platform dedicated to advancing ICT
+                research and innovation. Browse peer-reviewed papers, submit
+                your research, and join our academic community.
               </p>
             </ScrollAnimation>
             {/* Desktop buttons */}
@@ -120,7 +133,11 @@ export default function HomePage() {
                   </Button>
                 </Link>
                 <Link href="/submit">
-                  <Button variant="secondary" size="lg" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  >
                     Submit Paper
                   </Button>
                 </Link>
@@ -137,14 +154,14 @@ export default function HomePage() {
                 </Link>
               </div>
             </ScrollAnimation>
-            
+
             {/* Mobile cards - only shows on mobile */}
             <div className="lg:hidden">
               <UpcomingEventCard />
               <HeroVideoCard />
             </div>
           </div>
-          
+
           {/* Desktop Floating Cards - stacked vertically on right side */}
           <div className="hidden lg:flex flex-col gap-4 absolute top-1/2 -translate-y-1/2 right-8 xl:right-16 w-80 z-20">
             <UpcomingEventCard />
@@ -176,7 +193,8 @@ export default function HomePage() {
               Why Publish With Us?
             </h2>
             <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
-              Advancing ICT research in the Philippines through rigorous standards and global reach
+              Advancing ICT research in the Philippines through rigorous
+              standards and global reach
             </p>
           </ScrollAnimation>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -190,7 +208,8 @@ export default function HomePage() {
                   Rigorous Peer Review
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Double-blind review by field experts ensuring the highest quality standards
+                  Double-blind review by field experts ensuring the highest
+                  quality standards
                 </p>
               </div>
             </ScrollAnimation>
@@ -205,7 +224,8 @@ export default function HomePage() {
                   DOI Assignment
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Permanent digital identifier for citations and academic credibility
+                  Permanent digital identifier for citations and academic
+                  credibility
                 </p>
               </div>
             </ScrollAnimation>
@@ -220,7 +240,8 @@ export default function HomePage() {
                   Global Indexing
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Listed on Google Scholar and major academic databases for maximum reach
+                  Listed on Google Scholar and major academic databases for
+                  maximum reach
                 </p>
               </div>
             </ScrollAnimation>
@@ -253,8 +274,8 @@ export default function HomePage() {
               Ready to Submit Your Research?
             </h2>
             <p className="text-sm md:text-base text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto">
-              Join hundreds of researchers who have published their ICT innovations
-              with IRJICT. Start your submission today.
+              Join hundreds of researchers who have published their ICT
+              innovations with IRJICT. Start your submission today.
             </p>
             <Link href="/submit">
               <Button variant="gold" size="lg">

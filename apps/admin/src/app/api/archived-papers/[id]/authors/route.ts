@@ -14,13 +14,19 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     const { authors } = body;
 
     if (!Array.isArray(authors)) {
-      return NextResponse.json({ error: "Authors array required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Authors array required" },
+        { status: 400 },
+      );
     }
 
     // Verify paper exists
     const paper = await prisma.archivedPaper.findUnique({ where: { id } });
     if (!paper) {
-      return NextResponse.json({ error: "Archived paper not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Archived paper not found" },
+        { status: 404 },
+      );
     }
 
     // Delete existing authors and create new ones in a transaction
@@ -46,7 +52,10 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     return NextResponse.json({ authors: updatedAuthors });
   } catch (error) {
     console.error("Failed to update archived paper authors:", error);
-    return NextResponse.json({ error: "Failed to update authors" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update authors" },
+      { status: 500 },
+    );
   }
 }
 
@@ -63,6 +72,9 @@ export async function GET(request: NextRequest, context: RouteContext) {
     return NextResponse.json({ authors });
   } catch (error) {
     console.error("Failed to fetch archived paper authors:", error);
-    return NextResponse.json({ error: "Failed to fetch authors" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch authors" },
+      { status: 500 },
+    );
   }
 }

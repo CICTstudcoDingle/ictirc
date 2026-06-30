@@ -15,18 +15,26 @@ export function Header() {
   const communityDropdownRef = useRef<HTMLDivElement>(null);
 
   const closeAcademicsDropdown = () => setIsAcademicsDropdownOpen(false);
-  const toggleAcademicsDropdown = () => setIsAcademicsDropdownOpen((prev) => !prev);
+  const toggleAcademicsDropdown = () =>
+    setIsAcademicsDropdownOpen((prev) => !prev);
 
   const closeCommunityDropdown = () => setIsCommunityDropdownOpen(false);
-  const toggleCommunityDropdown = () => setIsCommunityDropdownOpen((prev) => !prev);
+  const toggleCommunityDropdown = () =>
+    setIsCommunityDropdownOpen((prev) => !prev);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      if (academicsDropdownRef.current && !academicsDropdownRef.current.contains(target)) {
+      if (
+        academicsDropdownRef.current &&
+        !academicsDropdownRef.current.contains(target)
+      ) {
         closeAcademicsDropdown();
       }
-      if (communityDropdownRef.current && !communityDropdownRef.current.contains(target)) {
+      if (
+        communityDropdownRef.current &&
+        !communityDropdownRef.current.contains(target)
+      ) {
         closeCommunityDropdown();
       }
     };
@@ -115,7 +123,7 @@ export function Header() {
                   <ChevronDown
                     className={cn(
                       "w-4 h-4 transition-transform",
-                      isAcademicsDropdownOpen && "rotate-180"
+                      isAcademicsDropdownOpen && "rotate-180",
                     )}
                   />
                 </button>
@@ -156,7 +164,7 @@ export function Header() {
                 )}
               </div>
 
-                {/* Community Dropdown */}
+              {/* Community Dropdown */}
               <div
                 ref={communityDropdownRef}
                 className="relative"
@@ -174,7 +182,7 @@ export function Header() {
                   <ChevronDown
                     className={cn(
                       "w-4 h-4 transition-transform",
-                      isCommunityDropdownOpen && "rotate-180"
+                      isCommunityDropdownOpen && "rotate-180",
                     )}
                   />
                 </button>

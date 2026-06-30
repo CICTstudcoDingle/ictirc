@@ -5,7 +5,8 @@ import { z } from "zod";
  */
 export const ALLOWED_FILE_TYPES = {
   "application/pdf": ".pdf",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+    ".docx",
 } as const;
 
 export type AllowedMimeType = keyof typeof ALLOWED_FILE_TYPES;
@@ -73,7 +74,7 @@ export interface FileMetadata {
 export function generateFilePath(
   paperId: string,
   originalName: string,
-  prefix: "raw" | "branded" | "review" = "raw"
+  prefix: "raw" | "branded" | "review" = "raw",
 ): string {
   const timestamp = Date.now();
   const sanitizedName = originalName.replace(/[^a-zA-Z0-9.-]/g, "_");

@@ -82,7 +82,7 @@ export function AuthorSidebar({
       className={cn(
         "group relative flex flex-col border-r border-gray-200 bg-white transition-all duration-300",
         collapsed ? "w-16" : "w-64",
-        className
+        className,
       )}
       {...props}
     >
@@ -90,7 +90,7 @@ export function AuthorSidebar({
       <div
         className={cn(
           "flex items-center h-16 border-b border-gray-100",
-          collapsed ? "justify-center px-2" : "justify-between px-4"
+          collapsed ? "justify-center px-2" : "justify-between px-4",
         )}
       >
         {!collapsed && (
@@ -119,7 +119,7 @@ export function AuthorSidebar({
           size="icon"
           className={cn(
             "text-gray-400 hover:text-gray-600 hover:bg-gray-100 flex-shrink-0",
-            collapsed && "mx-auto"
+            collapsed && "mx-auto",
           )}
           onClick={() => setCollapsed(!collapsed)}
           title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -135,7 +135,9 @@ export function AuthorSidebar({
       {/* User Info */}
       {!collapsed && userName && (
         <div className="px-4 py-3 border-b border-gray-100">
-          <p className="text-sm font-medium text-gray-900 truncate">{userName}</p>
+          <p className="text-sm font-medium text-gray-900 truncate">
+            {userName}
+          </p>
           <p className="text-xs text-gray-500 truncate">{userEmail}</p>
         </div>
       )}
@@ -154,12 +156,15 @@ export function AuthorSidebar({
                 isActive
                   ? "bg-maroon/5 text-maroon"
                   : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
-                collapsed && "justify-center px-2"
+                collapsed && "justify-center px-2",
               )}
               title={collapsed ? item.title : undefined}
             >
               <item.icon
-                className={cn("w-5 h-5 flex-shrink-0", isActive && "text-maroon")}
+                className={cn(
+                  "w-5 h-5 flex-shrink-0",
+                  isActive && "text-maroon",
+                )}
               />
               {!collapsed && <span>{item.title}</span>}
             </Link>
@@ -173,7 +178,7 @@ export function AuthorSidebar({
           onClick={handleLogout}
           className={cn(
             "flex items-center gap-3 w-full px-3 py-2 rounded-md transition-colors text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-700",
-            collapsed && "justify-center px-2"
+            collapsed && "justify-center px-2",
           )}
           title={collapsed ? "Sign Out" : undefined}
         >

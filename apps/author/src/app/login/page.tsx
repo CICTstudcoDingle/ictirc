@@ -14,7 +14,7 @@ export default function LoginPage() {
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -43,7 +43,11 @@ export default function LoginPage() {
       <div className="hidden lg:flex w-1/2 fixed inset-y-0 left-0 bg-maroon items-center justify-center overflow-hidden z-10">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-[#4a0000] to-gray-900 z-0">
-          <CircuitBackground variant="intense" animated className="opacity-40" />
+          <CircuitBackground
+            variant="intense"
+            animated
+            className="opacity-40"
+          />
         </div>
 
         {/* Content Overlay */}
@@ -64,12 +68,17 @@ export default function LoginPage() {
           </h1>
 
           <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-            Submit and manage your research papers for the College of Information and Computing Technology (CICT).
+            Submit and manage your research papers for the College of
+            Information and Computing Technology (CICT).
           </p>
 
           <div className="flex gap-4 text-sm font-mono text-gray-400">
-            <div className="px-4 py-2 bg-black/20 rounded-lg border border-white/10">v1.0.0 (Beta)</div>
-            <div className="px-4 py-2 bg-black/20 rounded-lg border border-white/10">ISUFST Authors</div>
+            <div className="px-4 py-2 bg-black/20 rounded-lg border border-white/10">
+              v1.0.0 (Beta)
+            </div>
+            <div className="px-4 py-2 bg-black/20 rounded-lg border border-white/10">
+              ISUFST Authors
+            </div>
           </div>
         </div>
       </div>
@@ -77,7 +86,6 @@ export default function LoginPage() {
       {/* FORM SIDE (Right - 50%) - Added ml-auto and z-20 for proper stacking */}
       <div className="flex-1 lg:ml-[50%] flex items-center justify-center bg-gray-50 min-h-screen p-4 sm:p-12 lg:p-24 relative z-20">
         <div className="w-full max-w-md space-y-8 bg-white/50 backdrop-blur-sm lg:bg-transparent p-6 rounded-xl lg:p-0">
-
           <div className="text-center lg:text-left">
             <h2 className="text-3xl font-bold text-gray-900">Welcome back</h2>
             <p className="mt-2 text-gray-600">
@@ -118,7 +126,12 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <Button size="lg" type="submit" className="w-full text-base" disabled={loading}>
+            <Button
+              size="lg"
+              type="submit"
+              className="w-full text-base"
+              disabled={loading}
+            >
               {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -135,16 +148,30 @@ export default function LoginPage() {
 
           <div className="pt-6 text-center lg:text-left space-y-2">
             <p className="text-sm text-gray-500">
-              Don&apos;t have an account? <Link href="/register" className="text-maroon hover:underline font-medium">Create one here</Link>
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/register"
+                className="text-maroon hover:underline font-medium"
+              >
+                Create one here
+              </Link>
             </p>
             <p className="text-sm text-gray-500">
-              Forgot your password? <Link href="#" className="text-maroon hover:underline font-medium">Contact IT Support</Link>
+              Forgot your password?{" "}
+              <Link
+                href="#"
+                className="text-maroon hover:underline font-medium"
+              >
+                Contact IT Support
+              </Link>
             </p>
           </div>
 
           {/* Mobile Footer branding */}
           <div className="lg:hidden mt-8 text-center border-t border-gray-200 pt-8">
-            <p className="text-xs text-gray-400">ISUFST - College of Information and Computing Technology</p>
+            <p className="text-xs text-gray-400">
+              ISUFST - College of Information and Computing Technology
+            </p>
           </div>
         </div>
       </div>

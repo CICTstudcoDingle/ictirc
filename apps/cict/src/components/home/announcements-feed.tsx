@@ -45,7 +45,9 @@ export async function AnnouncementsFeed() {
         {announcements.length === 0 ? (
           <div className="text-center py-12 bg-gray-50 rounded-xl border border-gray-200 border-dashed">
             <Megaphone className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-            <p className="text-sm text-gray-400">No announcements yet — check back soon.</p>
+            <p className="text-sm text-gray-400">
+              No announcements yet — check back soon.
+            </p>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -57,19 +59,25 @@ export async function AnnouncementsFeed() {
                   className="group bg-white border border-gray-200 rounded-xl shadow-sm hover:border-maroon/30 hover:shadow-md transition-all overflow-hidden"
                 >
                   {/* Left accent bar */}
-                  <div className={`h-1 w-full ${a.isPinned ? "bg-gold" : "bg-maroon"}`} />
+                  <div
+                    className={`h-1 w-full ${a.isPinned ? "bg-gold" : "bg-maroon"}`}
+                  />
                   <div className="p-5">
                     {a.isPinned && (
                       <div className="flex items-center gap-1 mb-2">
                         <Pin className="w-3 h-3 text-gold" />
-                        <span className="text-[10px] font-semibold text-gold uppercase tracking-wider">Pinned</span>
+                        <span className="text-[10px] font-semibold text-gold uppercase tracking-wider">
+                          Pinned
+                        </span>
                       </div>
                     )}
                     <h3 className="font-semibold text-gray-900 text-sm leading-snug mb-2 line-clamp-2 group-hover:text-maroon transition-colors">
                       {a.title}
                     </h3>
                     {a.excerpt && (
-                      <p className="text-xs text-gray-500 line-clamp-2 mb-3">{a.excerpt}</p>
+                      <p className="text-xs text-gray-500 line-clamp-2 mb-3">
+                        {a.excerpt}
+                      </p>
                     )}
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] text-gray-400 font-mono">

@@ -25,7 +25,10 @@ export default function DashboardLayout({
 
     window.addEventListener("sidebar-toggle", handleToggle as EventListener);
     return () => {
-      window.removeEventListener("sidebar-toggle", handleToggle as EventListener);
+      window.removeEventListener(
+        "sidebar-toggle",
+        handleToggle as EventListener,
+      );
     };
   }, []);
 
@@ -36,8 +39,9 @@ export default function DashboardLayout({
 
       {/* Main Content - offset for sidebar on desktop */}
       <main
-        className={`flex-1 overflow-y-auto relative transition-all duration-200 ${isCollapsed ? "md:ml-16" : "md:ml-64"
-          }`}
+        className={`flex-1 overflow-y-auto relative transition-all duration-200 ${
+          isCollapsed ? "md:ml-16" : "md:ml-64"
+        }`}
       >
         {/* Mobile spacing for fixed header */}
         <div className="p-4 md:p-8 min-h-full pt-16 md:pt-4 pb-20 md:pb-8">

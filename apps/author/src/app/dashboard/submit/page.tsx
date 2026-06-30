@@ -44,10 +44,5 @@ export default async function SubmitPage() {
     affiliation: author?.affiliation || "ISUFST - CICT",
   };
 
-  return (
-    <SubmitPageClient
-      currentUser={currentUser}
-      categories={categories}
-    />
-  );
+  return <SubmitPageClient currentUser={currentUser} categories={categories} />;
 }

@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ictirc/ui";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@ictirc/ui";
 import { Calendar, FileText, BookOpen } from "lucide-react";
 
 interface IssueCardProps {
@@ -37,7 +43,8 @@ export function IssueCard({ issue }: IssueCardProps) {
             Issue {issue.issueNumber}
           </CardTitle>
           <CardDescription>
-            Volume {issue.volume.volumeNumber} • {issue.month} {issue.volume.year}
+            Volume {issue.volume.volumeNumber} • {issue.month}{" "}
+            {issue.volume.year}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
@@ -48,7 +55,9 @@ export function IssueCard({ issue }: IssueCardProps) {
             <p className="text-xs text-muted-foreground">ISSN: {issue.issn}</p>
           )}
           {issue.conference && (
-            <p className="text-xs text-muted-foreground">{issue.conference.name}</p>
+            <p className="text-xs text-muted-foreground">
+              {issue.conference.name}
+            </p>
           )}
           <div className="flex items-center gap-4 text-sm text-muted-foreground pt-2 border-t">
             <div className="flex items-center gap-1">

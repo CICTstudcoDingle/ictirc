@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     if (!fileName || !contentType || !fileSize || !type) {
       return NextResponse.json(
         { error: "fileName, contentType, fileSize, and type are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -27,15 +27,17 @@ export async function POST(request: Request) {
     if (!["promotional", "teaser"].includes(type)) {
       return NextResponse.json(
         { error: "Type must be 'promotional' or 'teaser'" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Validate file type
     if (!ALLOWED_VIDEO_TYPES.includes(contentType as any)) {
       return NextResponse.json(
-        { error: `Invalid file type. Allowed types: ${ALLOWED_VIDEO_TYPES.join(", ")}` },
-        { status: 400 }
+        {
+          error: `Invalid file type. Allowed types: ${ALLOWED_VIDEO_TYPES.join(", ")}`,
+        },
+        { status: 400 },
       );
     }
 
@@ -43,7 +45,7 @@ export async function POST(request: Request) {
     if (fileSize > MAX_VIDEO_SIZE) {
       return NextResponse.json(
         { error: "File size exceeds the maximum limit of 1GB" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -54,7 +56,7 @@ export async function POST(request: Request) {
     if (!result.success) {
       return NextResponse.json(
         { error: result.error || "Failed to generate upload URL" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -66,7 +68,7 @@ export async function POST(request: Request) {
     console.error("[Videos Upload URL API] Error:", error);
     return NextResponse.json(
       { error: "Failed to generate upload URL" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

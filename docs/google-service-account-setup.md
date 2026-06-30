@@ -96,26 +96,29 @@ GDRIVE_BACKUP_FOLDER_ID=your_folder_id_here
 
 ## Security Best Practices
 
-| Practice | Description |
-|----------|-------------|
-| **Never commit credentials** | Add `.env.local` to `.gitignore` |
-| **Limit scope** | Only grant the service account access to the backup folder |
-| **Rotate keys** | Regenerate the private key periodically |
-| **Monitor access** | Check Google Cloud audit logs for unusual activity |
+| Practice                     | Description                                                |
+| ---------------------------- | ---------------------------------------------------------- |
+| **Never commit credentials** | Add `.env.local` to `.gitignore`                           |
+| **Limit scope**              | Only grant the service account access to the backup folder |
+| **Rotate keys**              | Regenerate the private key periodically                    |
+| **Monitor access**           | Check Google Cloud audit logs for unusual activity         |
 
 ---
 
 ## Troubleshooting
 
 ### "Permission denied" error
+
 - Ensure the folder is shared with the service account email
 - Verify the service account has **Editor** (not Viewer) access
 
 ### "API not enabled" error
+
 - Go to Google Cloud Console → APIs & Services → Library
 - Enable the Google Drive API
 
 ### "Invalid key" error
+
 - Make sure the private key includes the full `-----BEGIN PRIVATE KEY-----` header
 - Check that `\n` characters are preserved (not converted to actual newlines)
 
@@ -123,8 +126,8 @@ GDRIVE_BACKUP_FOLDER_ID=your_folder_id_here
 
 ## Environment Variable Reference
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `GDRIVE_SERVICE_EMAIL` | Service account email | `name@project.iam.gserviceaccount.com` |
-| `GDRIVE_PRIVATE_KEY` | Private key from JSON | `-----BEGIN PRIVATE KEY-----...` |
-| `GDRIVE_BACKUP_FOLDER_ID` | Google Drive folder ID | `1A2b3C4d5E6f7G8h9I0j` |
+| Variable                  | Description            | Example                                |
+| ------------------------- | ---------------------- | -------------------------------------- |
+| `GDRIVE_SERVICE_EMAIL`    | Service account email  | `name@project.iam.gserviceaccount.com` |
+| `GDRIVE_PRIVATE_KEY`      | Private key from JSON  | `-----BEGIN PRIVATE KEY-----...`       |
+| `GDRIVE_BACKUP_FOLDER_ID` | Google Drive folder ID | `1A2b3C4d5E6f7G8h9I0j`                 |

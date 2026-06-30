@@ -36,7 +36,9 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [imageUrl, setImageUrl] = useState(conference.imageUrl || "");
   const [logoUrl, setLogoUrl] = useState(conference.logoUrl || "");
-  const [organizers, setOrganizers] = useState<string[]>(conference.organizers || []);
+  const [organizers, setOrganizers] = useState<string[]>(
+    conference.organizers || [],
+  );
   const [partners, setPartners] = useState<string[]>(conference.partners || []);
 
   const bannerUpload = useUpload({ folder: "conferences/banners" });
@@ -52,16 +54,16 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
     try {
       const result = await updateConference(conference.id, {
         name: formData.get("name") as string,
-        fullName: formData.get("fullName") as string || undefined,
-        description: formData.get("description") as string || undefined,
+        fullName: (formData.get("fullName") as string) || undefined,
+        description: (formData.get("description") as string) || undefined,
         startDate: new Date(formData.get("startDate") as string),
-        endDate: formData.get("endDate") 
-          ? new Date(formData.get("endDate") as string) 
+        endDate: formData.get("endDate")
+          ? new Date(formData.get("endDate") as string)
           : undefined,
-        location: formData.get("location") as string || undefined,
-        venue: formData.get("venue") as string || undefined,
-        theme: formData.get("theme") as string || undefined,
-        websiteUrl: formData.get("websiteUrl") as string || undefined,
+        location: (formData.get("location") as string) || undefined,
+        venue: (formData.get("venue") as string) || undefined,
+        theme: (formData.get("theme") as string) || undefined,
+        websiteUrl: (formData.get("websiteUrl") as string) || undefined,
         imageUrl: imageUrl || undefined,
         logoUrl: logoUrl || undefined,
         organizers: organizers.filter(Boolean),
@@ -82,7 +84,11 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
   };
 
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this conference? This action cannot be undone.")) {
+    if (
+      !confirm(
+        "Are you sure you want to delete this conference? This action cannot be undone.",
+      )
+    ) {
       return;
     }
 
@@ -107,7 +113,10 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white rounded-xl border border-gray-200 p-6 space-y-6"
+    >
       {error && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
           {error}
@@ -134,8 +143,10 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
 
       {/* Basic Info */}
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Basic Information</h2>
-        
+        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">
+          Basic Information
+        </h2>
+
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="name">Short Name *</Label>
@@ -180,8 +191,10 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
 
       {/* Dates & Location */}
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Dates & Location</h2>
-        
+        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">
+          Dates & Location
+        </h2>
+
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="startDate">Start Date *</Label>
@@ -199,7 +212,9 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
               id="endDate"
               name="endDate"
               type="date"
-              defaultValue={conference.endDate ? formatDate(conference.endDate) : ""}
+              defaultValue={
+                conference.endDate ? formatDate(conference.endDate) : ""
+              }
             />
           </div>
         </div>
@@ -226,7 +241,9 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
 
       {/* Media */}
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Media</h2>
+        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">
+          Media
+        </h2>
 
         <div>
           <Label>Conference Banner</Label>
@@ -263,7 +280,9 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
 
       {/* Organizers & Partners */}
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Organizers &amp; Partners</h2>
+        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">
+          Organizers &amp; Partners
+        </h2>
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -293,7 +312,9 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
                 type="button"
                 variant="ghost"
                 size="icon"
-                onClick={() => setOrganizers(organizers.filter((_, i) => i !== index))}
+                onClick={() =>
+                  setOrganizers(organizers.filter((_, i) => i !== index))
+                }
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -329,7 +350,9 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
                 type="button"
                 variant="ghost"
                 size="icon"
-                onClick={() => setPartners(partners.filter((_, i) => i !== index))}
+                onClick={() =>
+                  setPartners(partners.filter((_, i) => i !== index))
+                }
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -340,8 +363,10 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
 
       {/* Links */}
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Links</h2>
-        
+        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">
+          Links
+        </h2>
+
         <div>
           <Label htmlFor="websiteUrl">Website URL</Label>
           <Input
@@ -355,8 +380,10 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
 
       {/* Publishing */}
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Publishing</h2>
-        
+        <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">
+          Publishing
+        </h2>
+
         <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="checkbox"
@@ -364,7 +391,9 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
             defaultChecked={conference.isPublished}
             className="w-4 h-4 text-maroon border-gray-300 rounded focus:ring-maroon"
           />
-          <span className="text-sm text-gray-700">Published (visible on public site)</span>
+          <span className="text-sm text-gray-700">
+            Published (visible on public site)
+          </span>
         </label>
       </div>
 
@@ -387,7 +416,9 @@ export function ConferenceEditForm({ conference }: ConferenceEditFormProps) {
 
         <div className="flex items-center gap-4">
           <Link href="/dashboard/conferences">
-            <Button variant="outline" type="button">Cancel</Button>
+            <Button variant="outline" type="button">
+              Cancel
+            </Button>
           </Link>
           <Button type="submit" disabled={loading}>
             {loading ? (

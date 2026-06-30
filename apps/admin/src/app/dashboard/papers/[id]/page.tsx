@@ -1,15 +1,22 @@
-import { notFound, redirect } from 'next/navigation';
-import { prisma } from '@ictirc/database';
-import { ArrowLeft, Download, Calendar, Tag, User, FileText } from 'lucide-react';
-import Link from 'next/link';
-import { ReviewComments } from '@/components/papers/review-comments';
-import { ReviewerAssignment } from '@/components/papers/reviewer-assignment';
-import { StatusControl } from '@/components/papers/status-control';
-import { PublishButton } from '@/components/papers/publish-button';
+import { notFound, redirect } from "next/navigation";
+import { prisma } from "@ictirc/database";
+import {
+  ArrowLeft,
+  Download,
+  Calendar,
+  Tag,
+  User,
+  FileText,
+} from "lucide-react";
+import Link from "next/link";
+import { ReviewComments } from "@/components/papers/review-comments";
+import { ReviewerAssignment } from "@/components/papers/reviewer-assignment";
+import { StatusControl } from "@/components/papers/status-control";
+import { PublishButton } from "@/components/papers/publish-button";
 import { PublicationTracker } from "@/components/papers/publication-tracker";
 import { BackupButton } from "@/components/papers/backup-button";
-import { PlagiarismCheck } from '@/components/papers/plagiarism-check';
-import { createClient } from '@/lib/supabase/server';
+import { PlagiarismCheck } from "@/components/papers/plagiarism-check";
+import { createClient } from "@/lib/supabase/server";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -20,11 +27,16 @@ export default async function PaperDetailPage({ params }: PageProps) {
 
   // Get current user for role-based UI
   const supabase = await createClient();
-  const { data: { user: authUser } } = await supabase.auth.getUser();
+  const {
+    data: { user: authUser },
+  } = await supabase.auth.getUser();
   const currentUser = authUser
-    ? await prisma.user.findUnique({ where: { id: authUser.id }, select: { role: true } })
+    ? await prisma.user.findUnique({
+        where: { id: authUser.id },
+        select: { role: true },
+      })
     : null;
-  const userRole = currentUser?.role ?? 'AUTHOR';
+  const userRole = currentUser?.role ?? "AUTHOR";
 
   const paper = await prisma.paper.findUnique({
     where: { id },
@@ -35,7 +47,7 @@ export default async function PaperDetailPage({ params }: PageProps) {
           author: true,
         },
         orderBy: {
-          order: 'asc',
+          order: "asc",
         },
       },
       comments: {
@@ -43,7 +55,7 @@ export default async function PaperDetailPage({ params }: PageProps) {
           author: true,
         },
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
       },
       reviewers: {
@@ -51,7 +63,7 @@ export default async function PaperDetailPage({ params }: PageProps) {
           reviewer: true,
         },
         orderBy: {
-          assignedAt: 'desc',
+          assignedAt: "desc",
         },
       },
       plagiarismChecker: {
@@ -72,7 +84,7 @@ export default async function PaperDetailPage({ params }: PageProps) {
       })
     : null;
 
-  const isPdf = paper.rawFileUrl?.toLowerCase().endsWith('.pdf');
+  const isPdf = paper.rawFileUrl?.toLowerCase().endsWith(".pdf");
   const isDocx = paper.rawFileUrl?.toLowerCase().match(/\.docx?$/);
 
   return (
@@ -89,7 +101,7 @@ export default async function PaperDetailPage({ params }: PageProps) {
               Back to Papers
             </Link>
             <div className="flex items-center gap-3">
-              {paper.status !== 'PUBLISHED' && (
+              {paper.status !== "PUBLISHED" && (
                 <PublishButton
                   paperId={paper.id}
                   hasFile={!!paper.rawFileUrl}
@@ -108,13 +120,15 @@ export default async function PaperDetailPage({ params }: PageProps) {
           <div className="lg:col-span-2 space-y-6">
             {/* Paper Info Card */}
             <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">{paper.title}</h1>
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">
+                {paper.title}
+              </h1>
 
               <div className="flex flex-wrap gap-4 mb-6">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <User className="w-4 h-4" />
                   <span>
-                    {paper.authors.map((pa) => pa.author.name).join(', ')}
+                    {paper.authors.map((pa) => pa.author.name).join(", ")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -128,13 +142,19 @@ export default async function PaperDetailPage({ params }: PageProps) {
               </div>
 
               <div className="mb-6">
-                <h2 className="text-sm font-semibold text-gray-700 mb-2">Abstract</h2>
-                <p className="text-gray-600 whitespace-pre-wrap">{paper.abstract}</p>
+                <h2 className="text-sm font-semibold text-gray-700 mb-2">
+                  Abstract
+                </h2>
+                <p className="text-gray-600 whitespace-pre-wrap">
+                  {paper.abstract}
+                </p>
               </div>
 
               {paper.keywords.length > 0 && (
                 <div className="mb-6">
-                  <h2 className="text-sm font-semibold text-gray-700 mb-2">Keywords</h2>
+                  <h2 className="text-sm font-semibold text-gray-700 mb-2">
+                    Keywords
+                  </h2>
                   <div className="flex flex-wrap gap-2">
                     {paper.keywords.map((keyword, idx) => (
                       <span
@@ -150,7 +170,9 @@ export default async function PaperDetailPage({ params }: PageProps) {
 
               {paper.doi && (
                 <div>
-                  <h2 className="text-sm font-semibold text-gray-700 mb-2">DOI</h2>
+                  <h2 className="text-sm font-semibold text-gray-700 mb-2">
+                    DOI
+                  </h2>
                   <p className="text-gray-600 font-mono text-sm">{paper.doi}</p>
                 </div>
               )}
@@ -176,7 +198,9 @@ export default async function PaperDetailPage({ params }: PageProps) {
               </div>
 
               {!paper.rawFileUrl && (
-                <p className="text-gray-500 text-center py-12">No file uploaded</p>
+                <p className="text-gray-500 text-center py-12">
+                  No file uploaded
+                </p>
               )}
 
               {isPdf && paper.rawFileUrl && (
@@ -208,7 +232,10 @@ export default async function PaperDetailPage({ params }: PageProps) {
             </div>
 
             {/* Review Comments */}
-            <ReviewComments paperId={paper.id} initialComments={paper.comments} />
+            <ReviewComments
+              paperId={paper.id}
+              initialComments={paper.comments}
+            />
           </div>
 
           {/* Sidebar */}
@@ -238,31 +265,44 @@ export default async function PaperDetailPage({ params }: PageProps) {
 
             {/* Status Info */}
             <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h3 className="text-sm font-semibold text-gray-700 mb-4">Paper Status</h3>
+              <h3 className="text-sm font-semibold text-gray-700 mb-4">
+                Paper Status
+              </h3>
               <div className="space-y-3">
                 <div>
                   <p className="text-xs text-gray-500">Current Status</p>
-                  <p className="text-sm font-medium text-gray-900">{paper.status.replace('_', ' ')}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {paper.status.replace("_", " ")}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Submitted</p>
-                  <p className="text-sm text-gray-900">{new Date(paper.createdAt).toLocaleString()}</p>
+                  <p className="text-sm text-gray-900">
+                    {new Date(paper.createdAt).toLocaleString()}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Last Updated</p>
-                  <p className="text-sm text-gray-900">{new Date(paper.updatedAt).toLocaleString()}</p>
+                  <p className="text-sm text-gray-900">
+                    {new Date(paper.updatedAt).toLocaleString()}
+                  </p>
                 </div>
                 {paper.publishedAt && (
                   <div>
                     <p className="text-xs text-gray-500">Published</p>
-                    <p className="text-sm text-gray-900">{new Date(paper.publishedAt).toLocaleString()}</p>
+                    <p className="text-sm text-gray-900">
+                      {new Date(paper.publishedAt).toLocaleString()}
+                    </p>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Reviewer Assignment */}
-            <ReviewerAssignment paperId={paper.id} currentReviewers={paper.reviewers} />
+            <ReviewerAssignment
+              paperId={paper.id}
+              currentReviewers={paper.reviewers}
+            />
 
             {/* Cold Storage Backup */}
             <BackupButton
@@ -273,14 +313,20 @@ export default async function PaperDetailPage({ params }: PageProps) {
 
             {/* Authors Info */}
             <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h3 className="text-sm font-semibold text-gray-700 mb-4">Authors</h3>
+              <h3 className="text-sm font-semibold text-gray-700 mb-4">
+                Authors
+              </h3>
               <div className="space-y-3">
                 {paper.authors.map((pa) => (
                   <div key={pa.id}>
-                    <p className="text-sm font-medium text-gray-900">{pa.author.name}</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      {pa.author.name}
+                    </p>
                     <p className="text-xs text-gray-500">{pa.author.email}</p>
                     {pa.author.affiliation && (
-                      <p className="text-xs text-gray-600 mt-1">{pa.author.affiliation}</p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        {pa.author.affiliation}
+                      </p>
                     )}
                   </div>
                 ))}

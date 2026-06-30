@@ -74,7 +74,7 @@ export function EnrollmentPopupModal() {
               timestamp: new Date(),
             },
           ]);
-        }
+        },
       )
       .subscribe();
 
@@ -123,7 +123,8 @@ export function EnrollmentPopupModal() {
                 </span>
               </div>
               <p className="text-sm font-semibold text-white leading-snug">
-                {current.course ?? "BSIT"}{current.year_level ? ` — Year ${current.year_level}` : ""}
+                {current.course ?? "BSIT"}
+                {current.year_level ? ` — Year ${current.year_level}` : ""}
               </p>
               {current.section && (
                 <p className="text-xs text-white/60 mt-0.5">

@@ -30,7 +30,8 @@ async function main() {
       version: "1.2.0",
       versionType: "MINOR",
       title: "2026 Conference Updates & Organization Pages",
-      description: "Added comprehensive conference information, organizing committee details, and sponsor pages for the 2026 IRCICT conference.",
+      description:
+        "Added comprehensive conference information, organizing committee details, and sponsor pages for the 2026 IRCICT conference.",
       releaseDate: new Date("2026-02-06"),
       isPublished: true,
       isBeta: false,
@@ -96,7 +97,9 @@ async function main() {
     console.log(`✓ Added entry: ${created.title}`);
   }
 
-  console.log("\n✅ Successfully added changelog entries for February 2026 updates!");
+  console.log(
+    "\n✅ Successfully added changelog entries for February 2026 updates!",
+  );
   console.log(`Release: ${release.version} - ${release.title}`);
   console.log(`Total entries: ${entries.length}`);
 }

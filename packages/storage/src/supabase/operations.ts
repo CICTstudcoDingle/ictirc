@@ -11,7 +11,7 @@ export async function uploadToHotStorage(
   options?: {
     contentType?: string;
     upsert?: boolean;
-  }
+  },
 ): Promise<UploadResult> {
   try {
     const config = getSupabaseStorageConfig();
@@ -56,7 +56,7 @@ export async function uploadToHotStorage(
  * Download a file from Supabase Hot Storage
  */
 export async function downloadFromHotStorage(
-  path: string
+  path: string,
 ): Promise<{ success: boolean; data?: Blob; error?: string }> {
   try {
     const config = getSupabaseStorageConfig();
@@ -90,7 +90,7 @@ export async function downloadFromHotStorage(
  * Delete a file from Supabase Hot Storage
  */
 export async function deleteFromHotStorage(
-  paths: string | string[]
+  paths: string | string[],
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const config = getSupabaseStorageConfig();
@@ -125,7 +125,7 @@ export async function deleteFromHotStorage(
  */
 export async function getHotStorageSignedUrl(
   path: string,
-  expiresInSeconds: number = 3600
+  expiresInSeconds: number = 3600,
 ): Promise<SignedUrlResult> {
   try {
     const config = getSupabaseStorageConfig();
@@ -153,7 +153,10 @@ export async function getHotStorageSignedUrl(
     console.error("[Supabase Storage] Signed URL error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Unknown error generating signed URL",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Unknown error generating signed URL",
     };
   }
 }
@@ -165,9 +168,7 @@ export function getPublicUrl(path: string): string {
   const config = getSupabaseStorageConfig();
   const client = createStorageClient();
 
-  const { data } = client.storage
-    .from(config.bucketName)
-    .getPublicUrl(path);
+  const { data } = client.storage.from(config.bucketName).getPublicUrl(path);
 
   return data.publicUrl;
 }
@@ -177,7 +178,7 @@ export function getPublicUrl(path: string): string {
  */
 export async function moveInHotStorage(
   fromPath: string,
-  toPath: string
+  toPath: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const config = getSupabaseStorageConfig();
@@ -209,7 +210,7 @@ export async function moveInHotStorage(
  */
 export async function copyInHotStorage(
   fromPath: string,
-  toPath: string
+  toPath: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const config = getSupabaseStorageConfig();
@@ -245,11 +246,12 @@ export async function uploadProfileImage(
   file: File | Buffer,
   options?: {
     contentType?: string;
-  }
+  },
 ): Promise<UploadResult> {
   try {
     const client = createStorageClient();
-    const bucketName = process.env.NEXT_PUBLIC_SUPABASE_BUCKET_PROFILE || "profile";
+    const bucketName =
+      process.env.NEXT_PUBLIC_SUPABASE_BUCKET_PROFILE || "profile";
 
     // Generate path based on user ID
     let extension = "jpg";
@@ -308,7 +310,7 @@ export async function uploadProfileImage(
  * Delete a profile image from the profile bucket
  */
 export async function deleteProfileImage(
-  userId: string
+  userId: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const client = createStorageClient();
@@ -344,4 +346,3 @@ export async function deleteProfileImage(
     };
   }
 }
-

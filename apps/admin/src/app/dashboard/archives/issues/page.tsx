@@ -49,9 +49,7 @@ export default async function IssuesPage() {
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {issues?.map((issue) => (
-            <IssueCard key={issue.id} issue={issue} />
-          ))}
+          {issues?.map((issue) => <IssueCard key={issue.id} issue={issue} />)}
         </div>
       )}
     </div>

@@ -6,7 +6,8 @@ import { CircuitBackground } from "@ictirc/ui";
 
 export const metadata: Metadata = {
   title: "Authors | ISUFST CICT Research Repository",
-  description: "Browse authors and researchers who have published in the ISUFST CICT Research Repository.",
+  description:
+    "Browse authors and researchers who have published in the ISUFST CICT Research Repository.",
 };
 
 async function getAuthors() {
@@ -50,7 +51,8 @@ export default async function AuthorsPage() {
             <span className="text-gold">Authors</span>
           </h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            Browse researchers and contributors to the ISUFST CICT Research Repository
+            Browse researchers and contributors to the ISUFST CICT Research
+            Repository
           </p>
         </div>
       </section>
@@ -60,7 +62,9 @@ export default async function AuthorsPage() {
         {authors.length === 0 ? (
           <div className="text-center py-16">
             <User className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900">No authors yet</h3>
+            <h3 className="text-lg font-medium text-gray-900">
+              No authors yet
+            </h3>
             <p className="mt-2 text-gray-500">
               Authors will appear here once papers are published.
             </p>
@@ -109,7 +113,8 @@ export default async function AuthorsPage() {
                     <div className="flex items-center gap-1 mt-2 text-sm text-gray-600">
                       <FileText className="w-3.5 h-3.5" />
                       <span>
-                        {author.papers.length} published paper{author.papers.length !== 1 ? "s" : ""}
+                        {author.papers.length} published paper
+                        {author.papers.length !== 1 ? "s" : ""}
                       </span>
                     </div>
                   </div>

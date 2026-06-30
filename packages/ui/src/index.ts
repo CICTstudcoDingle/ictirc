@@ -17,7 +17,10 @@ export { FloatingActionButton } from "./components/fab";
 export { CircuitBackground } from "./components/circuit-background";
 export { Sidebar } from "./components/sidebar";
 export { FileUpload, type FileUploadProps } from "./components/file-upload";
-export { AvatarUpload, type AvatarUploadProps } from "./components/avatar-upload";
+export {
+  AvatarUpload,
+  type AvatarUploadProps,
+} from "./components/avatar-upload";
 
 // Form Components
 export {
@@ -46,4 +49,3 @@ export { Label } from "./components/label";
 // Utilities
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/tabs";
 export { cn } from "./lib/utils";
-

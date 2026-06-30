@@ -53,12 +53,14 @@ export function Sidebar() {
                   : "text-gray-600 hover:bg-gray-100 hover:text-maroon border-l-4 border-l-transparent"
               }`}
             >
-              <span className={`transition-colors ${pathname === item.href ? "text-maroon" : "text-gray-400 group-hover:text-maroon"}`}>
+              <span
+                className={`transition-colors ${pathname === item.href ? "text-maroon" : "text-gray-400 group-hover:text-maroon"}`}
+              >
                 {item.icon}
               </span>
               <span>{item.title}</span>
             </Link>
-            
+
             {item.items && (
               <div className="ml-4 mt-1 space-y-0.5 border-l border-gray-200 pl-3">
                 {item.items.map((subItem) => (
@@ -79,16 +81,14 @@ export function Sidebar() {
           </div>
         ))}
       </nav>
-      
+
       {/* Footer Info */}
       <div className="px-6 mt-auto">
         <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
           <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-1">
             Documentation
           </p>
-          <p className="text-xs font-mono text-gray-600">
-            v1.2.0-stable
-          </p>
+          <p className="text-xs font-mono text-gray-600">v1.2.0-stable</p>
         </div>
       </div>
     </aside>

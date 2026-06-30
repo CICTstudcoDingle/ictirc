@@ -65,7 +65,10 @@ export function VideoPlayer({ video }: VideoPlayerProps) {
     setShowControls(true);
     if (hideControlsTimer.current) clearTimeout(hideControlsTimer.current);
     if (isPlaying) {
-      hideControlsTimer.current = setTimeout(() => setShowControls(false), 3000);
+      hideControlsTimer.current = setTimeout(
+        () => setShowControls(false),
+        3000,
+      );
     }
   }, [isPlaying]);
 
@@ -135,7 +138,10 @@ export function VideoPlayer({ video }: VideoPlayerProps) {
     if (!videoRef.current) return;
     videoRef.current.currentTime = Math.max(
       0,
-      Math.min(videoRef.current.duration, videoRef.current.currentTime + seconds)
+      Math.min(
+        videoRef.current.duration,
+        videoRef.current.currentTime + seconds,
+      ),
     );
     resetHideTimer();
   };
@@ -156,7 +162,10 @@ export function VideoPlayer({ video }: VideoPlayerProps) {
   const seekTo = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!videoRef.current || !progressRef.current) return;
     const rect = progressRef.current.getBoundingClientRect();
-    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const ratio = Math.max(
+      0,
+      Math.min(1, (e.clientX - rect.left) / rect.width),
+    );
     videoRef.current.currentTime = ratio * duration;
     setCurrentTime(ratio * duration);
   };
@@ -168,7 +177,10 @@ export function VideoPlayer({ video }: VideoPlayerProps) {
     const onMouseMove = (ev: MouseEvent) => {
       if (!videoRef.current || !progressRef.current) return;
       const rect = progressRef.current.getBoundingClientRect();
-      const ratio = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
+      const ratio = Math.max(
+        0,
+        Math.min(1, (ev.clientX - rect.left) / rect.width),
+      );
       videoRef.current.currentTime = ratio * duration;
       setCurrentTime(ratio * duration);
     };

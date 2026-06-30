@@ -3,8 +3,9 @@ trigger: always_on
 ---
 
 💎 CICT-RESEARCH MONOREPO - SECURITY & PERFORMANCE CONSTITUTION (V1.0)
+
 1. SECURITY CORE ("THE DEAN'S SEAL")
-Philosophy: Trust is good, but permission is better. The system operates on a "Zero Trust" model for all users until authenticated via Firebase.
+   Philosophy: Trust is good, but permission is better. The system operates on a "Zero Trust" model for all users until authenticated via Firebase.
 
 The "Super-Admin" Law:
 
@@ -15,7 +16,7 @@ Capabilities: Only the Dean can "Hard Delete" a manuscript, revoke a published D
 Emergency Protocol: The Dean possesses a "System Lock" switch in the admin dashboard to freeze all submissions in case of a security breach.
 
 2. INTELLECTUAL PROPERTY PROTECTION (THE "WATERMARK" PROTOCOL)
-Reviewer Access Rule:
+   Reviewer Access Rule:
 
 Reviewers never access the raw source file. They are served a dynamically generated "Review Copy."
 
@@ -32,7 +33,7 @@ Signed URL Strategy:
 All "Under Review" papers are served via Time-Limited Signed URLs (valid for 1 hour). This prevents reviewers from sharing direct links to unauthorized parties.
 
 3. AUTHENTICATION & MIDDLEWARE (NEXT.JS 16)
-Role-Based Access Control (RBAC):
+   Role-Based Access Control (RBAC):
 
 We use Next.js Middleware (middleware.ts) to intercept every request.
 
@@ -45,14 +46,14 @@ TypeScript
 const { data: { user } } = await supabase.auth.getUser();
 const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
 if (route.startsWith('/admin/system') && dbUser.role !== 'DEAN') {
-   return NextResponse.redirect(new URL('/unauthorized', req.url));
+return NextResponse.redirect(new URL('/unauthorized', req.url));
 }
 Data Sanitation:
 
 All inputs (Forms, Search Bars) are validated server-side using Zod. This blocks SQL Injection and XSS attacks before they reach the database.
 
 4. PERFORMANCE STANDARDS ("SPEED OF LIGHT")
-Server Components (RSC):
+   Server Components (RSC):
 
 The Public Archive (apps/web) uses React Server Components by default. This means the heavy lifting of fetching paper metadata happens on the server, sending zero JavaScript to the client for the initial view.
 

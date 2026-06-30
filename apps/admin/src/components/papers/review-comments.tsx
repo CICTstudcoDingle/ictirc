@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { MessageSquare, Send } from 'lucide-react';
+import { useState } from "react";
+import { MessageSquare, Send } from "lucide-react";
 
 interface Comment {
   id: string;
@@ -19,9 +19,12 @@ interface ReviewCommentsProps {
   initialComments: Comment[];
 }
 
-export function ReviewComments({ paperId, initialComments }: ReviewCommentsProps) {
+export function ReviewComments({
+  paperId,
+  initialComments,
+}: ReviewCommentsProps) {
   const [comments, setComments] = useState(initialComments);
-  const [newComment, setNewComment] = useState('');
+  const [newComment, setNewComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,19 +34,19 @@ export function ReviewComments({ paperId, initialComments }: ReviewCommentsProps
     setIsSubmitting(true);
     try {
       const response = await fetch(`/api/papers/${paperId}/comments`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: newComment }),
       });
 
-      if (!response.ok) throw new Error('Failed to add comment');
+      if (!response.ok) throw new Error("Failed to add comment");
 
       const comment = await response.json();
       setComments((prev) => [comment, ...prev]);
-      setNewComment('');
+      setNewComment("");
     } catch (error) {
-      console.error('Error adding comment:', error);
-      alert('Failed to add comment. Please try again.');
+      console.error("Error adding comment:", error);
+      alert("Failed to add comment. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -72,7 +75,7 @@ export function ReviewComments({ paperId, initialComments }: ReviewCommentsProps
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Send className="w-4 h-4" />
-            {isSubmitting ? 'Adding...' : 'Add Comment'}
+            {isSubmitting ? "Adding..." : "Add Comment"}
           </button>
         </div>
       </form>
@@ -96,7 +99,9 @@ export function ReviewComments({ paperId, initialComments }: ReviewCommentsProps
                   </p>
                 </div>
               </div>
-              <p className="text-gray-700 whitespace-pre-wrap">{comment.content}</p>
+              <p className="text-gray-700 whitespace-pre-wrap">
+                {comment.content}
+              </p>
             </div>
           ))
         )}

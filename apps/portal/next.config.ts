@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: [
-    "@ictirc/ui",
-    "@ictirc/database",
-  ],
+  transpilePackages: ["@ictirc/ui", "@ictirc/database"],
   images: {
     remotePatterns: [
       {

@@ -39,20 +39,36 @@ const navItems = [
     icon: BookOpen,
     submenu: [
       { href: "/dashboard/archives", label: "Overview", icon: BookOpen },
-      { href: "/dashboard/archives/volumes", label: "Volumes", icon: BookOpenCheck },
-      { href: "/dashboard/archives/issues", label: "Issues", icon: CalendarDays },
+      {
+        href: "/dashboard/archives/volumes",
+        label: "Volumes",
+        icon: BookOpenCheck,
+      },
+      {
+        href: "/dashboard/archives/issues",
+        label: "Issues",
+        icon: CalendarDays,
+      },
       { href: "/dashboard/archives/papers", label: "Papers", icon: FileText },
-      { href: "/dashboard/archives/upload", label: "Upload Papers", icon: Upload },
-    ]
+      {
+        href: "/dashboard/archives/upload",
+        label: "Upload Papers",
+        icon: Upload,
+      },
+    ],
   },
   {
     href: "/dashboard/conferences",
     label: "Conferences",
     icon: Calendar,
     submenu: [
-      { href: "/dashboard/conferences", label: "All Conferences", icon: Calendar },
+      {
+        href: "/dashboard/conferences",
+        label: "All Conferences",
+        icon: Calendar,
+      },
       { href: "/dashboard/conferences/new", label: "Create New", icon: Upload },
-    ]
+    ],
   },
   { href: "/dashboard/users", label: "Users", icon: Users },
   { href: "/dashboard/videos", label: "Videos", icon: Video },
@@ -67,7 +83,9 @@ const navItems = [
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
+  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>(
+    {},
+  );
   const pathname = usePathname();
 
   // Persist collapsed state in localStorage
@@ -79,7 +97,7 @@ export function Sidebar() {
 
     // Auto-expand Archives if on archive page
     if (pathname.startsWith("/dashboard/archives")) {
-      setExpandedMenus(prev => ({ ...prev, "/dashboard/archives": true }));
+      setExpandedMenus((prev) => ({ ...prev, "/dashboard/archives": true }));
     }
   }, [pathname]);
 
@@ -88,16 +106,18 @@ export function Sidebar() {
     setIsCollapsed(newState);
     localStorage.setItem("sidebar-collapsed", String(newState));
     // Dispatch event for layout to respond
-    window.dispatchEvent(new CustomEvent("sidebar-toggle", { detail: { collapsed: newState } }));
+    window.dispatchEvent(
+      new CustomEvent("sidebar-toggle", { detail: { collapsed: newState } }),
+    );
   };
 
   const toggleSubmenu = (href: string) => {
-    setExpandedMenus(prev => ({ ...prev, [href]: !prev[href] }));
+    setExpandedMenus((prev) => ({ ...prev, [href]: !prev[href] }));
   };
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 
   const handleSignOut = async () => {
@@ -141,15 +161,20 @@ export function Sidebar() {
         className={cn(
           "fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 flex flex-col transition-all duration-200 md:translate-x-0",
           isOpen ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0",
-          isCollapsed ? "md:w-16" : "md:w-64"
+          isCollapsed ? "md:w-16" : "md:w-64",
         )}
       >
         {/* Logo */}
-        <div className={cn(
-          "h-16 flex items-center gap-3 border-b border-gray-100",
-          isCollapsed ? "justify-center px-2" : "justify-between px-4"
-        )}>
-          <Link href="/dashboard" className="flex items-center gap-3 overflow-hidden">
+        <div
+          className={cn(
+            "h-16 flex items-center gap-3 border-b border-gray-100",
+            isCollapsed ? "justify-center px-2" : "justify-between px-4",
+          )}
+        >
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-3 overflow-hidden"
+          >
             <img
               src="/images/CICT_LOGO.png"
               alt="CICT Logo"
@@ -159,8 +184,12 @@ export function Sidebar() {
             />
             {!isCollapsed && (
               <div className="overflow-hidden">
-                <h1 className="font-bold text-maroon text-sm whitespace-nowrap">ICTIRC</h1>
-                <p className="text-xs text-gray-400 whitespace-nowrap">Admin Panel</p>
+                <h1 className="font-bold text-maroon text-sm whitespace-nowrap">
+                  ICTIRC
+                </h1>
+                <p className="text-xs text-gray-400 whitespace-nowrap">
+                  Admin Panel
+                </p>
               </div>
             )}
           </Link>
@@ -196,7 +225,7 @@ export function Sidebar() {
                         isActive
                           ? "bg-maroon/5 text-maroon"
                           : "text-gray-600 hover:bg-gray-100",
-                        isCollapsed && "justify-center px-2"
+                        isCollapsed && "justify-center px-2",
                       )}
                     >
                       <item.icon className="w-5 h-5 flex-shrink-0" />
@@ -224,7 +253,7 @@ export function Sidebar() {
                                 "flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors",
                                 isSubActive
                                   ? "bg-maroon/10 text-maroon font-medium"
-                                  : "text-gray-600 hover:bg-gray-50"
+                                  : "text-gray-600 hover:bg-gray-50",
                               )}
                             >
                               <subitem.icon className="w-4 h-4 flex-shrink-0" />
@@ -245,7 +274,7 @@ export function Sidebar() {
                       isActive
                         ? "bg-maroon/5 text-maroon"
                         : "text-gray-600 hover:bg-gray-100",
-                      isCollapsed && "justify-center px-2"
+                      isCollapsed && "justify-center px-2",
                     )}
                   >
                     <item.icon className="w-5 h-5 flex-shrink-0" />
@@ -263,7 +292,7 @@ export function Sidebar() {
             onClick={toggleCollapse}
             className={cn(
               "flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-100 transition-colors",
-              isCollapsed && "justify-center px-2"
+              isCollapsed && "justify-center px-2",
             )}
             title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
@@ -285,7 +314,7 @@ export function Sidebar() {
             title={isCollapsed ? "Sign Out" : undefined}
             className={cn(
               "flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors",
-              isCollapsed && "justify-center px-2"
+              isCollapsed && "justify-center px-2",
             )}
           >
             <LogOut className="w-5 h-5 flex-shrink-0" />

@@ -1,13 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@ictirc/database";
 import { redirect } from "next/navigation";
-import {
-  FileText,
-  Clock,
-  CheckCircle,
-  AlertCircle,
-  Send,
-} from "lucide-react";
+import { FileText, Clock, CheckCircle, AlertCircle, Send } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, CardContent, CardHeader, CardTitle } from "@ictirc/ui";
 
@@ -52,7 +46,7 @@ export default async function DashboardPage() {
   // Calculate stats
   const totalPapers = papers.length;
   const pendingReview = papers.filter(
-    (p) => p.status === "SUBMITTED" || p.status === "UNDER_REVIEW"
+    (p) => p.status === "SUBMITTED" || p.status === "UNDER_REVIEW",
   ).length;
   const accepted = papers.filter((p) => p.status === "ACCEPTED").length;
   const published = papers.filter((p) => p.status === "PUBLISHED").length;
@@ -91,7 +85,10 @@ export default async function DashboardPage() {
   const getStatusBadge = (status: string) => {
     const badges: Record<string, { class: string; label: string }> = {
       SUBMITTED: { class: "status-badge status-submitted", label: "Submitted" },
-      UNDER_REVIEW: { class: "status-badge status-review", label: "Under Review" },
+      UNDER_REVIEW: {
+        class: "status-badge status-review",
+        label: "Under Review",
+      },
       ACCEPTED: { class: "status-badge status-accepted", label: "Accepted" },
       REJECTED: { class: "status-badge status-rejected", label: "Rejected" },
       PUBLISHED: { class: "status-badge status-published", label: "Published" },
@@ -129,7 +126,9 @@ export default async function DashboardPage() {
                   <stat.icon className={`w-6 h-6 ${stat.color}`} />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {stat.value}
+                  </p>
                   <p className="text-sm text-gray-500">{stat.label}</p>
                 </div>
               </div>
@@ -166,7 +165,7 @@ export default async function DashboardPage() {
                 const badge = getStatusBadge(paper.status);
                 const isCorrespondingAuthor = paper.authors.find(
                   (a) =>
-                    a.author.email === user.email && a.isCorrespondingAuthor
+                    a.author.email === user.email && a.isCorrespondingAuthor,
                 );
                 return (
                   <Link

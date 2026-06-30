@@ -53,9 +53,7 @@ export function PaperCard({
             <span className="text-xs font-medium text-maroon uppercase tracking-wide">
               {category}
             </span>
-            <Badge status={statusMap[status]}>
-              {status.replace("_", " ")}
-            </Badge>
+            <Badge status={statusMap[status]}>{status.replace("_", " ")}</Badge>
           </div>
 
           {/* Title */}
@@ -64,7 +62,9 @@ export function PaperCard({
           </h3>
 
           {/* Abstract */}
-          <p className="text-sm text-gray-600 line-clamp-3 mb-4 flex-1">{abstract}</p>
+          <p className="text-sm text-gray-600 line-clamp-3 mb-4 flex-1">
+            {abstract}
+          </p>
 
           {/* Metadata */}
           <div className="flex flex-wrap items-center justify-between gap-4 mt-auto">

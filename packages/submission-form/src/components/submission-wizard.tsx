@@ -48,14 +48,16 @@ export interface SubmissionWizardProps {
   /** Function to show toast notifications */
   showToast: (message: string, type: "success" | "error") => void;
   /** Function to handle form submission */
-  onSubmit: (formData: FormData) => Promise<{ success: boolean; paperId?: string; error?: string }>;
+  onSubmit: (
+    formData: FormData,
+  ) => Promise<{ success: boolean; paperId?: string; error?: string }>;
   /** Optional link to guidelines */
   guidelinesUrl?: string;
 }
 
 /**
  * Shared SubmissionWizard Component
- * 
+ *
  * Used by both apps/web (guest & authenticated) and apps/author (authenticated only)
  * Provides a multi-step form for submitting research papers.
  */
@@ -104,7 +106,8 @@ export function SubmissionWizard({
           {
             name: currentUser.name,
             email: currentUser.email,
-            affiliation: currentUser.affiliation || prev.authors[0]?.affiliation || "",
+            affiliation:
+              currentUser.affiliation || prev.authors[0]?.affiliation || "",
           },
           ...prev.authors.slice(1),
         ],
@@ -222,11 +225,16 @@ export function SubmissionWizard({
 
       // Final validation
       const paperValid = paperDetailsSchema.safeParse(formData);
-      const authorsValid = authorsStepSchema.safeParse({ authors: formData.authors });
+      const authorsValid = authorsStepSchema.safeParse({
+        authors: formData.authors,
+      });
       const fileValid = uploadSchema.safeParse({ file: uploadedFile });
 
       if (!paperValid.success || !authorsValid.success || !fileValid.success) {
-        showToast("Please complete all required fields before submitting", "error");
+        showToast(
+          "Please complete all required fields before submitting",
+          "error",
+        );
         setIsSubmitting(false);
         return;
       }
@@ -245,7 +253,7 @@ export function SubmissionWizard({
       submitFormData.append("categoryId", formData.categoryId);
       submitFormData.append("authors", JSON.stringify(formData.authors));
       submitFormData.append("file", uploadedFile);
-      
+
       if (currentUser?.id) {
         submitFormData.append("userId", currentUser.id);
       }
@@ -254,7 +262,10 @@ export function SubmissionWizard({
       const result = await onSubmit(submitFormData);
 
       if (!result.success) {
-        showToast(result.error || "Submission failed. Please try again.", "error");
+        showToast(
+          result.error || "Submission failed. Please try again.",
+          "error",
+        );
         setIsSubmitting(false);
         return;
       }
@@ -301,7 +312,9 @@ export function SubmissionWizard({
 
   // Filter categories
   const parentCategories = categories.filter((c) => !c.parentId);
-  const childCategories = categories.filter((c) => c.parentId === selectedParentId);
+  const childCategories = categories.filter(
+    (c) => c.parentId === selectedParentId,
+  );
 
   return (
     <div className="pt-14 md:pt-16 min-h-screen flex flex-col lg:flex-row">
@@ -329,14 +342,23 @@ export function SubmissionWizard({
           </div>
 
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-gold mb-3">Submission Guidelines</h2>
+            <h2 className="text-lg font-semibold text-gold mb-3">
+              Submission Guidelines
+            </h2>
             <p className="text-gray-300 leading-relaxed mb-4 text-sm">
-              Ensure your manuscript is submission-ready by applying the standard format
-              provided in the download link.
+              Ensure your manuscript is submission-ready by applying the
+              standard format provided in the download link.
             </p>
 
-            <Link href={guidelinesUrl} target="_blank" rel="noopener noreferrer">
-              <Button variant="gold" className="flex items-center gap-2 text-sm">
+            <Link
+              href={guidelinesUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                variant="gold"
+                className="flex items-center gap-2 text-sm"
+              >
                 <FileText className="w-4 h-4" />
                 View Guidelines
                 <ExternalLink className="w-4 h-4" />
@@ -351,26 +373,34 @@ export function SubmissionWizard({
         <div className="w-full max-w-4xl mx-auto">
           {/* Progress Steps */}
           <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2">
-            {["Paper Details", "Authors", "Upload", "Review"].map((label, i) => (
-              <div key={label} className="flex items-center gap-2">
-                <button
-                  onClick={() => handleStepChange(i + 1)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                    step === i + 1
-                      ? "bg-maroon text-white"
-                      : step > i + 1
-                      ? "bg-green-100 text-green-700"
-                      : "bg-gray-100 text-gray-500"
-                  }`}
-                >
-                  <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs">
-                    {step > i + 1 ? <CheckCircle2 className="w-4 h-4" /> : i + 1}
-                  </span>
-                  <span className="hidden sm:inline">{label}</span>
-                </button>
-                {i < 3 && <ChevronRight className="w-4 h-4 text-gray-300 flex-shrink-0" />}
-              </div>
-            ))}
+            {["Paper Details", "Authors", "Upload", "Review"].map(
+              (label, i) => (
+                <div key={label} className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleStepChange(i + 1)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+                      step === i + 1
+                        ? "bg-maroon text-white"
+                        : step > i + 1
+                          ? "bg-green-100 text-green-700"
+                          : "bg-gray-100 text-gray-500"
+                    }`}
+                  >
+                    <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs">
+                      {step > i + 1 ? (
+                        <CheckCircle2 className="w-4 h-4" />
+                      ) : (
+                        i + 1
+                      )}
+                    </span>
+                    <span className="hidden sm:inline">{label}</span>
+                  </button>
+                  {i < 3 && (
+                    <ChevronRight className="w-4 h-4 text-gray-300 flex-shrink-0" />
+                  )}
+                </div>
+              ),
+            )}
           </div>
 
           {/* Step 1: Paper Details */}
@@ -385,7 +415,9 @@ export function SubmissionWizard({
                     label="Paper Title"
                     placeholder="Enter the full title of your research paper"
                     value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
                     className={errors.title ? "border-red-500" : ""}
                   />
                   <ErrorMessage message={errors.title} />
@@ -402,7 +434,9 @@ export function SubmissionWizard({
                       errors.abstract ? "border-red-500" : "border-gray-300"
                     } focus:border-maroon focus:outline-none resize-none`}
                     value={formData.abstract}
-                    onChange={(e) => setFormData({ ...formData, abstract: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, abstract: e.target.value })
+                    }
                   />
                   <ErrorMessage message={errors.abstract} />
                 </div>
@@ -412,7 +446,9 @@ export function SubmissionWizard({
                     label="Keywords (comma-separated)"
                     placeholder="e.g., machine learning, security, IoT"
                     value={formData.keywords}
-                    onChange={(e) => setFormData({ ...formData, keywords: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, keywords: e.target.value })
+                    }
                     className={errors.keywords ? "border-red-500" : ""}
                   />
                   <ErrorMessage message={errors.keywords} />
@@ -421,7 +457,10 @@ export function SubmissionWizard({
                 {/* Category Selection */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="topic-select" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="topic-select"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Research Topic (Category)
                     </label>
                     <select
@@ -434,7 +473,11 @@ export function SubmissionWizard({
                       }}
                       disabled={categoriesLoading}
                     >
-                      <option value="">{categoriesLoading ? "Loading..." : "Select a research topic"}</option>
+                      <option value="">
+                        {categoriesLoading
+                          ? "Loading..."
+                          : "Select a research topic"}
+                      </option>
                       {parentCategories.map((cat) => (
                         <option key={cat.id} value={cat.id}>
                           {cat.name}
@@ -444,7 +487,10 @@ export function SubmissionWizard({
                   </div>
 
                   <div>
-                    <label htmlFor="subtopic-select" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="subtopic-select"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Specific Sub-Topic
                     </label>
                     <select
@@ -455,7 +501,9 @@ export function SubmissionWizard({
                           : "border-gray-300 focus:border-maroon focus:bg-white"
                       } ${!selectedParentId ? "opacity-50 cursor-not-allowed" : ""}`}
                       value={formData.categoryId}
-                      onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, categoryId: e.target.value })
+                      }
                       disabled={!selectedParentId || categoriesLoading}
                     >
                       <option value="">Select a sub-topic</option>
@@ -470,7 +518,10 @@ export function SubmissionWizard({
                 </div>
 
                 <div className="pt-4">
-                  <Button onClick={() => handleStepChange(2)} className="w-full sm:w-auto">
+                  <Button
+                    onClick={() => handleStepChange(2)}
+                    className="w-full sm:w-auto"
+                  >
                     Continue to Authors
                     <ChevronRight className="w-4 h-4" />
                   </Button>
@@ -487,7 +538,10 @@ export function SubmissionWizard({
               </CardHeader>
               <CardContent className="space-y-6">
                 {formData.authors.map((author, index) => (
-                  <div key={index} className="p-4 bg-gray-50 rounded-lg space-y-4 relative">
+                  <div
+                    key={index}
+                    className="p-4 bg-gray-50 rounded-lg space-y-4 relative"
+                  >
                     {formData.authors.length > 1 && (
                       <button
                         type="button"
@@ -499,7 +553,8 @@ export function SubmissionWizard({
                       </button>
                     )}
                     <p className="text-sm font-medium text-gray-500">
-                      Author {index + 1} {index === 0 && "(Corresponding Author)"}
+                      Author {index + 1}{" "}
+                      {index === 0 && "(Corresponding Author)"}
                     </p>
                     <div>
                       <Input
@@ -511,7 +566,11 @@ export function SubmissionWizard({
                           newAuthors[index]!.name = e.target.value;
                           setFormData({ ...formData, authors: newAuthors });
                         }}
-                        className={errors[`authors.${index}.name`] ? "border-red-500" : ""}
+                        className={
+                          errors[`authors.${index}.name`]
+                            ? "border-red-500"
+                            : ""
+                        }
                         disabled={index === 0 && isAuthenticated}
                       />
                       <ErrorMessage message={errors[`authors.${index}.name`]} />
@@ -527,10 +586,16 @@ export function SubmissionWizard({
                           newAuthors[index]!.email = e.target.value;
                           setFormData({ ...formData, authors: newAuthors });
                         }}
-                        className={errors[`authors.${index}.email`] ? "border-red-500" : ""}
+                        className={
+                          errors[`authors.${index}.email`]
+                            ? "border-red-500"
+                            : ""
+                        }
                         disabled={index === 0 && isAuthenticated}
                       />
-                      <ErrorMessage message={errors[`authors.${index}.email`]} />
+                      <ErrorMessage
+                        message={errors[`authors.${index}.email`]}
+                      />
                     </div>
                     <div>
                       <Input
@@ -542,14 +607,24 @@ export function SubmissionWizard({
                           newAuthors[index]!.affiliation = e.target.value;
                           setFormData({ ...formData, authors: newAuthors });
                         }}
-                        className={errors[`authors.${index}.affiliation`] ? "border-red-500" : ""}
+                        className={
+                          errors[`authors.${index}.affiliation`]
+                            ? "border-red-500"
+                            : ""
+                        }
                       />
-                      <ErrorMessage message={errors[`authors.${index}.affiliation`]} />
+                      <ErrorMessage
+                        message={errors[`authors.${index}.affiliation`]}
+                      />
                     </div>
                   </div>
                 ))}
 
-                <Button variant="secondary" onClick={addAuthor} className="w-full">
+                <Button
+                  variant="secondary"
+                  onClick={addAuthor}
+                  className="w-full"
+                >
                   + Add Another Author
                 </Button>
 
@@ -557,7 +632,10 @@ export function SubmissionWizard({
                   <Button variant="ghost" onClick={() => setStep(1)}>
                     Back
                   </Button>
-                  <Button onClick={() => handleStepChange(3)} className="flex-1 sm:flex-none">
+                  <Button
+                    onClick={() => handleStepChange(3)}
+                    className="flex-1 sm:flex-none"
+                  >
                     Continue to Upload
                     <ChevronRight className="w-4 h-4" />
                   </Button>
@@ -621,7 +699,9 @@ export function SubmissionWizard({
                           <FileText className="w-6 h-6 text-green-600" />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">{uploadedFile.name}</p>
+                          <p className="font-medium text-gray-900">
+                            {uploadedFile.name}
+                          </p>
                           <p className="text-sm text-gray-500">
                             {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB
                           </p>
@@ -640,11 +720,18 @@ export function SubmissionWizard({
                 )}
 
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-medium text-gray-900 mb-2">Submission Guidelines</h4>
+                  <h4 className="font-medium text-gray-900 mb-2">
+                    Submission Guidelines
+                  </h4>
                   <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• Paper must be original and not published elsewhere</li>
+                    <li>
+                      • Paper must be original and not published elsewhere
+                    </li>
                     <li>• Follow the ICTIRC formatting template</li>
-                    <li>• Remove all author identifying information for blind review</li>
+                    <li>
+                      • Remove all author identifying information for blind
+                      review
+                    </li>
                     <li>• Include all figures and tables in the manuscript</li>
                   </ul>
                 </div>
@@ -653,7 +740,10 @@ export function SubmissionWizard({
                   <Button variant="ghost" onClick={() => setStep(2)}>
                     Back
                   </Button>
-                  <Button onClick={() => handleStepChange(4)} className="flex-1 sm:flex-none">
+                  <Button
+                    onClick={() => handleStepChange(4)}
+                    className="flex-1 sm:flex-none"
+                  >
                     Review Submission
                     <ChevronRight className="w-4 h-4" />
                   </Button>
@@ -680,7 +770,8 @@ export function SubmissionWizard({
                   <div className="p-4 bg-gray-50 rounded-lg">
                     <p className="text-sm text-gray-500 mb-1">Category</p>
                     <p className="font-medium text-gray-900">
-                      {categories.find((c) => c.id === formData.categoryId)?.name || "Not selected"}
+                      {categories.find((c) => c.id === formData.categoryId)
+                        ?.name || "Not selected"}
                     </p>
                   </div>
 
@@ -696,7 +787,10 @@ export function SubmissionWizard({
                             </span>
                           )}
                           {author.email && (
-                            <span className="text-gray-500 font-normal"> ({author.email})</span>
+                            <span className="text-gray-500 font-normal">
+                              {" "}
+                              ({author.email})
+                            </span>
                           )}
                         </p>
                       ))}
@@ -721,13 +815,17 @@ export function SubmissionWizard({
 
                 <div className="p-4 bg-gold/10 rounded-lg border border-gold/30">
                   <p className="text-sm text-amber-800">
-                    By submitting, you confirm that this is original work and agree
-                    to the ICTIRC publication terms and CC BY-ND license.
+                    By submitting, you confirm that this is original work and
+                    agree to the ICTIRC publication terms and CC BY-ND license.
                   </p>
                 </div>
 
                 <div className="flex gap-4 pt-4">
-                  <Button variant="ghost" onClick={() => setStep(3)} disabled={isSubmitting}>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setStep(3)}
+                    disabled={isSubmitting}
+                  >
                     Back
                   </Button>
                   <Button

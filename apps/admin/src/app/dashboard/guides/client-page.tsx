@@ -1,9 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, FileUpload } from "@ictirc/ui";
+import {
+  Button,
+  Input,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  FileUpload,
+} from "@ictirc/ui";
 import { Plus, Trash2, FileText, FolderOpen, Save, Book } from "lucide-react";
-import { createCategory, deleteCategory, createGuide, deleteGuide } from "./actions";
+import {
+  createCategory,
+  deleteCategory,
+  createGuide,
+  deleteGuide,
+} from "./actions";
 import { useToast } from "@/lib/toast";
 import { uploadFile } from "@ictirc/storage";
 
@@ -28,7 +41,10 @@ interface GuidesClientPageProps {
   initialGuides: Guide[];
 }
 
-export function GuidesClientPage({ initialCategories, initialGuides }: GuidesClientPageProps) {
+export function GuidesClientPage({
+  initialCategories,
+  initialGuides,
+}: GuidesClientPageProps) {
   const [activeTab, setActiveTab] = useState<"guides" | "categories">("guides");
   const [categories, setCategories] = useState(initialCategories);
   const [guides, setGuides] = useState(initialGuides);
@@ -52,7 +68,10 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
   const handleCreateCategory = async () => {
     if (!newCategoryName) return;
     setIsCreatingCategory(true);
-    const result = await createCategory({ name: newCategoryName, description: newCategoryDesc });
+    const result = await createCategory({
+      name: newCategoryName,
+      description: newCategoryDesc,
+    });
     setIsCreatingCategory(false);
 
     if (result.success && result.category) {
@@ -89,7 +108,11 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
       const sanitizedName = newGuideFile.name.replace(/[^a-zA-Z0-9.-]/g, "_");
       const filePath = `guides/${timestamp}-${sanitizedName}`;
 
-      const uploadResult = await uploadFile(newGuideFile, filePath, "research guides");
+      const uploadResult = await uploadFile(
+        newGuideFile,
+        filePath,
+        "research guides",
+      );
 
       if (!uploadResult.success || !uploadResult.url) {
         showToast(uploadResult.error || "Failed to upload file", "error");
@@ -162,7 +185,9 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="text-xs font-medium text-gray-500 mb-1 block">Name</label>
+                <label className="text-xs font-medium text-gray-500 mb-1 block">
+                  Name
+                </label>
                 <Input
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
@@ -170,7 +195,9 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
                 />
               </div>
               <div>
-                <label className="text-xs font-medium text-gray-500 mb-1 block">Description</label>
+                <label className="text-xs font-medium text-gray-500 mb-1 block">
+                  Description
+                </label>
                 <Input
                   value={newCategoryDesc}
                   onChange={(e) => setNewCategoryDesc(e.target.value)}
@@ -194,7 +221,9 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
             <CardContent>
               <div className="space-y-3">
                 {categories.length === 0 ? (
-                  <p className="text-gray-400 text-sm text-center py-8">No categories found.</p>
+                  <p className="text-gray-400 text-sm text-center py-8">
+                    No categories found.
+                  </p>
                 ) : (
                   categories.map((cat) => (
                     <div
@@ -206,9 +235,13 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
                           <FolderOpen className="w-5 h-5" />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">{cat.name}</p>
+                          <p className="font-medium text-gray-900">
+                            {cat.name}
+                          </p>
                           {cat.description && (
-                            <p className="text-xs text-gray-500">{cat.description}</p>
+                            <p className="text-xs text-gray-500">
+                              {cat.description}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -241,7 +274,9 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="text-xs font-medium text-gray-500 mb-1 block">Title</label>
+                <label className="text-xs font-medium text-gray-500 mb-1 block">
+                  Title
+                </label>
                 <Input
                   value={newGuideTitle}
                   onChange={(e) => setNewGuideTitle(e.target.value)}
@@ -249,7 +284,9 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
                 />
               </div>
               <div>
-                <label className="text-xs font-medium text-gray-500 mb-1 block">File</label>
+                <label className="text-xs font-medium text-gray-500 mb-1 block">
+                  File
+                </label>
                 <FileUpload
                   accept=".pdf,.doc,.docx"
                   onFileSelect={(file) => setNewGuideFile(file)}
@@ -259,7 +296,9 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
                 />
               </div>
               <div>
-                <label className="text-xs font-medium text-gray-500 mb-1 block">Category</label>
+                <label className="text-xs font-medium text-gray-500 mb-1 block">
+                  Category
+                </label>
                 <select
                   value={newGuideCategoryId}
                   onChange={(e) => setNewGuideCategoryId(e.target.value)}
@@ -276,7 +315,12 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
               </div>
               <Button
                 onClick={handleCreateGuide}
-                disabled={isCreatingGuide || !newGuideTitle || !newGuideCategoryId || !newGuideFile}
+                disabled={
+                  isCreatingGuide ||
+                  !newGuideTitle ||
+                  !newGuideCategoryId ||
+                  !newGuideFile
+                }
                 className="w-full"
               >
                 {isCreatingGuide ? "Adding..." : "Add Guide"}
@@ -291,7 +335,9 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
             <CardContent>
               <div className="space-y-2">
                 {guides.length === 0 ? (
-                  <p className="text-gray-400 text-sm text-center py-8">No guides uploaded yet.</p>
+                  <p className="text-gray-400 text-sm text-center py-8">
+                    No guides uploaded yet.
+                  </p>
                 ) : (
                   guides.map((guide) => (
                     <div
@@ -303,7 +349,9 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
                           <FileText className="w-5 h-5" />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">{guide.title}</p>
+                          <p className="font-medium text-gray-900">
+                            {guide.title}
+                          </p>
                           <div className="flex items-center gap-2 mt-0.5">
                             <span className="text-xs text-maroon font-medium bg-maroon/5 px-2 py-0.5 rounded">
                               {guide.guideCategory?.name || "Uncategorized"}
@@ -312,14 +360,14 @@ export function GuidesClientPage({ initialCategories, initialGuides }: GuidesCli
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                         <a 
-                            href={guide.fileUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="text-xs text-blue-600 hover:underline"
+                        <a
+                          href={guide.fileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-600 hover:underline"
                         >
-                            View
-                         </a>
+                          View
+                        </a>
                         <button
                           onClick={() => handleDeleteGuide(guide.id)}
                           className="text-gray-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"

@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "CICT — College of Information and Communication Technology | ISUFST";
+export const alt =
+  "CICT — College of Information and Communication Technology | ISUFST";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -16,7 +17,8 @@ export default async function OGImage() {
           justifyContent: "center",
           width: "100%",
           height: "100%",
-          background: "linear-gradient(135deg, #1a1a2e 0%, #4a0000 50%, #1a1a2e 100%)",
+          background:
+            "linear-gradient(135deg, #1a1a2e 0%, #4a0000 50%, #1a1a2e 100%)",
           fontFamily: "Inter, system-ui, sans-serif",
           padding: "60px",
         }}
@@ -29,7 +31,8 @@ export default async function OGImage() {
             left: 0,
             right: 0,
             height: "4px",
-            background: "linear-gradient(90deg, transparent, #D4AF37, transparent)",
+            background:
+              "linear-gradient(90deg, transparent, #D4AF37, transparent)",
           }}
         />
 
@@ -131,6 +134,6 @@ export default async function OGImage() {
     ),
     {
       ...size,
-    }
+    },
   );
 }

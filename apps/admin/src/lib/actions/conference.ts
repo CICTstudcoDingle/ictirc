@@ -40,12 +40,16 @@ export async function createConference(data: ConferenceInput) {
     console.error("Error creating conference:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to create conference",
+      error:
+        error instanceof Error ? error.message : "Failed to create conference",
     };
   }
 }
 
-export async function updateConference(id: string, data: UpdateConferenceInput) {
+export async function updateConference(
+  id: string,
+  data: UpdateConferenceInput,
+) {
   try {
     const validated = updateConferenceSchema.parse(data);
 
@@ -77,7 +81,8 @@ export async function updateConference(id: string, data: UpdateConferenceInput) 
     console.error("Error updating conference:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update conference",
+      error:
+        error instanceof Error ? error.message : "Failed to update conference",
     };
   }
 }
@@ -115,7 +120,8 @@ export async function deleteConference(id: string) {
     console.error("Error deleting conference:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to delete conference",
+      error:
+        error instanceof Error ? error.message : "Failed to delete conference",
     };
   }
 }
@@ -150,7 +156,8 @@ export async function getConference(id: string) {
     console.error("Error fetching conference:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to fetch conference",
+      error:
+        error instanceof Error ? error.message : "Failed to fetch conference",
     };
   }
 }
@@ -180,7 +187,8 @@ export async function listConferences() {
     console.error("Error listing conferences:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to list conferences",
+      error:
+        error instanceof Error ? error.message : "Failed to list conferences",
     };
   }
 }
@@ -217,7 +225,10 @@ export async function listUpcomingConferences() {
     console.error("Error listing upcoming conferences:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to list upcoming conferences",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to list upcoming conferences",
     };
   }
 }
@@ -253,7 +264,10 @@ export async function listPastConferences() {
     console.error("Error listing past conferences:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to list past conferences",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to list past conferences",
     };
   }
 }

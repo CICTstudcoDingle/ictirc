@@ -26,7 +26,7 @@ export interface PaperMetadata {
  */
 export function generatePaperMetadata(
   paper: PaperMetadata,
-  baseUrl: string
+  baseUrl: string,
 ): Metadata {
   const authorNames = paper.authors.map((a) => a.name);
   const publishDate = paper.publishedAt
@@ -63,13 +63,22 @@ export function generatePaperMetadata(
       ...(paper.doi && { citation_doi: paper.doi }),
       ...(paper.pdfUrl && { citation_pdf_url: paper.pdfUrl }),
       citation_journal_title: journalTitle,
-      citation_publisher: "ISUFST - College of Information and Computing Technology",
+      citation_publisher:
+        "ISUFST - College of Information and Computing Technology",
       ...(paper.issn && { citation_issn: paper.issn }),
-      ...(paper.volumeNumber && { citation_volume: paper.volumeNumber.toString() }),
-      ...(paper.issueNumber && { citation_issue: paper.issueNumber.toString() }),
-      ...(paper.pageStart && { citation_firstpage: paper.pageStart.toString() }),
+      ...(paper.volumeNumber && {
+        citation_volume: paper.volumeNumber.toString(),
+      }),
+      ...(paper.issueNumber && {
+        citation_issue: paper.issueNumber.toString(),
+      }),
+      ...(paper.pageStart && {
+        citation_firstpage: paper.pageStart.toString(),
+      }),
       ...(paper.pageEnd && { citation_lastpage: paper.pageEnd.toString() }),
-      ...(paper.conferenceName && { citation_conference_title: paper.conferenceName }),
+      ...(paper.conferenceName && {
+        citation_conference_title: paper.conferenceName,
+      }),
 
       // Dublin Core metadata
       "dc.title": paper.title,
@@ -91,7 +100,7 @@ export function generatePaperMetadata(
  */
 export function generatePaperJsonLd(
   paper: PaperMetadata,
-  pageUrl: string
+  pageUrl: string,
 ): object {
   // Build journal title with volume/issue info
   let journalTitle = "Journal of ICTIRC - ISUFST";
@@ -137,7 +146,9 @@ export function generatePaperJsonLd(
       ...(paper.issueNumber && { issueNumber: paper.issueNumber.toString() }),
       isPartOf: {
         "@type": "PublicationVolume",
-        ...(paper.volumeNumber && { volumeNumber: paper.volumeNumber.toString() }),
+        ...(paper.volumeNumber && {
+          volumeNumber: paper.volumeNumber.toString(),
+        }),
         isPartOf: {
           "@type": "Periodical",
           name: journalTitle,
@@ -145,10 +156,11 @@ export function generatePaperJsonLd(
         },
       },
     },
-    ...(paper.pageStart && paper.pageEnd && {
-      pageStart: paper.pageStart.toString(),
-      pageEnd: paper.pageEnd.toString(),
-    }),
+    ...(paper.pageStart &&
+      paper.pageEnd && {
+        pageStart: paper.pageStart.toString(),
+        pageEnd: paper.pageEnd.toString(),
+      }),
     license: "https://creativecommons.org/licenses/by-nd/4.0/",
     publisher: {
       "@type": "Organization",

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { PaperStatus } from '@ictirc/database';
-import { AlertCircle, CheckCircle, X } from 'lucide-react';
+import { useState } from "react";
+import { PaperStatus } from "@ictirc/database";
+import { AlertCircle, CheckCircle, X } from "lucide-react";
 
 interface StatusControlProps {
   paperId: string;
@@ -10,11 +10,27 @@ interface StatusControlProps {
 }
 
 const statusOptions: { value: PaperStatus; label: string; color: string }[] = [
-  { value: 'SUBMITTED', label: 'Submitted', color: 'bg-gray-100 text-gray-800' },
-  { value: 'UNDER_REVIEW', label: 'Under Review', color: 'bg-blue-100 text-blue-800' },
-  { value: 'ACCEPTED', label: 'Accepted', color: 'bg-green-100 text-green-800' },
-  { value: 'PUBLISHED', label: 'Published', color: 'bg-purple-100 text-purple-800' },
-  { value: 'REJECTED', label: 'Rejected', color: 'bg-red-100 text-red-800' },
+  {
+    value: "SUBMITTED",
+    label: "Submitted",
+    color: "bg-gray-100 text-gray-800",
+  },
+  {
+    value: "UNDER_REVIEW",
+    label: "Under Review",
+    color: "bg-blue-100 text-blue-800",
+  },
+  {
+    value: "ACCEPTED",
+    label: "Accepted",
+    color: "bg-green-100 text-green-800",
+  },
+  {
+    value: "PUBLISHED",
+    label: "Published",
+    color: "bg-purple-100 text-purple-800",
+  },
+  { value: "REJECTED", label: "Rejected", color: "bg-red-100 text-red-800" },
 ];
 
 export function StatusControl({ paperId, currentStatus }: StatusControlProps) {
@@ -23,7 +39,7 @@ export function StatusControl({ paperId, currentStatus }: StatusControlProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [pendingStatus, setPendingStatus] = useState<PaperStatus | null>(null);
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState("");
   const [toastDoi, setToastDoi] = useState<string | null>(null);
 
   const handleStatusSelect = (newStatus: PaperStatus) => {
@@ -39,23 +55,23 @@ export function StatusControl({ paperId, currentStatus }: StatusControlProps) {
     setIsUpdating(true);
 
     try {
-      const response = await fetch('/api/papers', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/papers", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: paperId, status: pendingStatus }),
       });
 
-      if (!response.ok) throw new Error('Failed to update status');
+      if (!response.ok) throw new Error("Failed to update status");
 
       const updated = await response.json();
       setStatus(updated.status);
 
       // Show success toast
       if (updated.doi) {
-        setToastMessage('Status updated and DOI assigned!');
+        setToastMessage("Status updated and DOI assigned!");
         setToastDoi(updated.doi);
       } else {
-        setToastMessage('Paper status updated successfully!');
+        setToastMessage("Paper status updated successfully!");
         setToastDoi(null);
       }
       setShowToast(true);
@@ -68,8 +84,8 @@ export function StatusControl({ paperId, currentStatus }: StatusControlProps) {
         }
       }, 5000);
     } catch (error) {
-      console.error('Error updating status:', error);
-      setToastMessage('Failed to update status. Please try again.');
+      console.error("Error updating status:", error);
+      setToastMessage("Failed to update status. Please try again.");
       setShowToast(true);
       setTimeout(() => setShowToast(false), 5000);
     } finally {
@@ -84,7 +100,9 @@ export function StatusControl({ paperId, currentStatus }: StatusControlProps) {
   };
 
   const currentOption = statusOptions.find((opt) => opt.value === status);
-  const pendingOption = statusOptions.find((opt) => opt.value === pendingStatus);
+  const pendingOption = statusOptions.find(
+    (opt) => opt.value === pendingStatus,
+  );
 
   return (
     <>
@@ -96,8 +114,8 @@ export function StatusControl({ paperId, currentStatus }: StatusControlProps) {
           disabled={isUpdating}
           aria-label="Change paper status"
           className={`px-3 py-1.5 rounded-lg text-sm font-medium border-0 cursor-pointer transition-colors ${
-            currentOption?.color || 'bg-gray-100 text-gray-800'
-          } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
+            currentOption?.color || "bg-gray-100 text-gray-800"
+          } ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {statusOptions.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -120,10 +138,17 @@ export function StatusControl({ paperId, currentStatus }: StatusControlProps) {
                   Confirm Status Change
                 </h3>
                 <p className="text-gray-600">
-                  Change paper status from <span className="font-medium">{status.replace('_', ' ')}</span> to{' '}
-                  <span className="font-medium">{pendingStatus?.replace('_', ' ')}</span>?
+                  Change paper status from{" "}
+                  <span className="font-medium">
+                    {status.replace("_", " ")}
+                  </span>{" "}
+                  to{" "}
+                  <span className="font-medium">
+                    {pendingStatus?.replace("_", " ")}
+                  </span>
+                  ?
                 </p>
-                {pendingStatus === 'PUBLISHED' && (
+                {pendingStatus === "PUBLISHED" && (
                   <p className="text-sm text-blue-600 mt-2">
                     ℹ️ This will auto-generate a DOI if not already assigned.
                   </p>

@@ -7,10 +7,9 @@ import dynamic from "next/dynamic";
 import BrokenGlassText from "./broken-glass-text";
 
 // Dynamic import for heavy canvas/physics components (skip SSR)
-const HoneycombBackground = dynamic(
-  () => import("./honeycomb-background"),
-  { ssr: false }
-);
+const HoneycombBackground = dynamic(() => import("./honeycomb-background"), {
+  ssr: false,
+});
 
 interface HeroSectionProps {
   isLoggedIn: boolean;
@@ -37,7 +36,7 @@ export default function HeroSection({ isLoggedIn }: HeroSectionProps) {
       end: "+=300%",
       scrub: 0.5,
     }),
-    []
+    [],
   );
 
   useGSAP(
@@ -54,14 +53,13 @@ export default function HeroSection({ isLoggedIn }: HeroSectionProps) {
           ctaRef.current,
           badgeRef.current,
         ],
-        { opacity: 0 }
+        { opacity: 0 },
       );
       gsap.set(headlineLeftRef.current, { x: -100 });
       gsap.set(headlineRightRef.current, { x: 100 });
-      gsap.set(
-        [subtitleRef.current, ctaRef.current, badgeRef.current],
-        { y: 20 }
-      );
+      gsap.set([subtitleRef.current, ctaRef.current, badgeRef.current], {
+        y: 20,
+      });
       gsap.set(logoContainerRef.current, { scale: 1.5 });
 
       setTimeout(() => {
@@ -85,61 +83,33 @@ export default function HeroSection({ isLoggedIn }: HeroSectionProps) {
       masterTl.to(
         logoContainerRef.current,
         { scale: 0.4, y: "-30vh", opacity: 0.5, duration: 2 },
-        0
+        0,
       );
-      masterTl.to(
-        scrollHintRef.current,
-        { opacity: 0, y: 50, duration: 1 },
-        0
-      );
-      masterTl.to(
-        tickerRef.current,
-        { opacity: 0, y: -30, duration: 1.5 },
-        0
-      );
-      masterTl.to(
-        badgeRef.current,
-        { opacity: 1, y: 0, duration: 2 },
-        0.5
-      );
+      masterTl.to(scrollHintRef.current, { opacity: 0, y: 50, duration: 1 }, 0);
+      masterTl.to(tickerRef.current, { opacity: 0, y: -30, duration: 1.5 }, 0);
+      masterTl.to(badgeRef.current, { opacity: 1, y: 0, duration: 2 }, 0.5);
 
       // 10-30%: Fly in Headlines
       masterTl.to(
         headlineLeftRef.current,
         { opacity: 1, x: 0, duration: 2, ease: "power2.out" },
-        1
+        1,
       );
       masterTl.to(
         headlineRightRef.current,
         { opacity: 1, x: 0, duration: 2, ease: "power2.out" },
-        1.2
+        1.2,
       );
 
       // 50-70%: Show Subtitle & CTA
-      masterTl.to(
-        subtitleRef.current,
-        { opacity: 1, y: 0, duration: 2 },
-        5.5
-      );
-      masterTl.to(
-        ctaRef.current,
-        { opacity: 1, y: 0, duration: 2 },
-        6
-      );
+      masterTl.to(subtitleRef.current, { opacity: 1, y: 0, duration: 2 }, 5.5);
+      masterTl.to(ctaRef.current, { opacity: 1, y: 0, duration: 2 }, 6);
 
       // 90-100%: Fade out ALL
-      masterTl.to(
-        contentRef.current,
-        { opacity: 0, duration: 1 },
-        9
-      );
-      masterTl.to(
-        logoContainerRef.current,
-        { opacity: 0, duration: 1 },
-        9
-      );
+      masterTl.to(contentRef.current, { opacity: 0, duration: 1 }, 9);
+      masterTl.to(logoContainerRef.current, { opacity: 0, duration: 1 }, 9);
     },
-    { scope: sectionRef }
+    { scope: sectionRef },
   );
 
   return (
@@ -177,15 +147,12 @@ export default function HeroSection({ isLoggedIn }: HeroSectionProps) {
               key={i}
               className="flex items-center gap-8 px-8 text-gold-400/20 text-4xl font-bold tracking-[0.3em] uppercase flex-shrink-0"
             >
-              <span>
-                College of Information and Communications Technology
-              </span>
+              <span>College of Information and Communications Technology</span>
               <span className="text-white/15">•</span>
               <span>Dingle Campus</span>
               <span className="text-white/15">•</span>
               <span>
-                Iloilo State University of Fisheries Science and
-                Technology
+                Iloilo State University of Fisheries Science and Technology
               </span>
               <span className="text-white/15">•</span>
             </div>

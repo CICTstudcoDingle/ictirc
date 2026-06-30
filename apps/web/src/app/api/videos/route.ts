@@ -27,7 +27,7 @@ export async function GET() {
           editorName: video.editorName,
           uploadDate: video.uploadDate.toISOString(),
         };
-      })
+      }),
     );
 
     return NextResponse.json({ videos: videosWithUrls });
@@ -35,7 +35,7 @@ export async function GET() {
     console.error("[Public Videos API] Error:", error);
     return NextResponse.json(
       { error: "Failed to fetch videos" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

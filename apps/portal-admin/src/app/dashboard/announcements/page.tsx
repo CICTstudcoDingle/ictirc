@@ -1,8 +1,6 @@
 import { prisma } from "@ictirc/database";
 import Link from "next/link";
-import {
-  Plus, Calendar, Eye, Edit2, Send, Archive, Pin,
-} from "lucide-react";
+import { Plus, Calendar, Eye, Edit2, Send, Archive, Pin } from "lucide-react";
 import {
   publishAnnouncementAction,
   archiveAnnouncementAction,
@@ -39,7 +37,9 @@ export default async function AnnouncementsManagementPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Announcements</h1>
           <p className="text-sm text-gray-500 mt-1">
-            {announcements.length} announcement{announcements.length !== 1 ? "s" : ""} — published ones appear on the CICT website.
+            {announcements.length} announcement
+            {announcements.length !== 1 ? "s" : ""} — published ones appear on
+            the CICT website.
           </p>
         </div>
         <Link
@@ -77,7 +77,8 @@ export default async function AnnouncementsManagementPage() {
                     </h3>
                     <span
                       className={`inline-flex px-2 py-0.5 rounded text-xs font-medium shrink-0 ${
-                        statusColorMap[announcement.status] ?? "bg-gray-100 text-gray-600"
+                        statusColorMap[announcement.status] ??
+                        "bg-gray-100 text-gray-600"
                       }`}
                     >
                       {announcement.status}
@@ -86,13 +87,18 @@ export default async function AnnouncementsManagementPage() {
                   <div className="flex items-center gap-4 text-xs text-gray-400">
                     <span className="font-mono flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      {new Date(announcement.createdAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
+                      {new Date(announcement.createdAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        },
+                      )}
                     </span>
-                    <span className="font-mono truncate">/{announcement.slug}</span>
+                    <span className="font-mono truncate">
+                      /{announcement.slug}
+                    </span>
                   </div>
                 </div>
 

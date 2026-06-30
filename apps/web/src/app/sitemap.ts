@@ -2,7 +2,8 @@ import type { MetadataRoute } from "next";
 import { prisma } from "@ictirc/database/client";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufstcict.com";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufstcict.com";
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -83,8 +84,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic paper pages (archived papers only)
   let paperPages: MetadataRoute.Sitemap = [];
   let volumePages: MetadataRoute.Sitemap = [];
-  let issuePages: MetadataRoute.Sitemap = [];
-  
+  const issuePages: MetadataRoute.Sitemap = [];
+
   try {
     // Get all archived papers
     const archivedPapers = await prisma.archivedPaper.findMany({

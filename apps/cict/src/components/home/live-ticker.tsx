@@ -33,7 +33,7 @@ export function LiveTicker({ initial }: { initial: TickerItem[] }) {
             },
             ...prev,
           ]);
-        }
+        },
       )
       .on(
         "postgres_changes",
@@ -43,7 +43,11 @@ export function LiveTicker({ initial }: { initial: TickerItem[] }) {
           table: "portal_announcements",
         },
         (payload) => {
-          const row = payload.new as { id: string; title: string; status: string };
+          const row = payload.new as {
+            id: string;
+            title: string;
+            status: string;
+          };
           if (row.status !== "PUBLISHED") return;
           setItems((prev) => [
             {
@@ -53,7 +57,7 @@ export function LiveTicker({ initial }: { initial: TickerItem[] }) {
             },
             ...prev,
           ]);
-        }
+        },
       )
       .on(
         "postgres_changes",
@@ -63,7 +67,11 @@ export function LiveTicker({ initial }: { initial: TickerItem[] }) {
           table: "portal_announcements",
         },
         (payload) => {
-          const row = payload.new as { id: string; title: string; status: string };
+          const row = payload.new as {
+            id: string;
+            title: string;
+            status: string;
+          };
           if (row.status !== "PUBLISHED") return;
           setItems((prev) => [
             {
@@ -73,7 +81,7 @@ export function LiveTicker({ initial }: { initial: TickerItem[] }) {
             },
             ...prev,
           ]);
-        }
+        },
       )
       .subscribe();
 
@@ -87,7 +95,10 @@ export function LiveTicker({ initial }: { initial: TickerItem[] }) {
   const repeated = [...items, ...items, ...items]; // triple for seamless loop
 
   return (
-    <div className="w-full bg-maroon overflow-hidden h-8 flex items-center" aria-live="polite">
+    <div
+      className="w-full bg-maroon overflow-hidden h-8 flex items-center"
+      aria-live="polite"
+    >
       <div className="shrink-0 px-3 bg-maroon-dark border-r border-white/20 h-full flex items-center">
         <span className="text-[10px] font-bold text-gold uppercase tracking-widest whitespace-nowrap">
           Live

@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --maroon: #800000;
-    --gold: #D4AF37;
+    --gold: #d4af37;
   }
 
   body {
@@ -14,7 +14,9 @@
 
   /* JetBrains Mono for technical data */
   .font-mono {
-    font-feature-settings: "liga" 1, "calt" 1;
+    font-feature-settings:
+      "liga" 1,
+      "calt" 1;
   }
 }
 
@@ -89,4 +91,3 @@
     @apply block md:hidden;
   }
 }
-

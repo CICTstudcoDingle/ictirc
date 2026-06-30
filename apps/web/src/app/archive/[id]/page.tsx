@@ -11,9 +11,11 @@ type PageProps = {
   params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params;
-  
+
   const paper = await prisma.archivedPaper.findUnique({
     where: { id },
     include: {
@@ -37,7 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ictirc.org";
 
-  const authors = paper.authors.map(pa => ({
+  const authors = paper.authors.map((pa) => ({
     name: pa.name,
     affiliation: pa.affiliation || undefined,
     orcid: undefined, // TODO: Add ORCID field to schema
@@ -65,13 +67,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         ? `${baseUrl}/conferences/${paper.issue.conference.id}`
         : undefined,
     },
-    baseUrl
+    baseUrl,
   );
 }
 
 export default async function PaperDetailPage({ params }: PageProps) {
   const { id } = await params;
-  
+
   const paper = await prisma.archivedPaper.findUnique({
     where: { id },
     include: {
@@ -93,7 +95,7 @@ export default async function PaperDetailPage({ params }: PageProps) {
   }
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ictirc.org";
 
-  const authors = paper.authors.map(pa => ({
+  const authors = paper.authors.map((pa) => ({
     name: pa.name,
     affiliation: pa.affiliation || undefined,
     orcid: undefined, // TODO: Add ORCID field to schema
@@ -118,7 +120,7 @@ export default async function PaperDetailPage({ params }: PageProps) {
       conferenceName: undefined,
       conferenceUrl: undefined,
     },
-    `${baseUrl}/archive/${id}`
+    `${baseUrl}/archive/${id}`,
   );
 
   return (
@@ -162,11 +164,15 @@ export default async function PaperDetailPage({ params }: PageProps) {
             <div className="flex flex-wrap items-center gap-2 mb-4">
               <Users className="w-4 h-4 text-gray-400" />
               {paper.authors.map((pa, i) => (
-                <span key={pa.id} className="text-gray-700 text-sm md:text-base">
+                <span
+                  key={pa.id}
+                  className="text-gray-700 text-sm md:text-base"
+                >
                   {pa.name}
                   {pa.affiliation && (
                     <span className="text-gray-400 text-xs md:text-sm">
-                      {" "}({pa.affiliation})
+                      {" "}
+                      ({pa.affiliation})
                     </span>
                   )}
                   {i < paper.authors.length - 1 && ", "}
@@ -198,15 +204,20 @@ export default async function PaperDetailPage({ params }: PageProps) {
           {/* Actions */}
           <PaperActions
             pdfUrl={paper.pdfUrl || undefined}
-            citation={`${paper.authors.map(pa => pa.name).join(", ")} (${new Date(paper.publishedDate).getFullYear()}). ${paper.title}. ICTIRC. DOI: ${paper.doi || "pending"}`}
+            citation={`${paper.authors.map((pa) => pa.name).join(", ")} (${new Date(paper.publishedDate).getFullYear()}). ${paper.title}. ICTIRC. DOI: ${paper.doi || "pending"}`}
           />
 
           {/* Abstract */}
           <div className="p-4 sm:p-8">
-            <h2 className="text-lg font-semibold text-gray-900 mb-3">Abstract</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-3">
+              Abstract
+            </h2>
             <div className="prose prose-gray max-w-none">
               {paper.abstract.split("\n\n").map((paragraph, i) => (
-                <p key={i} className="text-gray-700 text-sm md:text-base leading-relaxed mb-4">
+                <p
+                  key={i}
+                  className="text-gray-700 text-sm md:text-base leading-relaxed mb-4"
+                >
                   {paragraph}
                 </p>
               ))}
@@ -214,7 +225,9 @@ export default async function PaperDetailPage({ params }: PageProps) {
 
             {/* Keywords */}
             <div className="mt-6 pt-6 border-t border-gray-100">
-              <h3 className="text-sm font-medium text-gray-900 mb-2">Keywords</h3>
+              <h3 className="text-sm font-medium text-gray-900 mb-2">
+                Keywords
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {paper.keywords.map((keyword) => (
                   <span

@@ -4,12 +4,13 @@ import { requireCictAccess } from "@/lib/auth";
 export default async function DashboardPage() {
   await requireCictAccess();
 
-  const [enrollmentCount, approvedCount, paidCount, receiptCount] = await Promise.all([
-    prisma.cictEnrollment.count(),
-    prisma.cictEnrollment.count({ where: { status: "APPROVED" } }),
-    prisma.cictEnrollment.count({ where: { status: "PAID" } }),
-    prisma.cictReceipt.count(),
-  ]);
+  const [enrollmentCount, approvedCount, paidCount, receiptCount] =
+    await Promise.all([
+      prisma.cictEnrollment.count(),
+      prisma.cictEnrollment.count({ where: { status: "APPROVED" } }),
+      prisma.cictEnrollment.count({ where: { status: "PAID" } }),
+      prisma.cictReceipt.count(),
+    ]);
 
   return (
     <section className="space-y-6">
@@ -23,13 +24,18 @@ export default async function DashboardPage() {
           <p className="text-amber-700 mt-0.5">
             Enrollment management has been migrated to the{" "}
             <a
-              href={process.env.NEXT_PUBLIC_PORTAL_ADMIN_URL || "https://portal-admin.isufstcict.com"}
+              href={
+                process.env.NEXT_PUBLIC_PORTAL_ADMIN_URL ||
+                "https://portal-admin.isufstcict.com"
+              }
               className="font-medium underline"
               target="_blank"
               rel="noopener noreferrer"
             >
               Portal Admin Dashboard
-            </a>. This site will remain accessible for legacy cashier operations only.
+            </a>
+            . This site will remain accessible for legacy cashier operations
+            only.
           </p>
         </div>
       </div>
@@ -37,7 +43,8 @@ export default async function DashboardPage() {
       <div>
         <h1 className="text-2xl font-bold text-maroon">CICT Admin Dashboard</h1>
         <p className="mt-1 text-sm text-gray-600">
-          Manual cashier and enrollment management for Admin, Faculty, and Officers.
+          Manual cashier and enrollment management for Admin, Faculty, and
+          Officers.
         </p>
       </div>
 

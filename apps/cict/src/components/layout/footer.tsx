@@ -1,6 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, ExternalLink, GraduationCap, Mail, Phone, Globe, Store } from "lucide-react";
+import {
+  Facebook,
+  ExternalLink,
+  GraduationCap,
+  Mail,
+  Phone,
+  Globe,
+  Store,
+} from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -40,14 +48,18 @@ export function Footer() {
                 className="w-12 h-12 md:w-14 md:h-14 object-contain"
               />
               <div>
-                <h3 className="font-bold text-white text-lg leading-tight">CICT</h3>
+                <h3 className="font-bold text-white text-lg leading-tight">
+                  CICT
+                </h3>
                 <p className="text-xs text-white/70">
                   College of Information and Communication Technology
                 </p>
               </div>
             </div>
             <p className="text-sm text-gray-100 max-w-sm mb-2">
-              The College of Information and Communication Technology (CICT) at ISUFST Dingle Campus — shaping the next generation of IT professionals and innovators.
+              The College of Information and Communication Technology (CICT) at
+              ISUFST Dingle Campus — shaping the next generation of IT
+              professionals and innovators.
             </p>
 
             {/* Social Links */}
@@ -104,11 +116,18 @@ export function Footer() {
             <ul className="space-y-2.5 text-sm text-gray-200 mb-4">
               <li className="flex items-start gap-2">
                 <GraduationCap className="w-4 h-4 shrink-0 mt-0.5 text-gold" />
-                <span>ISUFST - CICT Department<br />Dingle Campus, Iloilo</span>
+                <span>
+                  ISUFST - CICT Department
+                  <br />
+                  Dingle Campus, Iloilo
+                </span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 shrink-0 text-gold" />
-                <a href="mailto:cict_dingle@isufst.edu.ph" className="hover:text-white transition-colors font-mono text-xs">
+                <a
+                  href="mailto:cict_dingle@isufst.edu.ph"
+                  className="hover:text-white transition-colors font-mono text-xs"
+                >
                   cict_dingle@isufst.edu.ph
                 </a>
               </li>
@@ -118,7 +137,12 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Globe className="w-4 h-4 shrink-0 text-gold" />
-                <a href="https://isufst.edu.ph" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors text-xs">
+                <a
+                  href="https://isufst.edu.ph"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors text-xs"
+                >
                   isufst.edu.ph
                 </a>
               </li>
@@ -162,7 +186,9 @@ export function Footer() {
             <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 text-white rounded-full text-xs font-mono border border-white/20">
               <span className="font-semibold">v1.0.0</span>
               <span className="opacity-50">•</span>
-              <span className="opacity-70">git-{process.env.NEXT_PUBLIC_GIT_COMMIT_HASH || 'dev'}</span>
+              <span className="opacity-70">
+                git-{process.env.NEXT_PUBLIC_GIT_COMMIT_HASH || "dev"}
+              </span>
             </div>
 
             <div className="px-3 py-1.5 bg-white/10 text-white rounded-full text-xs font-medium border border-white/10">

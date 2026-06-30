@@ -10,7 +10,6 @@ import { generateOrganizationJsonLd, generateWebsiteJsonLd } from "@ictirc/seo";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
-
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -22,9 +21,12 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufstcict.com"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufstcict.com",
+  ),
   title: {
-    default: "IRJICT - International Research Journal on Information and Communications Technology",
+    default:
+      "IRJICT - International Research Journal on Information and Communications Technology",
     template: "%s | IRJICT",
   },
   description:
@@ -61,9 +63,7 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", sizes: "any" },
       { url: "/images/irjict-logo.png", type: "image/png", sizes: "192x192" },
     ],
-    apple: [
-      { url: "/images/irjict-logo.png", sizes: "180x180" },
-    ],
+    apple: [{ url: "/images/irjict-logo.png", sizes: "180x180" }],
     shortcut: "/images/irjict-logo.png",
   },
   manifest: "/manifest.json",
@@ -72,7 +72,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     siteName: "IRJICT Research Journal",
     title: "IRJICT - International Research Journal on ICT",
-    description: "A scholarly publication platform for ICT research from ISUFST CICT.",
+    description:
+      "A scholarly publication platform for ICT research from ISUFST CICT.",
     images: [
       {
         url: "/opengraph-image",
@@ -86,7 +87,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "IRJICT Research Journal",
-    description: "A scholarly publication platform for ICT research from ISUFST CICT.",
+    description:
+      "A scholarly publication platform for ICT research from ISUFST CICT.",
     images: ["/opengraph-image"],
   },
   alternates: {
@@ -107,7 +109,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufstcict.com";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://irjict.isufstcict.com";
 
   // Organization structured data for rich results
   const organizationData = generateOrganizationJsonLd({
@@ -137,7 +140,7 @@ export default function RootLayout({
   const websiteData = generateWebsiteJsonLd(
     baseUrl,
     "IRJICT Research Journal",
-    `${baseUrl}/search`
+    `${baseUrl}/search`,
   );
 
   return (

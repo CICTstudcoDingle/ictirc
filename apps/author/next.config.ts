@@ -4,9 +4,7 @@ import { execSync } from "child_process";
 // Get git commit hash at build time
 let gitCommitHash = "dev";
 try {
-  gitCommitHash = execSync("git rev-parse --short HEAD")
-    .toString()
-    .trim();
+  gitCommitHash = execSync("git rev-parse --short HEAD").toString().trim();
 } catch (error) {
   console.warn("Could not retrieve git commit hash:", error);
 }

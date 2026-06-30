@@ -2,7 +2,14 @@ import { prisma } from "@ictirc/database";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { User, FileText, Building, Calendar, ArrowLeft, ExternalLink } from "lucide-react";
+import {
+  User,
+  FileText,
+  Building,
+  Calendar,
+  ArrowLeft,
+  ExternalLink,
+} from "lucide-react";
 
 interface AuthorPageProps {
   params: Promise<{ id: string }>;
@@ -46,7 +53,9 @@ async function getAuthor(id: string) {
   return author;
 }
 
-export async function generateMetadata({ params }: AuthorPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: AuthorPageProps): Promise<Metadata> {
   const { id } = await params;
   const author = await getAuthor(id);
 
@@ -112,7 +121,9 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
 
             {/* Info */}
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-gray-900">{author.name}</h1>
+              <h1 className="text-3xl font-bold text-gray-900">
+                {author.name}
+              </h1>
               {author.affiliation && (
                 <p className="mt-2 text-gray-600 flex items-center gap-2">
                   <Building className="w-4 h-4" />
@@ -121,7 +132,9 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
               )}
               <div className="mt-4 flex items-center gap-4">
                 <div className="px-4 py-2 bg-maroon/10 rounded-lg">
-                  <div className="text-2xl font-bold text-maroon">{publishedPapers.length}</div>
+                  <div className="text-2xl font-bold text-maroon">
+                    {publishedPapers.length}
+                  </div>
                   <div className="text-xs text-gray-600">Publications</div>
                 </div>
               </div>
@@ -132,7 +145,9 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
 
       {/* Papers List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">Published Papers</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-6">
+          Published Papers
+        </h2>
 
         {publishedPapers.length === 0 ? (
           <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
@@ -164,10 +179,13 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
                       {paper.publishedAt && (
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
-                          {new Date(paper.publishedAt).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                          })}
+                          {new Date(paper.publishedAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                            },
+                          )}
                         </span>
                       )}
                       {paper.doi && (

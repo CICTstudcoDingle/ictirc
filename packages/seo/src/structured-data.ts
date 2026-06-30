@@ -55,7 +55,7 @@ export function generateOrganizationJsonLd(org: OrganizationData): object {
 export function generateWebsiteJsonLd(
   url: string,
   name: string,
-  searchUrl: string
+  searchUrl: string,
 ): object {
   return {
     "@context": "https://schema.org",
@@ -78,7 +78,7 @@ export function generateWebsiteJsonLd(
  * Shows breadcrumb trail in search results
  */
 export function generateBreadcrumbJsonLd(
-  items: Array<{ name: string; url: string }>
+  items: Array<{ name: string; url: string }>,
 ): object {
   return {
     "@context": "https://schema.org",
@@ -99,7 +99,7 @@ export function generateCollectionPageJsonLd(
   name: string,
   description: string,
   url: string,
-  itemCount?: number
+  itemCount?: number,
 ): object {
   return {
     "@context": "https://schema.org",

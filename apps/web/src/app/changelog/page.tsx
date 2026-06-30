@@ -33,10 +33,7 @@ export default async function ChangelogPage() {
     },
     include: {
       entries: {
-        orderBy: [
-          { order: "asc" },
-          { createdAt: "desc" },
-        ],
+        orderBy: [{ order: "asc" }, { createdAt: "desc" }],
       },
     },
     orderBy: {
@@ -105,7 +102,7 @@ export default async function ChangelogPage() {
                                 year: "numeric",
                                 month: "long",
                                 day: "numeric",
-                              }
+                              },
                             )}
                           </div>
                           {release.gitCommitHash && (
@@ -137,16 +134,22 @@ export default async function ChangelogPage() {
                             }
                             acc[entry.changeType].push(entry);
                             return acc;
-                          }, {})
+                          }, {}),
                         ).map(([type, entries]: [string, any]) => (
                           <div key={type}>
                             <h3 className="font-semibold text-sm text-gray-600 uppercase mb-3 flex items-center gap-2">
                               <span
                                 className={`px-2 py-1 rounded text-xs ${
-                                  changeTypeColors[type as keyof typeof changeTypeColors]
+                                  changeTypeColors[
+                                    type as keyof typeof changeTypeColors
+                                  ]
                                 }`}
                               >
-                                {changeTypeLabels[type as keyof typeof changeTypeLabels]}
+                                {
+                                  changeTypeLabels[
+                                    type as keyof typeof changeTypeLabels
+                                  ]
+                                }
                               </span>
                               <span className="text-gray-400">
                                 ({entries.length})
@@ -159,9 +162,7 @@ export default async function ChangelogPage() {
                                     •
                                   </span>
                                   <div className="flex-1">
-                                    <p className="font-medium">
-                                      {entry.title}
-                                    </p>
+                                    <p className="font-medium">{entry.title}</p>
                                     <p className="text-gray-600 text-sm mt-1">
                                       {entry.description}
                                     </p>

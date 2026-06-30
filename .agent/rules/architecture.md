@@ -6,7 +6,7 @@ trigger: always_on
 Vision: A high-precision, scholarly publication platform for the College of Information and Computing Technology. Philosophy: "Stealth Luxury" meets "Academic Rigor." Industrial reliability, light-mode clarity, and strict localized branding.
 
 1. 🏗️ Tech Stack Constitution
-Framework: Next.js 16 (App Router, Server Actions, RSC).
+   Framework: Next.js 16 (App Router, Server Actions, RSC).
 
 Architecture: Turborepo (Monorepo).
 
@@ -14,7 +14,8 @@ Database: PostgreSQL (hosted on Supabase/Neon) + Prisma ORM.
 
 Authentication: Supabase Auth (@supabase/ssr for Next.js 16).
 
-Storage (Hot & Cold): 
+Storage (Hot & Cold):
+
 - Supabase Storage (Hot): manuscripts bucket for active papers.
 - Cloudflare R2 (Cold): S3-Compatible API for backup/archival.
 
@@ -25,7 +26,7 @@ Bucket B (Cold): cict-cold-storage (R2 - Daily snapshots & long-term archive).
 Styling: Tailwind CSS + Headless UI (Custom Design System).
 
 2. 🎨 Visual Constitution (Light Mode)
-Palette:
+   Palette:
 
 Canvas: #FFFFFF (Pure White) & #F3F4F6 (Muted Grey).
 
@@ -46,8 +47,8 @@ Buttons: Solid Maroon, Sharp corners (rounded-md), Gold shadow on hover.
 Cards: Minimalist "Paper" stack effect with left-border status indicators.
 
 3. 🛡️ Security & Roles Protocol
-A. Role Hierarchy
-Super Admin (The Dean):
+   A. Role Hierarchy
+   Super Admin (The Dean):
 
 Hardcoded privileges.
 
@@ -72,8 +73,8 @@ Watermarking: All review copies are dynamically stamped: "ISUFST - CICT [REVIEW 
 Signed URLs: "Under Review" files are served via R2 Signed URLs (1-hour expiry).
 
 4. 🧠 Workflow & Research Engine
-A. Submission Pipeline
-Upload: Author uploads .docx or .pdf to R2 (raw bucket).
+   A. Submission Pipeline
+   Upload: Author uploads .docx or .pdf to R2 (raw bucket).
 
 Sanitization: Server Action triggers file scan (Malware check).
 
@@ -97,7 +98,7 @@ Footer: Dynamic DOI + CC BY-ND License.
 Metadata: XMP properties (Title, Author) injected into the file.
 
 5. 🌍 SEO & Metadata (Discovery)
-Standard: OAI-PMH compliant tagging.
+   Standard: OAI-PMH compliant tagging.
 
 Implementation: Next.js 16 generateMetadata() API.
 
@@ -106,16 +107,16 @@ Tags: Dublin Core + Google Scholar Highwire Press tags.
 Indexing: Automated ping to Google Search Console API upon publication.
 
 6. 📂 Monorepo Structure
-Bash
-root/
-├── apps/
-│   ├── web/           # Public Portal (Reader facing)
-│   ├── admin/         # Dashboard (Dean, Editors, Reviewers)
-│   └── docs/          # Documentation
-├── packages/
-│   ├── ui/            # Shared "Maroon/Gold" components
-│   ├── database/      # Prisma Schema & Client
-│   ├── seo/           # Metadata generators & Sitemap logic
-│   ├── security/      # Firebase Admin & R2 Signed URL logic
-│   └── logger/        # Audit Log utilities
-└── README.md          # This Constitution
+   Bash
+   root/
+   ├── apps/
+   │ ├── web/ # Public Portal (Reader facing)
+   │ ├── admin/ # Dashboard (Dean, Editors, Reviewers)
+   │ └── docs/ # Documentation
+   ├── packages/
+   │ ├── ui/ # Shared "Maroon/Gold" components
+   │ ├── database/ # Prisma Schema & Client
+   │ ├── seo/ # Metadata generators & Sitemap logic
+   │ ├── security/ # Firebase Admin & R2 Signed URL logic
+   │ └── logger/ # Audit Log utilities
+   └── README.md # This Constitution

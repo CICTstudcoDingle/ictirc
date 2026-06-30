@@ -15,7 +15,10 @@ import {
 // ARCHIVED PAPER MANAGEMENT
 // ============================================
 
-export async function createArchivedPaper(data: ArchivedPaperInput, uploaderId: string) {
+export async function createArchivedPaper(
+  data: ArchivedPaperInput,
+  uploaderId: string,
+) {
   try {
     const validated = createArchivedPaperSchema.parse(data);
 
@@ -25,8 +28,12 @@ export async function createArchivedPaper(data: ArchivedPaperInput, uploaderId: 
       data: {
         ...paperData,
         publishedDate: new Date(validated.publishedDate),
-        submittedDate: validated.submittedDate ? new Date(validated.submittedDate) : null,
-        acceptedDate: validated.acceptedDate ? new Date(validated.acceptedDate) : null,
+        submittedDate: validated.submittedDate
+          ? new Date(validated.submittedDate)
+          : null,
+        acceptedDate: validated.acceptedDate
+          ? new Date(validated.acceptedDate)
+          : null,
         uploadedBy: uploaderId,
         authors: {
           create: authors,
@@ -55,12 +62,18 @@ export async function createArchivedPaper(data: ArchivedPaperInput, uploaderId: 
     console.error("Error creating archived paper:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to create archived paper",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to create archived paper",
     };
   }
 }
 
-export async function updateArchivedPaper(id: string, data: UpdateArchivedPaperInput) {
+export async function updateArchivedPaper(
+  id: string,
+  data: UpdateArchivedPaperInput,
+) {
   try {
     const validated = updateArchivedPaperSchema.parse(data);
 
@@ -114,7 +127,10 @@ export async function updateArchivedPaper(id: string, data: UpdateArchivedPaperI
     console.error("Error updating archived paper:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to update archived paper",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update archived paper",
     };
   }
 }
@@ -133,7 +149,10 @@ export async function deleteArchivedPaper(id: string) {
     console.error("Error deleting archived paper:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to delete archived paper",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to delete archived paper",
     };
   }
 }
@@ -174,7 +193,10 @@ export async function getArchivedPaper(id: string) {
     console.error("Error fetching archived paper:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to fetch archived paper",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch archived paper",
     };
   }
 }
@@ -210,7 +232,10 @@ export async function listArchivedPapers(issueId?: string) {
     console.error("Error listing archived papers:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to list archived papers",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to list archived papers",
     };
   }
 }
@@ -221,7 +246,7 @@ export async function listArchivedPapers(issueId?: string) {
 
 export async function batchCreateArchivedPapers(
   papers: ArchivedPaperInput[],
-  uploaderId: string
+  uploaderId: string,
 ) {
   try {
     const results = [];
@@ -248,7 +273,10 @@ export async function batchCreateArchivedPapers(
     console.error("Error batch creating archived papers:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Failed to batch create archived papers",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to batch create archived papers",
     };
   }
 }
@@ -260,7 +288,7 @@ export async function batchCreateArchivedPapers(
 export async function parseCSVRowToPaper(
   row: CSVRowInput,
   issueId: string,
-  publishedDate: Date
+  publishedDate: Date,
 ): Promise<ArchivedPaperInput | null> {
   try {
     const validated = csvRowSchema.parse(row);
@@ -317,9 +345,15 @@ export async function parseCSVRowToPaper(
       categoryId: category.id,
       issueId,
       publishedDate,
-      submittedDate: validated.submitted_date ? new Date(validated.submitted_date) : undefined,
-      acceptedDate: validated.accepted_date ? new Date(validated.accepted_date) : undefined,
-      pageStart: validated.page_start ? parseInt(validated.page_start) : undefined,
+      submittedDate: validated.submitted_date
+        ? new Date(validated.submitted_date)
+        : undefined,
+      acceptedDate: validated.accepted_date
+        ? new Date(validated.accepted_date)
+        : undefined,
+      pageStart: validated.page_start
+        ? parseInt(validated.page_start)
+        : undefined,
       pageEnd: validated.page_end ? parseInt(validated.page_end) : undefined,
       pdfUrl: validated.pdf_filename, // Will be replaced with actual URL after upload
       docxUrl: validated.docx_filename || undefined,

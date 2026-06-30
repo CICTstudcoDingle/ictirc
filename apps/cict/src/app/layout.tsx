@@ -21,9 +21,12 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://isufstcict.com"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://isufstcict.com",
+  ),
   title: {
-    default: "CICT — College of Information and Communication Technology | ISUFST",
+    default:
+      "CICT — College of Information and Communication Technology | ISUFST",
     template: "%s | CICT — ISUFST",
   },
   description:
@@ -62,9 +65,7 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", sizes: "any" },
       { url: "/images/CICT_LOGO.png", type: "image/png", sizes: "192x192" },
     ],
-    apple: [
-      { url: "/images/CICT_LOGO.png", sizes: "180x180" },
-    ],
+    apple: [{ url: "/images/CICT_LOGO.png", sizes: "180x180" }],
     shortcut: "/images/CICT_LOGO.png",
   },
   openGraph: {
@@ -137,7 +138,7 @@ export default function RootLayout({
   const websiteData = generateWebsiteJsonLd(
     baseUrl,
     "CICT — ISUFST",
-    `${baseUrl}/`
+    `${baseUrl}/`,
   );
 
   return (

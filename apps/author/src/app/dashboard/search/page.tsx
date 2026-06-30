@@ -1,47 +1,72 @@
-'use client'
+"use client";
 
-import { useState, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
-import { Search, Loader2, Clock, FileText, Users, Calendar, ExternalLink } from 'lucide-react'
-import { useSearch } from '@ictirc/search'
-import type { SearchHitResult } from '@ictirc/search'
-import { SearchInput, SearchHitCard } from '@ictirc/search'
+import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Search,
+  Loader2,
+  Clock,
+  FileText,
+  Users,
+  Calendar,
+  ExternalLink,
+} from "lucide-react";
+import { useSearch } from "@ictirc/search";
+import type { SearchHitResult } from "@ictirc/search";
+import { SearchInput, SearchHitCard } from "@ictirc/search";
 
 export default function AuthorSearchPage() {
-  const router = useRouter()
-  const { query, setQuery, results, isLoading, error, totalHits, processingTimeMS } = useSearch({
+  const router = useRouter();
+  const {
+    query,
+    setQuery,
+    results,
+    isLoading,
+    error,
+    totalHits,
+    processingTimeMS,
+  } = useSearch({
     hitsPerPage: 20,
-  })
+  });
 
   // Filter state
-  const [selectedType, setSelectedType] = useState<string>('all')
+  const [selectedType, setSelectedType] = useState<string>("all");
 
   const handleHitClick = (hit: SearchHitResult) => {
-    // Open in the public web app since author portal doesn't have paper detail pages for all papers  
-    const baseUrl = process.env.NEXT_PUBLIC_WEB_URL || 'https://irjict.isufst.edu.ph'
+    // Open in the public web app since author portal doesn't have paper detail pages for all papers
+    const baseUrl =
+      process.env.NEXT_PUBLIC_WEB_URL || "https://irjict.isufst.edu.ph";
     if (hit.url) {
-      window.open(`${baseUrl}${hit.url}`, '_blank')
+      window.open(`${baseUrl}${hit.url}`, "_blank");
     }
-  }
+  };
 
   // Filter results by type
-  const filteredResults = selectedType === 'all'
-    ? results
-    : results.filter(r => r.type === selectedType)
+  const filteredResults =
+    selectedType === "all"
+      ? results
+      : results.filter((r) => r.type === selectedType);
 
   // Count by type
-  const typeCounts = results.reduce((acc, r) => {
-    acc[r.type] = (acc[r.type] || 0) + 1
-    return acc
-  }, {} as Record<string, number>)
+  const typeCounts = results.reduce(
+    (acc, r) => {
+      acc[r.type] = (acc[r.type] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
   const typeFilters = [
-    { value: 'all', label: 'All', count: results.length },
-    { value: 'paper', label: 'Papers', count: typeCounts['paper'] || 0 },
-    { value: 'archive', label: 'Archives', count: typeCounts['archive'] || 0 },
-    { value: 'author', label: 'Authors', count: typeCounts['author'] || 0 },
-    { value: 'conference', label: 'Conferences', count: typeCounts['conference'] || 0 },
-  ]
+    { value: "all", label: "All", count: results.length },
+    { value: "paper", label: "Papers", count: typeCounts["paper"] || 0 },
+    { value: "archive", label: "Archives", count: typeCounts["archive"] || 0 },
+    { value: "author", label: "Authors", count: typeCounts["author"] || 0 },
+    {
+      value: "conference",
+      label: "Conferences",
+      count: typeCounts["conference"] || 0,
+    },
+  ];
 
   return (
     <div className="space-y-6">
@@ -70,7 +95,7 @@ export default function AuthorSearchPage() {
         <div className="flex items-center gap-4 text-xs text-gray-500">
           <span className="flex items-center gap-1">
             <Search className="w-3 h-3" />
-            {totalHits} result{totalHits !== 1 ? 's' : ''}
+            {totalHits} result{totalHits !== 1 ? "s" : ""}
           </span>
           <span className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
@@ -82,24 +107,27 @@ export default function AuthorSearchPage() {
       {/* Type Filters */}
       {query && results.length > 0 && (
         <div className="flex flex-wrap gap-2">
-          {typeFilters.map(f => (
+          {typeFilters.map((f) => (
             <button
               key={f.value}
               onClick={() => setSelectedType(f.value)}
               className={`
                 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium 
                 transition-colors
-                ${selectedType === f.value
-                  ? 'bg-maroon text-white shadow-sm'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ${
+                  selectedType === f.value
+                    ? "bg-maroon text-white shadow-sm"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }
               `}
             >
               {f.label}
               {f.count > 0 && (
-                <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                  selectedType === f.value ? 'bg-white/20' : 'bg-white'
-                }`}>
+                <span
+                  className={`px-1.5 py-0.5 rounded-full text-xs ${
+                    selectedType === f.value ? "bg-white/20" : "bg-white"
+                  }`}
+                >
                   {f.count}
                 </span>
               )}
@@ -144,7 +172,9 @@ export default function AuthorSearchPage() {
       {!isLoading && query && results.length === 0 && !error && (
         <div className="text-center py-16 bg-gray-50 rounded-lg border border-gray-200">
           <Search className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-1">No results found</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+            No results found
+          </h3>
           <p className="text-sm text-gray-500">
             Try different keywords or check your spelling
           </p>
@@ -159,10 +189,17 @@ export default function AuthorSearchPage() {
             Discover Published Research
           </h2>
           <p className="text-sm text-gray-500 max-w-md mx-auto">
-            Search across all published papers, authors, and conferences in the IRJICT archive.
+            Search across all published papers, authors, and conferences in the
+            IRJICT archive.
           </p>
           <div className="flex flex-wrap justify-center gap-2 mt-6">
-            {['machine learning', 'cybersecurity', 'IoT', 'AI', 'data mining'].map(term => (
+            {[
+              "machine learning",
+              "cybersecurity",
+              "IoT",
+              "AI",
+              "data mining",
+            ].map((term) => (
               <button
                 key={term}
                 onClick={() => setQuery(term)}
@@ -175,5 +212,5 @@ export default function AuthorSearchPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

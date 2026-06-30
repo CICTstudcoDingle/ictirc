@@ -29,8 +29,8 @@ export function AddMemberForm({ conferenceId }: AddMemberFormProps) {
         conferenceId,
         name: formData.get("name") as string,
         position: formData.get("position") as string,
-        affiliation: formData.get("affiliation") as string || undefined,
-        email: formData.get("email") as string || undefined,
+        affiliation: (formData.get("affiliation") as string) || undefined,
+        email: (formData.get("email") as string) || undefined,
         displayOrder: parseInt(formData.get("displayOrder") as string) || 0,
       });
 

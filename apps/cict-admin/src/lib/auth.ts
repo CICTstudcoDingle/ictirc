@@ -4,7 +4,9 @@ import { createClient } from "@/lib/supabase/server";
 
 const ALL_ROLES: CictAdminRole[] = ["ADMIN", "FACULTY", "OFFICER"];
 
-export async function requireCictAccess(allowedRoles: CictAdminRole[] = ALL_ROLES) {
+export async function requireCictAccess(
+  allowedRoles: CictAdminRole[] = ALL_ROLES,
+) {
   const supabase = await createClient();
   const {
     data: { user },

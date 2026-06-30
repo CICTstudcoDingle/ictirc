@@ -1,7 +1,12 @@
 import { Award, Quote } from "lucide-react";
 import { CircuitBackground } from "@ictirc/ui";
 import { ScrollAnimation } from "@/components/ui/scroll-animation";
-import { totalAlumni, alumniTestimonials, alumniBatches, alumniByYear } from "@/data/alumni";
+import {
+  totalAlumni,
+  alumniTestimonials,
+  alumniBatches,
+  alumniByYear,
+} from "@/data/alumni";
 
 export default function AlumniPage() {
   const years = Object.keys(alumniByYear)
@@ -36,7 +41,9 @@ export default function AlumniPage() {
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               Graduates by Year
             </h2>
-            <p className="text-sm text-gray-500">BSIT graduates per academic year</p>
+            <p className="text-sm text-gray-500">
+              BSIT graduates per academic year
+            </p>
           </ScrollAnimation>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -44,7 +51,9 @@ export default function AlumniPage() {
               <ScrollAnimation key={year} direction="up" staggerIndex={index}>
                 <div className="stat-card">
                   <p className="text-xs font-mono text-gray-400 mb-1">Batch</p>
-                  <p className="text-lg font-bold text-maroon font-mono">{year}</p>
+                  <p className="text-lg font-bold text-maroon font-mono">
+                    {year}
+                  </p>
                   <p className="text-2xl font-bold text-gray-900 mt-1">
                     {alumniByYear[year]}
                   </p>
@@ -85,7 +94,10 @@ export default function AlumniPage() {
                   .slice()
                   .sort((a, b) => b.year - a.year)
                   .map((batch) => (
-                    <tr key={batch.year} className="hover:bg-gray-50 transition-colors">
+                    <tr
+                      key={batch.year}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
                       <td className="px-6 py-3 font-mono text-sm font-semibold text-gray-900">
                         {batch.year}
                       </td>
@@ -100,7 +112,10 @@ export default function AlumniPage() {
                     </tr>
                   ))}
                 <tr className="bg-maroon/5 border-t-2 border-maroon/20">
-                  <td className="px-6 py-3 font-bold text-maroon text-sm" colSpan={2}>
+                  <td
+                    className="px-6 py-3 font-bold text-maroon text-sm"
+                    colSpan={2}
+                  >
                     GRAND TOTAL
                   </td>
                   <td className="px-6 py-3 text-right font-mono text-sm font-bold text-maroon">
@@ -127,14 +142,21 @@ export default function AlumniPage() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {alumniTestimonials.map((testimonial, index) => (
-              <ScrollAnimation key={index} direction="up" staggerIndex={index} className="h-full">
+              <ScrollAnimation
+                key={index}
+                direction="up"
+                staggerIndex={index}
+                className="h-full"
+              >
                 <div className="paper-card p-6 hover:shadow-lg transition-all h-full flex flex-col">
                   <Quote className="w-8 h-8 text-gold/40 mb-4" />
                   <p className="text-sm text-gray-600 italic flex-1 mb-4">
                     &ldquo;{testimonial.quote}&rdquo;
                   </p>
                   <div className="border-t border-gray-100 pt-4">
-                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                    <p className="font-semibold text-gray-900">
+                      {testimonial.name}
+                    </p>
                     <p className="text-xs text-maroon font-mono">
                       {testimonial.program} — Batch {testimonial.batch}
                     </p>

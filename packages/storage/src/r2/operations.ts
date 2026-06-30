@@ -15,7 +15,7 @@ import type { UploadResult, SignedUrlResult, FileMetadata } from "../types";
 export async function uploadToR2(
   file: Buffer | Uint8Array,
   path: string,
-  metadata?: Partial<FileMetadata>
+  metadata?: Partial<FileMetadata>,
 ): Promise<UploadResult> {
   try {
     const config = getR2Config();
@@ -31,7 +31,8 @@ export async function uploadToR2(
             paperId: metadata.paperId || "",
             originalName: metadata.originalName || "",
             uploadedBy: metadata.uploadedBy || "",
-            uploadedAt: metadata.uploadedAt?.toISOString() || new Date().toISOString(),
+            uploadedAt:
+              metadata.uploadedAt?.toISOString() || new Date().toISOString(),
           }
         : undefined,
     });
@@ -57,7 +58,7 @@ export async function uploadToR2(
  * Download a file from R2 Cold Storage
  */
 export async function downloadFromR2(
-  path: string
+  path: string,
 ): Promise<{ success: boolean; data?: Buffer; error?: string }> {
   try {
     const config = getR2Config();
@@ -97,7 +98,7 @@ export async function downloadFromR2(
  * RESTRICTED: Only Dean/Super Admin should have access
  */
 export async function deleteFromR2(
-  path: string
+  path: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const config = getR2Config();
@@ -126,7 +127,7 @@ export async function deleteFromR2(
  */
 export async function getR2SignedUrl(
   path: string,
-  expiresInSeconds: number = 3600 // 1 hour default
+  expiresInSeconds: number = 3600, // 1 hour default
 ): Promise<SignedUrlResult> {
   try {
     const config = getR2Config();
@@ -152,7 +153,10 @@ export async function getR2SignedUrl(
     console.error("[R2] Signed URL error:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Unknown error generating signed URL",
+      error:
+        error instanceof Error
+          ? error.message
+          : "Unknown error generating signed URL",
     };
   }
 }
@@ -164,7 +168,7 @@ export async function getR2SignedUrl(
 export async function copyToR2ColdStorage(
   sourceBuffer: Buffer,
   destinationPath: string,
-  metadata?: Partial<FileMetadata>
+  metadata?: Partial<FileMetadata>,
 ): Promise<UploadResult> {
   // This function accepts a buffer from Supabase and uploads to R2
   return uploadToR2(sourceBuffer, destinationPath, metadata);
@@ -175,7 +179,7 @@ export async function copyToR2ColdStorage(
  */
 export async function copyWithinR2(
   sourcePath: string,
-  destinationPath: string
+  destinationPath: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const config = getR2Config();
@@ -211,7 +215,7 @@ export async function backupPaperToR2(
     title?: string;
     originalName?: string;
     uploadedBy?: string;
-  }
+  },
 ): Promise<{
   success: boolean;
   r2Url?: string;
@@ -232,7 +236,8 @@ export async function backupPaperToR2(
     const buffer = Buffer.from(arrayBuffer);
 
     // Determine file extension from URL or content type
-    const contentType = response.headers.get("content-type") || "application/pdf";
+    const contentType =
+      response.headers.get("content-type") || "application/pdf";
     let extension = "pdf";
     if (contentType.includes("docx")) {
       extension = "docx";
@@ -276,4 +281,3 @@ export async function backupPaperToR2(
     };
   }
 }
-

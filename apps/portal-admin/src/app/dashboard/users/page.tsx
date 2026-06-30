@@ -113,7 +113,8 @@ export default async function UsersPage() {
                     <td className="px-6 py-4">
                       <span
                         className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${
-                          typeColorMap[user.userType] || "bg-gray-100 text-gray-600"
+                          typeColorMap[user.userType] ||
+                          "bg-gray-100 text-gray-600"
                         }`}
                       >
                         {user.userType}

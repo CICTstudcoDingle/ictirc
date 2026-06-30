@@ -62,31 +62,31 @@ export default function DashboardPage() {
 
   const statCards = stats
     ? [
-      {
-        label: "Total Papers",
-        value: stats.totalPapers.toString(),
-        icon: FileText,
-        color: "text-maroon",
-      },
-      {
-        label: "Authors",
-        value: stats.totalAuthors.toString(),
-        icon: Users,
-        color: "text-blue-600",
-      },
-      {
-        label: "Published",
-        value: stats.publishedCount.toString(),
-        icon: CheckCircle,
-        color: "text-green-600",
-      },
-      {
-        label: "Under Review",
-        value: stats.underReviewCount.toString(),
-        icon: Clock,
-        color: "text-amber-600",
-      },
-    ]
+        {
+          label: "Total Papers",
+          value: stats.totalPapers.toString(),
+          icon: FileText,
+          color: "text-maroon",
+        },
+        {
+          label: "Authors",
+          value: stats.totalAuthors.toString(),
+          icon: Users,
+          color: "text-blue-600",
+        },
+        {
+          label: "Published",
+          value: stats.publishedCount.toString(),
+          icon: CheckCircle,
+          color: "text-green-600",
+        },
+        {
+          label: "Under Review",
+          value: stats.underReviewCount.toString(),
+          icon: Clock,
+          color: "text-amber-600",
+        },
+      ]
     : [];
 
   return (
@@ -116,37 +116,35 @@ export default function DashboardPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {loading ? (
-          // Loading skeletons
-          Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i}>
-              <CardContent className="p-6">
-                <div className="animate-pulse">
-                  <div className="h-4 bg-gray-200 rounded w-24 mb-3"></div>
-                  <div className="h-8 bg-gray-200 rounded w-16"></div>
-                </div>
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          statCards.map((stat) => (
-            <Card key={stat.label}>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-500">{stat.label}</p>
-                    <p className="text-3xl font-bold text-gray-900 mt-1">
-                      {stat.value}
-                    </p>
+        {loading
+          ? // Loading skeletons
+            Array.from({ length: 4 }).map((_, i) => (
+              <Card key={i}>
+                <CardContent className="p-6">
+                  <div className="animate-pulse">
+                    <div className="h-4 bg-gray-200 rounded w-24 mb-3"></div>
+                    <div className="h-8 bg-gray-200 rounded w-16"></div>
                   </div>
-                  <div className={`p-3 rounded-lg bg-gray-50 ${stat.color}`}>
-                    <stat.icon className="w-6 h-6" />
+                </CardContent>
+              </Card>
+            ))
+          : statCards.map((stat) => (
+              <Card key={stat.label}>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-500">{stat.label}</p>
+                      <p className="text-3xl font-bold text-gray-900 mt-1">
+                        {stat.value}
+                      </p>
+                    </div>
+                    <div className={`p-3 rounded-lg bg-gray-50 ${stat.color}`}>
+                      <stat.icon className="w-6 h-6" />
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))
-        )}
+                </CardContent>
+              </Card>
+            ))}
       </div>
 
       {/* Recent Submissions */}
@@ -158,7 +156,10 @@ export default function DashboardPage() {
           {loading ? (
             <div className="space-y-4">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="animate-pulse py-4 border-b border-gray-100 last:border-0">
+                <div
+                  key={i}
+                  className="animate-pulse py-4 border-b border-gray-100 last:border-0"
+                >
                   <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
                   <div className="h-3 bg-gray-200 rounded w-1/2"></div>
                 </div>
@@ -173,30 +174,30 @@ export default function DashboardPage() {
               </p>
             </div>
           ) : (
-                <div className="divide-y divide-gray-100">
-                  {recentPapers.map((paper) => (
-                    <div
-                      key={paper.id}
-                      className="py-4 flex items-center justify-between"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-gray-900 truncate">
-                          {paper.title}
-                        </h4>
-                        <p className="text-sm text-gray-500 mt-0.5">
-                          by {paper.author} • {paper.date}
-                        </p>
-                      </div>
-                      <span
-                        className={`ml-4 px-2.5 py-1 rounded-full text-xs font-medium ${
+            <div className="divide-y divide-gray-100">
+              {recentPapers.map((paper) => (
+                <div
+                  key={paper.id}
+                  className="py-4 flex items-center justify-between"
+                >
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-gray-900 truncate">
+                      {paper.title}
+                    </h4>
+                    <p className="text-sm text-gray-500 mt-0.5">
+                      by {paper.author} • {paper.date}
+                    </p>
+                  </div>
+                  <span
+                    className={`ml-4 px-2.5 py-1 rounded-full text-xs font-medium ${
                       statusColors[paper.status] || "bg-gray-100 text-gray-700"
-                      }`}
+                    }`}
                   >
                     {paper.status.replace("_", " ")}
                   </span>
                 </div>
               ))}
-                </div>
+            </div>
           )}
         </CardContent>
       </Card>

@@ -27,14 +27,11 @@ import { useUpload } from "@/hooks/use-upload";
 const formSchema = conferenceSchema.extend({
   logoUrl: z.string().url().optional().or(z.literal("")),
   websiteUrl: z.string().url().optional().or(z.literal("")),
-  startDate: z.union([
-    z.date(),
-    z.string().transform((str) => new Date(str))
-  ]),
-  endDate: z.union([
-    z.date(),
-    z.string().transform((str) => new Date(str))
-  ]).optional().or(z.literal("")),
+  startDate: z.union([z.date(), z.string().transform((str) => new Date(str))]),
+  endDate: z
+    .union([z.date(), z.string().transform((str) => new Date(str))])
+    .optional()
+    .or(z.literal("")),
   description: z.string().optional(),
   imageUrl: z.string().url().optional().or(z.literal("")),
 });
@@ -61,7 +58,10 @@ interface ConferenceFormProps {
   redirectTo?: string;
 }
 
-export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/conferences" }: ConferenceFormProps) {
+export function ConferenceForm({
+  conference,
+  redirectTo = "/dashboard/archives/conferences",
+}: ConferenceFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -74,8 +74,15 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
       name: conference?.name || "",
       fullName: conference?.fullName || "",
       description: conference?.description || "",
-      startDate: (conference?.startDate ? new Date(conference.startDate) : new Date()).toISOString().split('T')[0] as any,
-      endDate: (conference?.endDate ? new Date(conference.endDate).toISOString().split('T')[0] : "") as any,
+      startDate: (conference?.startDate
+        ? new Date(conference.startDate)
+        : new Date()
+      )
+        .toISOString()
+        .split("T")[0] as any,
+      endDate: (conference?.endDate
+        ? new Date(conference.endDate).toISOString().split("T")[0]
+        : "") as any,
       location: conference?.location || "",
       venue: conference?.venue || "",
       theme: conference?.theme || "",
@@ -87,12 +94,20 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
     },
   });
 
-  const { fields: organizerFields, append: appendOrganizer, remove: removeOrganizer } = useFieldArray({
+  const {
+    fields: organizerFields,
+    append: appendOrganizer,
+    remove: removeOrganizer,
+  } = useFieldArray({
     control: form.control as any,
     name: "organizers",
   });
 
-  const { fields: partnerFields, append: appendPartner, remove: removePartner } = useFieldArray({
+  const {
+    fields: partnerFields,
+    append: appendPartner,
+    remove: removePartner,
+  } = useFieldArray({
     control: form.control as any,
     name: "partners",
   });
@@ -154,11 +169,13 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
               <FormItem>
                 <FormLabel>Name *</FormLabel>
                 <FormControl>
-                  <Input placeholder="1st ICTIRC" {...field} value={field.value as string} />
+                  <Input
+                    placeholder="1st ICTIRC"
+                    {...field}
+                    value={field.value as string}
+                  />
                 </FormControl>
-                <FormDescription>
-                  Short name (e.g., 1st ICTIRC)
-                </FormDescription>
+                <FormDescription>Short name (e.g., 1st ICTIRC)</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -171,11 +188,13 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
               <FormItem>
                 <FormLabel>Start Date *</FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} value={field.value as string | undefined} />
+                  <Input
+                    type="date"
+                    {...field}
+                    value={field.value as string | undefined}
+                  />
                 </FormControl>
-                <FormDescription>
-                  Conference start date
-                </FormDescription>
+                <FormDescription>Conference start date</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -190,7 +209,11 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
               <FormItem>
                 <FormLabel>End Date</FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} value={field.value as string | undefined} />
+                  <Input
+                    type="date"
+                    {...field}
+                    value={field.value as string | undefined}
+                  />
                 </FormControl>
                 <FormDescription>
                   Conference end date (optional)
@@ -207,11 +230,13 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
               <FormItem>
                 <FormLabel>Location</FormLabel>
                 <FormControl>
-                  <Input placeholder="Barotac Nuevo, Philippines" {...field} value={field.value as string | undefined} />
+                  <Input
+                    placeholder="Barotac Nuevo, Philippines"
+                    {...field}
+                    value={field.value as string | undefined}
+                  />
                 </FormControl>
-                <FormDescription>
-                  City, Country
-                </FormDescription>
+                <FormDescription>City, Country</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -231,9 +256,7 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
                   value={field.value as string | undefined}
                 />
               </FormControl>
-              <FormDescription>
-                Optional description
-              </FormDescription>
+              <FormDescription>Optional description</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -268,7 +291,7 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
               <FormLabel>Conference Banner</FormLabel>
               <FormControl>
                 <FileUpload
-                  value={field.value as string || ""}
+                  value={(field.value as string) || ""}
                   onFileSelect={async (file) => {
                     const url = await bannerUpload.uploadFile(file);
                     if (url) field.onChange(url);
@@ -293,11 +316,13 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
               <FormItem>
                 <FormLabel>Location</FormLabel>
                 <FormControl>
-                  <Input placeholder="Barotac Nuevo, Philippines" {...field} value={field.value as string | undefined} />
+                  <Input
+                    placeholder="Barotac Nuevo, Philippines"
+                    {...field}
+                    value={field.value as string | undefined}
+                  />
                 </FormControl>
-                <FormDescription>
-                  City, Country
-                </FormDescription>
+                <FormDescription>City, Country</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -316,9 +341,7 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
                     value={field.value as string | undefined}
                   />
                 </FormControl>
-                <FormDescription>
-                  Specific venue details
-                </FormDescription>
+                <FormDescription>Specific venue details</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -338,9 +361,7 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
                   value={field.value as string | undefined}
                 />
               </FormControl>
-              <FormDescription>
-                Conference theme or tagline
-              </FormDescription>
+              <FormDescription>Conference theme or tagline</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -417,7 +438,7 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
                 <FormLabel>Conference Logo (Optional)</FormLabel>
                 <FormControl>
                   <FileUpload
-                    value={field.value as string || ""}
+                    value={(field.value as string) || ""}
                     onFileSelect={async (file) => {
                       const url = await logoUpload.uploadFile(file);
                       if (url) field.onChange(url);
@@ -456,13 +477,13 @@ export function ConferenceForm({ conference, redirectTo = "/dashboard/archives/c
 
         <div className="flex gap-4">
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : conference ? "Update Conference" : "Create Conference"}
+            {isSubmitting
+              ? "Saving..."
+              : conference
+                ? "Update Conference"
+                : "Create Conference"}
           </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.back()}
-          >
+          <Button type="button" variant="outline" onClick={() => router.back()}>
             Cancel
           </Button>
         </div>

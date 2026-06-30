@@ -9,7 +9,7 @@ async function createAuditLog(
   targetType: string,
   actorEmail: string,
   metadata?: any,
-  ipAddress?: string
+  ipAddress?: string,
 ) {
   await prisma.auditLog.create({
     data: {
@@ -125,19 +125,19 @@ export async function GET(request: NextRequest) {
           : null,
         issue: ap.issue
           ? {
-            id: ap.issue.id,
-            issueNumber: ap.issue.issueNumber,
-            volume: ap.issue.volume
-              ? {
-                id: ap.issue.volume.id,
-                volumeNumber: ap.issue.volume.volumeNumber,
-                year: ap.issue.volume.year,
-              }
-              : null,
-            conference: ap.issue.conference
-              ? { id: ap.issue.conference.id, name: ap.issue.conference.name }
-              : null,
-          }
+              id: ap.issue.id,
+              issueNumber: ap.issue.issueNumber,
+              volume: ap.issue.volume
+                ? {
+                    id: ap.issue.volume.id,
+                    volumeNumber: ap.issue.volume.volumeNumber,
+                    year: ap.issue.volume.year,
+                  }
+                : null,
+              conference: ap.issue.conference
+                ? { id: ap.issue.conference.id, name: ap.issue.conference.name }
+                : null,
+            }
           : null,
         authors: ap.authors.map((a) => ({
           author: {
@@ -176,7 +176,7 @@ export async function GET(request: NextRequest) {
     console.error("Failed to fetch papers:", error);
     return NextResponse.json(
       { error: "Failed to fetch papers" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -202,8 +202,15 @@ export async function PUT(request: NextRequest) {
       if (doi !== undefined) updateData.doi = doi;
       // Allow updating specific fields for archived papers
       const allowedFields = [
-        "title", "abstract", "keywords", "pdfUrl", "docxUrl",
-        "pageStart", "pageEnd", "categoryId", "issueId",
+        "title",
+        "abstract",
+        "keywords",
+        "pdfUrl",
+        "docxUrl",
+        "pageStart",
+        "pageEnd",
+        "categoryId",
+        "issueId",
       ];
       for (const field of allowedFields) {
         if (rest[field] !== undefined) updateData[field] = rest[field];
@@ -228,7 +235,7 @@ export async function PUT(request: NextRequest) {
         "ArchivedPaper",
         "admin@system",
         { doi: paper.doi },
-        ipAddress
+        ipAddress,
       );
 
       return NextResponse.json({ paper });
@@ -266,7 +273,7 @@ export async function PUT(request: NextRequest) {
       "Paper",
       "admin@system",
       { previousStatus: status, newStatus: paper.status, doi: paper.doi },
-      ipAddress
+      ipAddress,
     );
 
     return NextResponse.json({ paper });
@@ -274,7 +281,7 @@ export async function PUT(request: NextRequest) {
     console.error("Failed to update paper:", error);
     return NextResponse.json(
       { error: "Failed to update paper" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -306,10 +313,10 @@ export async function DELETE(request: NextRequest) {
         "ArchivedPaper",
         "admin@system",
         { title: paper?.title },
-        ipAddress
+        ipAddress,
       );
     } else {
-    // Delete current paper
+      // Delete current paper
       const paper = await prisma.paper.findUnique({ where: { id } });
       await prisma.paper.delete({ where: { id } });
 
@@ -319,7 +326,7 @@ export async function DELETE(request: NextRequest) {
         "Paper",
         "admin@system",
         { title: paper?.title },
-        ipAddress
+        ipAddress,
       );
     }
 
@@ -328,7 +335,7 @@ export async function DELETE(request: NextRequest) {
     console.error("Failed to delete paper:", error);
     return NextResponse.json(
       { error: "Failed to delete paper" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

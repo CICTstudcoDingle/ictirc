@@ -52,7 +52,7 @@ export function AddSpeakerForm({ conferenceId }: AddSpeakerFormProps) {
       const file = e.dataTransfer.files[0];
       if (file) handleFileSelect(file);
     },
-    [handleFileSelect]
+    [handleFileSelect],
   );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -89,8 +89,7 @@ export function AddSpeakerForm({ conferenceId }: AddSpeakerFormProps) {
         affiliation: (formData.get("affiliation") as string) || undefined,
         location: (formData.get("location") as string) || undefined,
         bio: (formData.get("bio") as string) || undefined,
-        displayOrder:
-          parseInt(formData.get("displayOrder") as string) || 0,
+        displayOrder: parseInt(formData.get("displayOrder") as string) || 0,
       });
 
       if (!result.success) {
@@ -142,9 +141,10 @@ export function AddSpeakerForm({ conferenceId }: AddSpeakerFormProps) {
           className={`
             relative mt-1.5 flex flex-col items-center justify-center rounded-xl border-2 border-dashed
             p-6 cursor-pointer transition-all duration-200
-            ${isDragging
-              ? "border-maroon bg-maroon/5 scale-[1.01]"
-              : "border-gray-300 hover:border-maroon/50 hover:bg-gray-50"
+            ${
+              isDragging
+                ? "border-maroon bg-maroon/5 scale-[1.01]"
+                : "border-gray-300 hover:border-maroon/50 hover:bg-gray-50"
             }
           `}
         >
@@ -157,12 +157,17 @@ export function AddSpeakerForm({ conferenceId }: AddSpeakerFormProps) {
               />
               <button
                 type="button"
-                onClick={(e) => { e.stopPropagation(); clearPhoto(); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  clearPhoto();
+                }}
                 className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
-              <p className="text-xs text-gray-400 mt-2 text-center">Click or drag to replace</p>
+              <p className="text-xs text-gray-400 mt-2 text-center">
+                Click or drag to replace
+              </p>
             </div>
           ) : (
             <div className="text-center">
@@ -172,7 +177,9 @@ export function AddSpeakerForm({ conferenceId }: AddSpeakerFormProps) {
               <p className="text-sm font-medium text-gray-700">
                 Drag & drop a photo here
               </p>
-              <p className="text-xs text-gray-400 mt-1">or click to browse · JPG, PNG up to 5MB</p>
+              <p className="text-xs text-gray-400 mt-1">
+                or click to browse · JPG, PNG up to 5MB
+              </p>
             </div>
           )}
           <input
@@ -194,7 +201,9 @@ export function AddSpeakerForm({ conferenceId }: AddSpeakerFormProps) {
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <p className="text-xs text-gray-500 mt-1">Uploading... {progress}%</p>
+            <p className="text-xs text-gray-500 mt-1">
+              Uploading... {progress}%
+            </p>
           </div>
         )}
       </div>
@@ -205,7 +214,7 @@ export function AddSpeakerForm({ conferenceId }: AddSpeakerFormProps) {
           <Input
             id="name"
             name="name"
-            placeholder='e.g., Dr. Indriati, S.T., M.Kom.'
+            placeholder="e.g., Dr. Indriati, S.T., M.Kom."
             required
           />
         </div>

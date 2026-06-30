@@ -28,9 +28,7 @@ export const metadata: Metadata = {
     icon: [
       { url: "/images/CICT_LOGO.png", type: "image/png", sizes: "192x192" },
     ],
-    apple: [
-      { url: "/images/CICT_LOGO.png", sizes: "180x180" },
-    ],
+    apple: [{ url: "/images/CICT_LOGO.png", sizes: "180x180" }],
     shortcut: "/images/CICT_LOGO.png",
   },
 };
@@ -44,8 +42,8 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="min-h-screen bg-muted font-sans">
         {children}
-        <Toaster 
-          position="top-right" 
+        <Toaster
+          position="top-right"
           toastOptions={{
             style: {
               background: "#800000",

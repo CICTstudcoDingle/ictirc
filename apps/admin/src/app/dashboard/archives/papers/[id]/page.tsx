@@ -2,8 +2,16 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@ictirc/database";
 import {
-  ArrowLeft, BookOpen, Calendar, Tag, Users, FileText, ExternalLink,
-  Download, BookMarked, Hash,
+  ArrowLeft,
+  BookOpen,
+  Calendar,
+  Tag,
+  Users,
+  FileText,
+  ExternalLink,
+  Download,
+  BookMarked,
+  Hash,
 } from "lucide-react";
 import { Button } from "@ictirc/ui";
 import { DeleteArchivedPaperButton } from "@/components/archives/delete-archived-paper-button";
@@ -85,14 +93,19 @@ export default async function ArchivedPaperDetailPage({ params }: PageProps) {
                 <BookMarked className="w-3 h-3" />
                 Archived Paper
               </span>
-              <h1 className="text-2xl font-bold text-gray-900">{paper.title}</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                {paper.title}
+              </h1>
               <p className="text-sm text-gray-600 mt-1">
                 {paper.authors.map((a) => a.name).join(", ")}
               </p>
             </div>
           </div>
           <div className="flex gap-2 flex-shrink-0">
-            <DeleteArchivedPaperButton paperId={paper.id} paperTitle={paper.title} />
+            <DeleteArchivedPaperButton
+              paperId={paper.id}
+              paperTitle={paper.title}
+            />
           </div>
         </div>
       </div>
@@ -103,7 +116,9 @@ export default async function ArchivedPaperDetailPage({ params }: PageProps) {
           {/* Edit Form */}
           <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-              <h2 className="text-sm font-semibold text-gray-700">Edit Paper Details</h2>
+              <h2 className="text-sm font-semibold text-gray-700">
+                Edit Paper Details
+              </h2>
             </div>
             <div className="p-6">
               <EditArchivedPaperForm
@@ -123,7 +138,9 @@ export default async function ArchivedPaperDetailPage({ params }: PageProps) {
               </h2>
             </div>
             <div className="p-6">
-              <p className="text-sm text-gray-700 leading-relaxed">{paper.abstract}</p>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {paper.abstract}
+              </p>
             </div>
           </div>
 
@@ -137,13 +154,18 @@ export default async function ArchivedPaperDetailPage({ params }: PageProps) {
             </div>
             <div className="divide-y divide-gray-100">
               {paper.authors.map((author, i) => (
-                <div key={author.id} className="px-6 py-4 flex items-start gap-3">
+                <div
+                  key={author.id}
+                  className="px-6 py-4 flex items-start gap-3"
+                >
                   <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm font-bold text-orange-700 flex-shrink-0">
                     {i + 1}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <p className="font-medium text-gray-900 text-sm">{author.name}</p>
+                      <p className="font-medium text-gray-900 text-sm">
+                        {author.name}
+                      </p>
                       {author.isCorresponding && (
                         <span className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-medium">
                           Corresponding
@@ -151,10 +173,14 @@ export default async function ArchivedPaperDetailPage({ params }: PageProps) {
                       )}
                     </div>
                     {author.affiliation && (
-                      <p className="text-xs text-gray-500 mt-0.5">{author.affiliation}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {author.affiliation}
+                      </p>
                     )}
                     {author.email && (
-                      <p className="text-xs text-gray-400 mt-0.5">{author.email}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        {author.email}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -167,7 +193,9 @@ export default async function ArchivedPaperDetailPage({ params }: PageProps) {
         <div className="space-y-4">
           {/* Metadata */}
           <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-gray-700">Publication Info</h3>
+            <h3 className="text-sm font-semibold text-gray-700">
+              Publication Info
+            </h3>
 
             <div className="space-y-3 text-sm">
               {/* Category */}
@@ -188,7 +216,8 @@ export default async function ArchivedPaperDetailPage({ params }: PageProps) {
                   <div>
                     <p className="text-xs text-gray-500">Issue / Volume</p>
                     <p className="text-gray-900 font-medium">
-                      Vol.{paper.issue.volume?.volumeNumber} No.{paper.issue.issueNumber}
+                      Vol.{paper.issue.volume?.volumeNumber} No.
+                      {paper.issue.issueNumber}
                       {paper.issue.volume?.year
                         ? ` (${paper.issue.volume.year})`
                         : ""}
@@ -269,7 +298,9 @@ export default async function ArchivedPaperDetailPage({ params }: PageProps) {
           {/* Keywords */}
           {paper.keywords.length > 0 && (
             <div className="bg-white border border-gray-200 rounded-xl p-5">
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">Keywords</h3>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                Keywords
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {paper.keywords.map((kw) => (
                   <span

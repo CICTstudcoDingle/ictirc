@@ -1,8 +1,20 @@
 import Link from "next/link";
-import { Plus, Calendar, Users, Star, Pencil, Trash2, CheckCircle } from "lucide-react";
+import {
+  Plus,
+  Calendar,
+  Users,
+  Star,
+  Pencil,
+  Trash2,
+  CheckCircle,
+} from "lucide-react";
 import { Button } from "@ictirc/ui";
 import { prisma } from "@ictirc/database";
-import { getConferences, setActiveConference, deleteConference } from "./actions";
+import {
+  getConferences,
+  setActiveConference,
+  deleteConference,
+} from "./actions";
 import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic";
@@ -64,11 +76,14 @@ export default async function ConferencesPage() {
                     <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        {new Date(conference.startDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
+                        {new Date(conference.startDate).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          },
+                        )}
                       </span>
                       <span className="flex items-center gap-1">
                         <Users className="w-4 h-4" />
@@ -97,7 +112,9 @@ export default async function ConferencesPage() {
                         Edit
                       </Button>
                     </Link>
-                    <Link href={`/dashboard/conferences/${conference.id}/committee`}>
+                    <Link
+                      href={`/dashboard/conferences/${conference.id}/committee`}
+                    >
                       <Button variant="outline" size="sm">
                         <Users className="w-4 h-4 mr-1" />
                         Committee

@@ -54,15 +54,18 @@ export const programsData: Program[] = [
     specializations: [
       {
         name: "AI and Robotics",
-        description: "Focuses on artificial intelligence, machine learning, and automated systems development.",
+        description:
+          "Focuses on artificial intelligence, machine learning, and automated systems development.",
       },
       {
         name: "Web and Mobile",
-        description: "Concentrates on advanced web development and mobile application ecosystems.",
+        description:
+          "Concentrates on advanced web development and mobile application ecosystems.",
       },
       {
         name: "Networking",
-        description: "Specializes in network infrastructure, security, and cloud computing.",
+        description:
+          "Specializes in network infrastructure, security, and cloud computing.",
       },
     ],
   },

@@ -3,11 +3,13 @@
 ## ✅ Completed Features (All 17/17 Tasks)
 
 ### Database Layer
+
 - ✅ Complete Prisma schema with 5 new models
 - ✅ Safe additive migration applied successfully
 - ✅ Relations to existing User and Category models
 
 ### Server Actions (Backend)
+
 - ✅ Volume CRUD operations (create, read, update, delete, list)
 - ✅ Issue CRUD operations (create, read, update, delete, list)
 - ✅ Conference CRUD operations (create, read, update, delete, list)
@@ -16,25 +18,30 @@
 - ✅ All actions include validation and error handling
 
 ### Admin UI Pages
+
 - ✅ **Dashboard** (`/admin/dashboard/archives`)
+
   - Statistics cards showing volumes, issues, papers count
   - Recent uploads list
   - Quick action buttons
   - Navigation links to all management sections
 
 - ✅ **Volume Management**
+
   - List page (`/admin/dashboard/archives/volumes`)
   - Create page (`/admin/dashboard/archives/volumes/new`)
   - Edit page (`/admin/dashboard/archives/volumes/[id]`)
   - Volume card component with statistics
 
 - ✅ **Issue Management**
+
   - List page (`/admin/dashboard/archives/issues`)
   - Create page (`/admin/dashboard/archives/issues/new`)
   - Edit page (`/admin/dashboard/archives/issues/[id]`)
   - Issue card component with metadata display
 
 - ✅ **Conference Management**
+
   - List page (`/admin/dashboard/archives/conferences`)
   - Create page (`/admin/dashboard/archives/conferences/new`)
   - Edit page (`/admin/dashboard/archives/conferences/[id]`)
@@ -47,6 +54,7 @@
   - CSV template download link
 
 ### Admin UI Components
+
 - ✅ `volume-form.tsx` - React Hook Form with Zod validation
 - ✅ `volume-card.tsx` - Display component with statistics
 - ✅ `issue-form.tsx` - Complete form with volume/conference selection
@@ -57,12 +65,15 @@
 - ✅ `batch-upload-form.tsx` - CSV + files upload
 
 ### Public Pages
+
 - ✅ **Archive Page** (`/apps/web/src/app/archive/page.tsx`)
+
   - View toggle: volumes view (default) or papers view
   - Timeline display of volumes and issues
   - Existing paper search/filter functionality maintained
 
 - ✅ **Volume Component** (`archive-volumes-view.tsx`)
+
   - Timeline display grouped by year
   - Shows all issues within each volume
   - Links to issue detail pages
@@ -74,6 +85,7 @@
   - ISSN and publication date
 
 ### Supporting Files
+
 - ✅ Validation schemas (`apps/admin/src/lib/validations/archive.ts`)
 - ✅ RBAC permissions updated (EDITOR and DEAN roles)
 - ✅ CSV template with 1st ICTIRC sample data
@@ -85,6 +97,7 @@
 You can now:
 
 1. **Create the 1st ICTIRC Conference**
+
    - Navigate to `/admin/dashboard/archives/conferences/new`
    - Fill in:
      - Name: "1st ICTIRC"
@@ -97,12 +110,14 @@ You can now:
      - Partners: Add partner organizations
 
 2. **Create Volume 4 (2025)**
+
    - Navigate to `/admin/dashboard/archives/volumes/new`
    - Volume Number: 4
    - Year: 2025
    - Description: "Conference proceedings and research papers from 2025"
 
 3. **Create Issue 1**
+
    - Navigate to `/admin/dashboard/archives/issues/new`
    - Select Volume 4 (2025)
    - Issue Number: 1
@@ -113,14 +128,16 @@ You can now:
    - Conference: Select "1st ICTIRC"
 
 4. **Upload Papers**
-   
+
    **Option A: Single Upload**
+
    - Navigate to `/admin/dashboard/archives/upload`
    - Use "Single Upload" tab
    - Fill in metadata for each paper manually
    - Upload PDF and DOCX files
-   
+
    **Option B: Batch Upload**
+
    - Navigate to `/admin/dashboard/archives/upload`
    - Use "Batch Upload" tab
    - Download the CSV template
@@ -135,8 +152,8 @@ While the UI is complete, you'll need to integrate:
 1. **File Upload** - Connect `uploadFile` from `@ictirc/storage`
    - Both upload forms reference this function
    - Need to implement actual file upload to Cloudflare R2 or Supabase Storage
-   
 2. **Authentication Context** - Get current user ID
+
    - Single upload form uses placeholder "current-user-id"
    - Need to replace with actual auth context
 

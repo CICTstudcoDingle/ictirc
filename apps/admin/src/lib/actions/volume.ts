@@ -201,10 +201,7 @@ export async function listVolumes() {
           },
         },
       },
-      orderBy: [
-        { year: "desc" },
-        { volumeNumber: "desc" },
-      ],
+      orderBy: [{ year: "desc" }, { volumeNumber: "desc" }],
     });
 
     return { success: true, data: volumes };

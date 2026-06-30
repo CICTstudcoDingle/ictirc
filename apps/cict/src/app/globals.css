@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --maroon: #800000;
-    --gold: #D4AF37;
+    --gold: #d4af37;
   }
 
   body {
@@ -13,7 +13,9 @@
   }
 
   .font-mono {
-    font-feature-settings: "liga" 1, "calt" 1;
+    font-feature-settings:
+      "liga" 1,
+      "calt" 1;
   }
 }
 
@@ -90,8 +92,12 @@
 
   /* Live ticker marquee */
   @keyframes ticker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-33.333%); }
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-33.333%);
+    }
   }
 
   .animate-ticker {
@@ -100,8 +106,14 @@
 
   /* Slide up for popup/chatbot */
   @keyframes slide-up {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .animate-slide-up {

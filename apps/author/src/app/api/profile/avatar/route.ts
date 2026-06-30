@@ -14,10 +14,7 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get form data with file
@@ -25,17 +22,14 @@ export async function POST(request: NextRequest) {
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json(
-        { error: "No file provided" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
     // Validate file type
     if (!file.type.startsWith("image/")) {
       return NextResponse.json(
         { error: "File must be an image" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -44,13 +38,14 @@ export async function POST(request: NextRequest) {
     if (file.size > maxSize) {
       return NextResponse.json(
         { error: "File too large (max 50MB)" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Upload directly using the authenticated Supabase client
-    const bucketName = process.env.NEXT_PUBLIC_SUPABASE_BUCKET_PROFILE || "profile";
-    
+    const bucketName =
+      process.env.NEXT_PUBLIC_SUPABASE_BUCKET_PROFILE || "profile";
+
     // Generate path based on user ID
     let extension = "jpg";
     if (file.type.startsWith("image/")) {
@@ -58,7 +53,11 @@ export async function POST(request: NextRequest) {
     }
     const path = `${user.id}/avatar.${extension}`;
 
-    console.log("[Avatar API] Uploading to:", { bucketName, path, contentType: file.type });
+    console.log("[Avatar API] Uploading to:", {
+      bucketName,
+      path,
+      contentType: file.type,
+    });
 
     // Upload to Supabase Storage
     const { data: uploadData, error: uploadError } = await supabase.storage
@@ -70,10 +69,7 @@ export async function POST(request: NextRequest) {
 
     if (uploadError) {
       console.error("[Avatar API] Upload error:", uploadError);
-      return NextResponse.json(
-        { error: uploadError.message },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: uploadError.message }, { status: 500 });
     }
 
     // Get the public URL
@@ -106,14 +102,14 @@ export async function POST(request: NextRequest) {
     console.error("[Avatar API] Error details:", {
       message: error instanceof Error ? error.message : "Unknown error",
       stack: error instanceof Error ? error.stack : undefined,
-      error: JSON.stringify(error, null, 2)
+      error: JSON.stringify(error, null, 2),
     });
     return NextResponse.json(
-      { 
+      {
         error: "Failed to upload avatar",
-        details: error instanceof Error ? error.message : "Unknown error"
+        details: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -129,10 +125,7 @@ export async function DELETE(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Delete from storage
@@ -141,7 +134,7 @@ export async function DELETE(request: NextRequest) {
     if (!result.success) {
       return NextResponse.json(
         { error: result.error || "Delete failed" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -164,7 +157,7 @@ export async function DELETE(request: NextRequest) {
     console.error("[Avatar API] Delete error:", error);
     return NextResponse.json(
       { error: "Failed to delete avatar" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

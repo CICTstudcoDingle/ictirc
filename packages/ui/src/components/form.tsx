@@ -11,10 +11,12 @@ type FormFieldContextValue = {
 };
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
+  {} as FormFieldContextValue,
 );
 
-const FormField = <TFieldValues extends Record<string, any> = Record<string, any>>({
+const FormField = <
+  TFieldValues extends Record<string, any> = Record<string, any>,
+>({
   ...props
 }: React.ComponentProps<typeof Controller<TFieldValues>>) => {
   return (
@@ -52,7 +54,7 @@ type FormItemContextValue = {
 };
 
 const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
+  {} as FormItemContextValue,
 );
 
 const FormItem = React.forwardRef<
@@ -81,7 +83,7 @@ const FormLabel = React.forwardRef<
       className={cn(
         "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
         error && "text-red-500",
-        className
+        className,
       )}
       htmlFor={formItemId}
       {...props}
@@ -94,7 +96,8 @@ const FormControl = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ ...props }, ref) => {
-  const { error, formItemId, formDescriptionId, formMessageId } = useFormField();
+  const { error, formItemId, formDescriptionId, formMessageId } =
+    useFormField();
 
   return (
     <div

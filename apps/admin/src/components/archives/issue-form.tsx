@@ -35,7 +35,7 @@ const formSchema = issueSchema.extend({
   conferenceId: z.string().cuid().optional().or(z.literal("")),
   publishedDate: z.union([
     z.date(),
-    z.string().transform((str) => new Date(str))
+    z.string().transform((str) => new Date(str)),
   ]),
 });
 
@@ -69,8 +69,8 @@ export function IssueForm({ issue }: IssueFormProps) {
         listVolumes(),
         listConferences(),
       ]);
-      console.log('Volumes result:', volumesResult);
-      console.log('Conferences result:', conferencesResult);
+      console.log("Volumes result:", volumesResult);
+      console.log("Conferences result:", conferencesResult);
       if (volumesResult.success && volumesResult.data) {
         setVolumes(volumesResult.data);
       }
@@ -86,7 +86,12 @@ export function IssueForm({ issue }: IssueFormProps) {
     defaultValues: {
       issueNumber: issue?.issueNumber || 1,
       month: issue?.month || "",
-      publishedDate: (issue?.publishedDate ? new Date(issue.publishedDate) : new Date()).toISOString().split('T')[0] as any,
+      publishedDate: (issue?.publishedDate
+        ? new Date(issue.publishedDate)
+        : new Date()
+      )
+        .toISOString()
+        .split("T")[0] as any,
       issn: issue?.issn || "",
       theme: issue?.theme || "",
       description: issue?.description || "",
@@ -138,12 +143,15 @@ export function IssueForm({ issue }: IssueFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Volume *</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value as string || ""}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={(field.value as string) || ""}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a volume">
-                        {volumes.find(v => v.id === field.value)
-                          ? `Volume ${volumes.find(v => v.id === field.value)?.volumeNumber} (${volumes.find(v => v.id === field.value)?.year})`
+                        {volumes.find((v) => v.id === field.value)
+                          ? `Volume ${volumes.find((v) => v.id === field.value)?.volumeNumber} (${volumes.find((v) => v.id === field.value)?.year})`
                           : undefined}
                       </SelectValue>
                     </SelectTrigger>
@@ -175,13 +183,15 @@ export function IssueForm({ issue }: IssueFormProps) {
                     <Input
                       type="number"
                       {...field}
-                      value={field.value !== undefined ? String(field.value) : ""}
-                      onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                      value={
+                        field.value !== undefined ? String(field.value) : ""
+                      }
+                      onChange={(e) =>
+                        field.onChange(parseInt(e.target.value) || 0)
+                      }
                     />
                   </FormControl>
-                  <FormDescription>
-                    The sequential issue number
-                  </FormDescription>
+                  <FormDescription>The sequential issue number</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -194,7 +204,11 @@ export function IssueForm({ issue }: IssueFormProps) {
                 <FormItem>
                   <FormLabel>Month</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., April" {...field} value={field.value as string || ""} />
+                    <Input
+                      placeholder="e.g., April"
+                      {...field}
+                      value={(field.value as string) || ""}
+                    />
                   </FormControl>
                   <FormDescription>Publication month</FormDescription>
                   <FormMessage />
@@ -212,10 +226,14 @@ export function IssueForm({ issue }: IssueFormProps) {
               <FormItem>
                 <FormLabel>Published Date *</FormLabel>
                 <FormControl>
-                  <Input 
-                    type="date" 
-                    {...field} 
-                    value={field.value instanceof Date ? field.value.toISOString().split('T')[0] : (field.value || "")}
+                  <Input
+                    type="date"
+                    {...field}
+                    value={
+                      field.value instanceof Date
+                        ? field.value.toISOString().split("T")[0]
+                        : field.value || ""
+                    }
                     onChange={(e) => field.onChange(new Date(e.target.value))}
                   />
                 </FormControl>
@@ -232,9 +250,15 @@ export function IssueForm({ issue }: IssueFormProps) {
               <FormItem>
                 <FormLabel>ISSN</FormLabel>
                 <FormControl>
-                  <Input placeholder="Format: XXXX-XXXX" {...field} value={String(field.value || "")} />
+                  <Input
+                    placeholder="Format: XXXX-XXXX"
+                    {...field}
+                    value={String(field.value || "")}
+                  />
                 </FormControl>
-                <FormDescription>International Standard Serial Number</FormDescription>
+                <FormDescription>
+                  International Standard Serial Number
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -247,12 +271,15 @@ export function IssueForm({ issue }: IssueFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Conference (Optional)</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value as string || "none"}>
+              <Select
+                onValueChange={field.onChange}
+                value={(field.value as string) || "none"}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a conference">
                       {field.value && field.value !== "none"
-                        ? conferences.find(c => c.id === field.value)?.name
+                        ? conferences.find((c) => c.id === field.value)?.name
                         : undefined}
                     </SelectValue>
                   </SelectTrigger>
@@ -266,9 +293,7 @@ export function IssueForm({ issue }: IssueFormProps) {
                   ))}
                 </SelectContent>
               </Select>
-              <FormDescription>
-                Link this issue to a conference
-              </FormDescription>
+              <FormDescription>Link this issue to a conference</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -281,7 +306,11 @@ export function IssueForm({ issue }: IssueFormProps) {
             <FormItem>
               <FormLabel>Theme</FormLabel>
               <FormControl>
-                <Input placeholder="Theme or focus of this issue" {...field} value={field.value as string || ""} />
+                <Input
+                  placeholder="Theme or focus of this issue"
+                  {...field}
+                  value={(field.value as string) || ""}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -299,7 +328,7 @@ export function IssueForm({ issue }: IssueFormProps) {
                   placeholder="Additional notes about this issue"
                   className="min-h-[100px]"
                   {...field}
-                  value={field.value as string || ""}
+                  value={(field.value as string) || ""}
                 />
               </FormControl>
               <FormMessage />
@@ -333,15 +362,15 @@ export function IssueForm({ issue }: IssueFormProps) {
         />
 
         <div className="flex justify-end gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.back()}
-          >
+          <Button type="button" variant="outline" onClick={() => router.back()}>
             Cancel
           </Button>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Creating..." : issue ? "Update Issue" : "Create Issue"}
+            {isSubmitting
+              ? "Creating..."
+              : issue
+                ? "Update Issue"
+                : "Create Issue"}
           </Button>
         </div>
       </form>

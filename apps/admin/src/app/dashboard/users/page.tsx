@@ -140,7 +140,7 @@ export default function UsersPage() {
   const filteredUsers = users.filter(
     (user) =>
       user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.name?.toLowerCase().includes(searchQuery.toLowerCase())
+      user.name?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -228,7 +228,10 @@ export default function UsersPage() {
             <tbody className="divide-y divide-gray-100">
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                  <td
+                    colSpan={5}
+                    className="px-4 py-8 text-center text-gray-500"
+                  >
                     <div className="flex items-center justify-center gap-2">
                       <RefreshCw className="w-4 h-4 animate-spin" />
                       Loading users...
@@ -237,13 +240,19 @@ export default function UsersPage() {
                 </tr>
               ) : filteredUsers.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                  <td
+                    colSpan={5}
+                    className="px-4 py-8 text-center text-gray-500"
+                  >
                     No users found
                   </td>
                 </tr>
               ) : (
                 filteredUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                  <tr
+                    key={user.id}
+                    className="hover:bg-gray-50 transition-colors"
+                  >
                     <td className="px-4 py-3">
                       <div>
                         <p className="text-sm font-medium text-gray-900">
@@ -313,7 +322,10 @@ export default function UsersPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="invite-role" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="invite-role"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Role
                   </label>
                   <select
@@ -330,7 +342,11 @@ export default function UsersPage() {
                 </div>
 
                 <div className="flex gap-3 pt-4">
-                  <Button variant="outline" onClick={closeModal} className="flex-1">
+                  <Button
+                    variant="outline"
+                    onClick={closeModal}
+                    className="flex-1"
+                  >
                     Cancel
                   </Button>
                   <Button

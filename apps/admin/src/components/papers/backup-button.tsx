@@ -11,7 +11,11 @@ interface BackupButtonProps {
   lastBackupAt?: Date | string | null;
 }
 
-export function BackupButton({ paperId, hasBackup, lastBackupAt }: BackupButtonProps) {
+export function BackupButton({
+  paperId,
+  hasBackup,
+  lastBackupAt,
+}: BackupButtonProps) {
   const [loading, setLoading] = useState(false);
   const [backed, setBacked] = useState(hasBackup);
   const [backupDate, setBackupDate] = useState(lastBackupAt);
@@ -53,7 +57,9 @@ export function BackupButton({ paperId, hasBackup, lastBackupAt }: BackupButtonP
       <div className="space-y-3">
         <div>
           <p className="text-xs text-gray-500">Backup Status</p>
-          <p className={`text-sm font-medium ${backed ? "text-green-600" : "text-gray-500"}`}>
+          <p
+            className={`text-sm font-medium ${backed ? "text-green-600" : "text-gray-500"}`}
+          >
             {backed ? "Backed up to R2" : "Not backed up"}
           </p>
         </div>

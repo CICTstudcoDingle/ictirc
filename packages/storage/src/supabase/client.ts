@@ -19,7 +19,7 @@ export function getSupabaseStorageConfig(): SupabaseStorageConfig {
 
   if (!url || !anonKey) {
     throw new Error(
-      "Missing Supabase configuration. Required: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY"
+      "Missing Supabase configuration. Required: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY",
     );
   }
 

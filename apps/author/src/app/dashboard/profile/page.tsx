@@ -34,7 +34,9 @@ export default async function ProfilePage() {
     return (
       <div className="max-w-2xl mx-auto space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Profile Setup Required</h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Profile Setup Required
+          </h1>
           <p className="text-gray-600 mt-1">
             Complete your profile setup to access all features
           </p>
@@ -51,9 +53,10 @@ export default async function ProfilePage() {
                   Database Record Missing
                 </h3>
                 <p className="text-sm text-yellow-800 mb-4">
-                  Your account is authenticated via Supabase but hasn't been synced to our database yet. 
-                  This can happen if you registered before the sync system was implemented. 
-                  Click the button below to complete your profile setup.
+                  Your account is authenticated via Supabase but hasn't been
+                  synced to our database yet. This can happen if you registered
+                  before the sync system was implemented. Click the button below
+                  to complete your profile setup.
                 </p>
                 <form action="/api/sync" method="POST">
                   <Button type="submit" className="flex items-center gap-2">

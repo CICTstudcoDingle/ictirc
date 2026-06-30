@@ -3,16 +3,17 @@ trigger: always_on
 ---
 
 💎 CICT-RESEARCH MONOREPO - VISUAL CONSTITUTION (V1.0 LIGHT)
+
 1. CORE PHILOSOPHY ("THE SCHOLAR'S CANVAS")
-Vibe: Precision Engineering, Academic Authority, High-Contrast Clarity.
+   Vibe: Precision Engineering, Academic Authority, High-Contrast Clarity.
 
 The "Pure Paper" Law: The primary background is #FFFFFF. There is no "Off-White" or "Cream." Cleanliness is the priority.
 
 The "Branding" Ratio: 70% White, 20% Grey, 8% Maroon, 2% Gold.
 
 2. PRIMITIVES (THE ATOMS)
-A. Color Palette
-Canvas (Backgrounds):
+   A. Color Palette
+   Canvas (Backgrounds):
 
 bg-paper: #FFFFFF (Base layer for reading and submission forms).
 
@@ -46,7 +47,7 @@ Usage: Manuscript IDs, DOI strings, Citation counts, Date stamps.
 Size: text-xs (12px) for technical metadata.
 
 3. NAVIGATION ARCHITECTURE (MOBILE & DESKTOP)
-Desktop Layout: Top-fixed navigation bar matching the CICT Tech Portal structure.
+   Desktop Layout: Top-fixed navigation bar matching the CICT Tech Portal structure.
 
 Height: h-16.
 
@@ -61,8 +62,8 @@ Core Tabs: [Home, Archive, Search, Profile].
 FAB (Floating Action Button): A Maroon circle with a Gold + icon for "Submit Manuscript" positioned at bottom-20 right-6.
 
 4. COMPONENT ARCHITECTURE
-A. The "Scholar" Button
-Primary Action: Solid #800000 background, White text, rounded-md.
+   A. The "Scholar" Button
+   Primary Action: Solid #800000 background, White text, rounded-md.
 
 Interaction: On hover, apply a shadow-[4px_4px_0px_0px_rgba(212,175,55,1)] (Gold Offset Shadow) for a "hard-edge" industrial feel.
 
