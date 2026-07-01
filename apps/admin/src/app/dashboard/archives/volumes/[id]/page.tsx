@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@ictirc/ui";
 import { VolumeForm } from "@/components/archives/volume-form";
+import { DeleteVolumeButton } from "@/components/archives/delete-volume-button";
 import { getVolume } from "@/lib/actions/volume";
 
 interface PageProps {
@@ -29,9 +30,11 @@ export default async function EditVolumePage({ params }: PageProps) {
   const { id } = await params;
   const result = await getVolume(id);
 
-  if (!result.success) {
+  if (!result.success || !result.data) {
     notFound();
   }
+
+  const volume = result.data;
 
   return (
     <div className="space-y-6">
@@ -42,13 +45,24 @@ export default async function EditVolumePage({ params }: PageProps) {
             Back to Volumes
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold">
-          Edit Volume {result.data?.volumeNumber}
-        </h1>
-        <p className="text-muted-foreground mt-1">Update volume details</p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold">
+              Edit Volume {volume.volumeNumber}
+            </h1>
+            <p className="text-muted-foreground mt-1">Update volume details</p>
+          </div>
+          <DeleteVolumeButton
+            volumeId={volume.id}
+            volumeNumber={volume.volumeNumber}
+            year={volume.year}
+            variant="button"
+            onDeleted={() => {}}
+          />
+        </div>
       </div>
 
-      <VolumeForm volume={result.data} />
+      <VolumeForm volume={volume} />
     </div>
   );
 }

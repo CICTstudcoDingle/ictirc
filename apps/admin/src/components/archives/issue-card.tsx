@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@ictirc/ui";
 import { Calendar, FileText, BookOpen } from "lucide-react";
+import { DeleteIssueButton } from "./delete-issue-button";
 
 interface IssueCardProps {
   issue: {
@@ -38,14 +39,23 @@ export function IssueCard({ issue }: IssueCardProps) {
     <Link href={`/dashboard/archives/issues/${issue.id}`}>
       <Card className="hover:bg-accent cursor-pointer transition-colors h-full">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
-            Issue {issue.issueNumber}
-          </CardTitle>
-          <CardDescription>
-            Volume {issue.volume.volumeNumber} • {issue.month}{" "}
-            {issue.volume.year}
-          </CardDescription>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <Calendar className="h-5 w-5" />
+                Issue {issue.issueNumber}
+              </CardTitle>
+              <CardDescription>
+                Volume {issue.volume.volumeNumber} • {issue.month}{" "}
+                {issue.volume.year}
+              </CardDescription>
+            </div>
+            <DeleteIssueButton
+              issueId={issue.id}
+              issueNumber={issue.issueNumber}
+              volumeNumber={issue.volume.volumeNumber}
+            />
+          </div>
         </CardHeader>
         <CardContent className="space-y-2">
           {issue.theme && (

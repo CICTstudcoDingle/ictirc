@@ -149,7 +149,7 @@ export default async function ArchiveDashboardPage() {
               Upload Papers
             </Button>
           </Link>
-          <Link href="/dashboard/archives/conferences/new">
+          <Link href="/dashboard/conferences/new">
             <Button className="w-full" variant="outline">
               <FileText className="mr-2 h-4 w-4" />
               New Conference
@@ -242,7 +242,7 @@ export default async function ArchiveDashboardPage() {
           </Card>
         </Link>
 
-        <Link href="/dashboard/archives/conferences">
+        <Link href="/dashboard/conferences">
           <Card className="hover:bg-accent cursor-pointer transition-colors">
             <CardHeader>
               <CardTitle className="flex items-center">

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@ictirc/database/client";
 import { getVideoStreamUrl, deleteFromR2 } from "@ictirc/storage/r2";
+import { apiAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +9,9 @@ export const dynamic = "force-dynamic";
  * GET /api/videos - List all promotional videos
  */
 export async function GET() {
+  const auth = await apiAuth("video:manage");
+  if (auth.response) return auth.response;
+
   try {
     const videos = await prisma.promotionalVideo.findMany({
       orderBy: { uploadDate: "desc" },
@@ -39,6 +43,9 @@ export async function GET() {
  * (Called after the video is uploaded to R2 via presigned URL)
  */
 export async function POST(request: Request) {
+  const auth = await apiAuth("video:manage");
+  if (auth.response) return auth.response;
+
   try {
     const body = await request.json();
     const { title, description, type, r2Key, thumbnailUrl, editorName } = body;
@@ -83,6 +90,9 @@ export async function POST(request: Request) {
  * PUT /api/videos - Update a promotional video
  */
 export async function PUT(request: Request) {
+  const auth = await apiAuth("video:manage");
+  if (auth.response) return auth.response;
+
   try {
     const body = await request.json();
     const { id, title, description, isPublished } = body;
@@ -117,6 +127,9 @@ export async function PUT(request: Request) {
  * DELETE /api/videos - Delete a promotional video
  */
 export async function DELETE(request: Request) {
+  const auth = await apiAuth("video:manage");
+  if (auth.response) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");

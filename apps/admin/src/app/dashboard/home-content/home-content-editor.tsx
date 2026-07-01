@@ -1,17 +1,19 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import {
   Save,
   Eye,
   EyeOff,
-  Plus,
   ChevronDown,
   ChevronRight,
+  Trash2,
 } from "lucide-react";
 import {
   upsertHomeSection,
   toggleHomeSectionPublished,
+  deleteHomeSection,
 } from "@/app/actions/home-content";
 
 interface HomeSection {
@@ -181,12 +183,26 @@ function SectionForm({
   onTogglePublished: (section: string) => void;
   isPending: boolean;
 }) {
+  const router = useRouter();
   const [title, setTitle] = useState(section.title);
   const [subtitle, setSubtitle] = useState(section.subtitle);
   const [imageUrl, setImageUrl] = useState(section.imageUrl);
   const [contentJson, setContentJson] = useState(
     JSON.stringify(section.content, null, 2),
   );
+
+  async function handleDelete() {
+    if (
+      !confirm(
+        `Are you sure you want to reset the "${section.label}" section?\n\nThis will remove any saved content and reset it to defaults.`,
+      )
+    ) {
+      return;
+    }
+
+    await deleteHomeSection(section.section);
+    router.refresh();
+  }
 
   return (
     <div className="px-6 pb-6 border-t border-gray-100 space-y-4 pt-4">
@@ -249,23 +265,34 @@ function SectionForm({
 
       {/* Actions */}
       <div className="flex items-center justify-between pt-2">
-        <button
-          onClick={() => onTogglePublished(section.section)}
-          disabled={isPending}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
-        >
-          {section.isPublished ? (
-            <>
-              <EyeOff className="w-4 h-4" />
-              Unpublish
-            </>
-          ) : (
-            <>
-              <Eye className="w-4 h-4" />
-              Publish
-            </>
-          )}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => onTogglePublished(section.section)}
+            disabled={isPending}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            {section.isPublished ? (
+              <>
+                <EyeOff className="w-4 h-4" />
+                Unpublish
+              </>
+            ) : (
+              <>
+                <Eye className="w-4 h-4" />
+                Publish
+              </>
+            )}
+          </button>
+
+          <button
+            onClick={handleDelete}
+            disabled={isPending}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-red-600 hover:text-red-700 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors disabled:opacity-50"
+          >
+            <Trash2 className="w-4 h-4" />
+            Reset
+          </button>
+        </div>
 
         <button
           onClick={() => {

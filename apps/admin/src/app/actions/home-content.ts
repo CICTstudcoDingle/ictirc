@@ -3,8 +3,12 @@
 import { prisma } from "@ictirc/database";
 import { Prisma } from "@ictirc/database";
 import { revalidatePath } from "next/cache";
+import { actionAuth } from "@/lib/auth";
 
 export async function getHomeContent() {
+  const auth = await actionAuth("homeContent:manage");
+  if (!auth.success) return [];
+
   const sections = await prisma.homeContent.findMany({
     orderBy: { displayOrder: "asc" },
   });
@@ -12,6 +16,9 @@ export async function getHomeContent() {
 }
 
 export async function getHomeSection(section: string) {
+  const auth = await actionAuth("homeContent:manage");
+  if (!auth.success) return null;
+
   return prisma.homeContent.findUnique({
     where: { section },
   });
@@ -26,6 +33,9 @@ export async function upsertHomeSection(data: {
   isPublished?: boolean;
   displayOrder?: number;
 }) {
+  const auth = await actionAuth("homeContent:manage");
+  if (!auth.success) return { success: false, error: auth.error };
+
   const existing = await prisma.homeContent.findUnique({
     where: { section: data.section },
   });
@@ -62,6 +72,9 @@ export async function upsertHomeSection(data: {
 }
 
 export async function deleteHomeSection(section: string) {
+  const auth = await actionAuth("homeContent:manage");
+  if (!auth.success) return { success: false, error: auth.error };
+
   await prisma.homeContent.delete({
     where: { section },
   });
@@ -71,6 +84,9 @@ export async function deleteHomeSection(section: string) {
 }
 
 export async function toggleHomeSectionPublished(section: string) {
+  const auth = await actionAuth("homeContent:manage");
+  if (!auth.success) return { success: false, error: auth.error };
+
   const existing = await prisma.homeContent.findUnique({
     where: { section },
   });

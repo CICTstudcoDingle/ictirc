@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@ictirc/database/client";
+import { apiAuth } from "@/lib/auth";
 
 export async function GET() {
+  const auth = await apiAuth("guide:manage");
+  if (auth.response) return auth.response;
+
   try {
     const guides = await prisma.researchGuide.findMany({
       orderBy: [{ category: "asc" }, { order: "asc" }],
@@ -17,6 +21,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const auth = await apiAuth("guide:manage");
+  if (auth.response) return auth.response;
+
   try {
     const body = await request.json();
     const { title, description, category, fileUrl } = body;
@@ -49,6 +56,9 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const auth = await apiAuth("guide:manage");
+  if (auth.response) return auth.response;
+
   try {
     const body = await request.json();
     const { id, title, description, category, fileUrl, isPublished } = body;
@@ -82,6 +92,9 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const auth = await apiAuth("guide:manage");
+  if (auth.response) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");

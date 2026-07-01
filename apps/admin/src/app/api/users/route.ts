@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@ictirc/database/client";
+import { apiAuth } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
+  const auth = await apiAuth("user:read");
+  if (auth.response) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const roleParam = searchParams.get("role");

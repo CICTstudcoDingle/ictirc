@@ -2,12 +2,17 @@
 
 import { prisma } from "@ictirc/database";
 import { revalidatePath } from "next/cache";
+import { actionAuth } from "@/lib/auth";
 
 // ==========================================
 // CATEGORIES
 // ==========================================
 
 export async function getCategories() {
+  const auth = await actionAuth("guide:manage");
+  if (!auth.success)
+    return { success: false, categories: [], error: auth.error };
+
   try {
     const categories = await prisma.researchGuideCategory.findMany({
       orderBy: { name: "asc" },
@@ -28,6 +33,9 @@ export async function createCategory(data: {
   name: string;
   description?: string;
 }) {
+  const auth = await actionAuth("guide:manage");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
     const slug = data.name
       .toLowerCase()
@@ -63,6 +71,9 @@ export async function createCategory(data: {
 }
 
 export async function deleteCategory(id: string) {
+  const auth = await actionAuth("guide:manage");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
     await prisma.researchGuideCategory.delete({
       where: { id },
@@ -80,6 +91,9 @@ export async function deleteCategory(id: string) {
 // ==========================================
 
 export async function getGuides() {
+  const auth = await actionAuth("guide:manage");
+  if (!auth.success) return { success: false, guides: [], error: auth.error };
+
   try {
     const guides = await prisma.researchGuide.findMany({
       orderBy: { order: "asc" },
@@ -100,6 +114,9 @@ export async function createGuide(data: {
   fileUrl: string;
   description?: string;
 }) {
+  const auth = await actionAuth("guide:manage");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
     // Get max order to append to end
     const lastGuide = await prisma.researchGuide.findFirst({
@@ -138,6 +155,9 @@ export async function createGuide(data: {
 export async function updateGuideOrder(
   guides: { id: string; order: number }[],
 ) {
+  const auth = await actionAuth("guide:manage");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
     await prisma.$transaction(
       guides.map((g) =>
@@ -156,6 +176,9 @@ export async function updateGuideOrder(
 }
 
 export async function deleteGuide(id: string) {
+  const auth = await actionAuth("guide:manage");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
     await prisma.researchGuide.delete({
       where: { id },

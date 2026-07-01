@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@ictirc/ui";
 import { BookOpen, FileText } from "lucide-react";
+import { DeleteVolumeButton } from "./delete-volume-button";
 
 interface VolumeCardProps {
   volume: {
@@ -36,11 +37,20 @@ export function VolumeCard({ volume }: VolumeCardProps) {
     <Link href={`/dashboard/archives/volumes/${volume.id}`}>
       <Card className="hover:bg-accent cursor-pointer transition-colors h-full">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BookOpen className="h-5 w-5" />
-            Volume {volume.volumeNumber}
-          </CardTitle>
-          <CardDescription>{volume.year}</CardDescription>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5" />
+                Volume {volume.volumeNumber}
+              </CardTitle>
+              <CardDescription>{volume.year}</CardDescription>
+            </div>
+            <DeleteVolumeButton
+              volumeId={volume.id}
+              volumeNumber={volume.volumeNumber}
+              year={volume.year}
+            />
+          </div>
         </CardHeader>
         <CardContent className="space-y-2">
           {volume.description && (

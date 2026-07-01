@@ -1,24 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@ictirc/database";
+import { prisma, type User } from "@ictirc/database";
 import { generateDoi } from "@/lib/doi";
+import { apiAuth } from "@/lib/auth";
 
 // Helper: Create audit log
 async function createAuditLog(
   action: string,
   targetId: string,
   targetType: string,
-  actorEmail: string,
-  metadata?: any,
+  actor: User,
+  metadata?: unknown,
   ipAddress?: string,
 ) {
   await prisma.auditLog.create({
     data: {
-      actorId: actorEmail,
-      actorEmail,
+      actorId: actor.id,
+      actorEmail: actor.email,
       action,
       targetId,
       targetType,
-      metadata,
+      metadata: metadata ?? {},
       ipAddress,
     },
   });
@@ -26,6 +27,9 @@ async function createAuditLog(
 
 // GET - Fetch papers (current and/or archived)
 export async function GET(request: NextRequest) {
+  const auth = await apiAuth("paper:read");
+  if (auth.response) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
@@ -183,6 +187,9 @@ export async function GET(request: NextRequest) {
 
 // PUT - Update paper (or archived paper)
 export async function PUT(request: NextRequest) {
+  const auth = await apiAuth("paper:update");
+  if (auth.response) return auth.response;
+
   try {
     const body = await request.json();
     const { id, status, doi, _source, ...rest } = body;
@@ -233,7 +240,7 @@ export async function PUT(request: NextRequest) {
         "UPDATE_ARCHIVED_PAPER",
         id,
         "ArchivedPaper",
-        "admin@system",
+        auth.user,
         { doi: paper.doi },
         ipAddress,
       );
@@ -271,7 +278,7 @@ export async function PUT(request: NextRequest) {
       status ? "UPDATE_PAPER_STATUS" : "UPDATE_PAPER",
       id,
       "Paper",
-      "admin@system",
+      auth.user,
       { previousStatus: status, newStatus: paper.status, doi: paper.doi },
       ipAddress,
     );
@@ -288,6 +295,9 @@ export async function PUT(request: NextRequest) {
 
 // DELETE - Delete paper (or archived paper)
 export async function DELETE(request: NextRequest) {
+  const auth = await apiAuth("paper:delete");
+  if (auth.response) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
@@ -311,7 +321,7 @@ export async function DELETE(request: NextRequest) {
         "DELETE_ARCHIVED_PAPER",
         id,
         "ArchivedPaper",
-        "admin@system",
+        auth.user,
         { title: paper?.title },
         ipAddress,
       );
@@ -324,7 +334,7 @@ export async function DELETE(request: NextRequest) {
         "DELETE_PAPER",
         id,
         "Paper",
-        "admin@system",
+        auth.user,
         { title: paper?.title },
         ipAddress,
       );

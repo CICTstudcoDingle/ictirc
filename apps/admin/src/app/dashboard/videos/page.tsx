@@ -11,6 +11,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { cn } from "@ictirc/ui";
+import { isR2Configured } from "@/lib/features";
 
 interface VideoRecord {
   id: string;
@@ -26,6 +27,7 @@ interface VideoRecord {
 }
 
 export default function VideosPage() {
+  const r2Ready = isR2Configured();
   const [videos, setVideos] = useState<VideoRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -216,6 +218,14 @@ export default function VideosPage() {
         </p>
       </div>
 
+      {/* Service unavailable banner */}
+      {!r2Ready && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg text-sm">
+          ⚠️ Video uploads require Cloudflare R2 credentials. Set R2_ACCOUNT_ID,
+          R2_ACCESS_KEY_ID, and R2_SECRET_ACCESS_KEY to enable this feature.
+        </div>
+      )}
+
       {/* Alerts */}
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
@@ -259,7 +269,8 @@ export default function VideosPage() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g., CICT Department Promo 2026"
-                className="w-full bg-gray-50 border-b-2 border-gray-300 rounded-t-md px-3 py-2.5 text-sm font-mono focus:border-maroon focus:outline-none transition-colors"
+                disabled={!r2Ready}
+                className="w-full bg-gray-50 border-b-2 border-gray-300 rounded-t-md px-3 py-2.5 text-sm font-mono focus:border-maroon focus:outline-none transition-colors disabled:opacity-50"
                 required
               />
             </div>
@@ -274,7 +285,8 @@ export default function VideosPage() {
                 value={editorName}
                 onChange={(e) => setEditorName(e.target.value)}
                 placeholder="e.g., Juan Dela Cruz"
-                className="w-full bg-gray-50 border-b-2 border-gray-300 rounded-t-md px-3 py-2.5 text-sm font-mono focus:border-maroon focus:outline-none transition-colors"
+                disabled={!r2Ready}
+                className="w-full bg-gray-50 border-b-2 border-gray-300 rounded-t-md px-3 py-2.5 text-sm font-mono focus:border-maroon focus:outline-none transition-colors disabled:opacity-50"
                 required
               />
             </div>
@@ -290,7 +302,8 @@ export default function VideosPage() {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Brief description of the video..."
               rows={3}
-              className="w-full bg-gray-50 border-b-2 border-gray-300 rounded-t-md px-3 py-2.5 text-sm font-mono focus:border-maroon focus:outline-none transition-colors resize-none"
+              disabled={!r2Ready}
+              className="w-full bg-gray-50 border-b-2 border-gray-300 rounded-t-md px-3 py-2.5 text-sm font-mono focus:border-maroon focus:outline-none transition-colors resize-none disabled:opacity-50"
             />
           </div>
 
@@ -303,9 +316,10 @@ export default function VideosPage() {
               <div className="flex gap-3">
                 <button
                   type="button"
-                  onClick={() => setVideoType("promotional")}
+                  onClick={() => r2Ready && setVideoType("promotional")}
+                  disabled={!r2Ready}
                   className={cn(
-                    "flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 text-sm font-medium transition-all",
+                    "flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 text-sm font-medium transition-all disabled:opacity-50",
                     videoType === "promotional"
                       ? "border-maroon bg-maroon/5 text-maroon"
                       : "border-gray-200 text-gray-500 hover:border-gray-300",
@@ -316,9 +330,10 @@ export default function VideosPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setVideoType("teaser")}
+                  onClick={() => r2Ready && setVideoType("teaser")}
+                  disabled={!r2Ready}
                   className={cn(
-                    "flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 text-sm font-medium transition-all",
+                    "flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 text-sm font-medium transition-all disabled:opacity-50",
                     videoType === "teaser"
                       ? "border-maroon bg-maroon/5 text-maroon"
                       : "border-gray-200 text-gray-500 hover:border-gray-300",
@@ -340,8 +355,9 @@ export default function VideosPage() {
                 type="file"
                 accept="video/mp4,video/webm,video/quicktime"
                 onChange={handleFileSelect}
+                disabled={!r2Ready}
                 aria-label="Select video file"
-                className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-maroon/10 file:text-maroon hover:file:bg-maroon/20 cursor-pointer"
+                className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-maroon/10 file:text-maroon hover:file:bg-maroon/20 cursor-pointer disabled:opacity-50"
               />
               {selectedFile && (
                 <p className="text-xs text-gray-400 mt-1 font-mono">
@@ -370,10 +386,10 @@ export default function VideosPage() {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={uploading || !selectedFile}
+            disabled={uploading || !selectedFile || !r2Ready}
             className={cn(
               "w-full md:w-auto px-6 py-2.5 rounded-md text-sm font-semibold text-white transition-all",
-              uploading || !selectedFile
+              uploading || !selectedFile || !r2Ready
                 ? "bg-gray-300 cursor-not-allowed"
                 : "bg-maroon hover:shadow-[4px_4px_0px_0px_rgba(212,175,55,1)]",
             )}

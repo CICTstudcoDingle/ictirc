@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useSearch } from "@ictirc/search";
 import { SearchInput, SearchHitCard } from "@ictirc/search";
+import { isAlgoliaConfigured } from "@/lib/features";
 
 interface SearchStats {
   [indexName: string]: {
@@ -23,6 +24,7 @@ interface SearchStats {
 }
 
 export default function SearchManagementPage() {
+  const algoliaReady = isAlgoliaConfigured();
   const [isLoading, setIsLoading] = useState(false);
   const [stats, setStats] = useState<SearchStats | null>(null);
   const [message, setMessage] = useState<{
@@ -103,6 +105,17 @@ export default function SearchManagementPage() {
         </p>
       </div>
 
+      {/* Service unavailable banner */}
+      {!algoliaReady && (
+        <div className="p-3 md:p-4 rounded-lg flex items-center gap-2 text-sm bg-amber-50 text-amber-800 border border-amber-200">
+          <AlertCircle className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
+          <span>
+            Algolia is not configured. Set ALGOLIA_APP_ID and
+            ALGOLIA_ADMIN_API_KEY to enable search management.
+          </span>
+        </div>
+      )}
+
       {/* Status Message */}
       {message && (
         <div
@@ -138,7 +151,7 @@ export default function SearchManagementPage() {
           </p>
           <button
             onClick={() => handleAction("setup")}
-            disabled={isLoading}
+            disabled={isLoading || !algoliaReady}
             className="w-full bg-[#800000] text-white px-4 py-2 rounded-md hover:bg-[#600000] hover:shadow-[4px_4px_0px_0px_rgba(212,175,55,1)] disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-all"
           >
             {isLoading ? (
@@ -166,7 +179,7 @@ export default function SearchManagementPage() {
           </p>
           <button
             onClick={() => handleAction("sync")}
-            disabled={isLoading}
+            disabled={isLoading || !algoliaReady}
             className="w-full bg-[#800000] text-white px-4 py-2 rounded-md hover:bg-[#600000] hover:shadow-[4px_4px_0px_0px_rgba(212,175,55,1)] disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-all"
           >
             {isLoading ? (
@@ -193,7 +206,7 @@ export default function SearchManagementPage() {
           </p>
           <button
             onClick={loadStats}
-            disabled={isLoading}
+            disabled={isLoading || !algoliaReady}
             className="w-full bg-[#800000] text-white px-4 py-2 rounded-md hover:bg-[#600000] hover:shadow-[4px_4px_0px_0px_rgba(212,175,55,1)] disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-all"
           >
             {isLoading ? (
@@ -230,7 +243,7 @@ export default function SearchManagementPage() {
                 handleAction("clear");
               }
             }}
-            disabled={isLoading}
+            disabled={isLoading || !algoliaReady}
             className="w-full bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-all"
           >
             {isLoading ? (

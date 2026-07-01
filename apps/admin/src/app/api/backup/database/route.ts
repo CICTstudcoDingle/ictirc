@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@ictirc/database";
+import { apiAuth } from "@/lib/auth";
 import * as path from "path";
 import * as fs from "fs";
 
@@ -10,29 +10,10 @@ import * as fs from "fs";
  * Restricted to DEAN role only
  */
 export async function POST(request: NextRequest) {
+  const auth = await apiAuth("backup:manage");
+  if (auth.response) return auth.response;
+
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // Check user role - only DEAN can trigger backups
-    const dbUser = await prisma.user.findUnique({
-      where: { id: user.id },
-      select: { role: true, name: true },
-    });
-
-    if (!dbUser || dbUser.role !== "DEAN") {
-      return NextResponse.json(
-        { error: "Only the Dean can trigger database backups" },
-        { status: 403 },
-      );
-    }
-
     const body = await request.json().catch(() => ({}));
     const uploadToGdrive = body.uploadToGdrive || false;
 
@@ -72,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     const exportData = {
       exportedAt: new Date().toISOString(),
-      exportedBy: dbUser.name || user.email,
+      exportedBy: auth.user.name || auth.user.email,
       version: "1.0",
       tables: {
         users: users.length,
@@ -145,25 +126,10 @@ export async function POST(request: NextRequest) {
  * List existing backups
  */
 export async function GET(request: NextRequest) {
+  const auth = await apiAuth("backup:manage");
+  if (auth.response) return auth.response;
+
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const dbUser = await prisma.user.findUnique({
-      where: { id: user.id },
-      select: { role: true },
-    });
-
-    if (!dbUser || !["EDITOR", "DEAN"].includes(dbUser.role)) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
-
     const backupDir = path.join(process.cwd(), "backups");
 
     if (!fs.existsSync(backupDir)) {

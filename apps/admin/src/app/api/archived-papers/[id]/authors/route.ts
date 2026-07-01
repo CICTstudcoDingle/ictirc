@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@ictirc/database";
+import { apiAuth } from "@/lib/auth";
 
 interface RouteContext {
   params: Promise<{ id: string }>;
@@ -8,6 +9,9 @@ interface RouteContext {
 // PUT /api/archived-papers/[id]/authors
 // Replace all authors for an archived paper
 export async function PUT(request: NextRequest, context: RouteContext) {
+  const auth = await apiAuth("archive:paper:update");
+  if (auth.response) return auth.response;
+
   try {
     const { id } = await context.params;
     const body = await request.json();
@@ -61,6 +65,9 @@ export async function PUT(request: NextRequest, context: RouteContext) {
 
 // GET /api/archived-papers/[id]/authors
 export async function GET(request: NextRequest, context: RouteContext) {
+  const auth = await apiAuth("archive:read");
+  if (auth.response) return auth.response;
+
   try {
     const { id } = await context.params;
 

@@ -17,7 +17,15 @@ export const PROTECTED_ROUTES: Record<string, UserRole[]> = {
   "/dashboard": ["AUTHOR", "REVIEWER", "EDITOR", "DEAN"],
   "/dashboard/papers": ["REVIEWER", "EDITOR", "DEAN"],
   "/dashboard/papers/review": ["REVIEWER", "EDITOR", "DEAN"],
+  "/dashboard/conferences": ["EDITOR", "DEAN"],
   "/dashboard/users": ["EDITOR", "DEAN"],
+  "/dashboard/videos": ["EDITOR", "DEAN"],
+  "/dashboard/home-content": ["EDITOR", "DEAN"],
+  "/dashboard/feedback": ["EDITOR", "DEAN"],
+  "/dashboard/guides": ["EDITOR", "DEAN"],
+  "/dashboard/changelog": ["EDITOR", "DEAN"],
+  "/dashboard/search": ["EDITOR", "DEAN"],
+  "/dashboard/audit-logs": ["EDITOR", "DEAN"],
   "/dashboard/settings": ["DEAN"],
   "/dashboard/system": ["DEAN"],
   "/dashboard/archives": ["EDITOR", "DEAN"],
@@ -31,12 +39,15 @@ export const PROTECTED_ROUTES: Record<string, UserRole[]> = {
  * Permission types for granular access control
  */
 export type Permission =
+  | "dashboard:read"
   | "paper:read"
   | "paper:create"
   | "paper:update"
   | "paper:delete"
   | "paper:review"
   | "paper:publish"
+  | "paper:comment"
+  | "paper:assign"
   | "paper:revoke-doi"
   | "user:read"
   | "user:create"
@@ -58,6 +69,14 @@ export type Permission =
   | "archive:paper:update"
   | "archive:paper:delete"
   | "archive:conference:manage"
+  | "conference:manage"
+  | "guide:manage"
+  | "video:manage"
+  | "feedback:manage"
+  | "changelog:manage"
+  | "homeContent:manage"
+  | "search:manage"
+  | "backup:manage"
   | "plagiarism:record"
   | "plagiarism:override";
 
@@ -68,13 +87,17 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   AUTHOR: ["paper:read", "paper:create"],
   REVIEWER: ["paper:read", "paper:review"],
   EDITOR: [
+    "dashboard:read",
     "paper:read",
     "paper:create",
     "paper:update",
     "paper:review",
     "paper:publish",
+    "paper:comment",
+    "paper:assign",
     "user:read",
     "user:invite",
+    "audit:read",
     "archive:read",
     "archive:volume:create",
     "archive:volume:update",
@@ -83,15 +106,24 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     "archive:paper:upload",
     "archive:paper:update",
     "archive:conference:manage",
+    "conference:manage",
+    "guide:manage",
+    "video:manage",
+    "feedback:manage",
+    "changelog:manage",
+    "homeContent:manage",
     "plagiarism:record",
   ],
   DEAN: [
+    "dashboard:read",
     "paper:read",
     "paper:create",
     "paper:update",
     "paper:delete",
     "paper:review",
     "paper:publish",
+    "paper:comment",
+    "paper:assign",
     "paper:revoke-doi",
     "user:read",
     "user:create",
@@ -113,6 +145,14 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     "archive:paper:update",
     "archive:paper:delete",
     "archive:conference:manage",
+    "conference:manage",
+    "guide:manage",
+    "video:manage",
+    "feedback:manage",
+    "changelog:manage",
+    "homeContent:manage",
+    "search:manage",
+    "backup:manage",
     "plagiarism:record",
     "plagiarism:override",
   ],

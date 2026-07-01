@@ -17,7 +17,6 @@ import {
   overridePlagiarismRejection,
 } from "@/app/dashboard/papers/[id]/actions";
 import { useToast } from "@/lib/toast";
-import { createClient } from "@/lib/supabase/client";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -136,21 +135,10 @@ export function PlagiarismCheck({
 
     setIsRecording(true);
     try {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        addToast("error", "Unauthorized", "You must be logged in.");
-        return;
-      }
-
       const result = await recordPlagiarismCheck({
         paperId,
         score: numScore,
         notes: checkNotes.trim() || undefined,
-        checkedByUserId: user.id,
       });
 
       if (result.success) {
@@ -193,19 +181,8 @@ export function PlagiarismCheck({
 
     setIsOverriding(true);
     try {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        addToast("error", "Unauthorized", "You must be logged in.");
-        return;
-      }
-
       const result = await overridePlagiarismRejection({
         paperId,
-        overriddenByUserId: user.id,
         overrideNote: overrideReason.trim(),
       });
 

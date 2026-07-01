@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@ictirc/database/client";
+import { apiAuth } from "@/lib/auth";
 
 export async function GET(request: Request) {
+  const auth = await apiAuth("user:invite");
+  if (auth.response) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
@@ -27,6 +31,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const auth = await apiAuth("user:invite");
+  if (auth.response) return auth.response;
+
   try {
     const body = await request.json();
     const { email, role } = body;
@@ -44,6 +51,7 @@ export async function POST(request: Request) {
         email,
         role: role || "AUTHOR",
         expiresAt,
+        invitedById: auth.user.id,
       },
     });
 

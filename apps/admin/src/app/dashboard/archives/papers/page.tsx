@@ -9,6 +9,8 @@ import {
   Edit,
   Search,
   BookMarked,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { DeleteArchivedPaperButton } from "@/components/archives/delete-archived-paper-button";
 
@@ -21,13 +23,16 @@ interface SearchParams {
   search?: string;
   category?: string;
   issueId?: string;
+  page?: string;
 }
 
 interface PageProps {
   searchParams: Promise<SearchParams>;
 }
 
-async function getArchivedPapers(filters: SearchParams) {
+const PAGE_SIZE = 20;
+
+function buildWhere(filters: SearchParams) {
   const where: any = {};
 
   if (filters.search) {
@@ -45,26 +50,40 @@ async function getArchivedPapers(filters: SearchParams) {
     where.issueId = filters.issueId;
   }
 
-  return prisma.archivedPaper.findMany({
-    where,
-    include: {
-      authors: { orderBy: { order: "asc" }, take: 3 },
-      category: { select: { id: true, name: true } },
-      issue: {
-        include: {
-          volume: { select: { volumeNumber: true, year: true } },
-          conference: { select: { name: true } },
+  return where;
+}
+
+async function getArchivedPapers(filters: SearchParams) {
+  const page = Math.max(1, parseInt(filters.page || "1", 10) || 1);
+  const where = buildWhere(filters);
+
+  const [papers, total] = await Promise.all([
+    prisma.archivedPaper.findMany({
+      where,
+      include: {
+        authors: { orderBy: { order: "asc" }, take: 3 },
+        category: { select: { id: true, name: true } },
+        issue: {
+          include: {
+            volume: { select: { volumeNumber: true, year: true } },
+            conference: { select: { name: true } },
+          },
         },
       },
-    },
-    orderBy: [{ issue: { publishedDate: "desc" } }, { pageStart: "asc" }],
-  });
+      orderBy: [{ issue: { publishedDate: "desc" } }, { pageStart: "asc" }],
+      skip: (page - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
+    }),
+    prisma.archivedPaper.count({ where }),
+  ]);
+
+  return { papers, total, page };
 }
 
 export default async function ArchivedPapersPage({ searchParams }: PageProps) {
   const params = await searchParams;
 
-  const [papers, categories, issues] = await Promise.all([
+  const [{ papers, total, page }, categories, issues] = await Promise.all([
     getArchivedPapers(params),
     prisma.category.findMany({
       orderBy: { name: "asc" },
@@ -75,6 +94,10 @@ export default async function ArchivedPapersPage({ searchParams }: PageProps) {
       orderBy: [{ volume: { year: "desc" } }, { issueNumber: "asc" }],
     }),
   ]);
+
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+  const hasPrev = page > 1;
+  const hasNext = page < totalPages;
 
   return (
     <div className="space-y-6">
@@ -292,7 +315,61 @@ export default async function ArchivedPapersPage({ searchParams }: PageProps) {
             </tbody>
           </table>
         )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-gray-50">
+            <p className="text-sm text-gray-500">
+              Showing {(page - 1) * PAGE_SIZE + 1}–
+              {Math.min(page * PAGE_SIZE, total)} of {total} papers
+            </p>
+            <div className="flex items-center gap-2">
+              <PageLink page={page - 1} disabled={!hasPrev} params={params}>
+                <ChevronLeft className="w-4 h-4" />
+                Previous
+              </PageLink>
+              <span className="text-sm text-gray-600 px-2">
+                Page {page} of {totalPages}
+              </span>
+              <PageLink page={page + 1} disabled={!hasNext} params={params}>
+                Next
+                <ChevronRight className="w-4 h-4" />
+              </PageLink>
+            </div>
+          </div>
+        )}
       </div>
     </div>
+  );
+}
+
+function PageLink({
+  page,
+  disabled,
+  params,
+  children,
+}: {
+  page: number;
+  disabled: boolean;
+  params: SearchParams;
+  children: React.ReactNode;
+}) {
+  const qs = new URLSearchParams();
+  if (params.search) qs.set("search", params.search);
+  if (params.category) qs.set("category", params.category);
+  if (params.issueId) qs.set("issueId", params.issueId);
+  qs.set("page", String(page));
+
+  return (
+    <Link
+      href={`/dashboard/archives/papers?${qs.toString()}`}
+      className={`inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-lg border transition-colors ${
+        disabled
+          ? "border-gray-200 text-gray-400 pointer-events-none bg-gray-100"
+          : "border-gray-300 text-gray-700 hover:bg-white hover:border-gray-400 bg-white"
+      }`}
+    >
+      {children}
+    </Link>
   );
 }

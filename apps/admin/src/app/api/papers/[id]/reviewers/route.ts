@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@ictirc/database";
+import { apiAuth } from "@/lib/auth";
 
 interface RouteContext {
   params: Promise<{ id: string }>;
 }
 
 export async function POST(request: NextRequest, context: RouteContext) {
+  const auth = await apiAuth("paper:assign");
+  if (auth.response) return auth.response;
+
   try {
     const { id } = await context.params;
     const body = await request.json();
@@ -68,6 +72,9 @@ export async function POST(request: NextRequest, context: RouteContext) {
 }
 
 export async function DELETE(request: NextRequest, context: RouteContext) {
+  const auth = await apiAuth("paper:assign");
+  if (auth.response) return auth.response;
+
   try {
     const body = await request.json();
     const { assignmentId } = body;
@@ -94,6 +101,9 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
 }
 
 export async function GET(request: NextRequest, context: RouteContext) {
+  const auth = await apiAuth("paper:read");
+  if (auth.response) return auth.response;
+
   try {
     const { id } = await context.params;
 

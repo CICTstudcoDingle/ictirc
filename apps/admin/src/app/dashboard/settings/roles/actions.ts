@@ -2,8 +2,7 @@
 
 import { prisma } from "@ictirc/database";
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
-import { requireRole } from "@/lib/rbac";
+import { actionAuth } from "@/lib/auth";
 
 // ============================================
 // ROLE ACTIONS (DEAN ONLY)
@@ -13,16 +12,10 @@ import { requireRole } from "@/lib/rbac";
  * Get all roles
  */
 export async function getRoles() {
+  const auth = await actionAuth("system:settings");
+  if (!auth.success) return { success: false, error: auth.error, roles: [] };
+
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return { success: false, error: "Unauthorized" };
-    }
-
     const roles = await prisma.role.findMany({
       orderBy: { name: "asc" },
     });
@@ -33,6 +26,33 @@ export async function getRoles() {
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to fetch roles",
+      roles: [],
+    };
+  }
+}
+
+/**
+ * Get a single role by ID
+ */
+export async function getRole(id: string) {
+  const auth = await actionAuth("system:settings");
+  if (!auth.success) return { success: false, error: auth.error };
+
+  try {
+    const role = await prisma.role.findUnique({
+      where: { id },
+    });
+
+    if (!role) {
+      return { success: false, error: "Role not found" };
+    }
+
+    return { success: true, role };
+  } catch (error) {
+    console.error("[getRole] Error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to fetch role",
     };
   }
 }
@@ -46,18 +66,10 @@ export async function createRole(data: {
   description?: string;
   permissions?: string[];
 }) {
+  const auth = await actionAuth("system:settings");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return { success: false, error: "Unauthorized" };
-    }
-
-    await requireRole(user.id, "DEAN");
-
     // Check for duplicate role name
     const existing = await prisma.role.findUnique({
       where: { name: data.name.toUpperCase() },
@@ -100,18 +112,10 @@ export async function updateRole(
     permissions?: string[];
   },
 ) {
+  const auth = await actionAuth("system:settings");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return { success: false, error: "Unauthorized" };
-    }
-
-    await requireRole(user.id, "DEAN");
-
     // Check if role exists
     const existing = await prisma.role.findUnique({
       where: { id },
@@ -143,18 +147,10 @@ export async function updateRole(
  * Delete role
  */
 export async function deleteRole(id: string) {
+  const auth = await actionAuth("system:settings");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return { success: false, error: "Unauthorized" };
-    }
-
-    await requireRole(user.id, "DEAN");
-
     // Check if role exists and is not a system role
     const existing = await prisma.role.findUnique({
       where: { id },
@@ -188,18 +184,10 @@ export async function deleteRole(id: string) {
  * Initialize default system roles (run once)
  */
 export async function initializeSystemRoles() {
+  const auth = await actionAuth("system:settings");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return { success: false, error: "Unauthorized" };
-    }
-
-    await requireRole(user.id, "DEAN");
-
     const systemRoles = [
       {
         name: "AUTHOR",

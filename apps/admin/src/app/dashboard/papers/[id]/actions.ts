@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { convertDocxToPdf } from "@/lib/cloudconvert";
 import { generateDoi } from "@/lib/doi";
 import { createClient } from "@supabase/supabase-js";
+import { actionAuth } from "@/lib/auth";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -19,6 +20,9 @@ interface PublishResult {
 }
 
 export async function publishPaper(paperId: string): Promise<PublishResult> {
+  const auth = await actionAuth("paper:publish");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
     // Get paper details
     const paper = await prisma.paper.findUnique({
@@ -110,8 +114,8 @@ export async function publishPaper(paperId: string): Promise<PublishResult> {
     // Create audit log
     await prisma.auditLog.create({
       data: {
-        actorId: "admin-system",
-        actorEmail: "admin@ictirc.com",
+        actorId: auth.user.id,
+        actorEmail: auth.user.email,
         action: "PUBLISH_PAPER",
         targetId: paperId,
         targetType: "Paper",
@@ -146,6 +150,9 @@ export async function updatePublicationStep(
   step: number,
   note?: string,
 ) {
+  const auth = await actionAuth("paper:update");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
     const updatedPaper = await prisma.paper.update({
       where: { id: paperId },
@@ -158,7 +165,8 @@ export async function updatePublicationStep(
     // Create log
     await prisma.auditLog.create({
       data: {
-        actorId: "admin-system", // Should be current user, but context limitations. Acceptable for now.
+        actorId: auth.user.id,
+        actorEmail: auth.user.email,
         action: "UPDATE_PUBLICATION_STEP",
         targetId: paperId,
         targetType: "Paper",
@@ -204,7 +212,6 @@ interface RecordPlagiarismInput {
   paperId: string;
   score: number; // 0-100
   notes?: string; // e.g., "Checked via Turnitin on 2026-03-01"
-  checkedByUserId: string;
 }
 
 /**
@@ -212,8 +219,11 @@ interface RecordPlagiarismInput {
  * Editors and Dean can record. Status is auto-determined by thresholds.
  */
 export async function recordPlagiarismCheck(input: RecordPlagiarismInput) {
+  const auth = await actionAuth("plagiarism:record");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
-    const { paperId, score, notes, checkedByUserId } = input;
+    const { paperId, score, notes } = input;
 
     // Validate score range
     if (score < 0 || score > 100) {
@@ -236,7 +246,7 @@ export async function recordPlagiarismCheck(input: RecordPlagiarismInput) {
         plagiarismScore: score,
         plagiarismStatus: status,
         plagiarismCheckedAt: new Date(),
-        plagiarismCheckedBy: checkedByUserId,
+        plagiarismCheckedBy: auth.user.id,
         plagiarismNotes: notes || null,
         // Clear any previous override if re-checking
         plagiarismOverriddenBy: null,
@@ -247,7 +257,8 @@ export async function recordPlagiarismCheck(input: RecordPlagiarismInput) {
     // Audit log
     await prisma.auditLog.create({
       data: {
-        actorId: checkedByUserId,
+        actorId: auth.user.id,
+        actorEmail: auth.user.email,
         action: "RECORD_PLAGIARISM_CHECK",
         targetId: paperId,
         targetType: "Paper",
@@ -287,7 +298,6 @@ export async function recordPlagiarismCheck(input: RecordPlagiarismInput) {
 
 interface OverridePlagiarismInput {
   paperId: string;
-  overriddenByUserId: string;
   overrideNote: string; // Required: Dean must provide a reason
 }
 
@@ -298,22 +308,14 @@ interface OverridePlagiarismInput {
 export async function overridePlagiarismRejection(
   input: OverridePlagiarismInput,
 ) {
+  const auth = await actionAuth("plagiarism:override");
+  if (!auth.success) return { success: false, error: auth.error };
+
   try {
-    const { paperId, overriddenByUserId, overrideNote } = input;
+    const { paperId, overrideNote } = input;
 
     if (!overrideNote.trim()) {
       return { success: false, error: "Override reason is required" };
-    }
-
-    // Verify the user is a Dean
-    const user = await prisma.user.findUnique({
-      where: { id: overriddenByUserId },
-    });
-    if (!user || user.role !== "DEAN") {
-      return {
-        success: false,
-        error: "Only the Dean can override plagiarism rejections",
-      };
     }
 
     // Get current paper
@@ -334,7 +336,7 @@ export async function overridePlagiarismRejection(
       where: { id: paperId },
       data: {
         plagiarismStatus: "OVERRIDDEN",
-        plagiarismOverriddenBy: overriddenByUserId,
+        plagiarismOverriddenBy: auth.user.id,
         plagiarismOverrideNote: overrideNote,
       },
     });
@@ -342,8 +344,8 @@ export async function overridePlagiarismRejection(
     // Audit log (critical action)
     await prisma.auditLog.create({
       data: {
-        actorId: overriddenByUserId,
-        actorEmail: user.email,
+        actorId: auth.user.id,
+        actorEmail: auth.user.email,
         action: "OVERRIDE_PLAGIARISM_REJECTION",
         targetId: paperId,
         targetType: "Paper",

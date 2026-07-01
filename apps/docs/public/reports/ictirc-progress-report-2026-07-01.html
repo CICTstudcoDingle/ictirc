@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ICTIRC Platform Progress Report – 2026-07-01</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #7f1d1d;
+      --primary-light: #fef2f2;
+      --success: #16a34a;
+      --success-bg: #f0fdf4;
+      --warn: #d97706;
+      --warn-bg: #fffbeb;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --code: #0f172a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, #991b1b 100%);
+      color: #fff;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    header h1 { margin: 0; font-size: 2rem; letter-spacing: -0.02em; }
+    header p { margin: 0.5rem 0 0; opacity: 0.9; font-size: 0.95rem; }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .card h2 {
+      margin: 0 0 1rem;
+      font-size: 1.25rem;
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 0.5rem;
+    }
+    .card h3 { margin: 1.25rem 0 0.5rem; font-size: 1rem; color: var(--text); }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .badge-done { background: var(--success-bg); color: var(--success); }
+    .badge-progress { background: #eff6ff; color: #2563eb; }
+    .badge-pending { background: #f3f4f6; color: var(--muted); }
+    .badge-warn { background: var(--warn-bg); color: var(--warn); }
+    .meta { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+    .meta-item { font-size: 0.875rem; color: var(--muted); }
+    .meta-item strong { color: var(--text); }
+    ul { padding-left: 1.25rem; }
+    li { margin-bottom: 0.5rem; }
+    code, .file-path {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.85em;
+      background: #f1f5f9;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.25rem;
+      color: var(--code);
+    }
+    .file-path { display: inline-block; word-break: break-all; }
+    table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
+    th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    th { background: #f8fafc; color: var(--muted); font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    .progress-bar { height: 0.6rem; background: var(--border); border-radius: 9999px; overflow: hidden; margin-top: 0.35rem; }
+    .progress-fill { height: 100%; background: var(--success); width: 0%; }
+    .note {
+      background: var(--warn-bg);
+      border-left: 4px solid var(--warn);
+      padding: 1rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+      color: #78350f;
+      font-size: 0.9rem;
+    }
+    footer { text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ICTIRC Platform Progress Report</h1>
+    <p>Workstream B: Admin security & functional CRUD — status as of 2026-07-01</p>
+  </header>
+
+  <div class="container">
+    <div class="meta">
+      <div class="meta-item"><strong>Branch:</strong> develop</div>
+      <div class="meta-item"><strong>Date:</strong> 2026-07-01</div>
+      <div class="meta-item"><strong>Reporter:</strong> OpenCode</div>
+      <div class="meta-item"><strong>Overall status:</strong> <span class="badge badge-progress">B2 in progress</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Executive Summary</h2>
+      <p>
+        The current sprint is focused on <strong>Workstream B</strong>: securing the admin app and making every admin CRUD flow functional before moving to public-web performance work. The database connectivity issue that was blocking Vercel builds has been resolved, auth guards are centralized, and the remaining CRUD gaps are now filled. The admin app builds, lints, and type-checks cleanly.
+      </p>
+      <div class="note">
+        <strong>Next decision point:</strong> merge the current <code>develop</code> work into <code>main</code> after CI passes, then begin the web-performance workstream (remove Lenis, lazy-load GSAP, respect <code>prefers-reduced-motion</code>).
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Workstream B1 — Admin Security & Auth</h2>
+      <span class="badge badge-done">Done</span>
+      <ul>
+        <li>Centralized auth helpers created in <span class="file-path">apps/admin/src/lib/auth.ts</span>: <code>getCurrentUser</code>, <code>requirePermission</code>, <code>requireRole</code>, <code>apiAuth</code>, <code>actionAuth</code>.</li>
+        <li>Extended RBAC permission matrix in <span class="file-path">apps/admin/src/lib/rbac.ts</span> with new permissions for dashboard, papers, conferences, guides, videos, feedback, changelog, home content, search, and backups.</li>
+        <li><span class="file-path">apps/admin/middleware.ts</span> now protects every <code>/dashboard/*</code> route by session and route role.</li>
+        <li>Server layout in <span class="file-path">apps/admin/src/app/dashboard/layout.tsx</span> adds defense-in-depth role checks.</li>
+        <li>All admin API routes and server actions now enforce auth via <code>apiAuth</code> / <code>actionAuth</code>.</li>
+        <li>Removed spoofable <code>userId</code> parameters from server actions and replaced hard-coded audit-log actor IDs with the authenticated user.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Workstream B2 — Functional Admin CRUD</h2>
+      <span class="badge badge-progress">Mostly complete</span>
+
+      <h3>Recently finished</h3>
+      <ul>
+        <li><strong>Role edit page:</strong> new <span class="file-path">apps/admin/src/app/dashboard/settings/roles/[id]/page.tsx</span> plus <code>getRole</code> server action.</li>
+        <li><strong>Volume & issue deletion:</strong> new <code>DeleteVolumeButton</code> and <code>DeleteIssueButton</code> components, wired into list cards and detail headers.</li>
+        <li><strong>Home-content reset:</strong> each section editor now has a <em>Reset</em> button that calls <code>deleteHomeSection</code>.</li>
+        <li><strong>Real settings persistence:</strong> new <span class="file-path">apps/admin/src/lib/actions/settings.ts</span> using the existing <code>Setting</code> model; General and Email settings now save to the database instead of toasting a mock.</li>
+        <li><strong>Batch upload:</strong> implemented end-to-end in <span class="file-path">apps/admin/src/components/archives/batch-upload-form.tsx</span>: CSV parsing, PDF/DOCX matching, Supabase archive-bucket upload, and <code>batchCreateArchivedPapers</code>.</li>
+        <li><strong>Pagination:</strong> archived-papers list now supports server-side pagination with filter-preserving prev/next links.</li>
+      </ul>
+
+      <h3>Earlier B2 work already in place</h3>
+      <ul>
+        <li>Volume / issue / archived-paper create, read, update actions in <span class="file-path">apps/admin/src/lib/actions/</span>.</li>
+        <li>Changelog CRUD with a new edit page and backup download route at <span class="file-path">apps/admin/src/app/api/backup/download/route.ts</span>.</li>
+        <li>Conference module consolidated; duplicate <code>dashboard/archives/conferences</code> directory removed.</li>
+        <li>CloudConvert module fixed to fail at call time rather than on import, with <code>isCloudConvertConfigured()</code> check.</li>
+        <li>Graceful degradation UI for CloudConvert, Algolia, R2, Google Drive, and Supabase Storage when keys are missing.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Verification</h2>
+      <table>
+        <thead>
+          <tr><th>Check</th><th>Command</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Lint (monorepo)</td><td><code>pnpm lint</code></td><td><span class="badge badge-done">Pass</span> (warnings only)</td></tr>
+          <tr><td>Type check (monorepo)</td><td><code>pnpm typecheck</code></td><td><span class="badge badge-done">Pass</span></td></tr>
+          <tr><td>Admin build</td><td><code>pnpm --filter @ictirc/admin build</code></td><td><span class="badge badge-done">Pass</span></td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:1rem; font-size:0.9rem; color:var(--muted);">
+        The build logs show expected <code>Dynamic server usage: cookies</code> messages during static generation because dashboard routes are authenticated; this is normal and does not fail the build.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Known Configuration Gaps</h2>
+      <p>These external services degrade gracefully when their environment variables are missing:</p>
+      <ul>
+        <li><strong>CloudConvert</strong> — <code>CLOUDCONVERT_API_KEY</code></li>
+        <li><strong>Cloudflare R2</strong> — <code>R2_ACCOUNT_ID</code>, <code>R2_ACCESS_KEY_ID</code>, <code>R2_SECRET_ACCESS_KEY</code></li>
+        <li><strong>Algolia</strong> — <code>ALGOLIA_APP_ID</code>, <code>ALGOLIA_ADMIN_API_KEY</code></li>
+        <li><strong>Google Drive backups</strong> — <code>GDRIVE_SERVICE_EMAIL</code>, <code>GDRIVE_PRIVATE_KEY</code>, <code>GDRIVE_BACKUP_FOLDER_ID</code></li>
+        <li><strong>Supabase Storage</strong> — <code>NEXT_PUBLIC_SUPABASE_BUCKET_HOT</code></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Recommended Next Steps</h2>
+      <ol>
+        <li><strong>Merge to main</strong> — open a PR from <code>develop</code> to <code>main</code> once CI is green.</li>
+        <li><strong>Full monorepo build</strong> — run <code>pnpm build</code> to verify the other apps still compile with the shared changes.</li>
+        <li><strong>Begin Workstream A — Public Web Performance</strong>
+          <ul>
+            <li>Remove Lenis from the root layout.</li>
+            <li>Lazy-load GSAP only on pages that need animations.</li>
+            <li>Wrap all motion behind <code>prefers-reduced-motion</code>.</li>
+            <li>Enable ISR/caching and optimize images/media for low-power mobile devices.</li>
+          </ul>
+        </li>
+        <li><strong>Optional polish</strong> — reduce the <code>Dynamic server usage</code> build noise by adding <code>export const dynamic = "force-dynamic"</code> to dashboard pages/layouts.</li>
+      </ol>
+    </div>
+  </div>
+
+  <footer>
+    Generated by OpenCode on 2026-07-01 · ICTIRC Monorepo · branch <code>develop</code>
+  </footer>
+</body>
+</html>

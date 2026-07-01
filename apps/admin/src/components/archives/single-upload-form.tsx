@@ -213,7 +213,7 @@ export function SingleUploadForm({ issues, userId }: SingleUploadFormProps) {
         })),
       };
 
-      const result = await createArchivedPaper(payload, userId);
+      const result = await createArchivedPaper(payload);
 
       if (result.success) {
         toast({ title: "Success", description: "Paper uploaded successfully" });

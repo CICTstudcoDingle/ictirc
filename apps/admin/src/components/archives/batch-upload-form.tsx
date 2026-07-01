@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -16,13 +16,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@ictirc/ui";
-import { Download, Upload } from "lucide-react";
+import { Download, Upload, Loader2, AlertCircle } from "lucide-react";
 import { toast } from "@/lib/toast";
+import { uploadFile } from "@ictirc/storage";
+import { batchCreateArchivedPapers } from "@/lib/actions/archived-paper";
+import { listCategories } from "@/lib/actions/category";
+import type { ArchivedPaperInput } from "@/lib/validations/archive";
 
 interface BatchUploadFormProps {
   issues: Array<{
     id: string;
     issueNumber: number;
+    publishedDate: Date;
     volume: {
       volumeNumber: number;
       year: number;
@@ -30,56 +35,294 @@ interface BatchUploadFormProps {
   }>;
 }
 
+interface RowError {
+  title: string;
+  error: string;
+}
+
+function parseCSV(text: string): Record<string, string>[] {
+  const lines: string[] = [];
+  let current = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (inQuotes) {
+      if (char === '"' && next === '"') {
+        current += '"';
+        i++;
+      } else if (char === '"') {
+        inQuotes = false;
+      } else {
+        current += char;
+      }
+    } else {
+      if (char === '"') {
+        inQuotes = true;
+      } else if (char === "\n" || char === "\r") {
+        if (current.length > 0 || lines.length > 0) {
+          lines.push(current);
+          current = "";
+        }
+        if (char === "\r" && next === "\n") i++;
+      } else if (char === ",") {
+        current += "\0"; // field separator
+      } else {
+        current += char;
+      }
+    }
+  }
+
+  if (current.length > 0) {
+    lines.push(current);
+  }
+
+  if (lines.length < 2) return [];
+
+  const headers = lines[0].split("\0").map((h) => h.trim());
+  return lines.slice(1).map((line) => {
+    const values = line.split("\0");
+    const row: Record<string, string> = {};
+    headers.forEach((header, index) => {
+      row[header] = (values[index] || "").trim();
+    });
+    return row;
+  });
+}
+
+function sanitizeFileName(name: string) {
+  return name.replace(/[^a-zA-Z0-9.-]/g, "_");
+}
+
 export function BatchUploadForm({ issues }: BatchUploadFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [pdfFiles, setPdfFiles] = useState<File[]>([]);
+  const [docxFiles, setDocxFiles] = useState<File[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
+    [],
+  );
+  const [progress, setProgress] = useState<{
+    current: number;
+    total: number;
+  } | null>(null);
+  const [errors, setErrors] = useState<RowError[]>([]);
+
+  useEffect(() => {
+    async function loadCategories() {
+      const result = await listCategories();
+      if (result.success && result.data) {
+        setCategories(
+          result.data.map((c: any) => ({ id: c.id, name: c.name })),
+        );
+      }
+    }
+    loadCategories();
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setErrors([]);
+
+    const formData = new FormData(e.currentTarget);
+    const issueId = formData.get("issueId") as string;
+    const issue = issues.find((i) => i.id === issueId);
+
+    if (!issueId || !issue) {
+      toast({
+        title: "Error",
+        description: "Please select a target issue",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!csvFile) {
+      toast({
+        title: "Error",
+        description: "CSV file is required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (pdfFiles.length === 0) {
+      toast({
+        title: "Error",
+        description: "At least one PDF file is required",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData(e.currentTarget);
-      const issueId = formData.get("issueId") as string;
+      const text = await csvFile.text();
+      const rows = parseCSV(text);
 
-      if (!csvFile) {
+      if (rows.length === 0) {
         toast({
           title: "Error",
-          description: "CSV file is required",
+          description: "CSV file appears to be empty",
           variant: "destructive",
         });
         return;
       }
 
-      if (pdfFiles.length === 0) {
+      const papers: ArchivedPaperInput[] = [];
+      const rowErrors: RowError[] = [];
+
+      setProgress({ current: 0, total: rows.length });
+
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        setProgress({ current: i + 1, total: rows.length });
+
+        const title = row.title;
+        if (!title) {
+          rowErrors.push({ title: `Row ${i + 1}`, error: "Missing title" });
+          continue;
+        }
+
+        const categoryName = row.category;
+        const category = categories.find(
+          (c) => c.name.toLowerCase() === categoryName.toLowerCase(),
+        );
+
+        if (!category) {
+          rowErrors.push({
+            title,
+            error: `Category not found: "${categoryName}"`,
+          });
+          continue;
+        }
+
+        const pdfFile = pdfFiles.find((f) => f.name === row.pdf_filename);
+        if (!pdfFile) {
+          rowErrors.push({
+            title,
+            error: `PDF file not found: "${row.pdf_filename}"`,
+          });
+          continue;
+        }
+
+        const pdfPath = `papers/${Date.now()}-${sanitizeFileName(pdfFile.name)}`;
+        const pdfUpload = await uploadFile(pdfFile, pdfPath, "archive");
+        if (!pdfUpload.success || !pdfUpload.url) {
+          rowErrors.push({
+            title,
+            error: `Failed to upload PDF: ${pdfUpload.error || "unknown"}`,
+          });
+          continue;
+        }
+
+        let docxUrl: string | undefined;
+        if (row.docx_filename) {
+          const docxFile = docxFiles.find((f) => f.name === row.docx_filename);
+          if (!docxFile) {
+            rowErrors.push({
+              title,
+              error: `DOCX file not found: "${row.docx_filename}"`,
+            });
+            continue;
+          }
+          const docxPath = `papers/${Date.now()}-${sanitizeFileName(docxFile.name)}`;
+          const docxUpload = await uploadFile(docxFile, docxPath, "archive");
+          if (docxUpload.success && docxUpload.url) {
+            docxUrl = docxUpload.url;
+          }
+        }
+
+        const authors = [];
+        for (let a = 1; a <= 5; a++) {
+          const name = row[`author_${a}_name`];
+          if (name) {
+            authors.push({
+              name,
+              email: row[`author_${a}_email`] || undefined,
+              affiliation: row[`author_${a}_affiliation`] || undefined,
+              order: a - 1,
+              isCorresponding: a === 1,
+            });
+          }
+        }
+
+        if (authors.length === 0) {
+          rowErrors.push({ title, error: "No authors provided" });
+          continue;
+        }
+
+        const keywords = row.keywords
+          .split(";")
+          .map((k) => k.trim())
+          .filter(Boolean);
+
+        const pageStart = row.page_start
+          ? parseInt(row.page_start, 10)
+          : undefined;
+        const pageEnd = row.page_end ? parseInt(row.page_end, 10) : undefined;
+
+        papers.push({
+          title,
+          abstract: row.abstract,
+          keywords,
+          doi: row.doi || undefined,
+          categoryId: category.id,
+          issueId,
+          publishedDate: issue.publishedDate || new Date(),
+          submittedDate: row.submitted_date
+            ? new Date(row.submitted_date)
+            : undefined,
+          acceptedDate: row.accepted_date
+            ? new Date(row.accepted_date)
+            : undefined,
+          pageStart: pageStart && !isNaN(pageStart) ? pageStart : undefined,
+          pageEnd: pageEnd && !isNaN(pageEnd) ? pageEnd : undefined,
+          pdfUrl: pdfUpload.url,
+          docxUrl,
+          authors,
+        });
+      }
+
+      if (papers.length === 0) {
+        setErrors(rowErrors);
         toast({
-          title: "Error",
-          description: "At least one PDF file is required",
+          title: "Upload failed",
+          description: "No valid papers could be processed. See errors below.",
           variant: "destructive",
         });
         return;
       }
 
-      toast({
-        title: "Processing",
-        description: "Batch upload is processing. This may take a while...",
-      });
+      const result = await batchCreateArchivedPapers(papers);
+      const serverErrors: RowError[] = (result.errors || []).map((e: any) => ({
+        title: e.title || "Unknown",
+        error: e.error || "Unknown error",
+      }));
+      const allErrors = [...rowErrors, ...serverErrors];
+      setErrors(allErrors);
 
-      // TODO: Implement batch upload logic
-      // 1. Parse CSV file
-      // 2. Upload all PDF files
-      // 3. Create archived papers with metadata from CSV
-
-      toast({
-        title: "Success",
-        description: `Successfully uploaded ${pdfFiles.length} papers`,
-      });
-
-      router.push("/dashboard/archives");
-      router.refresh();
+      if (result.success && allErrors.length === 0) {
+        toast({
+          title: "Success",
+          description: `${papers.length} paper${papers.length === 1 ? "" : "s"} uploaded successfully`,
+        });
+        router.push("/dashboard/archives/papers");
+        router.refresh();
+      } else {
+        const successCount = result.data?.length || 0;
+        toast({
+          title: "Batch upload completed with errors",
+          description: `${successCount} saved, ${allErrors.length} failed.`,
+          variant: "destructive",
+        });
+      }
     } catch (error) {
+      console.error(error);
       toast({
         title: "Error",
         description: "Failed to process batch upload",
@@ -87,6 +330,7 @@ export function BatchUploadForm({ issues }: BatchUploadFormProps) {
       });
     } finally {
       setIsSubmitting(false);
+      setProgress(null);
     }
   }
 
@@ -109,7 +353,7 @@ export function BatchUploadForm({ issues }: BatchUploadFormProps) {
               Download the template, fill in your paper metadata, and save it.
             </p>
             <a href="/templates/archive-batch-upload-template.csv" download>
-              <Button variant="outline">
+              <Button variant="outline" type="button">
                 <Download className="mr-2 h-4 w-4" />
                 Download Template
               </Button>
@@ -208,12 +452,17 @@ export function BatchUploadForm({ issues }: BatchUploadFormProps) {
                   type="file"
                   accept=".docx"
                   multiple
+                  onChange={(e) =>
+                    setDocxFiles(Array.from(e.target.files || []))
+                  }
                   className="hidden"
                   id="docxFiles"
                 />
                 <label htmlFor="docxFiles" className="cursor-pointer">
                   <p className="text-sm text-muted-foreground">
-                    Optional: Upload source DOCX files
+                    {docxFiles.length > 0
+                      ? `${docxFiles.length} file(s) selected`
+                      : "Optional: Upload source DOCX files"}
                   </p>
                 </label>
               </div>
@@ -226,9 +475,45 @@ export function BatchUploadForm({ issues }: BatchUploadFormProps) {
               </p>
             </div>
 
+            {progress && (
+              <div className="flex items-center gap-3 text-sm text-gray-600">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Processing row {progress.current} of {progress.total}...
+              </div>
+            )}
+
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Uploading..." : "Upload Batch"}
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Uploading...
+                </>
+              ) : (
+                <>
+                  <Upload className="w-4 h-4 mr-2" />
+                  Upload Batch
+                </>
+              )}
             </Button>
+
+            {errors.length > 0 && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertCircle className="w-4 h-4 text-red-600" />
+                  <h4 className="text-sm font-semibold text-red-800">
+                    {errors.length} error{errors.length === 1 ? "" : "s"}
+                  </h4>
+                </div>
+                <ul className="text-xs text-red-700 space-y-1 max-h-48 overflow-y-auto">
+                  {errors.map((err, idx) => (
+                    <li key={idx}>
+                      <span className="font-medium">{err.title}:</span>{" "}
+                      {err.error}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </form>
         </div>
       </CardContent>

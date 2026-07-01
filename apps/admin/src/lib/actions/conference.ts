@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@ictirc/database";
+import { actionAuth } from "@/lib/auth";
 import {
   conferenceSchema,
   updateConferenceSchema,
@@ -14,6 +15,9 @@ import {
 // ============================================
 
 export async function createConference(data: ConferenceInput) {
+  const auth = await actionAuth("conference:manage");
+  if (!auth.success) return auth;
+
   try {
     const validated = conferenceSchema.parse(data);
 
@@ -50,6 +54,9 @@ export async function updateConference(
   id: string,
   data: UpdateConferenceInput,
 ) {
+  const auth = await actionAuth("conference:manage");
+  if (!auth.success) return auth;
+
   try {
     const validated = updateConferenceSchema.parse(data);
 
@@ -88,6 +95,9 @@ export async function updateConference(
 }
 
 export async function deleteConference(id: string) {
+  const auth = await actionAuth("conference:manage");
+  if (!auth.success) return auth;
+
   try {
     // Check if conference has issues
     const conference = await prisma.conference.findUnique({
@@ -127,6 +137,9 @@ export async function deleteConference(id: string) {
 }
 
 export async function getConference(id: string) {
+  const auth = await actionAuth("conference:manage");
+  if (!auth.success) return auth;
+
   try {
     const conference = await prisma.conference.findUnique({
       where: { id },
@@ -163,6 +176,9 @@ export async function getConference(id: string) {
 }
 
 export async function listConferences() {
+  const auth = await actionAuth("conference:manage");
+  if (!auth.success) return auth;
+
   try {
     const conferences = await prisma.conference.findMany({
       include: {
@@ -194,6 +210,9 @@ export async function listConferences() {
 }
 
 export async function listUpcomingConferences() {
+  const auth = await actionAuth("conference:manage");
+  if (!auth.success) return auth;
+
   try {
     const now = new Date();
     const conferences = await prisma.conference.findMany({
@@ -234,6 +253,9 @@ export async function listUpcomingConferences() {
 }
 
 export async function listPastConferences() {
+  const auth = await actionAuth("conference:manage");
+  if (!auth.success) return auth;
+
   try {
     const now = new Date();
     const conferences = await prisma.conference.findMany({

@@ -1,0 +1,91 @@
+# ICTIRC Platform Progress Report
+
+**Branch:** `develop`  
+**Date:** 2026-07-01  
+**Reporter:** OpenCode  
+**Overall status:** B2 in progress
+
+---
+
+## Executive Summary
+
+The current sprint is focused on **Workstream B**: securing the admin app and making every admin CRUD flow functional before moving to public-web performance work. The database connectivity issue that was blocking Vercel builds has been resolved, auth guards are centralized, and the remaining CRUD gaps are now filled. The admin app builds, lints, and type-checks cleanly.
+
+> **Next decision point:** merge the current `develop` work into `main` after CI passes, then begin the web-performance workstream (remove Lenis, lazy-load GSAP, respect `prefers-reduced-motion`).
+
+---
+
+## Workstream B1 — Admin Security & Auth
+
+Status: **Done**
+
+- Centralized auth helpers created in `apps/admin/src/lib/auth.ts`: `getCurrentUser`, `requirePermission`, `requireRole`, `apiAuth`, `actionAuth`.
+- Extended RBAC permission matrix in `apps/admin/src/lib/rbac.ts` with new permissions for dashboard, papers, conferences, guides, videos, feedback, changelog, home content, search, and backups.
+- `apps/admin/middleware.ts` now protects every `/dashboard/*` route by session and route role.
+- Server layout in `apps/admin/src/app/dashboard/layout.tsx` adds defense-in-depth role checks.
+- All admin API routes and server actions now enforce auth via `apiAuth` / `actionAuth`.
+- Removed spoofable `userId` parameters from server actions and replaced hard-coded audit-log actor IDs with the authenticated user.
+
+---
+
+## Workstream B2 — Functional Admin CRUD
+
+Status: **Mostly complete**
+
+### Recently finished
+
+- **Role edit page** — new `apps/admin/src/app/dashboard/settings/roles/[id]/page.tsx` plus `getRole` server action.
+- **Volume & issue deletion** — new `DeleteVolumeButton` and `DeleteIssueButton` components, wired into list cards and detail headers.
+- **Home-content reset** — each section editor now has a _Reset_ button that calls `deleteHomeSection`.
+- **Real settings persistence** — new `apps/admin/src/lib/actions/settings.ts` using the existing `Setting` model; General and Email settings now save to the database instead of showing a mock toast.
+- **Batch upload** — implemented end-to-end in `apps/admin/src/components/archives/batch-upload-form.tsx`: CSV parsing, PDF/DOCX matching, Supabase archive-bucket upload, and `batchCreateArchivedPapers`.
+- **Pagination** — archived-papers list now supports server-side pagination with filter-preserving prev/next links.
+
+### Earlier B2 work already in place
+
+- Volume / issue / archived-paper create, read, update actions in `apps/admin/src/lib/actions/`.
+- Changelog CRUD with a new edit page and backup download route at `apps/admin/src/app/api/backup/download/route.ts`.
+- Conference module consolidated; duplicate `dashboard/archives/conferences` directory removed.
+- CloudConvert module fixed to fail at call time rather than on import, with `isCloudConvertConfigured()` check.
+- Graceful degradation UI for CloudConvert, Algolia, R2, Google Drive, and Supabase Storage when keys are missing.
+
+---
+
+## Verification
+
+| Check                 | Command                             | Result               |
+| --------------------- | ----------------------------------- | -------------------- |
+| Lint (monorepo)       | `pnpm lint`                         | Pass (warnings only) |
+| Type check (monorepo) | `pnpm typecheck`                    | Pass                 |
+| Admin build           | `pnpm --filter @ictirc/admin build` | Pass                 |
+
+The build logs show expected `Dynamic server usage: cookies` messages during static generation because dashboard routes are authenticated; this is normal and does not fail the build.
+
+---
+
+## Known Configuration Gaps
+
+These external services degrade gracefully when their environment variables are missing:
+
+- **CloudConvert** — `CLOUDCONVERT_API_KEY`
+- **Cloudflare R2** — `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`
+- **Algolia** — `ALGOLIA_APP_ID`, `ALGOLIA_ADMIN_API_KEY`
+- **Google Drive backups** — `GDRIVE_SERVICE_EMAIL`, `GDRIVE_PRIVATE_KEY`, `GDRIVE_BACKUP_FOLDER_ID`
+- **Supabase Storage** — `NEXT_PUBLIC_SUPABASE_BUCKET_HOT`
+
+---
+
+## Recommended Next Steps
+
+1. **Merge to main** — open a PR from `develop` to `main` once CI is green.
+2. **Full monorepo build** — run `pnpm build` to verify the other apps still compile with the shared changes.
+3. **Begin Workstream A — Public Web Performance**
+   - Remove Lenis from the root layout.
+   - Lazy-load GSAP only on pages that need animations.
+   - Wrap all motion behind `prefers-reduced-motion`.
+   - Enable ISR/caching and optimize images/media for low-power mobile devices.
+4. **Optional polish** — reduce the `Dynamic server usage` build noise by adding `export const dynamic = "force-dynamic"` to dashboard pages/layouts.
+
+---
+
+_Generated by OpenCode on 2026-07-01 · ICTIRC Monorepo · branch `develop`_

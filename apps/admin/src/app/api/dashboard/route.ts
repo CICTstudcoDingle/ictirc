@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@ictirc/database/client";
+import { apiAuth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const auth = await apiAuth("dashboard:read");
+  if (auth.response) return auth.response;
+
   try {
     // Fetch counts with individual try-catch for resilience
     const [

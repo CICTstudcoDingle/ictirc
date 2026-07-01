@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@ictirc/database";
+import { actionAuth } from "@/lib/auth";
 import {
   createArchivedPaperSchema,
   updateArchivedPaperSchema,
@@ -15,10 +16,10 @@ import {
 // ARCHIVED PAPER MANAGEMENT
 // ============================================
 
-export async function createArchivedPaper(
-  data: ArchivedPaperInput,
-  uploaderId: string,
-) {
+export async function createArchivedPaper(data: ArchivedPaperInput) {
+  const auth = await actionAuth("archive:paper:upload");
+  if (!auth.success) return auth;
+
   try {
     const validated = createArchivedPaperSchema.parse(data);
 
@@ -34,7 +35,7 @@ export async function createArchivedPaper(
         acceptedDate: validated.acceptedDate
           ? new Date(validated.acceptedDate)
           : null,
-        uploadedBy: uploaderId,
+        uploadedBy: auth.user.id,
         authors: {
           create: authors,
         },
@@ -74,6 +75,9 @@ export async function updateArchivedPaper(
   id: string,
   data: UpdateArchivedPaperInput,
 ) {
+  const auth = await actionAuth("archive:paper:update");
+  if (!auth.success) return auth;
+
   try {
     const validated = updateArchivedPaperSchema.parse(data);
 
@@ -136,6 +140,9 @@ export async function updateArchivedPaper(
 }
 
 export async function deleteArchivedPaper(id: string) {
+  const auth = await actionAuth("archive:paper:delete");
+  if (!auth.success) return auth;
+
   try {
     await prisma.archivedPaper.delete({
       where: { id },
@@ -158,6 +165,9 @@ export async function deleteArchivedPaper(id: string) {
 }
 
 export async function getArchivedPaper(id: string) {
+  const auth = await actionAuth("archive:read");
+  if (!auth.success) return auth;
+
   try {
     const paper = await prisma.archivedPaper.findUnique({
       where: { id },
@@ -202,6 +212,9 @@ export async function getArchivedPaper(id: string) {
 }
 
 export async function listArchivedPapers(issueId?: string) {
+  const auth = await actionAuth("archive:read");
+  if (!auth.success) return auth;
+
   try {
     const where = issueId ? { issueId } : {};
 
@@ -244,16 +257,16 @@ export async function listArchivedPapers(issueId?: string) {
 // BATCH UPLOAD
 // ============================================
 
-export async function batchCreateArchivedPapers(
-  papers: ArchivedPaperInput[],
-  uploaderId: string,
-) {
+export async function batchCreateArchivedPapers(papers: ArchivedPaperInput[]) {
+  const auth = await actionAuth("archive:paper:upload");
+  if (!auth.success) return auth;
+
   try {
     const results = [];
     const errors = [];
 
     for (const paperData of papers) {
-      const result = await createArchivedPaper(paperData, uploaderId);
+      const result = await createArchivedPaper(paperData);
       if (result.success) {
         results.push(result.data);
       } else {
@@ -290,6 +303,9 @@ export async function parseCSVRowToPaper(
   issueId: string,
   publishedDate: Date,
 ): Promise<ArchivedPaperInput | null> {
+  const auth = await actionAuth("archive:read");
+  if (!auth.success) return null;
+
   try {
     const validated = csvRowSchema.parse(row);
 

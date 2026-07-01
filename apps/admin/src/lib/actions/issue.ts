@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@ictirc/database";
+import { actionAuth } from "@/lib/auth";
 import {
   issueSchema,
   updateIssueSchema,
@@ -14,6 +15,9 @@ import {
 // ============================================
 
 export async function createIssue(data: IssueInput) {
+  const auth = await actionAuth("archive:issue:create");
+  if (!auth.success) return auth;
+
   try {
     const validated = issueSchema.parse(data);
 
@@ -60,6 +64,9 @@ export async function createIssue(data: IssueInput) {
 }
 
 export async function updateIssue(id: string, data: UpdateIssueInput) {
+  const auth = await actionAuth("archive:issue:update");
+  if (!auth.success) return auth;
+
   try {
     const validated = updateIssueSchema.parse(data);
 
@@ -122,6 +129,9 @@ export async function updateIssue(id: string, data: UpdateIssueInput) {
 }
 
 export async function deleteIssue(id: string) {
+  const auth = await actionAuth("archive:issue:delete");
+  if (!auth.success) return auth;
+
   try {
     // Check if issue has papers
     const issue = await prisma.issue.findUnique({
@@ -160,6 +170,9 @@ export async function deleteIssue(id: string) {
 }
 
 export async function getIssue(id: string) {
+  const auth = await actionAuth("archive:read");
+  if (!auth.success) return auth;
+
   try {
     const issue = await prisma.issue.findUnique({
       where: { id },
@@ -195,6 +208,9 @@ export async function getIssue(id: string) {
 }
 
 export async function listIssues(volumeId?: string) {
+  const auth = await actionAuth("archive:read");
+  if (!auth.success) return auth;
+
   try {
     const where = volumeId ? { volumeId } : {};
 

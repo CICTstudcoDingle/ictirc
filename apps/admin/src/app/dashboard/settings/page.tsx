@@ -886,18 +886,58 @@ function ContentManagement({
   );
 }
 
+import {
+  getGeneralSettings,
+  updateGeneralSettings,
+  getEmailSettings,
+  updateEmailSettings,
+} from "@/lib/actions/settings";
+
 // ============================================
 // GENERAL SETTINGS
 // ============================================
 
 function GeneralSettings() {
   const toast = useToastActions();
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [repositoryName, setRepositoryName] = useState("");
+  const [repositoryDescription, setRepositoryDescription] = useState("");
+  const [issn, setIssn] = useState("");
 
-  function handleSave() {
-    toast.success(
-      "Settings saved",
-      "Your changes have been saved successfully.",
-    );
+  useEffect(() => {
+    setLoading(true);
+    getGeneralSettings()
+      .then((settings) => {
+        setRepositoryName(settings.repositoryName);
+        setRepositoryDescription(settings.repositoryDescription);
+        setIssn(settings.issn);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  async function handleSave() {
+    setSaving(true);
+    try {
+      const result = await updateGeneralSettings({
+        repositoryName,
+        repositoryDescription,
+        issn,
+      });
+
+      if (result.success) {
+        toast.success(
+          "Settings saved",
+          "Your changes have been saved successfully.",
+        );
+      } else {
+        toast.error("Save failed", result.error || "Could not save settings");
+      }
+    } catch {
+      toast.error("Error", "An unexpected error occurred while saving.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -907,59 +947,66 @@ function GeneralSettings() {
         General Configuration
       </h2>
 
-      <div className="space-y-4">
-        <div>
-          <label
-            htmlFor="repository-name"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Repository Name
-          </label>
-          <input
-            id="repository-name"
-            type="text"
-            defaultValue="IRJICT - International Research Journal on ICT"
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon"
-          />
-        </div>
+      {loading ? (
+        <div className="text-sm text-gray-500">Loading settings...</div>
+      ) : (
+        <div className="space-y-4">
+          <div>
+            <label
+              htmlFor="repository-name"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Repository Name
+            </label>
+            <input
+              id="repository-name"
+              type="text"
+              value={repositoryName}
+              onChange={(e) => setRepositoryName(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon"
+            />
+          </div>
 
-        <div>
-          <label
-            htmlFor="repository-description"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Description
-          </label>
-          <textarea
-            id="repository-description"
-            rows={3}
-            defaultValue="The official research publication platform for the College of Information and Computing Technology at ISUFST."
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon"
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="repository-description"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Description
+            </label>
+            <textarea
+              id="repository-description"
+              rows={3}
+              value={repositoryDescription}
+              onChange={(e) => setRepositoryDescription(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon"
+            />
+          </div>
 
-        <div>
-          <label
-            htmlFor="issn"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            ISSN Number
-          </label>
-          <input
-            id="issn"
-            type="text"
-            defaultValue="2960-3773"
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon font-mono"
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="issn"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              ISSN Number
+            </label>
+            <input
+              id="issn"
+              type="text"
+              value={issn}
+              onChange={(e) => setIssn(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon font-mono"
+            />
+          </div>
 
-        <div className="pt-4">
-          <Button className="gap-2" onClick={handleSave}>
-            <Save className="w-4 h-4" />
-            Save Changes
-          </Button>
+          <div className="pt-4">
+            <Button className="gap-2" onClick={handleSave} disabled={saving}>
+              <Save className="w-4 h-4" />
+              {saving ? "Saving..." : "Save Changes"}
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </Card>
   );
 }
@@ -2007,14 +2054,48 @@ function EventsSettings({
 
 function EmailSettings() {
   const toast = useToastActions();
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [apiKey, setApiKey] = useState("");
+  const [fromEmail, setFromEmail] = useState("");
 
-  function handleSave() {
-    toast.info(
-      "Coming soon",
-      "Email configuration will be available in a future update.",
-    );
+  useEffect(() => {
+    setLoading(true);
+    getEmailSettings()
+      .then((settings) => {
+        setApiKey(settings.resendApiKey);
+        setFromEmail(settings.fromEmail);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  async function handleSave() {
+    setSaving(true);
+    try {
+      const result = await updateEmailSettings({
+        resendApiKey: apiKey,
+        fromEmail,
+      });
+
+      if (result.success) {
+        toast.success(
+          "Configuration saved",
+          "Email settings have been saved successfully.",
+        );
+      } else {
+        toast.error(
+          "Save failed",
+          result.error || "Could not save email settings",
+        );
+      }
+    } catch {
+      toast.error("Error", "An unexpected error occurred while saving.");
+    } finally {
+      setSaving(false);
+    }
   }
+
+  const isConfigured = Boolean(apiKey && fromEmail);
 
   return (
     <Card className="p-6">
@@ -2023,64 +2104,89 @@ function EmailSettings() {
         Email Configuration
       </h2>
 
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+      <div
+        className={`border rounded-lg p-4 mb-6 ${
+          isConfigured
+            ? "bg-green-50 border-green-200"
+            : "bg-amber-50 border-amber-200"
+        }`}
+      >
         <div className="flex items-start gap-3">
-          <Mail className="w-5 h-5 text-amber-600 mt-0.5" />
+          <Mail
+            className={`w-5 h-5 mt-0.5 ${
+              isConfigured ? "text-green-600" : "text-amber-600"
+            }`}
+          />
           <div>
-            <p className="text-sm font-medium text-amber-800">
-              Email Not Configured
+            <p
+              className={`text-sm font-medium ${
+                isConfigured ? "text-green-800" : "text-amber-800"
+              }`}
+            >
+              {isConfigured ? "Email Configured" : "Email Not Configured"}
             </p>
-            <p className="text-xs text-amber-700 mt-1">
-              Configure Resend to enable email invitations and notifications.
-              For now, invite tokens can be copied manually.
+            <p
+              className={`text-xs mt-1 ${
+                isConfigured ? "text-green-700" : "text-amber-700"
+              }`}
+            >
+              {isConfigured
+                ? "Resend is configured to send invitations and notifications."
+                : "Configure Resend to enable email invitations and notifications. For now, invite tokens can be copied manually."}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Resend API Key
-          </label>
-          <input
-            type="password"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            placeholder="re_xxxxxxxxxxxx"
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon font-mono text-sm"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            Get your API key from{" "}
-            <a
-              href="https://resend.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-maroon hover:underline"
-            >
-              resend.com
-            </a>
-          </p>
-        </div>
+      {loading ? (
+        <div className="text-sm text-gray-500">Loading settings...</div>
+      ) : (
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Resend API Key
+            </label>
+            <input
+              type="password"
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              placeholder="re_xxxxxxxxxxxx"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon font-mono text-sm"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Get your API key from{" "}
+              <a
+                href="https://resend.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-maroon hover:underline"
+              >
+                resend.com
+              </a>
+            </p>
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            From Email
-          </label>
-          <input
-            type="email"
-            placeholder="noreply@yourdomain.com"
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon"
-          />
-        </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              From Email
+            </label>
+            <input
+              type="email"
+              value={fromEmail}
+              onChange={(e) => setFromEmail(e.target.value)}
+              placeholder="noreply@yourdomain.com"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-maroon/20 focus:border-maroon"
+            />
+          </div>
 
-        <div className="pt-4">
-          <Button className="gap-2" onClick={handleSave}>
-            <Save className="w-4 h-4" />
-            Save Configuration
-          </Button>
+          <div className="pt-4">
+            <Button className="gap-2" onClick={handleSave} disabled={saving}>
+              <Save className="w-4 h-4" />
+              {saving ? "Saving..." : "Save Configuration"}
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </Card>
   );
 }

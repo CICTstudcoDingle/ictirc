@@ -5,8 +5,12 @@ import {
   getIndexStats,
   syncAllData,
 } from "@ictirc/search";
+import { apiAuth } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
+  const auth = await apiAuth("search:manage");
+  if (auth.response) return auth.response;
+
   try {
     const { action } = await request.json();
 
@@ -58,6 +62,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
+  const auth = await apiAuth("search:manage");
+  if (auth.response) return auth.response;
+
   try {
     const stats = await getIndexStats();
     return NextResponse.json({

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@ictirc/database";
+import { actionAuth } from "@/lib/auth";
 import {
   volumeSchema,
   updateVolumeSchema,
@@ -14,6 +15,9 @@ import {
 // ============================================
 
 export async function createVolume(data: VolumeInput) {
+  const auth = await actionAuth("archive:volume:create");
+  if (!auth.success) return auth;
+
   try {
     const validated = volumeSchema.parse(data);
 
@@ -55,6 +59,9 @@ export async function createVolume(data: VolumeInput) {
 }
 
 export async function updateVolume(id: string, data: UpdateVolumeInput) {
+  const auth = await actionAuth("archive:volume:update");
+  if (!auth.success) return auth;
+
   try {
     const validated = updateVolumeSchema.parse(data);
 
@@ -110,6 +117,9 @@ export async function updateVolume(id: string, data: UpdateVolumeInput) {
 }
 
 export async function deleteVolume(id: string) {
+  const auth = await actionAuth("archive:volume:delete");
+  if (!auth.success) return auth;
+
   try {
     // Check if volume has issues
     const volume = await prisma.volume.findUnique({
@@ -148,6 +158,9 @@ export async function deleteVolume(id: string) {
 }
 
 export async function getVolume(id: string) {
+  const auth = await actionAuth("archive:read");
+  if (!auth.success) return auth;
+
   try {
     const volume = await prisma.volume.findUnique({
       where: { id },
@@ -188,6 +201,9 @@ export async function getVolume(id: string) {
 }
 
 export async function listVolumes() {
+  const auth = await actionAuth("archive:read");
+  if (!auth.success) return auth;
+
   try {
     const volumes = await prisma.volume.findMany({
       include: {

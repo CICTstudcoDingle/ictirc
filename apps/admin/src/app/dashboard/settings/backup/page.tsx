@@ -18,6 +18,7 @@ import {
   CardContent,
 } from "@ictirc/ui";
 import { toast } from "sonner";
+import { isGoogleDriveConfigured } from "@/lib/features";
 
 interface BackupFile {
   fileName: string;
@@ -34,6 +35,7 @@ function formatBytes(bytes: number): string {
 }
 
 export default function BackupSettingsPage() {
+  const gdriveReady = isGoogleDriveConfigured();
   const [backups, setBackups] = useState<BackupFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -110,12 +112,20 @@ export default function BackupSettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <label className="flex items-center gap-3 cursor-pointer">
+            <label
+              className={`flex items-center gap-3 ${gdriveReady ? "cursor-pointer" : "cursor-not-allowed opacity-60"}`}
+              title={
+                gdriveReady
+                  ? "Upload backup to Google Drive"
+                  : "Google Drive is not configured"
+              }
+            >
               <input
                 type="checkbox"
                 checked={uploadToGdrive}
                 onChange={(e) => setUploadToGdrive(e.target.checked)}
-                className="w-4 h-4 text-maroon border-gray-300 rounded focus:ring-maroon"
+                disabled={!gdriveReady}
+                className="w-4 h-4 text-maroon border-gray-300 rounded focus:ring-maroon disabled:cursor-not-allowed"
               />
               <div className="flex items-center gap-2">
                 <Cloud className="w-4 h-4 text-blue-500" />
@@ -124,6 +134,12 @@ export default function BackupSettingsPage() {
                 </span>
               </div>
             </label>
+            {!gdriveReady && (
+              <p className="text-xs text-amber-700">
+                Google Drive upload is unavailable. Set GDRIVE_SERVICE_EMAIL,
+                GDRIVE_PRIVATE_KEY, and GDRIVE_BACKUP_FOLDER_ID to enable it.
+              </p>
+            )}
 
             <Button
               onClick={handleCreateBackup}
@@ -196,8 +212,7 @@ export default function BackupSettingsPage() {
                       </p>
                     </div>
                     <a
-                      href={`/backups/${backup.fileName}`}
-                      download
+                      href={`/api/backup/download?fileName=${encodeURIComponent(backup.fileName)}`}
                       className="inline-flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 hover:text-maroon hover:bg-gray-100 rounded-lg transition-colors"
                     >
                       <Download className="w-4 h-4" />

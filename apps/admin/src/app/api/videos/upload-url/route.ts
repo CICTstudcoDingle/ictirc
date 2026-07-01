@@ -5,12 +5,16 @@ import {
   ALLOWED_VIDEO_TYPES,
   MAX_VIDEO_SIZE,
 } from "@ictirc/storage/r2";
+import { apiAuth } from "@/lib/auth";
 
 /**
  * POST /api/videos/upload-url - Generate a presigned URL for direct R2 upload
  * This allows the browser to upload large video files directly to R2
  */
 export async function POST(request: Request) {
+  const auth = await apiAuth("video:manage");
+  if (auth.response) return auth.response;
+
   try {
     const body = await request.json();
     const { fileName, contentType, fileSize, type } = body;

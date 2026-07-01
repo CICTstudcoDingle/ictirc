@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CheckCircle, Loader2, Upload, AlertCircle, X } from "lucide-react";
 import { publishPaper } from "@/app/dashboard/papers/[id]/actions";
+import { isCloudConvertConfigured } from "@/lib/features";
 
 interface PublishButtonProps {
   paperId: string;
@@ -15,6 +16,9 @@ export function PublishButton({
   hasFile,
   isDocx,
 }: PublishButtonProps) {
+  const cloudConvertReady = isCloudConvertConfigured();
+  const needsConversion = isDocx;
+  const disabled = needsConversion && !cloudConvertReady;
   const [showModal, setShowModal] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [progress, setProgress] = useState<
@@ -101,8 +105,13 @@ export function PublishButton({
   return (
     <>
       <button
-        onClick={() => setShowModal(true)}
-        disabled={isPublishing}
+        onClick={() => !disabled && setShowModal(true)}
+        disabled={isPublishing || disabled}
+        title={
+          disabled
+            ? "DOCX publishing is unavailable because CloudConvert is not configured"
+            : "Publish paper"
+        }
         className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isPublishing ? (
@@ -134,7 +143,7 @@ export function PublishButton({
                   This will publish the paper and make it publicly available in
                   the archive.
                 </p>
-                {isDocx && (
+                {needsConversion && !disabled && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
                     <p className="text-sm text-blue-800">
                       ℹ️ The DOCX file will be automatically converted to PDF
@@ -142,10 +151,21 @@ export function PublishButton({
                     </p>
                   </div>
                 )}
+                {disabled && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-3">
+                    <p className="text-sm text-amber-800">
+                      ⚠️ Publishing DOCX files requires CloudConvert, which is
+                      not configured. Set CLOUDCONVERT_API_KEY to enable this
+                      feature.
+                    </p>
+                  </div>
+                )}
                 <ul className="text-sm text-gray-600 mt-3 space-y-1">
                   <li>✓ Status will change to PUBLISHED</li>
                   <li>✓ DOI will be auto-generated</li>
-                  {isDocx && <li>✓ File will be converted to PDF</li>}
+                  {needsConversion && !disabled && (
+                    <li>✓ File will be converted to PDF</li>
+                  )}
                   <li>✓ Paper will appear in public archive</li>
                 </ul>
               </div>
@@ -159,7 +179,8 @@ export function PublishButton({
               </button>
               <button
                 onClick={handlePublish}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                disabled={disabled}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Confirm & Publish
               </button>

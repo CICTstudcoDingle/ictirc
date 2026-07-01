@@ -4,6 +4,7 @@ import { prisma } from "@ictirc/database";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { actionAuth } from "@/lib/auth";
 
 const releaseSchema = z.object({
   version: z.string().min(1, "Version is required"),
@@ -35,7 +36,10 @@ const changelogEntrySchema = z.object({
   order: z.number().default(0),
 });
 
-export async function createRelease(formData: FormData, userId: string) {
+export async function createRelease(formData: FormData) {
+  const auth = await actionAuth("changelog:manage");
+  if (!auth.success) return auth;
+
   try {
     const data = {
       version: formData.get("version") as string,
@@ -55,7 +59,7 @@ export async function createRelease(formData: FormData, userId: string) {
       data: {
         ...validated,
         releaseDate: new Date(validated.releaseDate),
-        createdBy: userId,
+        createdBy: auth.user.id,
       },
     });
 
@@ -67,11 +71,10 @@ export async function createRelease(formData: FormData, userId: string) {
   }
 }
 
-export async function updateRelease(
-  releaseId: string,
-  formData: FormData,
-  userId: string,
-) {
+export async function updateRelease(releaseId: string, formData: FormData) {
+  const auth = await actionAuth("changelog:manage");
+  if (!auth.success) return auth;
+
   try {
     const data = {
       version: formData.get("version") as string,
@@ -104,6 +107,9 @@ export async function updateRelease(
 }
 
 export async function deleteRelease(releaseId: string) {
+  const auth = await actionAuth("changelog:manage");
+  if (!auth.success) return auth;
+
   try {
     await prisma.release.delete({
       where: { id: releaseId },
@@ -118,6 +124,9 @@ export async function deleteRelease(releaseId: string) {
 }
 
 export async function addChangelogEntry(releaseId: string, formData: FormData) {
+  const auth = await actionAuth("changelog:manage");
+  if (!auth.success) return auth;
+
   try {
     const data = {
       title: formData.get("title") as string,
@@ -155,6 +164,9 @@ export async function updateChangelogEntry(
   entryId: string,
   formData: FormData,
 ) {
+  const auth = await actionAuth("changelog:manage");
+  if (!auth.success) return auth;
+
   try {
     const data = {
       title: formData.get("title") as string,
@@ -187,6 +199,9 @@ export async function updateChangelogEntry(
 }
 
 export async function deleteChangelogEntry(entryId: string) {
+  const auth = await actionAuth("changelog:manage");
+  if (!auth.success) return auth;
+
   try {
     await prisma.changelogEntry.delete({
       where: { id: entryId },
@@ -201,6 +216,9 @@ export async function deleteChangelogEntry(entryId: string) {
 }
 
 export async function toggleReleasePublish(releaseId: string) {
+  const auth = await actionAuth("changelog:manage");
+  if (!auth.success) return auth;
+
   try {
     const release = await prisma.release.findUnique({
       where: { id: releaseId },

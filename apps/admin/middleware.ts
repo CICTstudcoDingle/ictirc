@@ -5,26 +5,28 @@ import { NextResponse, type NextRequest } from "next/server";
 type UserRole = "AUTHOR" | "REVIEWER" | "EDITOR" | "DEAN";
 
 /**
- * Role hierarchy - higher index = more permissions
- */
-const ROLE_HIERARCHY: Record<UserRole, number> = {
-  AUTHOR: 0,
-  REVIEWER: 1,
-  EDITOR: 2,
-  DEAN: 3,
-};
-
-/**
  * Route protection configuration
  * Maps route prefixes to minimum required roles
  */
 const PROTECTED_ROUTES: Record<string, UserRole[]> = {
-  "/dashboard/system": ["DEAN"],
-  "/dashboard/settings": ["DEAN"],
-  "/dashboard/users": ["EDITOR", "DEAN"],
-  "/dashboard/papers/review": ["REVIEWER", "EDITOR", "DEAN"],
-  "/dashboard/papers": ["REVIEWER", "EDITOR", "DEAN"],
   "/dashboard": ["AUTHOR", "REVIEWER", "EDITOR", "DEAN"],
+  "/dashboard/papers": ["REVIEWER", "EDITOR", "DEAN"],
+  "/dashboard/papers/review": ["REVIEWER", "EDITOR", "DEAN"],
+  "/dashboard/conferences": ["EDITOR", "DEAN"],
+  "/dashboard/users": ["EDITOR", "DEAN"],
+  "/dashboard/videos": ["EDITOR", "DEAN"],
+  "/dashboard/home-content": ["EDITOR", "DEAN"],
+  "/dashboard/feedback": ["EDITOR", "DEAN"],
+  "/dashboard/guides": ["EDITOR", "DEAN"],
+  "/dashboard/changelog": ["EDITOR", "DEAN"],
+  "/dashboard/search": ["EDITOR", "DEAN"],
+  "/dashboard/audit-logs": ["EDITOR", "DEAN"],
+  "/dashboard/settings": ["DEAN"],
+  "/dashboard/system": ["DEAN"],
+  "/dashboard/archives": ["EDITOR", "DEAN"],
+  "/dashboard/archives/volumes": ["EDITOR", "DEAN"],
+  "/dashboard/archives/issues": ["EDITOR", "DEAN"],
+  "/dashboard/archives/upload": ["EDITOR", "DEAN"],
 };
 
 /**
@@ -51,9 +53,12 @@ function getRequiredRoles(pathname: string): UserRole[] | null {
 }
 
 export async function middleware(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", request.nextUrl.pathname);
+
   let response = NextResponse.next({
     request: {
-      headers: request.headers,
+      headers: requestHeaders,
     },
   });
 

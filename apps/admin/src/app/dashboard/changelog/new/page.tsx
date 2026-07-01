@@ -30,7 +30,7 @@ export default async function NewReleasePage() {
         </p>
       </div>
 
-      <ReleaseForm userId={user.id} />
+      <ReleaseForm />
     </div>
   );
 }

@@ -5,38 +5,43 @@ import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { createRelease } from "@/lib/actions/changelog";
+import { createRelease, updateRelease } from "@/lib/actions/changelog";
 import { useToastActions } from "@/lib/toast";
 
 interface ReleaseFormProps {
-  userId: string;
   release?: any;
 }
 
-export function ReleaseForm({ userId, release }: ReleaseFormProps) {
+export function ReleaseForm({ release }: ReleaseFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const toast = useToastActions();
+  const isEditing = !!release;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const result = await createRelease(formData, userId);
+    const result = isEditing
+      ? await updateRelease(release.id, formData)
+      : await createRelease(formData);
 
     setLoading(false);
 
     if (result.success) {
       toast.success(
-        "Release created",
-        "The release has been created successfully",
+        isEditing ? "Release updated" : "Release created",
+        isEditing
+          ? "The release has been updated successfully"
+          : "The release has been created successfully",
       );
       router.push("/dashboard/changelog");
     } else {
       toast.error(
-        "Creation failed",
-        result.error || "Failed to create release",
+        isEditing ? "Update failed" : "Creation failed",
+        result.error ||
+          (isEditing ? "Failed to update release" : "Failed to create release"),
       );
     }
   };
@@ -230,7 +235,13 @@ export function ReleaseForm({ userId, release }: ReleaseFormProps) {
 
         <Button type="submit" disabled={loading}>
           <Save className="h-4 w-4 mr-2" />
-          {loading ? "Creating..." : "Create Release"}
+          {loading
+            ? isEditing
+              ? "Updating..."
+              : "Creating..."
+            : isEditing
+              ? "Update Release"
+              : "Create Release"}
         </Button>
       </div>
     </form>

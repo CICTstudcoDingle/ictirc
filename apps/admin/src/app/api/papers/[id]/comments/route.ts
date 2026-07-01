@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@ictirc/database";
+import { apiAuth } from "@/lib/auth";
 
 interface RouteContext {
   params: Promise<{ id: string }>;
 }
 
 export async function POST(request: NextRequest, context: RouteContext) {
+  const auth = await apiAuth("paper:comment");
+  if (auth.response) return auth.response;
+
   try {
     const { id } = await context.params;
     const body = await request.json();
@@ -18,24 +22,11 @@ export async function POST(request: NextRequest, context: RouteContext) {
       );
     }
 
-    // TODO: Get actual user from session
-    // For now, we'll create/use a system admin user
-    const adminUser = await prisma.user.upsert({
-      where: { email: "admin@ictirc.com" },
-      update: {},
-      create: {
-        id: "admin-system",
-        email: "admin@ictirc.com",
-        name: "System Admin",
-        role: "EDITOR",
-      },
-    });
-
     const comment = await prisma.paperComment.create({
       data: {
         content,
         paperId: id,
-        authorId: adminUser.id,
+        authorId: auth.user.id,
       },
       include: {
         author: true,
@@ -53,6 +44,9 @@ export async function POST(request: NextRequest, context: RouteContext) {
 }
 
 export async function GET(request: NextRequest, context: RouteContext) {
+  const auth = await apiAuth("paper:read");
+  if (auth.response) return auth.response;
+
   try {
     const { id } = await context.params;
 

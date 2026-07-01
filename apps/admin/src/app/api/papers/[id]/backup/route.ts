@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@ictirc/database";
 import { backupPaperToR2 } from "@ictirc/storage";
+import { apiAuth } from "@/lib/auth";
 
 /**
  * POST /api/papers/[id]/backup
@@ -12,29 +12,10 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const auth = await apiAuth("paper:update");
+  if (auth.response) return auth.response;
+
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // Check user role
-    const dbUser = await prisma.user.findUnique({
-      where: { id: user.id },
-      select: { role: true, name: true },
-    });
-
-    if (!dbUser || !["EDITOR", "DEAN"].includes(dbUser.role)) {
-      return NextResponse.json(
-        { error: "Insufficient permissions. Editor or Dean role required." },
-        { status: 403 },
-      );
-    }
-
     const { id } = await params;
 
     // Get paper with file URL
@@ -68,7 +49,7 @@ export async function POST(
     const result = await backupPaperToR2(paper.id, fileUrl, {
       title: paper.title,
       originalName: `${paper.title.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`,
-      uploadedBy: dbUser.name || user.email || "admin",
+      uploadedBy: auth.user.name || auth.user.email,
     });
 
     if (!result.success) {
@@ -110,16 +91,10 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const auth = await apiAuth("paper:read");
+  if (auth.response) return auth.response;
+
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     const { id } = await params;
 
     const paper = await prisma.paper.findUnique({

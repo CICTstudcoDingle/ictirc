@@ -1,15 +1,21 @@
 import CloudConvert from "cloudconvert";
 
-if (!process.env.CLOUDCONVERT_API_KEY) {
-  throw new Error("CLOUDCONVERT_API_KEY is not set in environment variables");
-}
-
-const cloudconvert = new CloudConvert(process.env.CLOUDCONVERT_API_KEY);
-
 export interface ConversionResult {
   url: string;
   filename: string;
   size: number;
+}
+
+function getCloudConvertClient(): CloudConvert {
+  const apiKey = process.env.CLOUDCONVERT_API_KEY;
+  if (!apiKey) {
+    throw new Error("CLOUDCONVERT_API_KEY is not set in environment variables");
+  }
+  return new CloudConvert(apiKey);
+}
+
+export function isCloudConvertConfigured(): boolean {
+  return !!process.env.CLOUDCONVERT_API_KEY;
 }
 
 /**
@@ -23,6 +29,8 @@ export async function convertDocxToPdf(
   filename: string,
 ): Promise<ConversionResult> {
   try {
+    const cloudconvert = getCloudConvertClient();
+
     // Create a job to convert DOCX to PDF
     let job = await cloudconvert.jobs.create({
       tasks: {

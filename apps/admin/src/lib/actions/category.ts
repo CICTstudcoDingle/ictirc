@@ -1,12 +1,16 @@
 "use server";
 
 import { prisma } from "@ictirc/database";
+import { actionAuth } from "@/lib/auth";
 
 // ============================================
 // CATEGORY MANAGEMENT
 // ============================================
 
 export async function listCategories() {
+  const auth = await actionAuth("archive:read");
+  if (!auth.success) return auth;
+
   try {
     const categories = await prisma.category.findMany({
       include: {
@@ -37,6 +41,9 @@ export async function listCategories() {
 }
 
 export async function getCategory(id: string) {
+  const auth = await actionAuth("archive:read");
+  if (!auth.success) return auth;
+
   try {
     const category = await prisma.category.findUnique({
       where: { id },
