@@ -47,8 +47,10 @@ export async function createArchivedPaper(data: ArchivedPaperInput, uploaderId: 
       },
     });
 
-    revalidatePath("/admin/dashboard/archives");
-    revalidatePath("/archive");
+    revalidatePath("/dashboard/archives");
+    revalidatePath("/dashboard/archives/papers");
+    revalidatePath("/dashboard/archives/volumes");
+    revalidatePath("/dashboard/archives/issues");
 
     return { success: true, data: paper };
   } catch (error) {
@@ -106,8 +108,10 @@ export async function updateArchivedPaper(id: string, data: UpdateArchivedPaperI
       },
     });
 
-    revalidatePath("/admin/dashboard/archives");
-    revalidatePath("/archive");
+    revalidatePath("/dashboard/archives");
+    revalidatePath("/dashboard/archives/papers");
+    revalidatePath("/dashboard/archives/volumes");
+    revalidatePath("/dashboard/archives/issues");
 
     return { success: true, data: paper };
   } catch (error) {
@@ -125,8 +129,10 @@ export async function deleteArchivedPaper(id: string) {
       where: { id },
     });
 
-    revalidatePath("/admin/dashboard/archives");
-    revalidatePath("/archive");
+    revalidatePath("/dashboard/archives");
+    revalidatePath("/dashboard/archives/papers");
+    revalidatePath("/dashboard/archives/volumes");
+    revalidatePath("/dashboard/archives/issues");
 
     return { success: true };
   } catch (error) {

@@ -41,8 +41,9 @@ export async function createVolume(data: VolumeInput) {
       },
     });
 
-    revalidatePath("/admin/dashboard/archives");
-    revalidatePath("/archive");
+    revalidatePath("/dashboard/archives");
+    revalidatePath("/dashboard/archives/volumes");
+    revalidatePath("/dashboard/archives/issues");
 
     return { success: true, data: volume };
   } catch (error) {
@@ -96,8 +97,9 @@ export async function updateVolume(id: string, data: UpdateVolumeInput) {
       },
     });
 
-    revalidatePath("/admin/dashboard/archives");
-    revalidatePath("/archive");
+    revalidatePath("/dashboard/archives");
+    revalidatePath("/dashboard/archives/volumes");
+    revalidatePath("/dashboard/archives/issues");
 
     return { success: true, data: volume };
   } catch (error) {
@@ -134,8 +136,9 @@ export async function deleteVolume(id: string) {
       where: { id },
     });
 
-    revalidatePath("/admin/dashboard/archives");
-    revalidatePath("/archive");
+    revalidatePath("/dashboard/archives");
+    revalidatePath("/dashboard/archives/volumes");
+    revalidatePath("/dashboard/archives/issues");
 
     return { success: true };
   } catch (error) {
@@ -156,6 +159,16 @@ export async function getVolume(id: string) {
           include: {
             conference: true,
             papers: {
+              include: {
+                category: true,
+                authors: {
+                  orderBy: {
+                    order: "asc",
+                  },
+                },
+              },
+            },
+            archivedPapers: {
               include: {
                 category: true,
                 authors: {

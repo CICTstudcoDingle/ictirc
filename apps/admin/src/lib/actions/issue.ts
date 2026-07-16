@@ -46,8 +46,9 @@ export async function createIssue(data: IssueInput) {
       },
     });
 
-    revalidatePath("/admin/dashboard/archives");
-    revalidatePath("/archive");
+    revalidatePath("/dashboard/archives");
+    revalidatePath("/dashboard/archives/issues");
+    revalidatePath("/dashboard/archives/volumes");
 
     return { success: true, data: issue };
   } catch (error) {
@@ -108,8 +109,9 @@ export async function updateIssue(id: string, data: UpdateIssueInput) {
       },
     });
 
-    revalidatePath("/admin/dashboard/archives");
-    revalidatePath("/archive");
+    revalidatePath("/dashboard/archives");
+    revalidatePath("/dashboard/archives/issues");
+    revalidatePath("/dashboard/archives/volumes");
 
     return { success: true, data: issue };
   } catch (error) {
@@ -123,11 +125,12 @@ export async function updateIssue(id: string, data: UpdateIssueInput) {
 
 export async function deleteIssue(id: string) {
   try {
-    // Check if issue has papers
+    // Check if issue has papers or archived papers
     const issue = await prisma.issue.findUnique({
       where: { id },
       include: {
         papers: true,
+        archivedPapers: true,
       },
     });
 
@@ -135,10 +138,12 @@ export async function deleteIssue(id: string) {
       return { success: false, error: "Issue not found" };
     }
 
-    if (issue.papers.length > 0) {
+    const totalPapers = issue.papers.length + issue.archivedPapers.length;
+
+    if (totalPapers > 0) {
       return {
         success: false,
-        error: `Cannot delete issue with ${issue.papers.length} paper(s). Delete papers first.`,
+        error: `Cannot delete issue with ${totalPapers} paper(s). Delete papers first.`,
       };
     }
 
@@ -146,8 +151,9 @@ export async function deleteIssue(id: string) {
       where: { id },
     });
 
-    revalidatePath("/admin/dashboard/archives");
-    revalidatePath("/archive");
+    revalidatePath("/dashboard/archives");
+    revalidatePath("/dashboard/archives/issues");
+    revalidatePath("/dashboard/archives/volumes");
 
     return { success: true };
   } catch (error) {
@@ -167,6 +173,20 @@ export async function getIssue(id: string) {
         volume: true,
         conference: true,
         papers: {
+          include: {
+            category: true,
+            authors: {
+              orderBy: {
+                order: "asc",
+              },
+            },
+          },
+          orderBy: [
+            { pageStart: "asc" },
+            { createdAt: "asc" },
+          ],
+        },
+        archivedPapers: {
           include: {
             category: true,
             authors: {
