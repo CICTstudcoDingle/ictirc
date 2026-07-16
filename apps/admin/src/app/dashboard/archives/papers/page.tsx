@@ -99,7 +99,7 @@ export default async function ArchivedPapersPage({ searchParams }: PageProps) {
       </div>
 
       {/* Filters */}
-      <form className="flex gap-3 flex-wrap">
+      <form method="get" className="flex gap-3 flex-wrap">
         <div className="relative flex-1 min-w-[200px] max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
