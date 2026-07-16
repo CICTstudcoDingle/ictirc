@@ -21,12 +21,13 @@ interface IssueCardProps {
     } | null;
     _count?: {
       papers: number;
+      archivedPapers: number;
     };
   };
 }
 
 export function IssueCard({ issue }: IssueCardProps) {
-  const paperCount = issue._count?.papers || 0;
+  const paperCount = (issue._count?.papers || 0) + (issue._count?.archivedPapers || 0);
 
   return (
     <Link href={`/dashboard/archives/issues/${issue.id}`}>

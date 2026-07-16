@@ -209,6 +209,7 @@ export async function listIssues(volumeId?: string) {
         _count: {
           select: {
             papers: true,
+            archivedPapers: true,
           },
         },
       },

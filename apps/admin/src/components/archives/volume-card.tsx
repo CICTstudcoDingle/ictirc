@@ -15,6 +15,7 @@ interface VolumeCardProps {
       issueNumber: number;
       _count?: {
         papers: number;
+        archivedPapers: number;
       };
     }>;
   };
@@ -22,7 +23,7 @@ interface VolumeCardProps {
 
 export function VolumeCard({ volume }: VolumeCardProps) {
   const totalPapers = volume.issues.reduce(
-    (sum, issue) => sum + (issue._count?.papers || 0),
+    (sum, issue) => sum + (issue._count?.papers || 0) + (issue._count?.archivedPapers || 0),
     0
   );
 

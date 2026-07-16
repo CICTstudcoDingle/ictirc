@@ -196,6 +196,7 @@ export async function listVolumes() {
             _count: {
               select: {
                 papers: true,
+                archivedPapers: true,
               },
             },
           },
