@@ -166,9 +166,11 @@ export async function middleware(request: NextRequest) {
       // Add user role to response headers for client-side use
       response.headers.set("x-user-role", typedUser.role);
     } catch (error) {
-      console.error("[RBAC] Database error:", error);
-    // On database error, allow through but log
-    // Production should handle this more gracefully
+      console.error("[RBAC] Database error — failing closed:", error);
+      const url = request.nextUrl.clone();
+      url.pathname = "/unauthorized";
+      url.searchParams.set("reason", "database_error");
+      return NextResponse.redirect(url);
     }
   }
 

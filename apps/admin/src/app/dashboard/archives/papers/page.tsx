@@ -2,7 +2,7 @@ import Link from "next/link";
 import { prisma } from "@ictirc/database";
 import { Button } from "@ictirc/ui";
 import {
-  ArrowLeft, BookOpen, Upload, Eye, Edit, Search, BookMarked,
+  ArrowLeft, BookOpen, Upload, Eye, Edit, Search, BookMarked, AlertCircle,
 } from "lucide-react";
 import { DeleteArchivedPaperButton } from "@/components/archives/delete-archived-paper-button";
 
@@ -61,14 +61,58 @@ async function getArchivedPapers(filters: SearchParams) {
 export default async function ArchivedPapersPage({ searchParams }: PageProps) {
   const params = await searchParams;
 
-  const [papers, categories, issues] = await Promise.all([
-    getArchivedPapers(params),
-    prisma.category.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } }),
-    prisma.issue.findMany({
-      include: { volume: { select: { volumeNumber: true, year: true } } },
-      orderBy: [{ volume: { year: "desc" } }, { issueNumber: "asc" }],
-    }),
-  ]);
+  let papers: Awaited<ReturnType<typeof getArchivedPapers>> = [];
+  let categories: { id: string; name: string }[] = [];
+  let issues: { id: string; issueNumber: number; volume: { volumeNumber: number; year: number } | null }[] = [];
+  let fetchError = false;
+
+  try {
+    [papers, categories, issues] = await Promise.all([
+      getArchivedPapers(params),
+      prisma.category.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } }),
+      prisma.issue.findMany({
+        include: { volume: { select: { volumeNumber: true, year: true } } },
+        orderBy: [{ volume: { year: "desc" } }, { issueNumber: "asc" }],
+      }),
+    ]);
+  } catch (err) {
+    console.error("[ArchivedPapers] Database query failed:", err);
+    fetchError = true;
+  }
+
+  if (fetchError) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Link href="/dashboard/archives">
+                <Button variant="ghost" size="sm">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Archives
+                </Button>
+              </Link>
+              <span className="text-gray-400">/</span>
+              <span className="text-sm text-gray-600">Papers</span>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Archived Papers</h1>
+          </div>
+        </div>
+        <div className="bg-white border border-gray-200 rounded-xl p-12 text-center">
+          <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-3" />
+          <p className="text-gray-500 font-medium">Failed to load archived papers</p>
+          <p className="text-gray-400 text-sm mt-1">
+            The database is temporarily unavailable. Please try again later.
+          </p>
+          <Link href="/dashboard/archives/papers">
+            <Button variant="outline" size="sm" className="mt-4">
+              Retry
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

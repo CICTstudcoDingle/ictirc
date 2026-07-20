@@ -5,7 +5,6 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
-// Prevent multiple Prisma instances in development
 const createPrismaClient = () => {
   return new PrismaClient({
     log:
@@ -15,8 +14,6 @@ const createPrismaClient = () => {
   });
 };
 
+// Cached across hot reloads in dev and across warm serverless instances in prod.
 export const prisma = globalThis.prisma || createPrismaClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalThis.prisma = prisma;
-}
+globalThis.prisma = prisma;
